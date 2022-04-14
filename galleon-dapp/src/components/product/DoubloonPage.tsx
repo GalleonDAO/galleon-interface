@@ -1,0 +1,136 @@
+import { useEffect, useState } from "react";
+
+import { Box, Flex, useBreakpointValue } from "@chakra-ui/react";
+import { useEthers } from "@usedapp/core";
+
+import QuickTrade from "components/dashboard/QuickTrade";
+import Page from "components/Page";
+import { getPriceChartData } from "components/product/PriceChartData";
+import { DoubloonToken, Token } from "constants/tokens";
+import {
+  TokenMarketDataValues,
+  useMarketData,
+} from "providers/MarketData/MarketDataProvider";
+import { SetComponent } from "providers/SetComponents/SetComponentsProvider";
+import { displayFromWei } from "utils";
+import {
+  getFormattedChartPriceChanges,
+  getPricesChanges,
+} from "utils/priceChange";
+import { getTokenSupply } from "utils/setjsApi";
+
+import MarketChart, { PriceChartRangeOption } from "./MarketChart";
+import ProductComponentsTable from "./ProductComponentsTable";
+import ProductHeader from "./ProductHeader";
+import ProductPageSectionHeader from "./ProductPageSectionHeader";
+import ProductStats, { ProductStat } from "./ProductStats";
+
+function getStatsForToken(
+  tokenData: Token,
+  marketData: TokenMarketDataValues,
+  currentSupply: number
+): ProductStat[] {
+  const dailyPriceRange = PriceChartRangeOption.DAILY_PRICE_RANGE;
+  const hourlyDataInterval = 24;
+
+  let formatter = Intl.NumberFormat("en", {
+    style: "currency",
+    currency: "USD",
+    maximumFractionDigits: 2,
+    notation: "compact",
+  });
+
+  let supplyFormatter = Intl.NumberFormat("en", { maximumFractionDigits: 2 });
+
+  const marketCap =
+    marketData.marketcaps
+      ?.slice(-dailyPriceRange * hourlyDataInterval)
+      ?.slice(-1)[0]
+      ?.slice(-1)[0] ?? 0;
+  const marketCapFormatted = formatter.format(marketCap);
+
+  const supplyFormatted = supplyFormatter.format(currentSupply);
+
+  const volume =
+    marketData.volumes
+      ?.slice(-dailyPriceRange * hourlyDataInterval)
+      ?.slice(-1)[0]
+      ?.slice(-1)[0] ?? 0;
+  const volumeFormatted = formatter.format(volume);
+
+  return [
+    { title: "Market Cap", value: marketCapFormatted },
+    { title: "Volume", value: volumeFormatted },
+    // { title: "Current Supply", value: supplyFormatted },
+    // { title: "Streaming Fee", value: tokenData.fees?.streamingFee ?? "n/a" },
+    // { title: "Mint Fee", value: tokenData.fees?.mintFee ?? "n/a" },
+    // { title: "Redeem Fee", value: tokenData.fees?.redeemFee ?? "n/a" },
+  ];
+}
+
+const DoubloonPage = (props: {
+  tokenData: Token;
+  marketData: TokenMarketDataValues;
+}) => {
+  const isMobile = useBreakpointValue({ base: true, lg: false });
+  const { marketData, tokenData } = props;
+
+  const { chainId, library } = useEthers();
+  const { selectLatestMarketData } = useMarketData();
+
+  const [currentTokenSupply, setCurrentTokenSupply] = useState(0);
+
+  const priceChartData = getPriceChartData([marketData]);
+
+  const price = `$${selectLatestMarketData(marketData.hourlyPrices).toFixed(
+    2
+  )}`;
+  const priceChanges = getPricesChanges(marketData.hourlyPrices ?? []);
+  const priceChangesFormatted = getFormattedChartPriceChanges(priceChanges);
+
+  const stats = getStatsForToken(tokenData, marketData, currentTokenSupply);
+
+  const chartWidth = window.outerWidth < 400 ? window.outerWidth : 900;
+  const chartHeight = window.outerWidth < 400 ? 300 : 400;
+
+  return (
+    <Page>
+      <Flex direction="column" w={["100%", "80vw"]} m="0 auto">
+        <Box mb={["16px", "48px"]}>
+          <ProductHeader
+            isMobile={isMobile ?? false}
+            tokenData={props.tokenData}
+          />
+        </Box>
+        <Flex direction="column">
+          <Flex direction={["column", "column", "column", "row"]}>
+            <MarketChart
+              marketData={priceChartData}
+              prices={[price]}
+              priceChanges={priceChangesFormatted}
+              options={{
+                width: chartWidth,
+                height: chartHeight,
+                hideYAxis: false,
+              }}
+              apy={null}
+              isDoubloon={true}
+            />
+            {/* TODO: Enable when 0x is on arbitrum */}
+            {/* <Flex
+              mt={['48px', '48px', '48px', '0']}
+              ml={['0', '0', '0', '36px']}
+              justifyContent={['center', 'center', 'center', 'flex-start']}
+            >
+              <QuickTrade isNarrowVersion={true} singleToken={tokenData} />
+            </Flex> */}
+          </Flex>
+          <ProductPageSectionHeader title="Stats" topMargin="120px" />
+          <ProductStats stats={stats} />
+        </Flex>
+      </Flex>
+    </Page>
+  );
+};
+
+export default DoubloonPage;
