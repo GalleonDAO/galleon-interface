@@ -1,69 +1,65 @@
-import { colors } from "styles/colors";
+import { colors } from 'styles/colors'
 
-import { Button, Flex, Text, useDisclosure } from "@chakra-ui/react";
-import { useEthers, useLookupAddress } from "@usedapp/core";
+import { Button, Flex, Text, useDisclosure } from '@chakra-ui/react'
+import { useEthers, useLookupAddress } from '@usedapp/core'
 
-import ConnectModal from "./ConnectModal";
-import NetworkSelector from "./NetworkSelector";
-import { useState } from "react";
-import {
-  COUNTER_LABELS,
-  GALLEON_SERVICE,
-  logCounter,
-  logMessage,
-  LOG_SEVERITY,
-} from "utils/logger";
+import ConnectModal from './ConnectModal'
+import NetworkSelector from './NetworkSelector'
+import { useState } from 'react'
+import { logger } from 'index'
+import { GALLEON_SERVICE, LABELS } from '@galleondao/logging-lib'
 
 const ConnectButton = () => {
-  const { account, deactivate } = useEthers();
-  const { isOpen, onOpen, onClose } = useDisclosure();
-  const [address, setAddress] = useState("");
-  let ens = useLookupAddress();
+  const { account, deactivate } = useEthers()
+  const { isOpen, onOpen, onClose } = useDisclosure()
+  const [address, setAddress] = useState('')
+  let ens = useLookupAddress()
 
   const handleConnectWallet = () => {
-    onOpen();
-  };
+    onOpen()
+  }
 
   const handleDisconnect = () => {
-    deactivate();
-    onClose();
-  };
+    deactivate()
+    onClose()
+  }
 
   const sendWalletConnectionEvent = () => {
     if (account !== address) {
-      setAddress(account);
+      setAddress(account)
 
-      logCounter({
+      logger.logCounter({
         serviceName: GALLEON_SERVICE,
-        label: COUNTER_LABELS.VISIT,
+        environment: process.env.NODE_ENV,
+        label: LABELS.VISIT,
         metadata: {
           address: account,
         },
-      });
+      })
 
-      console.log("Successful Wallet Connection", {
+      console.log('Successful Wallet Connection', {
         user: {
           name: account,
         },
-      });
+      })
     }
-  };
+  }
 
   const handleAccount = () => {
-    sendWalletConnectionEvent();
-    return formatAccountName();
-  };
+    sendWalletConnectionEvent()
+    return formatAccountName()
+  }
 
   const formatAccountName = () => {
-    if (ens) return `${ens}`;
+    if (ens) return `${ens}`
     return (
       account &&
       `${account.slice(0, 6)}...${account.slice(
         account.length - 4,
-        account.length
+        account.length,
       )}`
-    );
-  };
+    )
+  }
 
   const connectButton = () => {
     return (
@@ -79,24 +75,24 @@ const ConnectButton = () => {
           padding="6px 30px"
           _hover={{
             transform:
-              "translate3d(0px, 2px, 0px) scale3d(1, 1, 1) rotateX(0deg) rotateY(0deg) rotateZ(0deg) skew(0deg, 0deg)",
-            transformStyle: "preserve-3d",
+              'translate3d(0px, 2px, 0px) scale3d(1, 1, 1) rotateX(0deg) rotateY(0deg) rotateZ(0deg) skew(0deg, 0deg)',
+            transformStyle: 'preserve-3d',
           }}
         >
           Connect
         </Button>
         <ConnectModal isOpen={isOpen} onClose={onClose} />
       </div>
-    );
-  };
+    )
+  }
 
   const disconnectButton = () => {
     return (
-      <Flex direction={["column", "column", "row", "row"]} alignItems="center">
+      <Flex direction={['column', 'column', 'row', 'row']} alignItems="center">
         <Text
           fontSize="lg"
-          m={"0 24px"}
-          display={["none", "none", "flex", "flex"]}
+          m={'0 24px'}
+          display={['none', 'none', 'flex', 'flex']}
         >
           {handleAccount()}
         </Text>
@@ -111,17 +107,17 @@ const ConnectButton = () => {
           padding="6px 30px"
           _hover={{
             transform:
-              "translate3d(0px, 2px, 0px) scale3d(1, 1, 1) rotateX(0deg) rotateY(0deg) rotateZ(0deg) skew(0deg, 0deg)",
-            transformStyle: "preserve-3d",
+              'translate3d(0px, 2px, 0px) scale3d(1, 1, 1) rotateX(0deg) rotateY(0deg) rotateZ(0deg) skew(0deg, 0deg)',
+            transformStyle: 'preserve-3d',
           }}
         >
           Disconnect
         </Button>
         <NetworkSelector />
       </Flex>
-    );
-  };
+    )
+  }
 
-  return account ? disconnectButton() : connectButton();
-};
-export default ConnectButton;
+  return account ? disconnectButton() : connectButton()
+}
+export default ConnectButton

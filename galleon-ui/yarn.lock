@@ -3247,10 +3247,15 @@
   resolved "https://registry.npmjs.org/@fontsource/ibm-plex-sans/-/ibm-plex-sans-4.5.7.tgz"
   integrity sha512-doklVOeKIKo3kiP11PrYCBmBXMhc8l/p3MbApSVhS7NmTEsvgBn+L4afCrcfD7pIuVQvC1A42Gtlu4FSBNWm+g==
 
-"@galleondao/galleon-tokenlist@^0.0.6":
-  version "0.0.6"
-  resolved "https://registry.yarnpkg.com/@galleondao/galleon-tokenlist/-/galleon-tokenlist-0.0.6.tgz#97c5f6d3fb3363f55d5af9f6f819e7194ace4274"
-  integrity sha512-nRymxD7LCGyc1sKQPdwmiqJDUp2ArRNL4kl8XhcZbbW3ZNf0iMeGMAj5hUdreNsQXvqXpYHmv4sSknbo6btTQw==
+"@galleondao/galleon-tokenlist@^0.0.7":
+  version "0.0.7"
+  resolved "https://registry.yarnpkg.com/@galleondao/galleon-tokenlist/-/galleon-tokenlist-0.0.7.tgz#71dc2d5c4ffbce23fd534c5484785f3f4c6f043a"
+  integrity sha512-cD3fPKsytuJl+3ggFdnFiaLKGPx+poWlVsCeKpBxJnYxjj3b34N7Gk3HLZr7cajlqwyBbk/gjGHF7lKGuDk9WQ==
+
+"@galleondao/logging-lib@0.0.1":
+  version "0.0.1"
+  resolved "https://registry.yarnpkg.com/@galleondao/logging-lib/-/logging-lib-0.0.1.tgz#7ea294bd9b60b64f9c543debad060346b618f2de"
+  integrity sha512-2eUEeNMO8cr2VRT8EMhX5jYGvxcQhCZ+DTF86ls5Ff2i9L70VMECk98HDAFLvLhiudwsW3w0GnaSYx6LkeacbQ==
 
 "@gar/promisify@^1.0.1":
   version "1.1.3"
