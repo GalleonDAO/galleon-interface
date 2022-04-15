@@ -1,6 +1,6 @@
-import { Box, Flex } from '@chakra-ui/react'
-import Navigation from 'components/Navigation'
-import Page from 'components/Page'
+import { Box, Flex } from "@chakra-ui/react";
+import Navigation from "components/Navigation";
+import Page from "components/Page";
 
 const Dashboard = () => {
   return (
@@ -12,7 +12,7 @@ const Dashboard = () => {
         <>Body</>
       </Page>
     </>
-  )
-}
+  );
+};
 
-export default Dashboard
+export default Dashboard;

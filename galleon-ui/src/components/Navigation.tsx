@@ -1,5 +1,5 @@
 const Navigation = (props: { children?: JSX.Element }) => {
-  return <>{props.children}</>
-}
+  return <>{props.children}</>;
+};
 
-export default Navigation
+export default Navigation;

@@ -1,6 +1,6 @@
-import { Outlet } from 'react-router-dom'
+import { Outlet } from "react-router-dom";
 
-import Navigation from 'components/Navigation'
+import Navigation from "components/Navigation";
 
 const App = () => {
   return (
@@ -8,7 +8,7 @@ const App = () => {
       <Navigation />
       <Outlet />
     </>
-  )
-}
+  );
+};
 
-export default App
+export default App;

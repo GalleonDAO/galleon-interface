@@ -2,7 +2,7 @@ import { useCallback, useEffect, useState } from "react";
 
 import { ChainId, useEthers } from "@usedapp/core";
 
-import { ARBITRUM, OPTIMISM, POLYGON } from "constants/chains";
+import { ARBITRUM, MAINNET, OPTIMISM, POLYGON } from "constants/chains";
 import {
   arbitrumCurrencyTokens,
   ETH,
@@ -25,7 +25,9 @@ export const useTradeTokenLists = (
   const isPolygon = chainId === ChainId.Polygon;
 
   const [isBuying, setIsBuying] = useState<boolean>(true);
-  const [buyToken, setBuyToken] = useState<Token>(EthMaxYieldIndex);
+  const [buyToken, setBuyToken] = useState<Token>(
+    chainId === MAINNET.chainId ? EthMaxYieldIndex : null
+  );
   const [buyTokenList, setBuyTokenList] = useState<Token[]>(
     getTokenListByChain(chainId, singleToken)
   );

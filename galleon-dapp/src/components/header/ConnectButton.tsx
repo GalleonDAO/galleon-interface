@@ -5,10 +5,19 @@ import { useEthers, useLookupAddress } from "@usedapp/core";
 
 import ConnectModal from "./ConnectModal";
 import NetworkSelector from "./NetworkSelector";
+import { useState } from "react";
+import {
+  COUNTER_LABELS,
+  GALLEON_SERVICE,
+  logCounter,
+  logMessage,
+  LOG_SEVERITY,
+} from "utils/logger";
 
 const ConnectButton = () => {
   const { account, deactivate } = useEthers();
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const [address, setAddress] = useState("");
   let ens = useLookupAddress();
 
   const handleConnectWallet = () => {
@@ -21,11 +30,23 @@ const ConnectButton = () => {
   };
 
   const sendWalletConnectionEvent = () => {
-    console.log("Successful Wallet Connection", {
-      user: {
-        name: account,
-      },
-    });
+    if (account !== address) {
+      setAddress(account);
+
+      logCounter({
+        serviceName: GALLEON_SERVICE,
+        label: COUNTER_LABELS.VISIT,
+        metadata: {
+          address: account,
+        },
+      });
+
+      console.log("Successful Wallet Connection", {
+        user: {
+          name: account,
+        },
+      });
+    }
   };
 
   const handleAccount = () => {
