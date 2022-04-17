@@ -26,6 +26,7 @@ import { exportCsv } from "utils/exportToCsv";
 import { getFormattedChartPriceChanges } from "utils/priceChange";
 
 import { getPieChartPositions } from "./DashboardData";
+import { MAINNET, POLYGON } from "constants/chains";
 
 const Dashboard = () => {
   const { ethmaxy } = useMarketData();
@@ -171,17 +172,28 @@ const Dashboard = () => {
               <AllocationChart positions={pieChartPositions} />
             </Flex>
             <Box w="24px" h={["10px", "10px", "10px", "0px"]} />
-            <Flex direction="column" grow={1} flexBasis="0">
-              <QuickTrade />
-            </Flex>
+
+            {chainId === MAINNET.chainId ? (
+              <Flex direction="column" grow={1} flexBasis="0">
+                <QuickTrade />{" "}
+              </Flex>
+            ) : (
+              <></>
+            )}
           </Flex>
         </Box>
         <Box w={["340px", "500px", "820px", "1024px"]} px={[0, 0, "20px", 0]}>
-          <SectionTitle
-            title="Transaction History"
-            itemRight={renderCsvDownloadButton}
-          />
-          <TransactionHistoryTable items={historyItems.slice(0, 20)} />
+          {chainId === MAINNET.chainId || chainId === POLYGON.chainId ? (
+            <>
+              <SectionTitle
+                title="Transaction History"
+                itemRight={renderCsvDownloadButton}
+              />
+              <TransactionHistoryTable items={historyItems.slice(0, 20)} />
+            </>
+          ) : (
+            <></>
+          )}
         </Box>
       </Flex>
     </Page>

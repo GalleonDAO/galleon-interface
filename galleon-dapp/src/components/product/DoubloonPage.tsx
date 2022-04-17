@@ -24,6 +24,11 @@ import ProductComponentsTable from "./ProductComponentsTable";
 import ProductHeader from "./ProductHeader";
 import ProductPageSectionHeader from "./ProductPageSectionHeader";
 import ProductStats, { ProductStat } from "./ProductStats";
+import { SwapWidget, Theme } from "@uniswap/widgets/dist/index.js";
+import "@uniswap/widgets/dist/fonts.css";
+import { getTokenList } from "utils/tokenlists";
+const jsonRpcEndpoint =
+  "https://mainnet.infura.io/v3/" + process.env.REACT_APP_INFURA_KEY ?? "";
 
 function getStatsForToken(
   tokenData: Token,
@@ -77,7 +82,6 @@ const DoubloonPage = (props: {
 
   const { chainId, library } = useEthers();
   const { selectLatestMarketData } = useMarketData();
-
   const [currentTokenSupply, setCurrentTokenSupply] = useState(0);
 
   const priceChartData = getPriceChartData([marketData]);
@@ -90,8 +94,10 @@ const DoubloonPage = (props: {
 
   const stats = getStatsForToken(tokenData, marketData, currentTokenSupply);
 
-  const chartWidth = window.outerWidth < 400 ? window.outerWidth : 900;
+  const chartWidth = window.outerWidth < 400 ? window.outerWidth : 648;
   const chartHeight = window.outerWidth < 400 ? 300 : 400;
+
+  const theme: Theme = {};
 
   return (
     <Page>
@@ -117,13 +123,22 @@ const DoubloonPage = (props: {
               isDoubloon={true}
             />
             {/* TODO: Enable when 0x is on arbitrum */}
-            {/* <Flex
-              mt={['48px', '48px', '48px', '0']}
-              ml={['0', '0', '0', '36px']}
-              justifyContent={['center', 'center', 'center', 'flex-start']}
+            <Flex
+              mt={["48px", "48px", "48px", "0"]}
+              ml={["0", "0", "0", "36px"]}
+              justifyContent={["center", "center", "center", "flex-start"]}
             >
-              <QuickTrade isNarrowVersion={true} singleToken={tokenData} />
-            </Flex> */}
+              <SwapWidget
+                provider={library}
+                jsonRpcEndpoint={jsonRpcEndpoint}
+                theme={theme}
+                tokenList={getTokenList(chainId)}
+                defaultInputTokenAddress={"NATIVE"}
+                defaultOutputTokenAddress={
+                  "0xd3f1da62cafb7e7bc6531ff1cef6f414291f03d3"
+                }
+              />
+            </Flex>
           </Flex>
           <ProductPageSectionHeader title="Stats" topMargin="120px" />
           <ProductStats stats={stats} />

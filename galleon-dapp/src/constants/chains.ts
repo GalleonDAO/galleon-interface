@@ -73,4 +73,4 @@ export const ARBITRUM: ChainData = {
   },
 };
 
-export const SUPPORTED_CHAINS = [MAINNET, OPTIMISM];
+export const SUPPORTED_CHAINS = [MAINNET, OPTIMISM, ARBITRUM];
