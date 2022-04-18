@@ -36,12 +36,12 @@ const TransactionHistoryRow = (props: { item: TransactionHistoryItem }) => {
         <Flex align="center">
           <Flex
             align="center"
-            backgroundColor={colors.icPeriwinkle}
+            backgroundColor={colors.themeChampagne}
             borderRadius="8px"
             justify="center"
             padding="4px 8px"
           >
-            <Text color="#4A4AFF" fontSize="12px" fontWeight="500">
+            <Text color="#040728" fontSize="12px" fontWeight="500">
               {item.type}
             </Text>
           </Flex>
@@ -50,7 +50,7 @@ const TransactionHistoryRow = (props: { item: TransactionHistoryItem }) => {
       <Td>
         <Flex direction="column">
           <Text>${item.asset}</Text>
-          {isWeb && <Text color={colors.icPeriwinkle}>{item.value}</Text>}
+          {isWeb && <Text color={colors.themeChampagne}>{item.value}</Text>}
         </Flex>
       </Td>
       {isWeb && (

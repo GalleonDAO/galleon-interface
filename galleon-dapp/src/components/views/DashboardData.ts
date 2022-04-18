@@ -7,11 +7,11 @@ import { EthMaxYieldIndex, DoubloonToken } from "constants/tokens";
 import { displayFromWei } from "utils";
 
 const chartColors = [
-  colors.icApricot,
-  colors.icBlue,
-  colors.icPeriwinkle,
-  colors.icLazurite,
-  colors.icYellow,
+  colors.themeChampagne,
+  colors.themeBlue,
+  colors.themeOldlace,
+  colors.themeNavy,
+  colors.themeBlack,
 ];
 
 export const QuickTradeData = {

@@ -66,10 +66,10 @@ const ConnectButton = () => {
       <div>
         <Button
           onClick={handleConnectWallet}
-          bg={colors.icYellow}
+          bg={colors.themeBlue}
           border="0"
           borderRadius="8"
-          color={colors.black}
+          color={colors.themeNavy}
           fontSize="lg"
           fontWeight="700"
           padding="6px 30px"
@@ -99,9 +99,9 @@ const ConnectButton = () => {
         <Button
           onClick={handleDisconnect}
           background="transparent"
-          borderColor={colors.icYellow}
+          borderColor={colors.themeBlue}
           borderRadius="8"
-          color={colors.icYellow}
+          color={colors.themeBlue}
           fontSize="lg"
           fontWeight="700"
           padding="6px 30px"

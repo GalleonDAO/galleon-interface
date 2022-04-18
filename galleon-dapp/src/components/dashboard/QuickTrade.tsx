@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-import { colors, useGalleonColorMode } from "styles/colors";
+import { colors } from "styles/colors";
 
 import { UpDownIcon } from "@chakra-ui/icons";
 import {
@@ -49,7 +49,6 @@ const QuickTrade = (props: {
   isNarrowVersion?: boolean;
   singleToken?: Token;
 }) => {
-  const { isDarkMode } = useGalleonColorMode();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { account, chainId } = useEthers();
 
@@ -377,7 +376,7 @@ const QuickTrade = (props: {
   return (
     <Flex
       border="2px solid #F7F1E4"
-      borderColor={isDarkMode ? colors.icWhite : colors.black}
+      borderColor={colors.themeNavy}
       borderRadius="16px"
       direction="column"
       py="20px"
@@ -393,7 +392,6 @@ const QuickTrade = (props: {
         <QuickTradeSelector
           title="From"
           config={{
-            isDarkMode,
             isInputDisabled: false,
             isSelectorDisabled: false,
             isReadOnly: false,
@@ -409,8 +407,8 @@ const QuickTrade = (props: {
             background="transparent"
             margin={"6px 0"}
             aria-label="Search database"
-            borderColor={isDarkMode ? colors.icWhite : colors.black}
-            color={isDarkMode ? colors.icWhite : colors.black}
+            borderColor={colors.themeNavy}
+            color={colors.themeNavy}
             icon={<UpDownIcon />}
             onClick={() => swapTokenLists()}
           />
@@ -418,7 +416,6 @@ const QuickTrade = (props: {
         <QuickTradeSelector
           title="To"
           config={{
-            isDarkMode,
             isInputDisabled: true,
             isSelectorDisabled: false,
             isReadOnly: true,
@@ -434,20 +431,20 @@ const QuickTrade = (props: {
       <Flex direction="column">
         {tradeInfoData.length > 0 && <TradeInfo data={tradeInfoData} />}
         {hasFetchingError && (
-          <Text align="center" color={colors.icRed} p="16px">
+          <Text align="center" color={colors.red} p="16px">
             {/* @ts-ignore */}
             {bestOptionResult.error.message}
           </Text>
         )}
         {ethmaxyErrorMessage && (
-          <Text align="center" color={colors.icYellow} p="16px">
+          <Text align="center" color={colors.themeChampagne} p="16px">
             You can only issue the displayed amout of ETHMAXY at a time (you'll
             pay this amount of ETH, instead of the quantity you want to spend).
           </Text>
         )}
         <TradeButton
           label={buttonLabel}
-          background={isDarkMode ? colors.icWhite : colors.icYellow}
+          background={colors.themeChampagne}
           isDisabled={isButtonDisabled}
           isLoading={isLoading}
           onClick={onClickTradeButton}

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 
 import { Area, AreaChart, CartesianGrid, XAxis, YAxis } from "recharts";
-import { colors, useGalleonColorMode } from "styles/colors";
+import { colors } from "styles/colors";
 
 import { Box, Flex, Spacer } from "@chakra-ui/layout";
 import { Tab, TabList, Tabs, Text, useTheme } from "@chakra-ui/react";
@@ -54,8 +54,7 @@ const MarketChart = (props: {
   isDoubloon?: boolean;
 }) => {
   const theme = useTheme();
-  const { isDarkMode } = useGalleonColorMode();
-  const strokeColor = isDarkMode ? colors.gray[500] : colors.gray[400];
+  const strokeColor = colors.gray[400];
 
   const [chartData, setChartData] = useState<PriceChartData[]>([]);
   const [durationSelector, setDurationSelector] = useState<number>(
@@ -159,8 +158,8 @@ const MarketChart = (props: {
       : props.prices[durationSelector];
   const priceChange = props.priceChanges[durationSelector];
   const priceChangeColor = priceChange.isPositive
-    ? colors.icMalachite
-    : colors.icRed;
+    ? colors.themeBlue
+    : colors.red[400];
 
   return (
     <Flex direction="column" alignItems="center" width="100%">
@@ -214,32 +213,32 @@ const MarketChart = (props: {
         <Area
           type="monotone"
           dataKey="y1"
-          stroke={theme.colors.icApricot}
-          fill={theme.colors.icApricot}
+          stroke={theme.colors.themeChampagne}
+          fill={theme.colors.themeChampagne}
         />
         <Area
           type="monotone"
           dataKey="y2"
-          stroke={theme.colors.icBlue}
-          fill={theme.colors.icBlue}
+          stroke={theme.colors.themeBlue}
+          fill={theme.colors.themeBlue}
         />
         <Area
           type="monotone"
           dataKey="y3"
-          stroke={theme.colors.icPeriwinkle}
-          fill={theme.colors.icPeriwinkle}
+          stroke={theme.colors.themeOldlace}
+          fill={theme.colors.themeOldlace}
         />
         <Area
           type="monotone"
           dataKey="y4"
-          stroke={theme.colors.icLazurite}
-          fill={theme.colors.icLazurite}
+          stroke={theme.colors.themeBlue}
+          fill={theme.colors.themeBlue}
         />
         <Area
           type="monotone"
           dataKey="y5"
-          stroke={theme.colors.icYellow}
-          fill={theme.colors.icYellow}
+          stroke={theme.colors.themeChampagne}
+          fill={theme.colors.themeChampagne}
         />
       </AreaChart>
     </Flex>
@@ -264,7 +263,7 @@ const PriceDisplay = ({
       <Flex flexDirection={"column"}>
         <Text
           fontSize={["3xl", "3xl", "3xl", "4xl"]}
-          color={colors.icYellow}
+          color={colors.themeChampagne}
           fontWeight="700"
         >
           {price}
@@ -276,7 +275,7 @@ const PriceDisplay = ({
           {apy && (
             <Text
               fontSize={["md", "md", "xl", "2xl"]}
-              color={colors.icWhite}
+              color={colors.themeWhite}
               fontWeight="700"
               mr={["0", "0", "0", "16px"]}
             >

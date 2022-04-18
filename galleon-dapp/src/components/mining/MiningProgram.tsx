@@ -50,7 +50,7 @@
 //   isDarkMode: boolean;
 // }) => {
 //   const { isActive, component } = props;
-//   const activeTextColor = props.isDarkMode ? colors.white : colors.black;
+//   const activeTextColor = props.isDarkMode ? colors.white : colors.themeNavy;
 //   const textColor = isActive ? activeTextColor : gray;
 
 //   return (

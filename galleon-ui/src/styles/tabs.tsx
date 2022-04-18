@@ -2,11 +2,11 @@ import { colors } from "styles/colors";
 
 export const Tabs = {
   variants: {
-    unstyled: ({ colorMode }: { colorMode: string }) => ({
+    unstyled: () => ({
       tablist: {
-        backgroundColor: colorMode === "dark" ? "#1f2937" : "#fff",
+        backgroundColor: "#fff",
         borderRadius: "8px",
-        color: colorMode === "dark" ? colors.icWhite : colors.black,
+        color: colors.themeNavy,
         fontSize: "16px",
         fontWeight: "500",
         height: "45px",
@@ -14,9 +14,9 @@ export const Tabs = {
       },
       tab: {
         _selected: {
-          backgroundColor: colorMode === "dark" ? "white" : colors.icYellow,
+          backgroundColor: colors.themeBlue,
           borderRadius: "8px",
-          color: colorMode === "dark" ? colors.black : colors.icWhite,
+          color: colors.themeWhite,
         },
       },
     }),

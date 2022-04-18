@@ -1,5 +1,3 @@
-import { useGalleonColorMode } from "styles/colors";
-
 import {
   Table,
   Tbody,
@@ -22,10 +20,9 @@ type ProductsTableProps = {
 };
 
 const ProductsTable = ({ products }: ProductsTableProps) => {
-  const { isDarkMode } = useGalleonColorMode();
   const isMobile = useBreakpointValue({ base: true, md: false, lg: false });
 
-  const colorScheme = isDarkMode ? "whiteAlpha" : "blackAlpha";
+  const colorScheme = "blackAlpha";
   const amountOfIntervalsToShow = isMobile ? 2 : PriceChangeIntervals.length;
   const priceChangeIntervals = PriceChangeIntervals.slice(
     0,

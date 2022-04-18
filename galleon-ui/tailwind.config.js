@@ -1,7 +1,12 @@
 module.exports = {
-  content: ["./src/**/*.{js,jsx,,ts,tsx}"],
+  presets: [require("./galleon-theme.js")],
+  // Customizations specific to this project would go here
   theme: {
     extend: {},
   },
-  plugins: [require("@tailwindcss/aspect-ratio")],
+  variants: {
+    extend: {
+      backgroundColor: ["active"],
+    },
+  },
 };

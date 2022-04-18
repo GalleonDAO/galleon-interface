@@ -1,11 +1,11 @@
 import { PureComponent } from "react";
 
 import { Cell, Pie, PieChart, Tooltip } from "recharts";
-import { useGalleonColorMode } from "styles/colors";
 
 import { Box, Flex, Image, Text } from "@chakra-ui/react";
 import piePlaceholder from "assets/undraw_pie_graph_re_fvol.svg";
 import PieChartTooltip from "./PieChartTooltip";
+import { colors } from "styles/colors";
 
 export interface Position {
   title: string;
@@ -67,13 +67,11 @@ const PositionItem = (props: { position: Position }) => {
 };
 
 const AllocationChart = (props: { positions: Position[] }) => {
-  const { dividerColor, isDarkMode } = useGalleonColorMode();
-
   return (
     <Flex
       align="center"
       border="2px solid #fff"
-      borderColor={dividerColor}
+      borderColor={colors.themeNavy}
       borderRadius="16px"
       direction="column"
       pt="20px"
@@ -86,7 +84,7 @@ const AllocationChart = (props: { positions: Position[] }) => {
         {props.positions.length === 0 && (
           <Image
             height={["150", "225"]}
-            opacity={isDarkMode ? "80%" : "60%"}
+            opacity={"60%"}
             src={piePlaceholder}
             alt="pie chart placeholder"
           />

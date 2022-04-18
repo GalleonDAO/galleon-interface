@@ -1,4 +1,4 @@
-import { colors, useGalleonColorMode } from "styles/colors";
+import { colors } from "styles/colors";
 
 import { Box, Flex, Text } from "@chakra-ui/react";
 
@@ -28,10 +28,9 @@ const Dot = ({ color }: { color: string }) => {
 };
 
 const PieChartTooltip = ({ active, payload }: any) => {
-  const { isDarkMode } = useGalleonColorMode();
   if (active && payload && payload.length) {
-    const tooltipBgColor = isDarkMode ? colors.white : colors.black;
-    const textColor = isDarkMode ? colors.black : colors.white;
+    const tooltipBgColor = colors.themeNavy;
+    const textColor = colors.white;
 
     const { backgroundColor, title, percent, valueDisplay } =
       payload[0].payload;

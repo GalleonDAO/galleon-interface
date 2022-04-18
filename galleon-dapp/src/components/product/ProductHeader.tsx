@@ -2,6 +2,7 @@ import { Flex, Spacer, Text } from "@chakra-ui/layout";
 import { Image } from "@chakra-ui/react";
 
 import { Token } from "constants/tokens";
+import { colors } from "styles/colors";
 
 const ProductPageHeaderMobile = (props: { tokenData: Token }) => {
   return (
@@ -35,7 +36,7 @@ const ProductPageHeader = (props: { isMobile: boolean; tokenData: Token }) => {
       justifyContent="flex-end"
       alignItems="center"
       borderBottom="1px"
-      borderColor="white"
+      borderColor={colors.themeNavy}
       padding="10px 0"
     >
       <Text fontSize="4xl" fontWeight="700">

@@ -13,7 +13,6 @@ import { isValidTokenInput } from "utils";
 import { formattedBalance } from "./QuickTradeFormatter";
 
 interface InputSelectorConfig {
-  isDarkMode: boolean;
   isInputDisabled?: boolean;
   isSelectorDisabled?: boolean;
   isReadOnly?: boolean;
@@ -56,7 +55,7 @@ const QuickTradeSelector = (props: {
   }, [props.selectedToken, getBalance, chainId]);
 
   const { config, selectedToken } = props;
-  const borderColor = config.isDarkMode ? colors.icWhite : colors.black;
+  const borderColor = colors.themeNavy;
   const borderRadius = 16;
 
   const wideWidths = ["250px", "180px"];

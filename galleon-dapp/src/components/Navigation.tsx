@@ -62,8 +62,7 @@ const NavLink = (props: {
 };
 
 const NavContent = () => {
-  const { colorMode, toggleColorMode } = useColorMode();
-  const textColor = colorMode === "light" ? colors.black : colors.icWhite;
+  const textColor = colors.themeNavy;
   return (
     <Flex
       flexDirection={["column", "column", "column", "row"]}
@@ -77,23 +76,13 @@ const NavContent = () => {
         linkText="Liquidity Rewards"
         textColor={textColor}
       /> */}
-      <IconButton
-        aria-label="Color Theme Switch"
-        onClick={toggleColorMode}
-        border="0"
-        background={"transparent"}
-        mt={["30px", "30px", "30px", "0"]}
-        mr={["0", "0", "0", "24px"]}
-        icon={<ColorThemeIcon color={textColor} />}
-        size="sm"
-      />
     </Flex>
   );
 };
 
 const Navigation = () => {
   const [displayMenu, setDisplayMenu] = useState("none");
-  const bgColor = useColorModeValue(colors.icWhite, colors.background);
+  const bgColor = colors.themeChampagne;
   const isWeb = useBreakpointValue({
     base: false,
     md: true,

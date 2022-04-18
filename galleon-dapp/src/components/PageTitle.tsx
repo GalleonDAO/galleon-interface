@@ -1,7 +1,6 @@
-import { useGalleonColorMode } from "styles/colors";
-
 import { StackDivider, VStack } from "@chakra-ui/layout";
 import { Heading, Text } from "@chakra-ui/react";
+import { colors } from "styles/colors";
 
 interface PageTitleProps {
   title: string;
@@ -9,11 +8,13 @@ interface PageTitleProps {
 }
 
 const PageTitle = (props: PageTitleProps) => {
-  const { dividerColor } = useGalleonColorMode();
   return (
     <VStack
       divider={
-        <StackDivider mx={[0, "20px", "20px", 0]} borderColor={dividerColor} />
+        <StackDivider
+          mx={[0, "20px", "20px", 0]}
+          borderColor={colors.themeNavy}
+        />
       }
       spacing={0}
       align="flex-start"

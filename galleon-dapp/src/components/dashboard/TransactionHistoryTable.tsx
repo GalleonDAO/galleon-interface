@@ -1,5 +1,3 @@
-import { useGalleonColorMode } from "styles/colors";
-
 import {
   Table,
   Tbody,
@@ -27,8 +25,7 @@ interface TransactionHistoryTableProps {
 }
 
 const TransactionHistoryTable = ({ items }: TransactionHistoryTableProps) => {
-  const { isDarkMode } = useGalleonColorMode();
-  const colorScheme = isDarkMode ? "whiteAlpha" : "blackAlpha";
+  const colorScheme = "blackAlpha";
   return (
     <Table
       colorScheme={colorScheme}

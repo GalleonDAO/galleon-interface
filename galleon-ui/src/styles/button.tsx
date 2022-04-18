@@ -8,24 +8,24 @@ export const Button = {
     px: 6,
     py: 4,
     _disabled: {
-      backgroundColor: "#dad5d5",
-      borderColor: "#555555",
-      color: "#555555",
+      backgroundColor: "#FCF6EE",
+      borderColor: "#040728",
+      color: "#040728",
     },
   },
   variants: {
-    green: {
-      backgroundColor: "rgba(9, 170, 116, 0.12)",
-      borderColor: colors.icMalachite,
-      color: colors.icMalachite,
+    blue: {
+      backgroundColor: "#025BEE",
+      borderColor: "#025BEE",
+      color: "#FFFFFF",
     },
-    purple: {
-      backgroundColor: "rgba(128, 0, 128, 0.2)",
-      borderColor: "purple.500",
-      color: "purple.500",
+    navy: {
+      backgroundColor: "#040728",
+      borderColor: "#040728",
+      color: "#FFFFFF",
     },
   },
   defaultProps: {
-    variant: "green",
+    variant: "blue",
   },
 };

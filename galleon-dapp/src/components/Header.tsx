@@ -36,12 +36,10 @@ const Header = () => {
 };
 
 const Logo = () => {
-  const { colorMode } = useColorMode();
-  const isDarkMode = colorMode === "dark";
-  let logo = isDarkMode ? indexLogoWhite : indexLogoBlack;
+  let logo = indexLogoBlack;
 
   if (window.innerWidth > 1350) {
-    logo = isDarkMode ? indexLogoFullWhite : indexLogoFullBlack;
+    logo = indexLogoFullBlack;
   }
 
   return (

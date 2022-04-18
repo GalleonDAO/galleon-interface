@@ -15,9 +15,9 @@ const NetworkSelector = () => {
       ml={[0, 0, 4, 4]}
       mt={[4, 4, 0, 0]}
       border="2px solid"
-      borderColor={colors.icYellow}
+      borderColor={colors.themeBlue}
       borderRadius="8"
-      color={colors.icYellow}
+      color={colors.themeBlue}
       fontSize="md"
       fontWeight="bold"
       minWidth="50px"

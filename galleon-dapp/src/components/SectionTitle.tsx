@@ -1,7 +1,6 @@
-import { useGalleonColorMode } from "styles/colors";
-
 import { Box, Flex, Spacer, StackDivider, VStack } from "@chakra-ui/layout";
 import { Heading } from "@chakra-ui/react";
+import { colors } from "styles/colors";
 
 interface SectionTitleProps {
   title: string;
@@ -9,11 +8,10 @@ interface SectionTitleProps {
 }
 
 const SectionTitle = (props: SectionTitleProps) => {
-  const { dividerColor } = useGalleonColorMode();
   return (
     <Box flex="1">
       <VStack
-        divider={<StackDivider borderColor={dividerColor} />}
+        divider={<StackDivider borderColor={colors.themeNavy} />}
         spacing={2}
         align="flex-start"
       >
