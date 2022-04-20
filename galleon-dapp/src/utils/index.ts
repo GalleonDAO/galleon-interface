@@ -125,3 +125,7 @@ export const getChainAddress = (
       return token.address;
   }
 };
+
+export const classNames = (...classes) => {
+  return classes.filter(Boolean).join(" ");
+};

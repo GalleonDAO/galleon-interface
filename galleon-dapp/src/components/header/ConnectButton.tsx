@@ -64,23 +64,13 @@ const ConnectButton = () => {
   const connectButton = () => {
     return (
       <div>
-        <Button
+        <button
           onClick={handleConnectWallet}
-          bg={colors.themeBlue}
-          border="0"
-          borderRadius="8"
-          color={colors.themeNavy}
-          fontSize="lg"
-          fontWeight="700"
-          padding="6px 30px"
-          _hover={{
-            transform:
-              "translate3d(0px, 2px, 0px) scale3d(1, 1, 1) rotateX(0deg) rotateY(0deg) rotateZ(0deg) skew(0deg, 0deg)",
-            transformStyle: "preserve-3d",
-          }}
+          className="ml-4 inline-block bg-theme-blue text-white  py-1.5 px-4 border border-transparent rounded-full text-base font-medium  hover:bg-opacity-75"
         >
           Connect
-        </Button>
+        </button>
+
         <ConnectModal isOpen={isOpen} onClose={onClose} />
       </div>
     );
@@ -88,33 +78,26 @@ const ConnectButton = () => {
 
   const disconnectButton = () => {
     return (
-      <Flex direction={["column", "column", "row", "row"]} alignItems="center">
-        <Text
-          fontSize="lg"
-          m={"0 24px"}
-          display={["none", "none", "flex", "flex"]}
-        >
-          {handleAccount()}
-        </Text>
-        <Button
+      <span>
+        <span className="inline-flex items-center px-3 py-0.5 rounded-full text-base font-medium bg-transparent ">
+          <svg
+            className="-ml-1 mr-1.5 h-2 w-2 text-theme-blue animate animate-pulse"
+            fill="currentColor"
+            viewBox="0 0 8 8"
+          >
+            <circle cx={4} cy={4} r={3} />
+          </svg>
+          <span className="text-theme-blue">{handleAccount()}</span>
+        </span>
+
+        <button
           onClick={handleDisconnect}
-          background="transparent"
-          borderColor={colors.themeBlue}
-          borderRadius="8"
-          color={colors.themeBlue}
-          fontSize="lg"
-          fontWeight="700"
-          padding="6px 30px"
-          _hover={{
-            transform:
-              "translate3d(0px, 2px, 0px) scale3d(1, 1, 1) rotateX(0deg) rotateY(0deg) rotateZ(0deg) skew(0deg, 0deg)",
-            transformStyle: "preserve-3d",
-          }}
+          className="ml-4 inline-block bg-theme-navy text-white py-1.5 px-4 border border-transparent rounded-full text-base font-medium hover:bg-opacity-75"
         >
           Disconnect
-        </Button>
+        </button>
         <NetworkSelector />
-      </Flex>
+      </span>
     );
   };
 

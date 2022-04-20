@@ -16,7 +16,7 @@ const DownloadCsvView = React.forwardRef<
   <>
     <Text
       cursor="pointer"
-      style={{ color: colors.themeChampagne }}
+      style={{ color: colors.themeNavy }}
       onClick={props.onClickDownload}
     >
       Download CSV

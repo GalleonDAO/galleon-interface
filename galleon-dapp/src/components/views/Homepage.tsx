@@ -185,10 +185,8 @@ const Dashboard = () => {
         <Box w={["340px", "500px", "820px", "1024px"]} px={[0, 0, "20px", 0]}>
           {chainId === MAINNET.chainId || chainId === POLYGON.chainId ? (
             <>
-              <SectionTitle
-                title="Transaction History"
-                itemRight={renderCsvDownloadButton}
-              />
+              <SectionTitle title="Transaction History" />
+              {renderCsvDownloadButton}
               <TransactionHistoryTable items={historyItems.slice(0, 20)} />
             </>
           ) : (

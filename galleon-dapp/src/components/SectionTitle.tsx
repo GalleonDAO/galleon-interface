@@ -4,27 +4,20 @@ import { colors } from "styles/colors";
 
 interface SectionTitleProps {
   title: string;
-  itemRight?: JSX.Element;
 }
 
 const SectionTitle = (props: SectionTitleProps) => {
   return (
-    <Box flex="1">
-      <VStack
-        divider={<StackDivider borderColor={colors.themeNavy} />}
-        spacing={2}
-        align="flex-start"
-      >
-        <Flex w="100%">
-          <Heading as="h3" size="md">
-            {props.title}
-          </Heading>
-          <Spacer />
-          {props.itemRight}
-        </Flex>
-        <Box />
-      </VStack>
-    </Box>
+    <div className="relative mb-4">
+      <div className="absolute inset-0 flex items-center" aria-hidden="true">
+        <div className="w-full border-t border-theme-navy" />
+      </div>
+      <div className="relative flex justify-start">
+        <span className="pr-3 bg-theme-background text-lg font-medium text-theme-navy">
+          {props.title}
+        </span>
+      </div>
+    </div>
   );
 };
 

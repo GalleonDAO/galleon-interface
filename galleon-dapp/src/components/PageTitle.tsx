@@ -9,22 +9,14 @@ interface PageTitleProps {
 
 const PageTitle = (props: PageTitleProps) => {
   return (
-    <VStack
-      divider={
-        <StackDivider
-          mx={[0, "20px", "20px", 0]}
-          borderColor={colors.themeNavy}
-        />
-      }
-      spacing={0}
-      align="flex-start"
-      mb={["16px", "24px", "36px", "48px"]}
-    >
-      <Heading as="h2" size="lg" px={[0, "20px", "20px", 0]}>
-        {props.title}
-      </Heading>
-      <Text mx={[0, "20px", "20px", 0]}>{props.subtitle}</Text>
-    </VStack>
+    <div className="md:flex mb-4 md:items-center md:justify-between">
+      <div className="flex-1 min-w-0">
+        <h2 className="text-2xl font-bold leading-7 text-theme-navy sm:text-3xl sm:truncate">
+          {props.title}
+        </h2>
+        <p className="text-subtitle text-theme-navy">{props.subtitle}</p>
+      </div>
+    </div>
   );
 };
 
