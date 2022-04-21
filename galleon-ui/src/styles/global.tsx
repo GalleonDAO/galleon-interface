@@ -2,7 +2,7 @@ import { colors } from "styles/colors";
 
 export const global = () => ({
   body: {
-    bg: colors.themeChampagne,
+    bg: colors.themeBackground,
     color: colors.themeNavy,
   },
 });

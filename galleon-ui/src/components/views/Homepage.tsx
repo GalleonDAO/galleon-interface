@@ -1,16 +1,23 @@
-import { Box, Flex } from "@chakra-ui/react";
 import Navigation from "components/Navigation";
 import Page from "components/Page";
+import Footer from "components/Footer";
 
 const Dashboard = () => {
   return (
     <>
-      <Navigation>
-        <>Navigation</>
-      </Navigation>
-      <Page>
-        <>Body</>
-      </Page>
+      <div className="bg-theme-background">
+        <div className="relative overflow-hidden">
+          <Navigation>
+            <></>
+          </Navigation>
+          <Page>
+            <></>
+          </Page>
+          <Footer>
+            <></>
+          </Footer>
+        </div>
+      </div>
     </>
   );
 };
