@@ -5,28 +5,28 @@ import {
   Thead,
   Tr,
   useBreakpointValue,
-} from '@chakra-ui/react'
-import { colors } from 'styles/colors'
+} from "@chakra-ui/react";
+import { colors } from "styles/colors";
 
-import TransactionHistoryRow from './TransactionHistoryRow'
+import TransactionHistoryRow from "./TransactionHistoryRow";
 
 export interface TransactionHistoryItem {
-  hash: string
-  type: 'Send' | 'Receive'
-  asset: string
-  date: string
-  from?: string
-  to?: string
-  value: number
-  explorerUrl: string
+  hash: string;
+  type: "Send" | "Receive";
+  asset: string;
+  date: string;
+  from?: string;
+  to?: string;
+  value: number;
+  explorerUrl: string;
 }
 
 interface TransactionHistoryTableProps {
-  items: TransactionHistoryItem[]
+  items: TransactionHistoryItem[];
 }
 
 const TransactionHistoryTable = ({ items }: TransactionHistoryTableProps) => {
-  const colorScheme = 'blackAlpha'
+  const colorScheme = "blackAlpha";
   return (
     <Table backgroundColor={colors.themeChampagne} colorScheme={colorScheme}>
       <TableHeader />
@@ -36,8 +36,8 @@ const TransactionHistoryTable = ({ items }: TransactionHistoryTableProps) => {
         ))}
       </Tbody>
     </Table>
-  )
-}
+  );
+};
 
 const TableHeader = () => {
   const isWeb = useBreakpointValue({
@@ -45,13 +45,13 @@ const TableHeader = () => {
     md: true,
     lg: true,
     xl: true,
-  })
+  });
   const isTablet = useBreakpointValue({
     base: false,
     md: true,
     lg: true,
     xl: false,
-  })
+  });
   return (
     <Thead>
       <Tr>
@@ -68,7 +68,7 @@ const TableHeader = () => {
         <Th></Th>
       </Tr>
     </Thead>
-  )
-}
+  );
+};
 
-export default TransactionHistoryTable
+export default TransactionHistoryTable;

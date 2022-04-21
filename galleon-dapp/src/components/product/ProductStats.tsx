@@ -1,8 +1,8 @@
-import { Box, Flex, Text } from '@chakra-ui/layout'
+import { Box, Flex, Text } from "@chakra-ui/layout";
 
 export interface ProductStat {
-  title: string
-  value: string
+  title: string;
+  value: string;
 }
 
 const ProductStatView = ({ title, value }: ProductStat) => (
@@ -14,14 +14,14 @@ const ProductStatView = ({ title, value }: ProductStat) => (
       {value}
     </Text>
   </Flex>
-)
+);
 
 const ProductStats = ({ stats }: { stats: ProductStat[] }) => {
   return (
     <Flex
-      alignItems={['flex-start', 'center']}
+      alignItems={["flex-start", "center"]}
       direction="row"
-      justify={['left', 'space-between']}
+      justify={["left", "space-between"]}
       w="100%"
       flexWrap="wrap"
     >
@@ -43,7 +43,7 @@ const ProductStats = ({ stats }: { stats: ProductStat[] }) => {
         </dl>
       </div>
     </Flex>
-  )
-}
+  );
+};
 
-export default ProductStats
+export default ProductStats;

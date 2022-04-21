@@ -84,7 +84,7 @@ const AllocationChart = (props: { positions: Position[] }) => {
           // <ChartPieIcon className="w-full h-full"></ChartPieIcon>
           <Image
             height={["150", "225"]}
-            borderRadius={'25'}
+            borderRadius={"25"}
             opacity={"90%"}
             src={piePlaceholder}
             alt="pie chart placeholder"

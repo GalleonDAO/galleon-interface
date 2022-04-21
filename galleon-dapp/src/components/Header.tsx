@@ -1,4 +1,5 @@
-import logo from "assets/setswap.png";
+import logo from "assets/galleon.png";
+import { Link } from "react-router-dom";
 import ConnectButton from "./header/ConnectButton";
 
 const Header = () => {
@@ -7,29 +8,20 @@ const Header = () => {
       <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8" aria-label="Top">
         <div className="w-full py-6 flex items-center justify-between border-b border-theme-navy lg:border-none">
           <div className="flex items-center">
-            <a href="#">
+            <Link to="/">
               <span className="sr-only">Galleon</span>
               <img className="h-10 w-auto" src={logo} alt="" />
-            </a>
+            </Link>
             <div className="hidden ml-10 space-x-8 lg:block">
-              <a
-                className="text-lg font-semibold text-theme-navy hover:text-theme-blue"
-                href="/"
-              >
-                Dashboard
-              </a>
-              <a
-                className="text-lg font-semibold text-theme-navy hover:text-theme-blue"
-                href="/products"
-              >
-                Products
-              </a>
-              <a
-                className="text-lg font-semibold text-theme-navy hover:text-theme-blue"
-                href="/dbl"
-              >
-                $DBL
-              </a>
+              <span className="text-lg font-semibold text-theme-navy hover:text-theme-blue">
+                <Link to="/">Dashboard</Link>
+              </span>
+              <span className="text-lg font-semibold text-theme-navy hover:text-theme-blue">
+                <Link to="/products">Products</Link>
+              </span>
+              <span className="text-lg font-semibold text-theme-navy hover:text-theme-blue">
+                <Link to="/dbl">$DBL</Link>
+              </span>
             </div>
           </div>
           <div className="ml-10 space-x-4">

@@ -1,9 +1,9 @@
-import { Box, Flex, Spacer, StackDivider, VStack } from '@chakra-ui/layout'
-import { Heading } from '@chakra-ui/react'
-import { colors } from 'styles/colors'
+import { Box, Flex, Spacer, StackDivider, VStack } from "@chakra-ui/layout";
+import { Heading } from "@chakra-ui/react";
+import { colors } from "styles/colors";
 
 interface SectionTitleProps {
-  title: string
+  title: string;
 }
 
 const SectionTitle = (props: SectionTitleProps) => {
@@ -15,7 +15,7 @@ const SectionTitle = (props: SectionTitleProps) => {
         </span>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default SectionTitle
+export default SectionTitle;
