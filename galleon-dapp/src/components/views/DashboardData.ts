@@ -15,7 +15,6 @@ const chartColors = [
   colors.themeChampagne,
   colors.themeBlue,
   colors.themeOldlace,
-
   colors.themeBlack,
 ];
 

@@ -1,8 +1,8 @@
-import { Box, Flex, Text } from "@chakra-ui/layout";
+import { Box, Flex, Text } from '@chakra-ui/layout'
 
 export interface ProductStat {
-  title: string;
-  value: string;
+  title: string
+  value: string
 }
 
 const ProductStatView = ({ title, value }: ProductStat) => (
@@ -14,27 +14,36 @@ const ProductStatView = ({ title, value }: ProductStat) => (
       {value}
     </Text>
   </Flex>
-);
+)
 
 const ProductStats = ({ stats }: { stats: ProductStat[] }) => {
   return (
     <Flex
-      alignItems={["flex-start", "center"]}
+      alignItems={['flex-start', 'center']}
       direction="row"
-      justify={["left", "space-between"]}
+      justify={['left', 'space-between']}
       w="100%"
       flexWrap="wrap"
     >
-      {stats.map((productStat, index) => (
-        <Box key={index} flexBasis={["50%", "auto"]}>
-          <ProductStatView
-            title={productStat.title}
-            value={productStat.value}
-          />
-        </Box>
-      ))}
+      <div>
+        <dl className="mt-5 grid grid-cols-1 gap-5 sm:grid-cols-6 bg-transparent">
+          {stats.map((productStat, index) => (
+            <div
+              key={productStat.title}
+              className="px-4 py-5 bg-transparent shadow border-2 border-theme-navy rounded-md overflow-hidden sm:p-6"
+            >
+              <dt className="text-sm font-medium text-theme-black truncate">
+                {productStat.title}
+              </dt>
+              <dd className="mt-1 text-3xl font-semibold text-theme-black">
+                {productStat.value}
+              </dd>
+            </div>
+          ))}
+        </dl>
+      </div>
     </Flex>
-  );
-};
+  )
+}
 
-export default ProductStats;
+export default ProductStats

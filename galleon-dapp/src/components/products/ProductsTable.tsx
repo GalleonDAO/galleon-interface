@@ -6,36 +6,43 @@ import {
   Thead,
   Tr,
   useBreakpointValue,
-} from "@chakra-ui/react";
+} from '@chakra-ui/react'
 
-import PerformanceCell from "components/products/PerformanceCell";
-import TickerCell from "components/products/TickerCell";
+import PerformanceCell from 'components/products/PerformanceCell'
+import TickerCell from 'components/products/TickerCell'
 import {
   PriceChangeIntervals,
   ProductsTableProduct,
-} from "components/views/Products";
+} from 'components/views/Products'
+import { colors } from 'styles/colors'
 
 type ProductsTableProps = {
-  products: ProductsTableProduct[];
-};
+  products: ProductsTableProduct[]
+}
 
 const ProductsTable = ({ products }: ProductsTableProps) => {
-  const isMobile = useBreakpointValue({ base: true, md: false, lg: false });
+  const isMobile = useBreakpointValue({ base: true, md: false, lg: false })
 
-  const colorScheme = "blackAlpha";
-  const amountOfIntervalsToShow = isMobile ? 2 : PriceChangeIntervals.length;
+  const colorScheme = 'blackAlpha'
+  const amountOfIntervalsToShow = isMobile ? 2 : PriceChangeIntervals.length
   const priceChangeIntervals = PriceChangeIntervals.slice(
     0,
-    amountOfIntervalsToShow
-  );
+    amountOfIntervalsToShow,
+  )
 
   return (
     <Table colorScheme={colorScheme}>
       <Thead>
         <Tr>
-          <Th p={["8px 8px", "12px 24px"]}>Ticker</Th>
+          <Th color={colors.themeBlack} p={['8px 8px', '12px 24px']}>
+            Ticker
+          </Th>
           {priceChangeIntervals.map((interval) => (
-            <Th key={interval[0]} p={["8px 8px", "12px 24px"]}>
+            <Th
+              color={colors.themeBlack}
+              key={interval[0]}
+              p={['8px 8px', '12px 24px']}
+            >
               {interval[0]}
             </Th>
           ))}
@@ -44,11 +51,11 @@ const ProductsTable = ({ products }: ProductsTableProps) => {
       <Tbody>
         {products.map((product) => (
           <Tr key={product.symbol}>
-            <Td p={["16px 8px", "16px 24px"]}>
+            <Td p={['16px 8px', '16px 24px']}>
               <TickerCell product={product} />
             </Td>
             {priceChangeIntervals.map((interval) => (
-              <Td key={interval[0]} p={["16px 8px", "16px 24px"]}>
+              <Td key={interval[0]} p={['16px 8px', '16px 24px']}>
                 <PerformanceCell
                   percentChange={product.performance?.[interval[0]]}
                 />
@@ -58,7 +65,7 @@ const ProductsTable = ({ products }: ProductsTableProps) => {
         ))}
       </Tbody>
     </Table>
-  );
-};
+  )
+}
 
-export default ProductsTable;
+export default ProductsTable

@@ -13,19 +13,19 @@ const Header = () => {
             </a>
             <div className="hidden ml-10 space-x-8 lg:block">
               <a
-                className="text-base font-semibold text-theme-navy hover:text-theme-blue"
+                className="text-lg font-semibold text-theme-navy hover:text-theme-blue"
                 href="/"
               >
                 Dashboard
               </a>
               <a
-                className="text-base font-semibold text-theme-navy hover:text-theme-blue"
+                className="text-lg font-semibold text-theme-navy hover:text-theme-blue"
                 href="/products"
               >
                 Products
               </a>
               <a
-                className="text-base font-semibold text-theme-navy hover:text-theme-blue"
+                className="text-lg font-semibold text-theme-navy hover:text-theme-blue"
                 href="/dbl"
               >
                 $DBL

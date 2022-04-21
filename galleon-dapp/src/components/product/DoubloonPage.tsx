@@ -1,151 +1,179 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState } from 'react'
 
-import { Box, Flex, useBreakpointValue } from "@chakra-ui/react";
-import { useEthers } from "@usedapp/core";
+import { Box, Flex, useBreakpointValue } from '@chakra-ui/react'
+import { useEthers } from '@usedapp/core'
 
-import QuickTrade from "components/dashboard/QuickTrade";
-import Page from "components/Page";
-import { getPriceChartData } from "components/product/PriceChartData";
-import { DoubloonToken, Token } from "constants/tokens";
+import QuickTrade from 'components/dashboard/QuickTrade'
+import Page from 'components/Page'
+import { getPriceChartData } from 'components/product/PriceChartData'
+import { DoubloonToken, Token } from 'constants/tokens'
 import {
   TokenMarketDataValues,
   useMarketData,
-} from "providers/MarketData/MarketDataProvider";
-import { SetComponent } from "providers/SetComponents/SetComponentsProvider";
-import { displayFromWei } from "utils";
+} from 'providers/MarketData/MarketDataProvider'
+import { SetComponent } from 'providers/SetComponents/SetComponentsProvider'
+import { displayFromWei } from 'utils'
 import {
   getFormattedChartPriceChanges,
   getPricesChanges,
-} from "utils/priceChange";
-import { getTokenSupply } from "utils/setjsApi";
+} from 'utils/priceChange'
+import { getTokenSupply } from 'utils/setjsApi'
 
-import MarketChart, { PriceChartRangeOption } from "./MarketChart";
-import ProductComponentsTable from "./ProductComponentsTable";
-import ProductHeader from "./ProductHeader";
-import ProductPageSectionHeader from "./ProductPageSectionHeader";
-import ProductStats, { ProductStat } from "./ProductStats";
-import { SwapWidget, Theme } from "@uniswap/widgets/dist/index.js";
-import "@uniswap/widgets/dist/fonts.css";
-import { getTokenList } from "utils/tokenlists";
+import MarketChart, { PriceChartRangeOption } from './MarketChart'
+import ProductComponentsTable from './ProductComponentsTable'
+import ProductHeader from './ProductHeader'
+import ProductPageSectionHeader from './ProductPageSectionHeader'
+import ProductStats, { ProductStat } from './ProductStats'
+import { SwapWidget, Theme } from '@uniswap/widgets/dist/index.js'
+import '@uniswap/widgets/dist/fonts.css'
+import { getTokenList } from 'utils/tokenlists'
+import { colors } from 'styles/colors'
+import theme from 'theme'
+
 const jsonRpcEndpoint =
-  "https://mainnet.infura.io/v3/" + process.env.REACT_APP_INFURA_KEY ?? "";
+  'https://mainnet.infura.io/v3/' + process.env.REACT_APP_INFURA_KEY ?? ''
 
 function getStatsForToken(
   tokenData: Token,
   marketData: TokenMarketDataValues,
-  currentSupply: number
+  currentSupply: number,
 ): ProductStat[] {
-  const dailyPriceRange = PriceChartRangeOption.DAILY_PRICE_RANGE;
-  const hourlyDataInterval = 24;
+  const dailyPriceRange = PriceChartRangeOption.DAILY_PRICE_RANGE
+  const hourlyDataInterval = 24
 
-  let formatter = Intl.NumberFormat("en", {
-    style: "currency",
-    currency: "USD",
+  let formatter = Intl.NumberFormat('en', {
+    style: 'currency',
+    currency: 'USD',
     maximumFractionDigits: 2,
-    notation: "compact",
-  });
+    notation: 'compact',
+  })
 
-  let supplyFormatter = Intl.NumberFormat("en", { maximumFractionDigits: 2 });
+  let supplyFormatter = Intl.NumberFormat('en', { maximumFractionDigits: 2 })
 
   const marketCap =
     marketData.marketcaps
       ?.slice(-dailyPriceRange * hourlyDataInterval)
       ?.slice(-1)[0]
-      ?.slice(-1)[0] ?? 0;
-  const marketCapFormatted = formatter.format(marketCap);
+      ?.slice(-1)[0] ?? 0
+  const marketCapFormatted = formatter.format(marketCap)
 
-  const supplyFormatted = supplyFormatter.format(currentSupply);
+  const supplyFormatted = supplyFormatter.format(currentSupply)
 
   const volume =
     marketData.volumes
       ?.slice(-dailyPriceRange * hourlyDataInterval)
       ?.slice(-1)[0]
-      ?.slice(-1)[0] ?? 0;
-  const volumeFormatted = formatter.format(volume);
+      ?.slice(-1)[0] ?? 0
+  const volumeFormatted = formatter.format(volume)
 
   return [
-    { title: "Market Cap", value: marketCapFormatted },
-    { title: "Volume", value: volumeFormatted },
+    { title: 'Market Cap', value: marketCapFormatted },
+    { title: 'Volume', value: volumeFormatted },
     // { title: "Current Supply", value: supplyFormatted },
     // { title: "Streaming Fee", value: tokenData.fees?.streamingFee ?? "n/a" },
     // { title: "Mint Fee", value: tokenData.fees?.mintFee ?? "n/a" },
     // { title: "Redeem Fee", value: tokenData.fees?.redeemFee ?? "n/a" },
-  ];
+  ]
 }
 
 const DoubloonPage = (props: {
-  tokenData: Token;
-  marketData: TokenMarketDataValues;
+  tokenData: Token
+  marketData: TokenMarketDataValues
 }) => {
-  const isMobile = useBreakpointValue({ base: true, lg: false });
-  const { marketData, tokenData } = props;
+  const isMobile = useBreakpointValue({ base: true, lg: false })
+  const { marketData, tokenData } = props
 
-  const { chainId, library } = useEthers();
-  const { selectLatestMarketData } = useMarketData();
-  const [currentTokenSupply, setCurrentTokenSupply] = useState(0);
+  const { chainId, library } = useEthers()
+  const { selectLatestMarketData } = useMarketData()
+  const [currentTokenSupply, setCurrentTokenSupply] = useState(0)
 
-  const priceChartData = getPriceChartData([marketData]);
+  const priceChartData = getPriceChartData([marketData])
 
-  const price = `$${selectLatestMarketData(marketData.hourlyPrices).toFixed(
-    2
-  )}`;
-  const priceChanges = getPricesChanges(marketData.hourlyPrices ?? []);
-  const priceChangesFormatted = getFormattedChartPriceChanges(priceChanges);
+  const price = `$${selectLatestMarketData(marketData.hourlyPrices).toFixed(2)}`
+  const priceChanges = getPricesChanges(marketData.hourlyPrices ?? [])
+  const priceChangesFormatted = getFormattedChartPriceChanges(priceChanges)
 
-  const stats = getStatsForToken(tokenData, marketData, currentTokenSupply);
+  const stats = getStatsForToken(tokenData, marketData, currentTokenSupply)
 
-  const chartWidth = window.outerWidth < 400 ? window.outerWidth : 648;
-  const chartHeight = window.outerWidth < 400 ? 300 : 400;
+  const chartWidth = window.outerWidth < 400 ? window.outerWidth : 580
+  const chartHeight = window.outerWidth < 400 ? 300 : 400
 
-  const theme: Theme = {};
+  const theme: Theme = {
+    primary: colors.themeBlack,
+    secondary: colors.themeBlack,
+    interactive: colors.themeWhite,
+    container: colors.themeOldlace,
+    module: colors.themeChampagne,
+    accent: colors.themeNavy,
+    outline: colors.themeBlack,
+    dialog: colors.themeWhite,
+    fontFamily: 'Inter',
+    borderRadius: 0.4,
+  }
 
   return (
     <Page>
-      <Flex direction="column" w={["100%", "80vw"]} m="0 auto">
-        <Box mb={["16px", "48px"]}>
-          <ProductHeader
-            isMobile={isMobile ?? false}
-            tokenData={props.tokenData}
-          />
-        </Box>
+      <Flex direction="column" w={['100%', '80vw']} m="0 auto">
         <Flex direction="column">
-          <Flex direction={["column", "column", "column", "row"]}>
-            <MarketChart
-              marketData={priceChartData}
-              prices={[price]}
-              priceChanges={priceChangesFormatted}
-              options={{
-                width: chartWidth,
-                height: chartHeight,
-                hideYAxis: false,
-              }}
-              apy={null}
-              isDoubloon={true}
+          <Box mb={['16px', '48px']}>
+            <ProductHeader
+              isMobile={isMobile ?? false}
+              tokenData={props.tokenData}
             />
-            {/* TODO: Enable when 0x is on arbitrum */}
-            <Flex
-              mt={["48px", "48px", "48px", "0"]}
-              ml={["0", "0", "0", "36px"]}
-              justifyContent={["center", "center", "center", "flex-start"]}
-            >
-              <SwapWidget
-                provider={library}
-                jsonRpcEndpoint={jsonRpcEndpoint}
-                theme={theme}
-                tokenList={getTokenList(chainId)}
-                defaultInputTokenAddress={"NATIVE"}
-                defaultOutputTokenAddress={
-                  "0xd3f1da62cafb7e7bc6531ff1cef6f414291f03d3"
-                }
-              />
-            </Flex>
-          </Flex>
-          <ProductPageSectionHeader title="Stats" topMargin="120px" />
-          <ProductStats stats={stats} />
+          </Box>
+          <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-2">
+            <div className="col-span-1 bg-theme-champagne border-2 border-theme-navy rounded-md shadow divide-y divide-theme-navy">
+              <div className="w-full items-center justify-between p-6 space-x-6">
+                <MarketChart
+                  marketData={priceChartData}
+                  prices={[price]}
+                  priceChanges={priceChangesFormatted}
+                  options={{
+                    width: chartWidth,
+                    height: chartHeight,
+                    hideYAxis: false,
+                  }}
+                  apy={null}
+                  isDoubloon={true}
+                />
+              </div>
+            </div>
+            <div className="col-span-1 bg-theme-champagne border-2 border-theme-navy rounded-md shadow divide-y divide-gray-200">
+              <div className="w-full flex items-center justify-between p-6 space-x-6">
+                <Flex direction="column" grow={1} flexBasis="0">
+                  <SwapWidget
+                    provider={library}
+                    jsonRpcEndpoint={jsonRpcEndpoint}
+                    theme={theme}
+                    tokenList={getTokenList(chainId)}
+                    defaultInputTokenAddress={'NATIVE'}
+                    defaultOutputTokenAddress={
+                      '0xd3f1da62cafb7e7bc6531ff1cef6f414291f03d3'
+                    }
+                    width={540}
+                  />
+                </Flex>
+              </div>
+            </div>
+          </div>
+          <div className="grid grid-cols-1 mt-10 gap-6 sm:grid-cols-1 lg:grid-cols-1">
+            <div className="col-span-1 bg-theme-champagne border-2 border-theme-navy rounded-md shadow divide-y divide-gray-200">
+              <div className="w-full items-center justify-between p-6 space-x-6">
+                <ProductPageSectionHeader title="Stats" topMargin="20px" />
+                <ProductStats stats={stats} />
+                {props.tokenData.symbol !== DoubloonToken.symbol && (
+                  <>
+                    <ProductPageSectionHeader title="Allocations" />
+                    <ProductComponentsTable tokenData={props.tokenData} />
+                  </>
+                )}
+              </div>
+            </div>
+          </div>
         </Flex>
       </Flex>
     </Page>
-  );
-};
+  )
+}
 
-export default DoubloonPage;
+export default DoubloonPage

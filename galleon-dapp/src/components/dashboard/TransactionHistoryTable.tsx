@@ -5,29 +5,30 @@ import {
   Thead,
   Tr,
   useBreakpointValue,
-} from "@chakra-ui/react";
+} from '@chakra-ui/react'
+import { colors } from 'styles/colors'
 
-import TransactionHistoryRow from "./TransactionHistoryRow";
+import TransactionHistoryRow from './TransactionHistoryRow'
 
 export interface TransactionHistoryItem {
-  hash: string;
-  type: "Send" | "Receive";
-  asset: string;
-  date: string;
-  from?: string;
-  to?: string;
-  value: number;
-  explorerUrl: string;
+  hash: string
+  type: 'Send' | 'Receive'
+  asset: string
+  date: string
+  from?: string
+  to?: string
+  value: number
+  explorerUrl: string
 }
 
 interface TransactionHistoryTableProps {
-  items: TransactionHistoryItem[];
+  items: TransactionHistoryItem[]
 }
 
 const TransactionHistoryTable = ({ items }: TransactionHistoryTableProps) => {
-  const colorScheme = "blackAlpha";
+  const colorScheme = 'blackAlpha'
   return (
-    <Table colorScheme={colorScheme}>
+    <Table backgroundColor={colors.themeChampagne} colorScheme={colorScheme}>
       <TableHeader />
       <Tbody>
         {items.map((item, index) => (
@@ -35,8 +36,8 @@ const TransactionHistoryTable = ({ items }: TransactionHistoryTableProps) => {
         ))}
       </Tbody>
     </Table>
-  );
-};
+  )
+}
 
 const TableHeader = () => {
   const isWeb = useBreakpointValue({
@@ -44,30 +45,30 @@ const TableHeader = () => {
     md: true,
     lg: true,
     xl: true,
-  });
+  })
   const isTablet = useBreakpointValue({
     base: false,
     md: true,
     lg: true,
     xl: false,
-  });
+  })
   return (
     <Thead>
       <Tr>
-        <Th>Action</Th>
-        <Th></Th>
+        <Th color={colors.themeBlack}>Action</Th>
+        <Th color={colors.themeBlack}></Th>
         {isWeb && (
           <>
-            <Th>From</Th>
-            {!isTablet && <Th></Th>}
-            <Th>To</Th>
-            {!isTablet && <Th>Transaction</Th>}
+            <Th color={colors.themeBlack}>From</Th>
+            {!isTablet && <Th color={colors.themeBlack}></Th>}
+            <Th color={colors.themeBlack}>To</Th>
+            {!isTablet && <Th color={colors.themeBlack}>Transaction</Th>}
           </>
         )}
         <Th></Th>
       </Tr>
     </Thead>
-  );
-};
+  )
+}
 
-export default TransactionHistoryTable;
+export default TransactionHistoryTable

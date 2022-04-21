@@ -54,7 +54,7 @@ const MarketChart = (props: {
   isDoubloon?: boolean;
 }) => {
   const theme = useTheme();
-  const strokeColor = colors.gray[400];
+  const strokeColor = colors.themeBlack;
 
   const [chartData, setChartData] = useState<PriceChartData[]>([]);
   const [durationSelector, setDurationSelector] = useState<number>(
@@ -204,17 +204,17 @@ const MarketChart = (props: {
           dataKey="x"
           dy={10}
           interval="preserveStart"
-          minTickGap={100}
+          minTickGap={10}
           stroke={strokeColor}
           tickCount={6}
           tickFormatter={xAxisTickFormatter}
-          tickLine={false}
+          tickLine={true}
         />
         <Area
           type="monotone"
           dataKey="y1"
-          stroke={theme.colors.themeChampagne}
-          fill={theme.colors.themeChampagne}
+          stroke={theme.colors.themeNavy}
+          fill={theme.colors.themeNavy}
         />
         <Area
           type="monotone"
@@ -225,20 +225,20 @@ const MarketChart = (props: {
         <Area
           type="monotone"
           dataKey="y3"
-          stroke={theme.colors.themeOldlace}
-          fill={theme.colors.themeOldlace}
+          stroke={theme.colors.themeNavy}
+          fill={theme.colors.themeNavy}
         />
         <Area
           type="monotone"
           dataKey="y4"
-          stroke={theme.colors.themeBlue}
-          fill={theme.colors.themeBlue}
+          stroke={theme.colors.themeNavy}
+          fill={theme.colors.themeNavy}
         />
         <Area
           type="monotone"
           dataKey="y5"
-          stroke={theme.colors.themeChampagne}
-          fill={theme.colors.themeChampagne}
+          stroke={theme.colors.themeNavy}
+          fill={theme.colors.themeNavy}
         />
       </AreaChart>
     </Flex>
@@ -263,7 +263,7 @@ const PriceDisplay = ({
       <Flex flexDirection={"column"}>
         <Text
           fontSize={["3xl", "3xl", "3xl", "4xl"]}
-          color={colors.themeChampagne}
+          color={colors.themeBlack}
           fontWeight="700"
         >
           {price}
@@ -275,7 +275,7 @@ const PriceDisplay = ({
           {apy && (
             <Text
               fontSize={["md", "md", "xl", "2xl"]}
-              color={colors.themeWhite}
+              color={colors.themeBlue}
               fontWeight="700"
               mr={["0", "0", "0", "16px"]}
             >

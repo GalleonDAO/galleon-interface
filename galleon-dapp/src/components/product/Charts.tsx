@@ -68,7 +68,7 @@ const LeveragedChart = (props: { data: Position[] }) => {
       <YAxis />
       <ReferenceLine y={0} />
       <Bar dataKey="data0" fill={colors.themeBlue} />
-      <Bar dataKey="data1" fill={colors.themeChampagne} />
+      <Bar dataKey="data1" fill={colors.themeBlack} />
     </BarChart>
   );
 };

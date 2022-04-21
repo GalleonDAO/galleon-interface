@@ -3,7 +3,7 @@ import { PureComponent } from "react";
 import { Cell, Pie, PieChart, Tooltip } from "recharts";
 
 import { Box, Flex, Image, Text } from "@chakra-ui/react";
-import piePlaceholder from "assets/undraw_pie_graph_re_fvol.svg";
+import piePlaceholder from "assets/map-bg-01.png";
 import PieChartTooltip from "./PieChartTooltip";
 import { colors } from "styles/colors";
 
@@ -30,7 +30,7 @@ class Chart extends PureComponent<{ data: Position[] }> {
           outerRadius={100}
           startAngle={-270}
           endAngle={90}
-          stroke={colors.themeBlue}
+          stroke={colors.themeNavy}
         >
           {data.map((item, index) => (
             <Cell key={`cell-${index}`} fill={item.backgroundColor} />
@@ -71,7 +71,7 @@ const AllocationChart = (props: { positions: Position[] }) => {
     <Flex align="center" direction="column" pt="20px" px="40px">
       <div className="px-2 pb-4 border-b border-theme-navy sm:px-4">
         <h3 className="text-xl leading-6 font-semibold text-theme-navy">
-          Allocation of Investment Themes
+          Allocation of Galleon Products
         </h3>
         <p className="mt-1 text-md text-theme-navy">
           Diversify across Galleon investment themes to gain a broad market
@@ -81,16 +81,18 @@ const AllocationChart = (props: { positions: Position[] }) => {
 
       <Box mt="40px" mb="8px">
         {props.positions.length === 0 && (
+          // <ChartPieIcon className="w-full h-full"></ChartPieIcon>
           <Image
             height={["150", "225"]}
-            opacity={"60%"}
+            borderRadius={'25'}
+            opacity={"90%"}
             src={piePlaceholder}
             alt="pie chart placeholder"
           />
         )}
         {props.positions.length > 0 && <Chart data={props.positions} />}
       </Box>
-      <Flex my="32px" flexWrap="wrap">
+      <Flex my="16px" flexWrap="wrap">
         {props.positions.map((position) => (
           <PositionItem key={position.title} position={position} />
         ))}
