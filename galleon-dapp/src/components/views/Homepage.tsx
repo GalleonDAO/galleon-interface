@@ -2,7 +2,8 @@ import { useEffect, useRef, useState } from "react";
 
 import { Box, Flex, useBreakpointValue } from "@chakra-ui/react";
 import { useEthers } from "@usedapp/core";
-
+import { Disclosure } from "@headlessui/react";
+import { ChevronDownIcon } from "@heroicons/react/outline";
 import AllocationChart from "components/dashboard/AllocationChart";
 // import { ChartTypeSelector } from 'components/dashboard/ChartTypeSelector'
 import DownloadCsvView from "components/dashboard/DownloadCsvView";
@@ -27,6 +28,7 @@ import { getFormattedChartPriceChanges } from "utils/priceChange";
 
 import { getPieChartPositions } from "./DashboardData";
 import { MAINNET, POLYGON } from "constants/chains";
+import { classNames } from "utils";
 
 const Dashboard = () => {
   const { ethmaxy } = useMarketData();
@@ -153,47 +155,71 @@ const Dashboard = () => {
 
   return (
     <Page>
-      <Flex
-        w={["340px", "500px", "820px", "1024px"]}
-        mx="auto"
-        flexDir={"column"}
-        justifyContent={"center"}
-      >
-        <PageTitle title="My Dashboard" subtitle="" />
-        <Box mb={12}>
-          <Flex
-            direction={["column", "column", "column", "row"]}
-            px={[0, 0, "20px", 0]}
-            w={["340px", "500px", "820px", "1024px"]}
-            h={["auto", "auto"]}
-            justifyContent={"center"}
-          >
-            <Flex direction="column" grow={1} flexBasis="0">
+      <>
+        <PageTitle title="Dashboard" subtitle="" />
+        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-2">
+          <div className="col-span-1 bg-theme-champagne border-2 border-theme-navy rounded-md shadow divide-y divide-gray-200">
+            <div className="w-full items-center justify-between p-6 space-x-6">
               <AllocationChart positions={pieChartPositions} />
-            </Flex>
-            <Box w="24px" h={["10px", "10px", "10px", "0px"]} />
+            </div>
+          </div>
+          <div className="col-span-1 bg-theme-champagne border-2 border-theme-navy rounded-md shadow divide-y divide-gray-200">
+            <div className="w-full flex items-center justify-between p-6 space-x-6">
+              {chainId === MAINNET.chainId ? (
+                <Flex direction="column" grow={1} flexBasis="0">
+                  <QuickTrade />
+                </Flex>
+              ) : (
+                <></>
+              )}
+            </div>
+          </div>
+        </div>
 
-            {chainId === MAINNET.chainId ? (
-              <Flex direction="column" grow={1} flexBasis="0">
-                <QuickTrade />{" "}
-              </Flex>
-            ) : (
-              <></>
-            )}
-          </Flex>
-        </Box>
-        <Box w={["340px", "500px", "820px", "1024px"]} px={[0, 0, "20px", 0]}>
-          {chainId === MAINNET.chainId || chainId === POLYGON.chainId ? (
-            <>
-              <SectionTitle title="Transaction History" />
-              {renderCsvDownloadButton}
-              <TransactionHistoryTable items={historyItems.slice(0, 20)} />
-            </>
-          ) : (
-            <></>
-          )}
-        </Box>
-      </Flex>
+        {chainId === MAINNET.chainId || chainId === POLYGON.chainId ? (
+          <>
+            <div className="">
+              <dl className="mt-6 space-y-6 divide-y border-2 rounded-md m-auto justify-center border-theme-black">
+                <Disclosure as="div" className="pt-6">
+                  {({ open }) => (
+                    <>
+                      <dt className="text-lg">
+                        <Disclosure.Button className="text-left w-full flex justify-between items-start text-gray-400">
+                          <span className="ml-5 font-semibold">
+                            <SectionTitle title="Transaction History" />
+                          </span>
+
+                          <span className="mr-6 h-7 text-theme-black flex items-center">
+                            <span className="mr-5">
+                              <span className="inline-flex items-center px-3 py-1 rounded-md text-sm font-medium text-theme-navy bg-theme-navy border-2 border-theme-nav">
+                                {renderCsvDownloadButton}
+                              </span>
+                            </span>
+                            <ChevronDownIcon
+                              className={classNames(
+                                open ? "-rotate-180" : "rotate-0",
+                                "h-6 w-6 transform "
+                              )}
+                              aria-hidden="true"
+                            />
+                          </span>
+                        </Disclosure.Button>
+                      </dt>
+                      <Disclosure.Panel as="dd" className="mt-2 pr-12">
+                        <TransactionHistoryTable
+                          items={historyItems.slice(0, 20)}
+                        />
+                      </Disclosure.Panel>
+                    </>
+                  )}
+                </Disclosure>
+              </dl>
+            </div>
+          </>
+        ) : (
+          <></>
+        )}
+      </>
     </Page>
   );
 };

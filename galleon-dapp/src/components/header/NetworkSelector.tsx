@@ -27,7 +27,7 @@ const NetworkSelector = () => {
         {({ open }) => (
           <>
             <div className="mt-1 relative">
-              <Listbox.Button className="theme-blue relative w-full border border-white bg-theme-blue rounded-full shadow-sm pl-3 pr-10 py-2 text-left cursor-default focus:outline-none focus:ring-1 focus:ring-theme-blue focus:border-theme-blue font-medium ">
+              <Listbox.Button className="theme-blue relative w-full border border-white bg-theme-blue rounded-md shadow-sm pl-3 pr-10 py-2 text-left cursor-default focus:outline-none focus:ring-1 focus:ring-theme-blue focus:border-theme-blue font-medium ">
                 <span className="block truncat text-white">
                   {selected.name}
                 </span>

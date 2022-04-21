@@ -374,20 +374,16 @@ const QuickTrade = (props: {
   const paddingX = isNarrow ? "16px" : "40px";
 
   return (
-    <Flex
-      border="2px solid #F7F1E4"
-      borderColor={colors.themeNavy}
-      borderRadius="16px"
-      direction="column"
-      py="20px"
-      px={["16px", paddingX]}
-      height={"100%"}
-    >
-      <Flex>
-        <Text fontSize="24px" fontWeight="700">
-          Quick Invest
-        </Text>
-      </Flex>
+    <Flex direction="column" py="20px" px={["16px", paddingX]} height={"100%"}>
+      <div className=" px-2 pb-4 border-b border-theme-navy sm:px-4">
+        <h3 className="text-xl leading-6 font-semibold text-theme-navy">
+          Trade Investment Themes
+        </h3>
+        <p className="mt-1 text-md text-theme-navy">
+          Powered by 0x Protocol and Flash Issuance, get the most efficient
+          order routing for your trade.
+        </p>
+      </div>
       <Flex direction="column" my="20px">
         <QuickTradeSelector
           title="From"
@@ -405,9 +401,10 @@ const QuickTrade = (props: {
         <Box h="12px" alignSelf={"flex-end"} m={"-12px 0 12px 0"}>
           <IconButton
             background="transparent"
-            margin={"6px 0"}
+            margin={"-3px 12px"}
             aria-label="Search database"
             borderColor={colors.themeNavy}
+            borderRadius={"50px"}
             color={colors.themeNavy}
             icon={<UpDownIcon />}
             onClick={() => swapTokenLists()}
@@ -465,10 +462,11 @@ interface TradeButtonProps {
 
 const TradeButton = (props: TradeButtonProps) => (
   <Button
-    background={props.background}
-    border="0"
-    borderRadius="12px"
-    color="#000"
+    background={colors.themeNavy}
+    border="2px"
+    borderRadius="6px"
+    borderColor={colors.themeNavy}
+    color={colors.themeWhite}
     disabled={props.isDisabled}
     fontSize="24px"
     fontWeight="600"

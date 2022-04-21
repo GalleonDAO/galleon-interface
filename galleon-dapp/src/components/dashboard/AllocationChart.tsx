@@ -30,7 +30,7 @@ class Chart extends PureComponent<{ data: Position[] }> {
           outerRadius={100}
           startAngle={-270}
           endAngle={90}
-          stroke="white"
+          stroke={colors.themeBlue}
         >
           {data.map((item, index) => (
             <Cell key={`cell-${index}`} fill={item.backgroundColor} />
@@ -68,18 +68,17 @@ const PositionItem = (props: { position: Position }) => {
 
 const AllocationChart = (props: { positions: Position[] }) => {
   return (
-    <Flex
-      align="center"
-      border="2px solid #fff"
-      borderColor={colors.themeNavy}
-      borderRadius="16px"
-      direction="column"
-      pt="20px"
-      px="40px"
-    >
-      <Text fontSize="24px" fontWeight="700">
-        Distribution of Products
-      </Text>
+    <Flex align="center" direction="column" pt="20px" px="40px">
+      <div className="px-2 pb-4 border-b border-theme-navy sm:px-4">
+        <h3 className="text-xl leading-6 font-semibold text-theme-navy">
+          Allocation of Investment Themes
+        </h3>
+        <p className="mt-1 text-md text-theme-navy">
+          Diversify across Galleon investment themes to gain a broad market
+          exposure.
+        </p>
+      </div>
+
       <Box mt="40px" mb="8px">
         {props.positions.length === 0 && (
           <Image

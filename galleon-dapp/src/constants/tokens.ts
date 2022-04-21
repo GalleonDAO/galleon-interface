@@ -1,6 +1,7 @@
 // import solunavaxLogo from 'assets/solunavax.png'
 import ethmaxyLogo from "assets/ethmaxy.png";
 import doubloonLogo from "assets/doubloon.png";
+import solunavaxLogo from "assets/solunavax.png";
 import { TokenContextKeys } from "providers/MarketData/MarketDataProvider";
 
 export interface Token {
@@ -131,6 +132,24 @@ export const EthMaxYieldIndex: Token = {
   tokenContextKey: "ethmaxy",
   fees: {
     streamingFee: "1.95%",
+  },
+};
+
+export const SolunavaxIndex: Token = {
+  name: "SOLUNAVAX Index",
+  symbol: "SOLUNAVAX",
+  address: undefined,
+  polygonAddress: undefined,
+  optimismAddress: "0xbA6a2Fa321BB06D668c5192Be77428106c5C01E5",
+  arbitrumAddress: undefined,
+  decimals: 18,
+  url: "solunavax",
+  image: solunavaxLogo,
+  coingeckoId: "solunavax-index",
+  tokensetsId: "solunavax",
+  tokenContextKey: "solunavax",
+  fees: {
+    streamingFee: "0.5%",
   },
 };
 

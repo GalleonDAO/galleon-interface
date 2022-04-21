@@ -15,6 +15,7 @@ import historyLinkIcon from "assets/history-link-icon.svg";
 import arrowAsset from "assets/ic_arrow_right_24.svg";
 
 import { TransactionHistoryItem } from "./TransactionHistoryTable";
+import { ArrowRightIcon } from "@heroicons/react/outline";
 
 const TransactionHistoryRow = (props: { item: TransactionHistoryItem }) => {
   const isWeb = useBreakpointValue({
@@ -36,22 +37,25 @@ const TransactionHistoryRow = (props: { item: TransactionHistoryItem }) => {
         <Flex align="center">
           <Flex
             align="center"
-            backgroundColor={colors.themeChampagne}
-            borderRadius="8px"
+            backgroundColor={colors.themeNavy}
+            borderRadius="6px"
             justify="center"
             padding="4px 8px"
+            minWidth={"20"}
           >
-            <Text color="#040728" fontSize="12px" fontWeight="500">
+            <Text color="#fff" fontSize="12px" fontWeight="500">
               {item.type}
             </Text>
           </Flex>
         </Flex>
       </Td>
       <Td>
-        <Flex direction="column">
-          <Text>${item.asset}</Text>
-          {isWeb && <Text color={colors.themeChampagne}>{item.value}</Text>}
-        </Flex>
+        {item.asset && (
+          <Flex direction="column">
+            <Text>${item.asset}</Text>
+            {isWeb && <Text color={colors.themeNavy}>{item.value}</Text>}
+          </Flex>
+        )}
       </Td>
       {isWeb && (
         <>
@@ -59,14 +63,17 @@ const TransactionHistoryRow = (props: { item: TransactionHistoryItem }) => {
 
           {!isTablet && (
             <Td>
-              <Image src={arrowAsset} alt="arrow pointing right" />
+              <ArrowRightIcon
+                className="h-4 w-4 text-theme-navy"
+                aria-hidden="true"
+              />
             </Td>
           )}
           <Td>{item.to}</Td>
           {!isTablet && (
             <Td>
               <Flex direction="column">
-                <Text color="gray">{item.hash}</Text>
+                <Text color="black">{item.hash}</Text>
                 <Text>Block {item.date}</Text>
               </Flex>
             </Td>
@@ -76,9 +83,12 @@ const TransactionHistoryRow = (props: { item: TransactionHistoryItem }) => {
       <Td>
         <Link href={item.explorerUrl} isExternal>
           <Flex align="center" direction="row" justify="end">
-            View More{" "}
+            Explorer{" "}
             <Box px="2.5" py="1.5">
-              <Image src={historyLinkIcon} alt="link icon" />
+              <ArrowRightIcon
+                className="h-4 w-4 text-theme-navy"
+                aria-hidden="true"
+              />
             </Box>
           </Flex>
         </Link>

@@ -58,8 +58,8 @@ const QuickTradeSelector = (props: {
   const borderColor = colors.themeNavy;
   const borderRadius = 16;
 
-  const wideWidths = ["250px", "180px"];
-  const narrowWidths = ["250px"];
+  const wideWidths = ["150px", "150px"];
+  const narrowWidths = ["150px"];
   const widths = props.isNarrowVersion ? narrowWidths : wideWidths;
 
   const onChangeInput = (amount: string) => {
@@ -83,67 +83,61 @@ const QuickTradeSelector = (props: {
 
   return (
     <Flex direction="column">
-      <Text fontSize="20px" fontWeight="700">
-        {props.title}
-      </Text>
-      <Flex mt="10px" h="54px">
-        <Flex
-          align="center"
-          justify="center"
-          grow={2}
-          border="1px solid #000"
-          borderColor={borderColor}
-          borderLeftRadius={borderRadius}
-          px={["16px", "30px"]}
+      <div>
+        <label
+          htmlFor={props.title}
+          className="block text-lg font-semibold text-theme-navy"
         >
-          <Input
+          {props.title}
+        </label>
+        <div className="mt-1 relative flex items-center">
+          <input
             placeholder="0.0"
             type="number"
-            variant="unstyled"
             disabled={config.isInputDisabled ?? false}
-            isReadOnly={config.isReadOnly ?? false}
             value={inputString}
             onChange={(event) => onChangeInput(event.target.value)}
+            name={props.title}
+            id={props.title}
+            className="shadow-sm focus:ring-theme-blue focus:border-theme-blue block w-full pr-12 sm:text-md border-theme-black rounded-md border-2"
           />
-        </Flex>
-        <Flex
-          align="center"
-          h="54px"
-          border="1px solid #000"
-          borderColor={borderColor}
-          borderRightRadius={borderRadius}
-          w={widths}
-        >
-          {!props.isNarrowVersion && (
-            <Box pl="10px" pr="0px">
-              <Image
-                src={selectedToken.image}
-                alt={`${selectedToken.symbol} logo`}
-                w="24px"
-              />
-            </Box>
-          )}
-          <Select
-            border="0"
-            disabled={config.isSelectorDisabled ?? false}
-            w="100%"
-            h="54px"
-            onChange={(event) => props.onSelectedToken(event.target.value)}
-            value={props.selectedToken.symbol}
-          >
-            {props.tokenList.map((token) => {
-              return (
-                <option key={token.symbol} value={token.symbol}>
-                  {token.symbol}
-                </option>
-              );
-            })}
-          </Select>
-        </Flex>
-      </Flex>
+          <div className="absolute inset-y-0 right-0 flex py-1.5 ">
+            <kbd className="inline-flex items-center px-2">
+              <Flex align="center" h="54px" w={widths}>
+                {!props.isNarrowVersion && (
+                  <Box pl="10px" pr="0px">
+                    <Image
+                      src={selectedToken.image}
+                      alt={`${selectedToken.symbol} logo`}
+                      w="24px"
+                    />
+                  </Box>
+                )}
+                <select
+                  name="token"
+                  disabled={config.isSelectorDisabled ?? false}
+                  className=" inline-flex w-full pl-3 py-2 text-base border-none focus:outline-none focus:ring-theme-blue focus:border-theme-blue sm:text-md rounded-md border-2"
+                  defaultValue="Canada"
+                  onChange={(event) =>
+                    props.onSelectedToken(event.target.value)
+                  }
+                  value={props.selectedToken.symbol}
+                >
+                  {props.tokenList.map((token) => {
+                    return (
+                      <option key={token.symbol} value={token.symbol}>
+                        {token.symbol}
+                      </option>
+                    );
+                  })}
+                </select>
+              </Flex>
+            </kbd>
+          </div>
+        </div>
+      </div>
       <Text
         align="left"
-        fontSize="12px"
         fontWeight="400"
         mt="5px"
         onClick={() => {
@@ -151,7 +145,7 @@ const QuickTradeSelector = (props: {
         }}
         cursor="pointer"
       >
-        Balance: {tokenBalance}
+        <span className="text-sm">Balance: {tokenBalance}</span>
       </Text>
     </Flex>
   );

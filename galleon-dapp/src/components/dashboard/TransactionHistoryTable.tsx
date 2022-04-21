@@ -27,10 +27,7 @@ interface TransactionHistoryTableProps {
 const TransactionHistoryTable = ({ items }: TransactionHistoryTableProps) => {
   const colorScheme = "blackAlpha";
   return (
-    <Table
-      colorScheme={colorScheme}
-      width={["340px", "400px", "800px", "1024px"]}
-    >
+    <Table colorScheme={colorScheme}>
       <TableHeader />
       <Tbody>
         {items.map((item, index) => (
