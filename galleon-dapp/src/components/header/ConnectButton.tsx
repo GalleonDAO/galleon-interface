@@ -7,7 +7,7 @@ import ConnectModal from "./ConnectModal";
 import NetworkSelector from "./NetworkSelector";
 import { useState } from "react";
 import { logger } from "index";
-import { GALLEON_SERVICE, LABELS } from "@galleondao/logging-lib";
+import { KNOWN_SERVICES, KNOWN_LABELS } from "@galleondao/logging-lib";
 
 const ConnectButton = () => {
   const { account, deactivate } = useEthers();
@@ -29,9 +29,9 @@ const ConnectButton = () => {
       setAddress(account);
 
       logger.logCounter({
-        serviceName: GALLEON_SERVICE,
+        serviceName: KNOWN_SERVICES.GALLEON_DAPP,
         environment: process.env.NODE_ENV,
-        label: LABELS.VISIT,
+        label: KNOWN_LABELS.VISIT,
         metadata: {
           address: account,
         },

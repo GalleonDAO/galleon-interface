@@ -1,6 +1,6 @@
-import logo from 'assets/galleon.png'
-import { Link } from 'react-router-dom'
-import ConnectButton from './header/ConnectButton'
+import logo from "assets/galleon.png";
+import { Link } from "react-router-dom";
+import ConnectButton from "./header/ConnectButton";
 
 const Header = () => {
   return (
@@ -50,7 +50,7 @@ const Header = () => {
         </div>
       </nav>
     </header>
-  )
-}
+  );
+};
 
-export default Header
+export default Header;
