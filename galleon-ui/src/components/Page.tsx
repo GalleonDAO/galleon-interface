@@ -1,6 +1,6 @@
-import Navigation from "components/Navigation";
-import { Fragment } from "react";
-import { Popover, Transition } from "@headlessui/react";
+import Navigation from 'components/Navigation'
+import { Fragment } from 'react'
+import { Popover, Transition } from '@headlessui/react'
 import {
   CloudUploadIcon,
   CogIcon,
@@ -10,126 +10,126 @@ import {
   ServerIcon,
   ShieldCheckIcon,
   XIcon,
-} from "@heroicons/react/outline";
-import { ChevronRightIcon, ExternalLinkIcon } from "@heroicons/react/solid";
-import shipBackground from "assets/ship-bg-01.png";
+} from '@heroicons/react/outline'
+import { ChevronRightIcon, ExternalLinkIcon } from '@heroicons/react/solid'
+import shipBackground from 'assets/ship-bg-01.png'
 
 const features = [
   {
-    name: "Push to Deploy",
+    name: 'Push to Deploy',
     description:
-      "Ac tincidunt sapien vehicula erat auctor pellentesque rhoncus. Et magna sit morbi vitae lobortis.",
+      'Ac tincidunt sapien vehicula erat auctor pellentesque rhoncus. Et magna sit morbi vitae lobortis.',
     icon: CloudUploadIcon,
   },
   {
-    name: "SSL Certificates",
+    name: 'SSL Certificates',
     description:
-      "Qui aut temporibus nesciunt vitae dicta repellat sit dolores pariatur. Temporibus qui illum aut.",
+      'Qui aut temporibus nesciunt vitae dicta repellat sit dolores pariatur. Temporibus qui illum aut.',
     icon: LockClosedIcon,
   },
   {
-    name: "Simple Queues",
+    name: 'Simple Queues',
     description:
-      "Rerum quas incidunt deleniti quaerat suscipit mollitia. Amet repellendus ut odit dolores qui.",
+      'Rerum quas incidunt deleniti quaerat suscipit mollitia. Amet repellendus ut odit dolores qui.',
     icon: RefreshIcon,
   },
   {
-    name: "Advanced Security",
+    name: 'Advanced Security',
     description:
-      "Ullam laboriosam est voluptatem maxime ut mollitia commodi. Et dignissimos suscipit perspiciatis.",
+      'Ullam laboriosam est voluptatem maxime ut mollitia commodi. Et dignissimos suscipit perspiciatis.',
     icon: ShieldCheckIcon,
   },
   {
-    name: "Powerful API",
+    name: 'Powerful API',
     description:
-      "Ab a facere voluptatem in quia corrupti veritatis aliquam. Veritatis labore quaerat ipsum quaerat id.",
+      'Ab a facere voluptatem in quia corrupti veritatis aliquam. Veritatis labore quaerat ipsum quaerat id.',
     icon: CogIcon,
   },
   {
-    name: "Database Backups",
+    name: 'Database Backups',
     description:
-      "Quia qui et est officia cupiditate qui consectetur. Ratione similique et impedit ea ipsum et.",
+      'Quia qui et est officia cupiditate qui consectetur. Ratione similique et impedit ea ipsum et.',
     icon: ServerIcon,
   },
-];
+]
 const blogPosts = [
   {
     id: 1,
-    title: "Boost your conversion rate",
-    href: "#",
-    date: "Mar 16, 2020",
-    datetime: "2020-03-16",
-    category: { name: "Article", href: "#" },
+    title: 'Boost your conversion rate',
+    href: '#',
+    date: 'Mar 16, 2020',
+    datetime: '2020-03-16',
+    category: { name: 'Article', href: '#' },
     imageUrl:
-      "https://images.unsplash.com/photo-1496128858413-b36217c2ce36?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1679&q=80",
+      'https://images.unsplash.com/photo-1496128858413-b36217c2ce36?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1679&q=80',
     preview:
-      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Architecto accusantium praesentium eius, ut atque fuga culpa, similique sequi cum eos quis dolorum.",
+      'Lorem ipsum dolor sit amet consectetur adipisicing elit. Architecto accusantium praesentium eius, ut atque fuga culpa, similique sequi cum eos quis dolorum.',
     author: {
-      name: "Roel Aufderehar",
+      name: 'Roel Aufderehar',
       imageUrl:
-        "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
-      href: "#",
+        'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
+      href: '#',
     },
-    readingLength: "6 min",
+    readingLength: '6 min',
   },
   {
     id: 2,
-    title: "How to use search engine optimization to drive sales",
-    href: "#",
-    date: "Mar 10, 2020",
-    datetime: "2020-03-10",
-    category: { name: "Video", href: "#" },
+    title: 'How to use search engine optimization to drive sales',
+    href: '#',
+    date: 'Mar 10, 2020',
+    datetime: '2020-03-10',
+    category: { name: 'Video', href: '#' },
     imageUrl:
-      "https://images.unsplash.com/photo-1547586696-ea22b4d4235d?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1679&q=80",
+      'https://images.unsplash.com/photo-1547586696-ea22b4d4235d?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1679&q=80',
     preview:
-      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Velit facilis asperiores porro quaerat doloribus, eveniet dolore. Adipisci tempora aut inventore optio animi., tempore temporibus quo laudantium.",
+      'Lorem ipsum dolor sit amet consectetur adipisicing elit. Velit facilis asperiores porro quaerat doloribus, eveniet dolore. Adipisci tempora aut inventore optio animi., tempore temporibus quo laudantium.',
     author: {
-      name: "Brenna Goyette",
+      name: 'Brenna Goyette',
       imageUrl:
-        "https://images.unsplash.com/photo-1550525811-e5869dd03032?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
-      href: "#",
+        'https://images.unsplash.com/photo-1550525811-e5869dd03032?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
+      href: '#',
     },
-    readingLength: "4 min",
+    readingLength: '4 min',
   },
   {
     id: 3,
-    title: "Improve your customer experience",
-    href: "#",
-    date: "Feb 12, 2020",
-    datetime: "2020-02-12",
-    category: { name: "Case Study", href: "#" },
+    title: 'Improve your customer experience',
+    href: '#',
+    date: 'Feb 12, 2020',
+    datetime: '2020-02-12',
+    category: { name: 'Case Study', href: '#' },
     imageUrl:
-      "https://images.unsplash.com/photo-1492724441997-5dc865305da7?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1679&q=80",
+      'https://images.unsplash.com/photo-1492724441997-5dc865305da7?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1679&q=80',
     preview:
-      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Sint harum rerum voluptatem quo recusandae magni placeat saepe molestiae, sed excepturi cumque corporis perferendis hic.",
+      'Lorem ipsum dolor sit amet consectetur adipisicing elit. Sint harum rerum voluptatem quo recusandae magni placeat saepe molestiae, sed excepturi cumque corporis perferendis hic.',
     author: {
-      name: "Daniela Metz",
+      name: 'Daniela Metz',
       imageUrl:
-        "https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
-      href: "#",
+        'https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
+      href: '#',
     },
-    readingLength: "11 min",
+    readingLength: '11 min',
   },
-];
+]
 
 const Page = (props: { children?: JSX.Element }) => {
   return (
     <div>
       {props.children}
       <main>
-        <div className="pt-10 bg-gray-900 sm:pt-16 lg:pt-8 lg:pb-14 lg:overflow-hidden bg-[url('/ship-bg-01.png')] bg-cover bg-no-repeat bg-bottom  pb-10 bg-opacity-100  min-h-screen">
+        <div className="pt-10 bg-theme-black sm:pt-16 lg:pt-8 lg:pb-14 lg:overflow-hidden bg-[url('/ship-bg-01.png')] bg-cover bg-no-repeat bg-bottom  pb-10 bg-opacity-100  min-h-screen">
           <div className="mx-auto max-w-7xl lg:px-8">
             <div className="lg:grid lg:grid-cols-2 lg:gap-8">
               <div className="mx-auto max-w-md px-4 sm:max-w-2xl sm:px-6 sm:text-center lg:px-0 lg:text-left lg:flex lg:items-center">
                 <div className="lg:py-24">
                   <a
                     href="#"
-                    className="inline-flex items-center text-theme-white bg-theme-navy rounded-full p-1 pr-2 sm:text-base lg:text-sm xl:text-base hover:text-gray-200"
+                    className="inline-flex  border-2 items-center text-theme-white bg-theme-navy rounded-full p-1 pr-2 sm:text-base lg:text-sm xl:text-base hover:text-gray-200"
                   >
-                    <span className="px-3 py-0.5 text-theme-white text-xs font-semibold leading-5 uppercase tracking-wide bg-gradient-to-r from-theme-navy to-theme-blue rounded-full">
-                      We're hiring
+                    <span className="px-3 py-0.5 text-theme-white text-xs font-semibold leading-5 uppercase tracking-wide rounded-full">
+                      New Voyages Revealed
                     </span>
-                    <span className="ml-4 text-sm">Visit our careers page</span>
+                    <span className="ml-4 text-sm font-semibold">View</span>
                     <ChevronRightIcon
                       className="ml-2 w-5 h-5 text-theme-white"
                       aria-hidden="true"
@@ -144,49 +144,30 @@ const Page = (props: { children?: JSX.Element }) => {
                       Management Guild
                     </span>
                   </h1>
-                  <p className="text-base text-theme-white sm:text-xl lg:text-lg xl:text-xl">
-                    Anim aute id magna aliqua ad ad non deserunt sunt. Qui irure
-                    qui Lorem cupidatat commodo. Elit sunt amet fugiat veniam
-                    occaecat fugiat.
+                  <p className="text-3xl text-theme-white sm:text-3xl lg:text-lg xl:text-3xl">
+                    We create on-chain investment themes.
                   </p>
                   <div className="mt-10 sm:mt-12">
                     <form action="#" className="sm:max-w-xl sm:mx-auto lg:mx-0">
                       <div className="sm:flex">
-                        <div className="min-w-0 flex-1">
-                          <label htmlFor="email" className="sr-only">
-                            Email address
-                          </label>
-                          <input
-                            id="email"
-                            type="email"
-                            placeholder="Enter your email"
-                            className="block w-full px-4 py-3 rounded-md border-0 text-base text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-theme-blue focus:ring-offset-gray-900"
-                          />
+                        <div className="min-w-0">
+                          <button className="block w-full py-3 px-4 rounded-md shadow bg-gradient-to-r border-2 hover:text-theme-white from-theme-navy to-theme-blue text-theme-white hover:from-theme-blue hover:to-theme-navy focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-theme-blue focus:ring-offset-theme-black font-semibold">
+                            Explore Products
+                          </button>
                         </div>
                         <div className="mt-3 sm:mt-0 sm:ml-3">
-                          <button
-                            type="submit"
-                            className="block w-full py-3 px-4 rounded-md shadow bg-gradient-to-r hover:text-theme-white from-theme-champagne to-theme-oldlace text-theme-black font-medium hover:from-theme-navy hover:to-theme-blue focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-theme-blue focus:ring-offset-gray-900"
-                          >
-                            Start free trial
+                          <button className="block w-full py-3 px-4 rounded-md shadow bg-gradient-to-r border-2 hover:text-theme-white from-theme-blue to-theme-navy text-theme-white hover:from-theme-navy hover:to-theme-blue focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-theme-blue focus:ring-offset-theme-black font-semibold">
+                            Join the Crew
                           </button>
                         </div>
                       </div>
-                      <p className="mt-3 text-sm text-theme-white sm:mt-4">
-                        Start your free 14-day trial, no credit card necessary.
-                        By providing your email, you agree to our{" "}
-                        <a href="#" className="font-medium text-theme-white">
-                          terms of service
-                        </a>
-                        .
-                      </p>
+                      <p className="mt-3 text-sm text-theme-white sm:mt-4"></p>
                     </form>
                   </div>
                 </div>
               </div>
               <div className="mt-12 -mb-16 sm:-mb-48 lg:m-0 lg:relative">
                 <div className="mx-auto max-w-md px-4 sm:max-w-2xl sm:px-6 lg:max-w-none lg:px-0">
-                  {/* Illustration taken from Lucid Illustrations: https://lucid.pixsellz.io/ */}
                   {/* <img
                     className="w-full lg:absolute lg:inset-y-0 lg:left-0 lg:h-full lg:w-auto lg:max-w-none"
                     src={shipBackground}
@@ -202,22 +183,23 @@ const Page = (props: { children?: JSX.Element }) => {
         <div className="relative bg-theme-background pt-16 sm:pt-24 lg:pt-32">
           <div className="mx-auto max-w-md px-4 text-center sm:px-6 sm:max-w-3xl lg:px-8 lg:max-w-7xl">
             <div>
-              <h2 className="text-base font-semibold tracking-wider text-cyan-600 uppercase">
-                Serverless
+              <h2 className="text-base font-semibold tracking-wider text-theme-black uppercase">
+                Structured Products
               </h2>
-              <p className="mt-2 text-3xl font-extrabold text-gray-900 tracking-tight sm:text-4xl">
-                No server? No problem.
+              <p className="mt-2 text-3xl font-extrabold text-theme-black tracking-tight sm:text-4xl">
+                One-click access to on-chain investment themes
               </p>
-              <p className="mt-5 max-w-prose mx-auto text-xl text-gray-500">
-                Phasellus lorem quam molestie id quisque diam aenean nulla in.
-                Accumsan in quis quis nunc, ullamcorper malesuada. Eleifend
-                condimentum id viverra nulla.
+              <p className="mt-5 max-w-prose mx-auto text-xl text-theme-black">
+                Get access to a diverse range of crypto investment themes in a
+                cost and tax efficient way to buy, hold or actively trade. Built
+                by experienced methodologists on on Set Protocol contracts, we
+                deliver innovation in DeFi.
               </p>
             </div>
-            <div className="mt-12 -mb-10 sm:-mb-24 lg:-mb-80">
+            <div className="mt-12 border-2 border-theme-black rounded-md">
               <img
                 className="rounded-lg shadow-xl ring-1 ring-black ring-opacity-5"
-                src="https://tailwindui.com/img/component-images/green-project-app-screenshot.jpg"
+                src="/dapp.png"
                 alt=""
               />
             </div>
@@ -230,7 +212,7 @@ const Page = (props: { children?: JSX.Element }) => {
             <h2 className="text-base font-semibold tracking-wider text-cyan-600 uppercase">
               Deploy faster
             </h2>
-            <p className="mt-2 text-3xl font-extrabold text-gray-900 tracking-tight sm:text-4xl">
+            <p className="mt-2 text-3xl font-extrabold text-theme-black tracking-tight sm:text-4xl">
               Everything you need to deploy your app
             </p>
             <p className="mt-5 max-w-prose mx-auto text-xl text-gray-500">
@@ -252,7 +234,7 @@ const Page = (props: { children?: JSX.Element }) => {
                             />
                           </span>
                         </div>
-                        <h3 className="mt-8 text-lg font-medium text-gray-900 tracking-tight">
+                        <h3 className="mt-8 text-lg font-medium text-theme-black tracking-tight">
                           {feature.name}
                         </h3>
                         <p className="mt-5 text-base text-gray-500">
@@ -324,7 +306,7 @@ const Page = (props: { children?: JSX.Element }) => {
               <h2 className="text-base font-semibold tracking-wider text-cyan-600 uppercase">
                 Learn
               </h2>
-              <p className="mt-2 text-3xl font-extrabold text-gray-900 tracking-tight sm:text-4xl">
+              <p className="mt-2 text-3xl font-extrabold text-theme-black tracking-tight sm:text-4xl">
                 Helpful Resources
               </p>
               <p className="mt-5 mx-auto max-w-prose text-xl text-gray-500">
@@ -429,7 +411,7 @@ const Page = (props: { children?: JSX.Element }) => {
                 <div className="inline-flex rounded-md shadow">
                   <a
                     href="#"
-                    className="inline-flex items-center justify-center px-5 py-3 border border-transparent text-base font-medium rounded-md text-gray-900 bg-theme-background hover:bg-theme-background"
+                    className="inline-flex items-center justify-center px-5 py-3 border border-transparent text-base font-medium rounded-md text-theme-black bg-theme-background hover:bg-theme-background"
                   >
                     Visit the help center
                     <ExternalLinkIcon
@@ -444,7 +426,7 @@ const Page = (props: { children?: JSX.Element }) => {
         </div>
       </main>
     </div>
-  );
-};
+  )
+}
 
-export default Page;
+export default Page

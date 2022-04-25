@@ -129,7 +129,7 @@ const ProductPage = (props: {
 
   return (
     <Page>
-      <Flex direction="column" w={["100%", "80vw"]} m="0 auto">
+      <Flex direction="column" w={["100%"]} m="0 auto">
         <Flex direction="column">
           <Box mb={["16px", "48px"]}>
             <ProductHeader
@@ -176,7 +176,7 @@ const ProductPage = (props: {
           </div>
           <div className="grid grid-cols-1 mt-10 gap-6 sm:grid-cols-1 lg:grid-cols-1">
             <div className="col-span-1 bg-theme-champagne border-2 border-theme-navy rounded-md shadow divide-y divide-gray-200">
-              <div className="w-full items-center justify-between p-6 space-x-6">
+              <div className="w-full items-center justify-between p-6 space-x-1">
                 <ProductPageSectionHeader title="Stats" topMargin="20px" />
                 <ProductStats stats={stats} />
                 {props.tokenData.symbol !== DoubloonToken.symbol && (

@@ -115,7 +115,7 @@ const DoubloonPage = (props: {
 
   return (
     <Page>
-      <Flex direction="column" w={["100%", "80vw"]} m="0 auto">
+      <Flex direction="column" w={["100%"]} m="0 auto">
         <Flex direction="column">
           <Box mb={["16px", "48px"]}>
             <ProductHeader
