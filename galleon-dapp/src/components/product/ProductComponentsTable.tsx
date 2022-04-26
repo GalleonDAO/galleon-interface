@@ -174,7 +174,7 @@ const ComponentRow = (props: { component: SetComponent }) => {
   const percentChangeIsPositive = percentChange >= 0;
   const percentChangeTextColor = percentChangeIsPositive
     ? colors.themeBlue
-    : colors.red;
+    : colors.red[600];
   const percentChangeSign = percentChangeIsPositive ? "+" : "-";
 
   return (
@@ -196,6 +196,7 @@ const ComponentRow = (props: { component: SetComponent }) => {
       </Td>
       <Td
         isNumeric
+        fontWeight={"semibold"}
         color={percentChangeTextColor}
         p={["16px 8px", "16px 8px", "16px 24px"]}
       >

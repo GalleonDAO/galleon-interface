@@ -2,6 +2,7 @@ import {
   Table,
   Tbody,
   Td,
+  Text,
   Th,
   Thead,
   Tr,
@@ -37,6 +38,9 @@ const ProductsTable = ({ products }: ProductsTableProps) => {
           <Th color={colors.themeBlack} p={["8px 8px", "12px 24px"]}>
             Ticker
           </Th>
+          <Th color={colors.themeBlack} p={["8px 8px", "12px 24px"]}>
+            Theme
+          </Th>
           {priceChangeIntervals.map((interval) => (
             <Th
               color={colors.themeBlack}
@@ -53,6 +57,9 @@ const ProductsTable = ({ products }: ProductsTableProps) => {
           <Tr key={product.symbol}>
             <Td p={["16px 8px", "16px 24px"]}>
               <TickerCell product={product} />
+            </Td>
+            <Td p={["16px 8px", "16px 24px"]}>
+              <Text fontWeight={"semibold"}>{product.theme}</Text>
             </Td>
             {priceChangeIntervals.map((interval) => (
               <Td key={interval[0]} p={["16px 8px", "16px 24px"]}>

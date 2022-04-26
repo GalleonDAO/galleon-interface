@@ -159,7 +159,7 @@ const MarketChart = (props: {
   const priceChange = props.priceChanges[durationSelector];
   const priceChangeColor = priceChange.isPositive
     ? colors.themeBlue
-    : colors.red[400];
+    : colors.red[500];
 
   return (
     <Flex direction="column" alignItems="center" width="100%">
@@ -213,8 +213,8 @@ const MarketChart = (props: {
         <Area
           type="monotone"
           dataKey="y1"
-          stroke={theme.colors.themeNavy}
-          fill={theme.colors.themeNavy}
+          stroke={theme.colors.themeBlue}
+          fill={theme.colors.themeBlue}
         />
         <Area
           type="monotone"
@@ -225,20 +225,20 @@ const MarketChart = (props: {
         <Area
           type="monotone"
           dataKey="y3"
-          stroke={theme.colors.themeNavy}
-          fill={theme.colors.themeNavy}
+          stroke={theme.colors.themeBlue}
+          fill={theme.colors.themeBlue}
         />
         <Area
           type="monotone"
           dataKey="y4"
-          stroke={theme.colors.themeNavy}
-          fill={theme.colors.themeNavy}
+          stroke={theme.colors.themeBlue}
+          fill={theme.colors.themeBlue}
         />
         <Area
           type="monotone"
           dataKey="y5"
-          stroke={theme.colors.themeNavy}
-          fill={theme.colors.themeNavy}
+          stroke={theme.colors.themeBlue}
+          fill={theme.colors.themeBlue}
         />
       </AreaChart>
     </Flex>
@@ -264,7 +264,7 @@ const PriceDisplay = ({
         <Text
           fontSize={["3xl", "3xl", "3xl", "4xl"]}
           color={colors.themeBlack}
-          fontWeight="700"
+          fontWeight="semibold"
         >
           {price}
         </Text>
@@ -276,7 +276,7 @@ const PriceDisplay = ({
             <Text
               fontSize={["md", "md", "xl", "2xl"]}
               color={colors.themeBlue}
-              fontWeight="700"
+              fontWeight="normal"
               mr={["0", "0", "0", "16px"]}
             >
               {apy}% APY
@@ -285,7 +285,7 @@ const PriceDisplay = ({
           <Text
             fontSize={["md", "md", "xl", "2xl"]}
             color={color}
-            fontWeight="700"
+            fontWeight="normal"
           >
             {change}
           </Text>

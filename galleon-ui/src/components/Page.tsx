@@ -227,7 +227,7 @@ const Page = (props: { children?: JSX.Element }) => {
                     <div className="flow-root bg-theme-background rounded-2xl px-6 pb-8">
                       <div className="-mt-6">
                         <div>
-                          <span className="inline-flex items-center justify-center p-3 bg-gradient-to-r from-teal-500 to-cyan-600 rounded-2xl shadow-lg">
+                          <span className="inline-flex items-center justify-center p-3 bg-gradient-to-r from-teal-500 to-cyan-600 rounded-2xl shadow-md">
                             <feature.icon
                               className="h-6 w-6 text-theme-white"
                               aria-hidden="true"
@@ -319,7 +319,7 @@ const Page = (props: { children?: JSX.Element }) => {
               {blogPosts.map((post) => (
                 <div
                   key={post.id}
-                  className="flex flex-col rounded-lg shadow-lg overflow-hidden"
+                  className="flex flex-col rounded-lg shadow-md overflow-hidden"
                 >
                   <div className="flex-shrink-0">
                     <img

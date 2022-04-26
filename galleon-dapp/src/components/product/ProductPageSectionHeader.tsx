@@ -21,7 +21,7 @@ const ProductPageSectionHeader = ({
       <Text fontSize="2xl" fontWeight="700">
         {title}
       </Text>
-      <Box w="100%" h="1px" ml="20px" background={colors.themeNavy} />
+      <Box w="100%" h="1px" ml="20px" background={colors.themeBlack} />
     </Flex>
   );
 };

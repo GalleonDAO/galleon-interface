@@ -20,6 +20,7 @@ export interface Token {
   fees:
     | { streamingFee: string; mintFee?: string; redeemFee?: string }
     | undefined;
+  theme: string | undefined;
 }
 
 export const DAI: Token = {
@@ -36,6 +37,7 @@ export const DAI: Token = {
   coingeckoId: "dai",
   tokensetsId: "dai",
   fees: undefined,
+  theme: undefined,
 };
 
 export const USDC: Token = {
@@ -52,6 +54,7 @@ export const USDC: Token = {
   coingeckoId: "usd-coin",
   tokensetsId: "usdc",
   fees: undefined,
+  theme: undefined,
 };
 
 export const ETH: Token = {
@@ -68,6 +71,7 @@ export const ETH: Token = {
   coingeckoId: "ethereum",
   tokensetsId: "eth",
   fees: undefined,
+  theme: undefined,
 };
 
 export const WETH: Token = {
@@ -84,6 +88,7 @@ export const WETH: Token = {
   coingeckoId: "weth",
   tokensetsId: "weth",
   fees: undefined,
+  theme: undefined,
 };
 
 export const MATIC: Token = {
@@ -100,6 +105,7 @@ export const MATIC: Token = {
   coingeckoId: "matic-network",
   tokensetsId: "matic",
   fees: undefined,
+  theme: undefined,
 };
 
 export const DoubloonToken: Token = {
@@ -115,6 +121,7 @@ export const DoubloonToken: Token = {
   coingeckoId: "doubloon",
   tokensetsId: "doubloon",
   fees: undefined,
+  theme: "Governance",
 };
 
 export const EthMaxYieldIndex: Token = {
@@ -133,6 +140,7 @@ export const EthMaxYieldIndex: Token = {
   fees: {
     streamingFee: "1.95%",
   },
+  theme: "Yield",
 };
 
 export const SolunavaxIndex: Token = {
@@ -151,6 +159,7 @@ export const SolunavaxIndex: Token = {
   fees: {
     streamingFee: "0.5%",
   },
+  theme: "Layer 1",
 };
 
 export const productTokensBySymbol = {

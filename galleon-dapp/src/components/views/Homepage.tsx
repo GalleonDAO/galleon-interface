@@ -18,10 +18,7 @@ import MarketChart, { PriceChartData } from "components/product/MarketChart";
 import { getPriceChartData } from "components/product/PriceChartData";
 import SectionTitle from "components/SectionTitle";
 import { useUserMarketData } from "hooks/useUserMarketData";
-import {
-  TokenMarketDataValues,
-  useMarketData,
-} from "providers/MarketData/MarketDataProvider";
+import { useMarketData } from "providers/MarketData/MarketDataProvider";
 import { getTransactionHistory } from "utils/alchemyApi";
 import { exportCsv } from "utils/exportToCsv";
 import { getFormattedChartPriceChanges } from "utils/priceChange";
@@ -157,18 +154,18 @@ const Dashboard = () => {
     <Page>
       <>
         <PageTitle title="Dashboard" subtitle="" />
-        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-2">
-          <div className="col-span-1 bg-theme-champagne border-2 border-theme-navy rounded-2xl shadow divide-y divide-theme-navy">
+        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-2 ">
+          <div className="col-span-1 bg-theme-champagne border-2 border-theme-black rounded-2xl shadow-md shadow-theme-black divide-y divide-theme-navy">
             <div className="w-full items-center justify-between p-6 space-x-6">
               <AllocationChart positions={pieChartPositions} />
             </div>
           </div>
-          <div className="col-span-1 bg-theme-champagne border-2 border-theme-navy rounded-2xl shadow divide-y divide-theme-navy">
-            <div className="w-full flex items-center justify-between p-6 space-x-6">
+          <div className="col-span-1 bg-theme-champagne border-2 border-theme-black rounded-2xl shadow-md shadow-theme-black divide-y divide-theme-navy">
+            <div className="w-full flex items-center justify-between p-6 space-x-6 ">
               {chainId === MAINNET.chainId ? (
                 <Flex direction="column" grow={1} flexBasis="0">
                   <QuickTrade>
-                    <div className=" px-2 pb-4 border-b border-theme-navy sm:px-4">
+                    <div className=" px-2 pb-4 border-b border-theme-black sm:px-4">
                       <h3 className="text-xl leading-6 font-semibold text-theme-navy">
                         Trade Investment Themes
                       </h3>
@@ -190,7 +187,10 @@ const Dashboard = () => {
           <>
             <div className="mb-10">
               <dl className="mt-6 space-y-6 divide-y border-2 rounded-2xl m-auto justify-center bg-theme-champagne border-theme-black">
-                <Disclosure as="div" className="pt-6">
+                <Disclosure
+                  as="div"
+                  className="pt-6 shadow-md shadow-theme-black "
+                >
                   {({ open }) => (
                     <>
                       <dt className="text-lg">
@@ -201,7 +201,7 @@ const Dashboard = () => {
 
                           <span className="mr-6 h-7 text-theme-black flex items-center">
                             <span className="mr-5">
-                              <span className="inline-flex items-center px-3 py-1 rounded-2xl text-sm font-semibold text-theme-navy border-2 border-theme-navy">
+                              <span className="inline-flex items-center px-3 py-1 rounded-2xl text-sm font-semibold text-theme-navy border-2 border-theme-black">
                                 {renderCsvDownloadButton}
                               </span>
                             </span>

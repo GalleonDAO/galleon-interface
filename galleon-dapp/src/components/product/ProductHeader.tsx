@@ -35,8 +35,8 @@ const ProductPageHeader = (props: { isMobile: boolean; tokenData: Token }) => {
       direction="row"
       justifyContent="flex-end"
       alignItems="center"
-      borderBottom="1px"
-      borderColor={colors.themeNavy}
+      borderBottom="2px"
+      borderColor={colors.themeBlack}
       padding="10px 0"
     >
       <Text fontSize="4xl" fontWeight="700">
