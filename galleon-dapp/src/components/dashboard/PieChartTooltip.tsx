@@ -24,7 +24,7 @@ const DataRow = ({
 };
 
 const Dot = ({ color }: { color: string }) => {
-  return <Box backgroundColor={color} borderRadius="8px" w="16px" h="16px" />;
+  return <Box backgroundColor={color} borderRadius="1rem" w="16px" h="16px" />;
 };
 
 const PieChartTooltip = ({ active, payload }: any) => {
@@ -37,7 +37,7 @@ const PieChartTooltip = ({ active, payload }: any) => {
     return (
       <Flex
         background={tooltipBgColor}
-        borderRadius="8px"
+        borderRadius="1rem"
         direction="column"
         minW="160px"
         p="16px"

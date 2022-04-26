@@ -3384,10 +3384,10 @@
   resolved "https://registry.yarnpkg.com/@galleondao/galleon-tokenlist/-/galleon-tokenlist-0.0.7.tgz#71dc2d5c4ffbce23fd534c5484785f3f4c6f043a"
   integrity sha512-cD3fPKsytuJl+3ggFdnFiaLKGPx+poWlVsCeKpBxJnYxjj3b34N7Gk3HLZr7cajlqwyBbk/gjGHF7lKGuDk9WQ==
 
-"@galleondao/logging-lib@0.0.4":
-  version "0.0.4"
-  resolved "https://registry.yarnpkg.com/@galleondao/logging-lib/-/logging-lib-0.0.4.tgz#f76b45225ce3661692a4739df2fcffcef8c74a10"
-  integrity sha512-VBu4xDr7CKYEbdx6uleEkkPtwH53sKItrpPkiDpgplJ8Ikw8UItACBMaBiJD6bmgPpdBg2j2jISJ8htcyQJLBw==
+"@galleondao/logging-lib@^0.0.6":
+  version "0.0.6"
+  resolved "https://registry.yarnpkg.com/@galleondao/logging-lib/-/logging-lib-0.0.6.tgz#2f706b98485c9c8819021e1dfdda454578eefada"
+  integrity sha512-veWkxzMCnYHI98S3CnCGXA8LHTPy6t9Qs0AeJl42fhkVK2hJc1wtSC5EZZyXoTWMmEOIHhgxhLHLACF6a2kGgA==
 
 "@gar/promisify@^1.0.1":
   version "1.1.3"

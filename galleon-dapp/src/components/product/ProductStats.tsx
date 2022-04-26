@@ -30,7 +30,7 @@ const ProductStats = ({ stats }: { stats: ProductStat[] }) => {
           {stats.map((productStat, index) => (
             <div
               key={productStat.title}
-              className="px-4 py-5 bg-transparent shadow border-2 border-theme-navy rounded-md overflow-hidden sm:p-6"
+              className="px-4 py-5 bg-transparent shadow border-2 border-theme-navy rounded-2xl overflow-hidden sm:p-6"
             >
               <dt className="text-sm font-medium text-theme-black truncate">
                 {productStat.title}

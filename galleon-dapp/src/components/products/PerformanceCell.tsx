@@ -9,9 +9,17 @@ const PerformanceCell = ({ percentChange }: { percentChange?: number }) => {
   }
   const formatPercent = numeral(percentChange).format("+0.00a") + "%";
   if (percentChange >= 0) {
-    return <Text color={colors.themeBlue}>{formatPercent}</Text>;
+    return (
+      <Text fontWeight={"normal"} color={colors.themeBlue}>
+        {formatPercent}
+      </Text>
+    );
   }
-  return <Text color={colors.red}>{formatPercent}</Text>;
+  return (
+    <Text color={colors.red} fontWeight={"normal"}>
+      {formatPercent}
+    </Text>
+  );
 };
 
 export default PerformanceCell;

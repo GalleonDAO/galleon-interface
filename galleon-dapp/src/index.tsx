@@ -2,7 +2,7 @@ import React from "react";
 import "dotenv/config";
 import ReactDOM from "react-dom";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-
+import { KNOWN_SERVICES, KNOWN_LABELS } from "@galleondao/logging-lib";
 import App from "App";
 import theme from "theme";
 
@@ -17,14 +17,79 @@ import LiquidityMining from "components/views/LiquidityMining";
 import ETHMAXY from "components/views/productpages/ETHMAXY";
 import DBL from "components/views/productpages/DBL";
 import Products from "components/views/Products";
-import { ARBITRUM, MAINNET, OPTIMISM, POLYGON } from "constants/chains";
+import {
+  ARBITRUM,
+  MAINNET,
+  OPTIMISM,
+  POLYGON,
+  SUPPORTED_CHAINS,
+} from "constants/chains";
 import LiquidityMiningProvider from "providers/LiquidityMining/LiquidityMiningProvider";
 import { MarketDataProvider } from "providers/MarketData/MarketDataProvider";
 import SetComponentsProvider from "providers/SetComponents/SetComponentsProvider";
 import "./index.css";
 import { initLogger } from "utils/logger";
+import indexNames from "constants/tokens";
+import Indices, { DoubloonToken, Token } from "constants/tokens";
 
 export const logger = initLogger(process.env.REACT_APP_APIM_SUBSCRIPTION_KEY);
+
+document.addEventListener("click", (event) => {
+  // @ts-ignore
+  const eventName: string = event.target.innerText;
+  // @ts-ignore
+  const isButton = event.target.nodeName === "BUTTON";
+  // @ts-ignore
+  const isAnchor = event.target.nodeName === "A";
+  // @ts-ignore
+  const isSpan = event.target.nodeName === "SPAN";
+  // @ts-ignore
+  const isParagraph = event.target.nodeName === "P";
+
+  const NETWORKS = [...SUPPORTED_CHAINS.map((x) => x.name)];
+  const NETWORK_LABEL = "NETWORK CHANGE";
+  if (NETWORKS.includes(eventName) && isSpan) {
+    // @ts-ignore
+    console.log(event.target.nodeName);
+    console.dir(eventName);
+    logger.logCounter({
+      serviceName: KNOWN_SERVICES.GALLEON_DAPP,
+      environment: process.env.NODE_ENV,
+      label: NETWORK_LABEL,
+      metadata: { network: eventName },
+    });
+  }
+
+  const CSV_LABEL = "Download CSV";
+  if (eventName === CSV_LABEL && isParagraph) {
+    // @ts-ignore
+    console.log(event.target.nodeName);
+    console.dir(eventName);
+    logger.logCounter({
+      serviceName: KNOWN_SERVICES.GALLEON_DAPP,
+      environment: process.env.NODE_ENV,
+      label: CSV_LABEL,
+      metadata: {},
+    });
+  }
+
+  const PRODUCTS = [
+    ...Indices.map((x) => x.symbol),
+    ...Indices.map((x) => x.name),
+  ];
+  const PRODUCT_SELECT = "PRODUCT SELECT";
+  if (PRODUCTS.includes(eventName) && isParagraph) {
+    // @ts-ignore
+    console.log(event.target.nodeName);
+    console.dir(eventName);
+    logger.logCounter({
+      serviceName: KNOWN_SERVICES.GALLEON_DAPP,
+      environment: process.env.NODE_ENV,
+      label: PRODUCT_SELECT,
+      metadata: { product: eventName },
+    });
+  }
+});
 
 const config: Config = {
   readOnlyChainId: MAINNET.chainId,

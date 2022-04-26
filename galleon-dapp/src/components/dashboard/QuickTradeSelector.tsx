@@ -99,7 +99,7 @@ const QuickTradeSelector = (props: {
             onChange={(event) => onChangeInput(event.target.value)}
             name={props.title}
             id={props.title}
-            className="shadow-sm focus:ring-theme-blue focus:border-theme-blue block w-full pr-12 sm:text-md border-theme-black rounded-md border-2"
+            className="shadow-sm focus:ring-theme-blue focus:border-theme-blue block w-full pr-12 sm:text-md border-theme-black rounded-2xl border-2"
           />
           <div className="absolute inset-y-0 right-0 flex py-1.5 ">
             <kbd className="inline-flex items-center px-2">
@@ -116,7 +116,7 @@ const QuickTradeSelector = (props: {
                 <select
                   name="token"
                   disabled={config.isSelectorDisabled ?? false}
-                  className=" inline-flex w-full pl-3 py-2 text-base border-none focus:outline-none focus:ring-theme-blue focus:border-theme-blue sm:text-md rounded-md border-2"
+                  className=" inline-flex w-full pl-3 py-2 rounded-2xl text-base border-none focus:outline-none focus:ring-none focus:border-none sm:text-md2xl border-2"
                   defaultValue="Canada"
                   onChange={(event) =>
                     props.onSelectedToken(event.target.value)

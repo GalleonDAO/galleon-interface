@@ -124,7 +124,7 @@ const DoubloonPage = (props: {
             />
           </Box>
           <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-2">
-            <div className="col-span-1 bg-theme-champagne border-2 border-theme-navy rounded-md shadow divide-y divide-theme-navy">
+            <div className="col-span-1 bg-theme-champagne border-2 border-theme-navy rounded-2xl shadow divide-y divide-theme-navy">
               <div className="w-full items-center justify-between p-6 space-x-6">
                 <MarketChart
                   marketData={priceChartData}
@@ -140,7 +140,7 @@ const DoubloonPage = (props: {
                 />
               </div>
             </div>
-            <div className="col-span-1 bg-theme-champagne border-2 border-theme-navy rounded-md shadow divide-y divide-gray-200">
+            <div className="col-span-1 bg-theme-champagne border-2 border-theme-navy rounded-2xl shadow divide-y divide-gray-200">
               <div className="w-full flex items-center justify-between p-6 space-x-6">
                 <Flex direction="column" grow={1} flexBasis="0">
                   <div className=" px-2 pb-4 mb-4 sm:px-4">
@@ -169,7 +169,7 @@ const DoubloonPage = (props: {
             </div>
           </div>
           <div className="grid grid-cols-1 mt-10 gap-6 sm:grid-cols-1 lg:grid-cols-1">
-            <div className="col-span-1 bg-theme-champagne border-2 border-theme-navy rounded-md shadow divide-y divide-gray-200">
+            <div className="col-span-1 bg-theme-champagne border-2 border-theme-navy rounded-2xl shadow divide-y divide-gray-200">
               <div className="w-full items-center justify-between p-6 space-x-6">
                 <ProductPageSectionHeader title="Stats" topMargin="20px" />
                 <ProductStats stats={stats} />

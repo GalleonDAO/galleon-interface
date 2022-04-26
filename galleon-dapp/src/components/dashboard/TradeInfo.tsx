@@ -38,7 +38,7 @@ const TradeInfoItemRow = ({ title, value }: TradeInfoItem) => {
             </div>
             <div className="min-w-0 flex-1 pt-1.5 flex justify-between space-x-4">
               <div>
-                <p className="text-sm text-theme-navy">
+                <span className="text-sm text-theme-navy">
                   {title}
                   {": "}
                   {vals.map((dex, index) => (
@@ -46,7 +46,7 @@ const TradeInfoItemRow = ({ title, value }: TradeInfoItem) => {
                       {dex}
                     </Text>
                   ))}
-                </p>
+                </span>
               </div>
             </div>
           </div>
@@ -77,14 +77,14 @@ const TradeInfoItemRow = ({ title, value }: TradeInfoItem) => {
         </div>
         <div className="min-w-0 flex-1 pt-1.5 flex justify-between space-x-4">
           <div>
-            <p className="text-sm text-theme-navy">
+            <span className="text-sm text-theme-navy">
               {title}
               {": "}
 
               <Text fontSize="20px" fontWeight="700">
                 {value}
               </Text>
-            </p>
+            </span>
           </div>
         </div>
       </div>

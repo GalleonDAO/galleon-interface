@@ -158,12 +158,12 @@ const Dashboard = () => {
       <>
         <PageTitle title="Dashboard" subtitle="" />
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-2">
-          <div className="col-span-1 bg-theme-champagne border-2 border-theme-navy rounded-md shadow divide-y divide-theme-navy">
+          <div className="col-span-1 bg-theme-champagne border-2 border-theme-navy rounded-2xl shadow divide-y divide-theme-navy">
             <div className="w-full items-center justify-between p-6 space-x-6">
               <AllocationChart positions={pieChartPositions} />
             </div>
           </div>
-          <div className="col-span-1 bg-theme-champagne border-2 border-theme-navy rounded-md shadow divide-y divide-theme-navy">
+          <div className="col-span-1 bg-theme-champagne border-2 border-theme-navy rounded-2xl shadow divide-y divide-theme-navy">
             <div className="w-full flex items-center justify-between p-6 space-x-6">
               {chainId === MAINNET.chainId ? (
                 <Flex direction="column" grow={1} flexBasis="0">
@@ -189,7 +189,7 @@ const Dashboard = () => {
         {chainId === MAINNET.chainId || chainId === POLYGON.chainId ? (
           <>
             <div className="mb-10">
-              <dl className="mt-6 space-y-6 divide-y border-2 rounded-md m-auto justify-center bg-theme-champagne border-theme-black">
+              <dl className="mt-6 space-y-6 divide-y border-2 rounded-2xl m-auto justify-center bg-theme-champagne border-theme-black">
                 <Disclosure as="div" className="pt-6">
                   {({ open }) => (
                     <>
@@ -201,7 +201,7 @@ const Dashboard = () => {
 
                           <span className="mr-6 h-7 text-theme-black flex items-center">
                             <span className="mr-5">
-                              <span className="inline-flex items-center px-3 py-1 rounded-md text-sm font-medium text-theme-navy bg-theme-navy border-2 border-theme-nav">
+                              <span className="inline-flex items-center px-3 py-1 rounded-2xl text-sm font-semibold text-theme-navy border-2 border-theme-navy">
                                 {renderCsvDownloadButton}
                               </span>
                             </span>

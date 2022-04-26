@@ -27,8 +27,8 @@ const NetworkSelector = () => {
         {({ open }) => (
           <>
             <div className="mt-1 relative">
-              <Listbox.Button className="theme-blue relative w-full border border-white bg-theme-blue rounded-md shadow-sm pl-3 pr-10 py-2 text-left cursor-default focus:outline-none focus:ring-1 focus:ring-theme-blue focus:border-theme-blue font-medium ">
-                <span className="block truncat text-white">
+              <Listbox.Button className="theme-blue relative w-full border-2 border-theme-blue bg-theme-blue rounded-2xl shadow-sm pl-3 pr-10 py-1.5 text-left cursor-default focus:outline-none focus:ring-1 focus:ring-theme-blue focus:border-theme-blue font-medium ">
+                <span className="block truncat font-semibold text-white">
                   {selected.name}
                 </span>
                 <span className="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
@@ -46,7 +46,7 @@ const NetworkSelector = () => {
                 leaveFrom="opacity-100"
                 leaveTo="opacity-0"
               >
-                <Listbox.Options className="fixed bg-white z-10 mt-1 theme-blue shadow-lg max-h-60 rounded-md py-1 text-base ring-1 ring-black ring-opacity-5 overflow-auto focus:outline-none font-medium ">
+                <Listbox.Options className="fixed bg-white z-10 mt-1 theme-blue shadow-lg max-h-60 rounded-2xl py-1 text-base ring-1 ring-black ring-opacity-5 overflow-auto focus:outline-none font-medium ">
                   {SUPPORTED_CHAINS.map((network) => (
                     <Listbox.Option
                       key={network.chainId}

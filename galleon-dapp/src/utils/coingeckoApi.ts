@@ -18,16 +18,15 @@ export const fetchHistoricalTokenMarketData = async (
   const coingeckoHourlyTokenDataUrl =
     baseURL + `/coins/${id}/market_chart?vs_currency=${baseCurrency}&days=90`;
 
-  // TODO: Re-enable > 3M price history when we get paid CG API Key
   return Promise.all([
-    // fetch(coingeckoMaxTokenDataUrl),
+    fetch(coingeckoMaxTokenDataUrl, { headers: requestHeaders }),
     fetch(coingeckoHourlyTokenDataUrl, { headers: requestHeaders }),
   ])
     .then((responses) =>
       Promise.all(responses.map((response) => response.json()))
     )
     .then((data) => {
-      const hourlyPrices = data[0].prices,
+      const hourlyPrices = data[1].prices,
         marketcaps = data[0].market_caps,
         volumes = data[0].total_volumes;
 

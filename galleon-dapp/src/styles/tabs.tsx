@@ -5,7 +5,7 @@ export const Tabs = {
     unstyled: () => ({
       tablist: {
         backgroundColor: "#fff",
-        borderRadius: "8px",
+        borderRadius: "1rem",
         color: colors.themeNavy,
         fontSize: "16px",
         fontWeight: "500",
@@ -15,7 +15,7 @@ export const Tabs = {
       tab: {
         _selected: {
           backgroundColor: colors.themeBlue,
-          borderRadius: "8px",
+          borderRadius: "1rem",
           color: colors.themeWhite,
         },
       },

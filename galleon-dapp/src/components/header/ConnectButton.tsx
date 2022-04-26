@@ -34,6 +34,7 @@ const ConnectButton = () => {
         label: KNOWN_LABELS.VISIT,
         metadata: {
           address: account,
+          referrer: document.referrer === "" ? "direct" : document.referrer,
         },
       });
 
@@ -66,7 +67,7 @@ const ConnectButton = () => {
       <div>
         <button
           onClick={handleConnectWallet}
-          className="ml-4 inline-block bg-theme-blue text-white  py-1.5 px-4 border border-transparent rounded-md text-base font-medium  hover:bg-opacity-75"
+          className="ml-4 inline-block bg-theme-blue text-white  py-1.5 px-4 border-2 border-theme-blue rounded-2xl text-base font-medium  hover:bg-opacity-75"
         >
           Connect
         </button>
@@ -79,7 +80,7 @@ const ConnectButton = () => {
   const disconnectButton = () => {
     return (
       <span>
-        <span className="inline-flex items-center px-3 py-0.5 rounded-md text-base font-medium bg-transparent ">
+        <span className="inline-flex items-center px-3 py-0.5 rounded-2xl text-base font-medium bg-transparent ">
           <svg
             className="-ml-1 mr-1.5 h-2 w-2 text-theme-blue animate animate-pulse"
             fill="currentColor"
@@ -92,7 +93,7 @@ const ConnectButton = () => {
 
         <button
           onClick={handleDisconnect}
-          className="ml-4 inline-block bg-theme-navy text-white py-1.5 px-4 border border-transparent rounded-md text-base font-medium hover:bg-opacity-75"
+          className="ml-4 inline-block bg-theme-navy text-white py-1.5 px-4  rounded-2xl text-base font-semibold border-theme-navy border-2 hover:bg-opacity-75"
         >
           Disconnect
         </button>

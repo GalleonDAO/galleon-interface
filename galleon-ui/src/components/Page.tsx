@@ -151,12 +151,12 @@ const Page = (props: { children?: JSX.Element }) => {
                     <form action="#" className="sm:max-w-xl sm:mx-auto lg:mx-0">
                       <div className="sm:flex">
                         <div className="min-w-0">
-                          <button className="block w-full py-3 px-4 rounded-md shadow bg-gradient-to-r border-2 hover:text-theme-white from-theme-navy to-theme-blue text-theme-white hover:from-theme-blue hover:to-theme-navy focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-theme-blue focus:ring-offset-theme-black font-semibold">
+                          <button className="block w-full py-3 px-4 rounded-2xl shadow bg-gradient-to-r border-2 hover:text-theme-white from-theme-navy to-theme-blue text-theme-white hover:from-theme-blue hover:to-theme-navy focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-theme-blue focus:ring-offset-theme-black font-semibold">
                             Explore Products
                           </button>
                         </div>
                         <div className="mt-3 sm:mt-0 sm:ml-3">
-                          <button className="block w-full py-3 px-4 rounded-md shadow bg-gradient-to-r border-2 hover:text-theme-white from-theme-blue to-theme-navy text-theme-white hover:from-theme-navy hover:to-theme-blue focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-theme-blue focus:ring-offset-theme-black font-semibold">
+                          <button className="block w-full py-3 px-4 rounded-2xl shadow bg-gradient-to-r border-2 hover:text-theme-white from-theme-blue to-theme-navy text-theme-white hover:from-theme-navy hover:to-theme-blue focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-theme-blue focus:ring-offset-theme-black font-semibold">
                             Join the Crew
                           </button>
                         </div>
@@ -196,7 +196,7 @@ const Page = (props: { children?: JSX.Element }) => {
                 deliver innovation in DeFi.
               </p>
             </div>
-            <div className="mt-12 border-2 border-theme-black rounded-md">
+            <div className="mt-12 border-2 border-theme-black rounded-2xl">
               <img
                 className="rounded-lg shadow-xl ring-1 ring-black ring-opacity-5"
                 src="/dapp.png"
@@ -224,10 +224,10 @@ const Page = (props: { children?: JSX.Element }) => {
               <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
                 {features.map((feature) => (
                   <div key={feature.name} className="pt-6">
-                    <div className="flow-root bg-theme-background rounded-lg px-6 pb-8">
+                    <div className="flow-root bg-theme-background rounded-2xl px-6 pb-8">
                       <div className="-mt-6">
                         <div>
-                          <span className="inline-flex items-center justify-center p-3 bg-gradient-to-r from-teal-500 to-cyan-600 rounded-md shadow-lg">
+                          <span className="inline-flex items-center justify-center p-3 bg-gradient-to-r from-teal-500 to-cyan-600 rounded-2xl shadow-lg">
                             <feature.icon
                               className="h-6 w-6 text-theme-white"
                               aria-hidden="true"
@@ -408,10 +408,10 @@ const Page = (props: { children?: JSX.Element }) => {
                 quisque ut interdum tincidunt duis.
               </p>
               <div className="mt-8">
-                <div className="inline-flex rounded-md shadow">
+                <div className="inline-flex rounded-2xl shadow">
                   <a
                     href="#"
-                    className="inline-flex items-center justify-center px-5 py-3 border border-transparent text-base font-medium rounded-md text-theme-black bg-theme-background hover:bg-theme-background"
+                    className="inline-flex items-center justify-center px-5 py-3 border border-transparent text-base font-medium rounded-2xl text-theme-black bg-theme-background hover:bg-theme-background"
                   >
                     Visit the help center
                     <ExternalLinkIcon

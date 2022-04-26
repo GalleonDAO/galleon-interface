@@ -2,7 +2,11 @@ import { useState } from "react";
 
 import { BigNumber } from "@ethersproject/bignumber";
 import { useEthers } from "@usedapp/core";
-
+import {
+  KNOWN_SERVICES,
+  KNOWN_LABELS,
+  LOG_SEVERITY,
+} from "@galleondao/logging-lib";
 import {
   eligibleLeveragedExchangeIssuanceTokens,
   ETH,
@@ -17,6 +21,7 @@ import {
   LeveragedExchangeIssuanceQuote,
 } from "utils/exchangeIssuanceQuotes";
 import { getZeroExTradeData, ZeroExData } from "utils/zeroExUtils";
+import { logger } from "index";
 
 type Result<_, E = Error> =
   | {
@@ -66,6 +71,7 @@ export const useBestTradeOption = () => {
 
   const [isFetching, setIsFetching] = useState<boolean>(false);
   const [result, setResult] = useState<Result<ZeroExData, Error> | null>(null);
+  const [time, setTime] = useState(0);
 
   const fetchAndCompareOptions = async (
     sellToken: Token,
@@ -75,6 +81,7 @@ export const useBestTradeOption = () => {
     isIssuance: boolean
   ) => {
     setIsFetching(true);
+    setTime(Date.now());
 
     /* Check 0x for DEX Swap option*/
     const zeroExResult = await getZeroExTradeData(
@@ -150,6 +157,45 @@ export const useBestTradeOption = () => {
         };
     setResult(result);
     setIsFetching(false);
+    setTime(Date.now() - time);
+
+    const QUOTE_LABEL = "QUOTE TIMER";
+    const QUOTE_COUNTER = "QUOTE GENERATED";
+
+    if (result.success) {
+      logger.logTimer({
+        serviceName: KNOWN_SERVICES.GALLEON_DAPP,
+        environment: process.env.NODE_ENV,
+        label: QUOTE_LABEL,
+        duration: time,
+      });
+
+      logger.logCounter({
+        serviceName: KNOWN_SERVICES.GALLEON_DAPP,
+        environment: process.env.NODE_ENV,
+        label: QUOTE_COUNTER,
+        metadata: {
+          sellToken: sellToken.symbol,
+          sellTokenAmount: sellTokenAmount.toString(),
+          buyToken: buyToken.symbol,
+          isIssuance: isIssuance.toString(),
+        },
+      });
+
+      if (!result.success) {
+        logger.logMessage({
+          serviceName: KNOWN_SERVICES.GALLEON_DAPP,
+          environment: process.env.NODE_ENV,
+          timestamp: new Date().toISOString(),
+          severity: LOG_SEVERITY.ERROR,
+          functionName: "fetchAndCompareOptions",
+          // @ts-ignore
+          exception: JSON.stringify(result.error),
+          message: `quote generation failed for sellToken: ${sellToken}, sellTokenAmount: ${sellTokenAmount}, buyToken: ${buyToken}, isIssuance: ${isIssuance}`,
+          correlationId: undefined,
+        });
+      }
+    }
   };
 
   return {

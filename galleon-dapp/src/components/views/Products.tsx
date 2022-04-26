@@ -118,7 +118,7 @@ const Products = () => {
           subtitle="Simple yet powerful crypto investment themes"
         />
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-1 lg:grid-cols-1">
-          <div className="col-span-1 bg-theme-champagne border-2 border-theme-navy rounded-md shadow divide-y divide-gray-200">
+          <div className="col-span-1 bg-theme-champagne border-2 border-theme-navy rounded-2xl shadow divide-y divide-gray-200">
             <div className="w-full items-center justify-between p-6 space-x-6">
               <ProductsTable products={productsWithMarketData} />
             </div>

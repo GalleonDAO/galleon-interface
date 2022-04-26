@@ -457,7 +457,7 @@ const TradeButton = (props: TradeButtonProps) => (
   <Button
     background={colors.themeNavy}
     border="2px"
-    borderRadius="6px"
+    borderRadius="1rem"
     borderColor={colors.themeNavy}
     color={colors.themeWhite}
     disabled={props.isDisabled}
