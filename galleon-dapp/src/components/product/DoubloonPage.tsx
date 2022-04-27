@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-import { Box, Flex, useBreakpointValue } from "@chakra-ui/react";
+import { Box, Flex, Image, useBreakpointValue } from "@chakra-ui/react";
 import { useEthers } from "@usedapp/core";
 
 import QuickTrade from "components/dashboard/QuickTrade";
@@ -29,6 +29,8 @@ import "@uniswap/widgets/dist/fonts.css";
 import { getTokenList } from "utils/tokenlists";
 import { colors } from "styles/colors";
 import theme from "theme";
+import { useNetwork } from "hooks/useNetwork";
+import { ARBITRUM } from "constants/chains";
 
 const jsonRpcEndpoint =
   "https://mainnet.infura.io/v3/" + process.env.REACT_APP_INFURA_KEY ?? "";
@@ -82,7 +84,7 @@ const DoubloonPage = (props: {
 }) => {
   const isMobile = useBreakpointValue({ base: true, lg: false });
   const { marketData, tokenData } = props;
-
+  const { changeNetwork } = useNetwork();
   const { chainId, library } = useEthers();
   const { selectLatestMarketData } = useMarketData();
   const [currentTokenSupply, setCurrentTokenSupply] = useState(0);
@@ -153,17 +155,44 @@ const DoubloonPage = (props: {
                       the DAOs products.
                     </p>
                   </div>
-                  <SwapWidget
-                    provider={library}
-                    jsonRpcEndpoint={jsonRpcEndpoint}
-                    theme={theme}
-                    tokenList={getTokenList(chainId)}
-                    defaultInputTokenAddress={"NATIVE"}
-                    defaultOutputTokenAddress={
-                      "0xd3f1da62cafb7e7bc6531ff1cef6f414291f03d3"
-                    }
-                    width={540}
-                  />
+                  {chainId !== ARBITRUM.chainId ? (
+                    <>
+                      <button
+                        onClick={() =>
+                          changeNetwork(ARBITRUM.chainId.toString())
+                        }
+                        className="ml-4 inline-block bg-theme-blue shadow-sm shadow-theme-black text-white  py-1.5 px-4 border-2 border-theme-blue rounded-2xl text-base font-medium  hover:bg-opacity-75"
+                      >
+                        Switch to Arbitrum
+                      </button>
+
+                      <Box
+                        className="justify-center text-center mx-auto"
+                        mt="40px"
+                        mb="8px"
+                      >
+                        <Image
+                          height={["150", "225"]}
+                          borderRadius={"25"}
+                          opacity={"90%"}
+                          src={"/wave.png"}
+                          alt="pie chart placeholder"
+                        />{" "}
+                      </Box>
+                    </>
+                  ) : (
+                    <SwapWidget
+                      provider={library}
+                      jsonRpcEndpoint={jsonRpcEndpoint}
+                      theme={theme}
+                      tokenList={getTokenList(chainId)}
+                      defaultInputTokenAddress={"NATIVE"}
+                      defaultOutputTokenAddress={
+                        "0xd3f1da62cafb7e7bc6531ff1cef6f414291f03d3"
+                      }
+                      width={540}
+                    />
+                  )}
                 </Flex>
               </div>
             </div>

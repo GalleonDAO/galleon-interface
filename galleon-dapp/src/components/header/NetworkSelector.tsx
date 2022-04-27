@@ -27,7 +27,7 @@ const NetworkSelector = () => {
         {({ open }) => (
           <>
             <div className="mt-1 relative">
-              <Listbox.Button className="theme-blue relative w-full border-2 border-theme-blue cursor-pointer  bg-theme-blue rounded-2xl shadow-sm pl-3 pr-10 py-1.5 text-left cursor-default focus:outline-none focus:ring-1 focus:ring-theme-blue focus:border-theme-blue font-medium ">
+              <Listbox.Button className="theme-blue relative w-full border-2 border-theme-blue cursor-pointer  bg-theme-blue rounded-2xl pl-3 pr-10 py-1.5 text-left shadow-sm shadow-theme-black focus:outline-none focus:ring-1 focus:ring-theme-blue focus:border-theme-blue font-medium ">
                 <span className="block truncat font-semibold text-white">
                   {selected.name}
                 </span>
@@ -53,7 +53,7 @@ const NetworkSelector = () => {
                       className={({ active }) =>
                         classNames(
                           active ? "text-white bg-theme-blue" : "text-gray-900",
-                          "cursor-default select-none relative py-2 pl-3 pr-9 cursor-pointer "
+                          "select-none relative py-2 pl-3 pr-9 cursor-pointer "
                         )
                       }
                       value={network}

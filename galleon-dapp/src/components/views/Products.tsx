@@ -114,8 +114,8 @@ const Products = () => {
     <Page>
       <Box w="100%">
         <PageTitle
-          title="Explore Galleon Investment Themes"
-          subtitle="Simple yet powerful crypto investment themes"
+          title="Explore Investment Themes"
+          subtitle="An innovative way to get on-chain exposure to any thematic investment"
         />
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-1 lg:grid-cols-1">
           <div className="col-span-1 bg-theme-champagne border-2 border-theme-navy shadow-md shadow-theme-black  rounded-2xl divide-y divide-theme-black">

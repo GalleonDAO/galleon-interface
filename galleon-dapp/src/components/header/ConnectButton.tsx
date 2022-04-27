@@ -67,7 +67,7 @@ const ConnectButton = () => {
       <div>
         <button
           onClick={handleConnectWallet}
-          className="ml-4 inline-block bg-theme-blue text-white  py-1.5 px-4 border-2 border-theme-blue rounded-2xl text-base font-medium  hover:bg-opacity-75"
+          className="ml-4 inline-block bg-theme-blue shadow-sm shadow-theme-black text-white  py-1.5 px-4 border-2 border-theme-blue rounded-2xl text-base font-medium  hover:bg-opacity-75"
         >
           Connect
         </button>
@@ -93,7 +93,7 @@ const ConnectButton = () => {
 
         <button
           onClick={handleDisconnect}
-          className="ml-4 inline-block bg-theme-navy text-white py-1.5 px-4  rounded-2xl text-base font-semibold border-theme-navy border-2 hover:bg-opacity-75"
+          className="ml-4 inline-block bg-theme-navy shadow-sm shadow-theme-black text-white py-1.5 px-4  rounded-2xl text-base font-semibold border-theme-navy border-2 hover:bg-opacity-75"
         >
           Disconnect
         </button>
