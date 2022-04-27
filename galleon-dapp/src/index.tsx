@@ -60,7 +60,7 @@ document.addEventListener("click", (event) => {
     });
   }
 
-  const CSV_LABEL = "Download CSV";
+  const CSV_LABEL = "DOWNLOAD CSV";
   if (eventName === CSV_LABEL && isParagraph) {
     // @ts-ignore
     console.log(event.target.nodeName);
