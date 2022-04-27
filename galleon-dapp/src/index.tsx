@@ -47,7 +47,6 @@ document.addEventListener("click", (event) => {
   const isParagraph = event.target.nodeName === "P";
 
   const NETWORKS = [...SUPPORTED_CHAINS.map((x) => x.name)];
-  const NETWORK_LABEL = "NETWORK CHANGE";
   if (NETWORKS.includes(eventName) && isSpan) {
     // @ts-ignore
     console.log(event.target.nodeName);
@@ -55,20 +54,23 @@ document.addEventListener("click", (event) => {
     logger.logCounter({
       serviceName: KNOWN_SERVICES.GALLEON_DAPP,
       environment: process.env.NODE_ENV,
-      label: NETWORK_LABEL,
-      metadata: { network: eventName },
+      label: KNOWN_LABELS.NETWORK_CHANGE,
+      metadata: {
+        network: eventName,
+        address: window.ethereum ? window.ethereum.selectedAddress : "",
+      },
     });
   }
 
-  const CSV_LABEL = "DOWNLOAD CSV";
-  if (eventName === CSV_LABEL && isParagraph) {
+  const CSV_EVENT = "Download CSV";
+  if (eventName === CSV_EVENT && isParagraph) {
     // @ts-ignore
     console.log(event.target.nodeName);
     console.dir(eventName);
     logger.logCounter({
       serviceName: KNOWN_SERVICES.GALLEON_DAPP,
       environment: process.env.NODE_ENV,
-      label: CSV_LABEL,
+      label: KNOWN_LABELS.DOWNLOAD_CSV,
       metadata: {},
     });
   }
@@ -77,7 +79,6 @@ document.addEventListener("click", (event) => {
     ...Indices.map((x) => x.symbol),
     ...Indices.map((x) => x.name),
   ];
-  const PRODUCT_SELECT = "PRODUCT SELECT";
   if (PRODUCTS.includes(eventName) && isParagraph) {
     // @ts-ignore
     console.log(event.target.nodeName);
@@ -85,7 +86,7 @@ document.addEventListener("click", (event) => {
     logger.logCounter({
       serviceName: KNOWN_SERVICES.GALLEON_DAPP,
       environment: process.env.NODE_ENV,
-      label: PRODUCT_SELECT,
+      label: KNOWN_LABELS.PRODUCT_SELECT,
       metadata: { product: eventName },
     });
   }

@@ -48,15 +48,15 @@ export const useTrade = (sellToken: Token, tradeData?: ZeroExData | null) => {
     try {
       setIsTransacting(true);
       // const tx = await library?.getSigner().sendTransaction(txRequest)
-      const TRANSACTION_LABEL = "TRADE TRANSACTION SENT";
       logger.logCounter({
         serviceName: KNOWN_SERVICES.GALLEON_DAPP,
         environment: process.env.NODE_ENV,
-        label: TRANSACTION_LABEL,
+        label: KNOWN_LABELS.TRADE_TRANSACTION_SENT,
         metadata: {
           from: account,
           to: tradeData.to,
           value: tradeData.value,
+          address: account,
         },
       });
 

@@ -31,7 +31,7 @@ const ConnectButton = () => {
       logger.logCounter({
         serviceName: KNOWN_SERVICES.GALLEON_DAPP,
         environment: process.env.NODE_ENV,
-        label: KNOWN_LABELS.VISIT,
+        label: KNOWN_LABELS.WALLET_CONNECT,
         metadata: {
           address: account,
           referrer: document.referrer === "" ? "direct" : document.referrer,

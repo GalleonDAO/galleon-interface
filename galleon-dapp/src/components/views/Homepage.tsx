@@ -26,9 +26,12 @@ import { getFormattedChartPriceChanges } from "utils/priceChange";
 import { getPieChartPositions } from "./DashboardData";
 import { MAINNET, POLYGON } from "constants/chains";
 import { classNames } from "utils";
+import { logger } from "index";
+import { KNOWN_LABELS, KNOWN_SERVICES } from "@galleondao/logging-lib";
 
 const Dashboard = () => {
   const { ethmaxy } = useMarketData();
+
   const { userBalances, totalBalanceInUSD, totalHourlyPrices, priceChanges } =
     useUserMarketData();
   const { account, chainId } = useEthers();
@@ -38,6 +41,22 @@ const Dashboard = () => {
     lg: true,
     xl: true,
   });
+
+  const [visited, setVisited] = useState(false);
+  useEffect(() => {
+    if (!visited) {
+      logger.logCounter({
+        serviceName: KNOWN_SERVICES.GALLEON_DAPP,
+        environment: process.env.NODE_ENV,
+        label: KNOWN_LABELS.VISIT,
+        metadata: {
+          referrer: document.referrer === "" ? "direct" : document.referrer,
+          path: window.location.pathname,
+        },
+      });
+      setVisited(true);
+    }
+  }, []);
 
   const [csvDownloadUrl, setCsvDownloadUrl] = useState("");
   const [historyItems, setHistoryItems] = useState<TransactionHistoryItem[]>(

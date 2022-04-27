@@ -53,7 +53,6 @@
     "import/newline-after-import": "warn",
     "import/no-duplicates": "warn",
     "no-multiple-empty-lines": [2, { "max": 1, "maxBOF": 0, "maxEOF": 1 }],
-
     // // These two methods of sorting imports conflict with one another AND the custom grouping ovveride below.
     // // Recommended solution: Keep them disabled.
     "sort-imports": "off",

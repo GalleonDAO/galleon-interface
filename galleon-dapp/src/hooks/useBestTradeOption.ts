@@ -159,26 +159,24 @@ export const useBestTradeOption = () => {
     setIsFetching(false);
     setTime(Date.now() - time);
 
-    const QUOTE_LABEL = "QUOTE TIMER";
-    const QUOTE_COUNTER = "QUOTE GENERATED";
-
     if (result.success) {
       logger.logTimer({
         serviceName: KNOWN_SERVICES.GALLEON_DAPP,
         environment: process.env.NODE_ENV,
-        label: QUOTE_LABEL,
+        label: KNOWN_LABELS.QUOTE_TIMER,
         duration: time,
       });
 
       logger.logCounter({
         serviceName: KNOWN_SERVICES.GALLEON_DAPP,
         environment: process.env.NODE_ENV,
-        label: QUOTE_COUNTER,
+        label: KNOWN_LABELS.QUOTE_GENERATED,
         metadata: {
           sellToken: sellToken.symbol,
           sellTokenAmount: sellTokenAmount.toString(),
           buyToken: buyToken.symbol,
           isIssuance: isIssuance.toString(),
+          address: account,
         },
       });
 
