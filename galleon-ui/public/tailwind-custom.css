@@ -1079,7 +1079,7 @@ select {
   border-color: rgb(229 231 235 / var(--tw-border-opacity));
 }
 
-.border-theme-blue {
+.border-theme-sky {
   --tw-border-opacity: 1;
   border-color: rgb(2 91 238 / var(--tw-border-opacity));
 }
@@ -1088,7 +1088,7 @@ select {
   border-color: transparent;
 }
 
-.border-theme-black {
+.border-theme-navy {
   --tw-border-opacity: 1;
   border-color: rgb(7 9 30 / var(--tw-border-opacity));
 }
@@ -1103,12 +1103,12 @@ select {
   background-color: rgb(4 7 40 / var(--tw-bg-opacity));
 }
 
-.bg-theme-background {
+.bg-theme-oldlace {
   --tw-bg-opacity: 1;
   background-color: rgb(252 246 238 / var(--tw-bg-opacity));
 }
 
-.bg-theme-blue {
+.bg-theme-sky {
   --tw-bg-opacity: 1;
   background-color: rgb(2 91 238 / var(--tw-bg-opacity));
 }
@@ -1163,7 +1163,7 @@ select {
     var(--tw-gradient-to, rgb(255 238 215 / 0));
 }
 
-.from-theme-blue {
+.from-theme-sky {
   --tw-gradient-from: #025bee;
   --tw-gradient-stops: var(--tw-gradient-from),
     var(--tw-gradient-to, rgb(2 91 238 / 0));
@@ -1173,7 +1173,7 @@ select {
   --tw-gradient-to: #0891b2;
 }
 
-.to-theme-blue {
+.to-theme-sky {
   --tw-gradient-to: #025bee;
 }
 
@@ -1443,7 +1443,7 @@ select {
   color: transparent;
 }
 
-.text-theme-black {
+.text-theme-navy {
   --tw-text-opacity: 1;
   color: rgb(7 9 30 / var(--tw-text-opacity));
 }
@@ -1463,7 +1463,7 @@ select {
   color: rgb(4 7 40 / var(--tw-text-opacity));
 }
 
-.text-theme-blue {
+.text-theme-sky {
   --tw-text-opacity: 1;
   color: rgb(2 91 238 / var(--tw-text-opacity));
 }
@@ -1615,7 +1615,7 @@ select {
   background-color: rgb(249 250 251 / var(--tw-bg-opacity));
 }
 
-.hover\:bg-theme-background:hover {
+.hover\:bg-theme-oldlace:hover {
   --tw-bg-opacity: 1;
   background-color: rgb(252 246 238 / var(--tw-bg-opacity));
 }
@@ -1632,7 +1632,7 @@ select {
     var(--tw-gradient-to, rgb(4 7 40 / 0));
 }
 
-.hover\:from-theme-blue:hover {
+.hover\:from-theme-sky:hover {
   --tw-gradient-from: #025bee;
   --tw-gradient-stops: var(--tw-gradient-from),
     var(--tw-gradient-to, rgb(2 91 238 / 0));
@@ -1642,7 +1642,7 @@ select {
   --tw-gradient-to: #0e7490;
 }
 
-.hover\:to-theme-blue:hover {
+.hover\:to-theme-sky:hover {
   --tw-gradient-to: #025bee;
 }
 
@@ -1708,7 +1708,7 @@ select {
   --tw-ring-color: rgb(8 145 178 / var(--tw-ring-opacity));
 }
 
-.focus\:ring-theme-blue:focus {
+.focus\:ring-theme-sky:focus {
   --tw-ring-opacity: 1;
   --tw-ring-color: rgb(2 91 238 / var(--tw-ring-opacity));
 }

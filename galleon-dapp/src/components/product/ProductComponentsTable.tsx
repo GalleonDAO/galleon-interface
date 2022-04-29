@@ -174,7 +174,7 @@ const ComponentRow = (props: { component: SetComponent }) => {
   const percentChangeIsPositive = percentChange >= 0;
   const percentChangeTextColor = percentChangeIsPositive
     ? colors.themeBlue
-    : colors.red[600];
+    : colors.themeCopper;
   const percentChangeSign = percentChangeIsPositive ? "+" : "-";
 
   return (

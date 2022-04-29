@@ -137,7 +137,7 @@ const ProductPage = (props: {
             />
           </Box>
           <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-2">
-            <div className="col-span-1 bg-theme-champagne border-2 border-theme-black rounded-2xl shadow-md shadow-theme-black  divide-y divide-theme-navy">
+            <div className="col-span-1 bg-theme-oldlace border-2 border-theme-navy rounded-2xl shadow-md shadow-theme-black  divide-y divide-theme-navy">
               <div className="w-full items-center justify-between p-6 space-x-6">
                 <MarketChart
                   marketData={priceChartData}
@@ -153,12 +153,12 @@ const ProductPage = (props: {
                 />
               </div>
             </div>
-            <div className="col-span-1 bg-theme-champagne border-2 border-theme-black rounded-2xl shadow-md shadow-theme-black  divide-y divide-theme-navy">
+            <div className="col-span-1 bg-theme-oldlace border-2 border-theme-navy rounded-2xl shadow-md shadow-theme-black  divide-y divide-theme-navy">
               <div className="w-full flex items-center justify-between p-6 space-x-6">
                 <Flex direction="column" grow={1} flexBasis="0">
                   <QuickTrade isNarrowVersion={false} singleToken={tokenData}>
-                    <div className=" px-2 pb-4 border-b border-theme-black sm:px-4">
-                      <h3 className="text-xl leading-6 font-semibold text-theme-navy">
+                    <div className=" px-2 pb-4 border-b border-theme-navy sm:px-4">
+                      <h3 className="text-xl leading-6 font-morion font-semibold text-theme-navy">
                         Trade the ETH Max Yield Index
                       </h3>
                       <p className="mt-1 text-md text-theme-navy">
@@ -174,7 +174,7 @@ const ProductPage = (props: {
             </div>
           </div>
           <div className="grid grid-cols-1 mt-10 gap-6 sm:grid-cols-1 lg:grid-cols-1">
-            <div className="col-span-1 bg-theme-champagne border-2 border-theme-black rounded-2xl shadow-md shadow-theme-black  divide-y divide-theme-navy">
+            <div className="col-span-1 bg-theme-oldlace border-2 border-theme-navy rounded-2xl shadow-md shadow-theme-black  divide-y divide-theme-navy">
               <div className="w-full items-center justify-between p-6 space-x-1">
                 <ProductPageSectionHeader title="Stats" topMargin="20px" />
                 <ProductStats stats={stats} />

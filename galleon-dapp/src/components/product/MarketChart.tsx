@@ -159,7 +159,7 @@ const MarketChart = (props: {
   const priceChange = props.priceChanges[durationSelector];
   const priceChangeColor = priceChange.isPositive
     ? colors.themeBlue
-    : colors.red[500];
+    : colors.themeCopper;
 
   return (
     <Flex direction="column" alignItems="center" width="100%">
@@ -262,6 +262,7 @@ const PriceDisplay = ({
     <Flex align="baseline" flexDir={["column", "column", "column", "row"]}>
       <Flex flexDirection={"column"}>
         <Text
+          className="font-morion"
           fontSize={["3xl", "3xl", "3xl", "4xl"]}
           color={colors.themeBlack}
           fontWeight="semibold"

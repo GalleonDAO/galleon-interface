@@ -1,14 +1,14 @@
-import { Fragment } from "react";
-import { Popover, Transition } from "@headlessui/react";
-import { MenuIcon, ShieldCheckIcon, XIcon } from "@heroicons/react/outline";
-import galleon from "assets/galleon.png";
+import { Fragment } from 'react'
+import { Popover, Transition } from '@headlessui/react'
+import { MenuIcon, ShieldCheckIcon, XIcon } from '@heroicons/react/outline'
+import galleon from 'assets/galleon.png'
 
 const navigation = [
-  { name: "DAO", href: "#" },
-  { name: "Products", href: "#" },
-  { name: "Marketplace", href: "#" },
-  { name: "Company", href: "#" },
-];
+  { name: 'DAO', href: '#' },
+  { name: 'Products', href: '#' },
+  { name: 'Marketplace', href: '#' },
+  { name: 'Company', href: '#' },
+]
 
 const Navigation = (props: { children?: JSX.Element }) => {
   return (
@@ -26,7 +26,7 @@ const Navigation = (props: { children?: JSX.Element }) => {
                   <img className="h-8 w-auto sm:h-10" src={galleon} alt="" />
                 </a>
                 <div className="-mr-2 flex items-center md:hidden">
-                  <Popover.Button className="bg-theme-background rounded-2xl p-2 inline-flex items-center justify-center text-gray-400 hover:bg-gray-800 focus:outline-none focus:ring-2 focus-ring-inset focus:ring-white">
+                  <Popover.Button className="bg-theme-oldlace rounded-2xl p-2 inline-flex items-center justify-center text-gray-400 hover:bg-gray-800 focus:outline-none focus:ring-2 focus-ring-inset focus:ring-white">
                     <span className="sr-only">Open main menu</span>
                     <MenuIcon className="h-6 w-6" aria-hidden="true" />
                   </Popover.Button>
@@ -47,13 +47,13 @@ const Navigation = (props: { children?: JSX.Element }) => {
             <div className="hidden md:flex md:items-center md:space-x-6">
               <a
                 href="#"
-                className="text-base font-semibold text-white border-theme-blue border-2 py-2 px-4 rounded-2xl hover:text-gray-300"
+                className="text-base font-semibold text-white border-theme-sky border-2 py-2 px-4 rounded-2xl hover:text-gray-300"
               >
                 Join the Crew
               </a>
               <a
                 href="#"
-                className="inline-flex items-center px-4 py-2 border border-transparent text-base font-semibold rounded-2xl text-white bg-theme-blue hover:bg-gray-700"
+                className="inline-flex items-center px-4 py-2 border border-transparent text-base font-semibold rounded-2xl text-white bg-theme-sky hover:bg-gray-700"
               >
                 App
               </a>
@@ -74,7 +74,7 @@ const Navigation = (props: { children?: JSX.Element }) => {
             focus
             className="absolute top-0 inset-x-0 p-2 transition transform origin-top md:hidden"
           >
-            <div className="rounded-lg shadow-md bg-theme-background ring-1 ring-black ring-opacity-5 overflow-hidden">
+            <div className="rounded-lg shadow-md bg-theme-oldlace ring-1 ring-black ring-opacity-5 overflow-hidden">
               <div className="px-5 pt-4 flex items-center justify-between">
                 <div>
                   <img
@@ -84,7 +84,7 @@ const Navigation = (props: { children?: JSX.Element }) => {
                   />
                 </div>
                 <div className="-mr-2">
-                  <Popover.Button className="bg-theme-background rounded-2xl p-2 inline-flex items-center justify-center text-gray-400 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-cyan-600">
+                  <Popover.Button className="bg-theme-oldlace rounded-2xl p-2 inline-flex items-center justify-center text-gray-400 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-cyan-600">
                     <span className="sr-only">Close menu</span>
                     <XIcon className="h-6 w-6" aria-hidden="true" />
                   </Popover.Button>
@@ -112,7 +112,7 @@ const Navigation = (props: { children?: JSX.Element }) => {
                 </div>
                 <div className="mt-6 px-5">
                   <p className="text-center text-base font-medium text-gray-500">
-                    Existing customer?{" "}
+                    Existing customer?{' '}
                     <a href="#" className="text-gray-900 hover:underline">
                       Login
                     </a>
@@ -125,7 +125,7 @@ const Navigation = (props: { children?: JSX.Element }) => {
       </Popover>
       {props.children}
     </>
-  );
-};
+  )
+}
 
-export default Navigation;
+export default Navigation

@@ -27,7 +27,7 @@ const NetworkSelector = () => {
         {({ open }) => (
           <>
             <div className="mt-1 relative">
-              <Listbox.Button className="theme-blue relative w-full border-2 border-theme-blue cursor-pointer  bg-theme-blue rounded-2xl pl-3 pr-10 py-1.5 text-left shadow-sm shadow-theme-black focus:outline-none focus:ring-1 focus:ring-theme-blue focus:border-theme-blue font-medium ">
+              <Listbox.Button className="theme-sky relative w-full border-2 border-theme-sky cursor-pointer  bg-theme-sky rounded-2xl pl-3 pr-10 py-1.5 text-left shadow-sm shadow-theme-black focus:outline-none focus:ring-1 focus:ring-theme-sky focus:border-theme-sky font-medium ">
                 <span className="block truncat font-semibold text-white">
                   {selected.name}
                 </span>
@@ -46,13 +46,13 @@ const NetworkSelector = () => {
                 leaveFrom="opacity-100"
                 leaveTo="opacity-0"
               >
-                <Listbox.Options className="fixed bg-white z-10 mt-1 theme-blue shadow-md max-h-60 rounded-2xl py-1 text-base ring-1 ring-black ring-opacity-5 overflow-auto focus:outline-none font-medium ">
+                <Listbox.Options className="fixed bg-white z-10 mt-1 theme-sky shadow-md max-h-60 rounded-2xl py-1 text-base ring-1 ring-black ring-opacity-5 overflow-auto focus:outline-none font-medium ">
                   {SUPPORTED_CHAINS.map((network) => (
                     <Listbox.Option
                       key={network.chainId}
                       className={({ active }) =>
                         classNames(
-                          active ? "text-white bg-theme-blue" : "text-gray-900",
+                          active ? "text-white bg-theme-sky" : "text-gray-900",
                           "select-none relative py-2 pl-3 pr-9 cursor-pointer "
                         )
                       }

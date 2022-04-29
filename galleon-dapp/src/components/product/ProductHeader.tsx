@@ -14,11 +14,22 @@ const ProductPageHeaderMobile = (props: { tokenData: Token }) => {
           w="32px"
           h="32px"
         />
-        <Text fontSize="2xl" fontWeight="500" ml="8px">
+        <Text
+          className="font-morion"
+          color={colors.themeChampagne}
+          fontSize="2xl"
+          fontWeight="500"
+          ml="8px"
+        >
           {props.tokenData.symbol}
         </Text>
       </Flex>
-      <Text fontSize="xl" fontWeight="700">
+      <Text
+        className="font-morion"
+        color={colors.themeChampagne}
+        fontSize="xl"
+        fontWeight="700"
+      >
         {props.tokenData.name}
       </Text>
     </Flex>
@@ -36,14 +47,26 @@ const ProductPageHeader = (props: { isMobile: boolean; tokenData: Token }) => {
       justifyContent="flex-end"
       alignItems="center"
       borderBottom="2px"
-      borderColor={colors.themeBlack}
+      color={colors.themeChampagne}
+      borderColor={colors.themeChampagne}
       padding="10px 0"
     >
-      <Text fontSize="4xl" fontWeight="700">
+      <Text
+        className="font-morion"
+        color={colors.themeChampagne}
+        fontSize="4xl"
+        fontWeight="700"
+      >
         {props.tokenData.name}
       </Text>
       <Spacer />
-      <Text fontSize="4xl" fontWeight="500" mr="24px">
+      <Text
+        className="font-morion"
+        color={colors.themeChampagne}
+        fontSize="4xl"
+        fontWeight="500"
+        mr="24px"
+      >
         {props.tokenData.symbol}
       </Text>
       <Image

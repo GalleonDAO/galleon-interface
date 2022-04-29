@@ -4,9 +4,10 @@ export const colors = {
   ...theme.colors,
   themeWhite: "#FFFFFF",
   themeNavy: "#040728",
-  themeBlack: "#07091E",
+  themeBlack: "#040728",
   themeOldlace: "#FDE6C4",
-  themeChampagne: "#FFEED7",
-  themeBackground: "#FCF6EE",
+  themeChampagne: "#FEF3E2",
+  themeBackground: "#FDE6C4",
   themeBlue: "#025BEE",
+  themeCopper: "#DC7F5A",
 };

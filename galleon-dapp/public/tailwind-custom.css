@@ -1027,10 +1027,6 @@ select {
   cursor: pointer;
 }
 
-.cursor-default {
-  cursor: default;
-}
-
 .select-none {
   -webkit-user-select: none;
   -ms-user-select: none;
@@ -1120,11 +1116,6 @@ select {
   border-color: rgb(4 7 40 / var(--tw-divide-opacity));
 }
 
-.divide-theme-black > :not([hidden]) ~ :not([hidden]) {
-  --tw-divide-opacity: 1;
-  border-color: rgb(7 9 30 / var(--tw-divide-opacity));
-}
-
 .overflow-auto {
   overflow: auto;
 }
@@ -1145,6 +1136,10 @@ select {
 
 .rounded-full {
   border-radius: 9999px;
+}
+
+.rounded-md {
+  border-radius: 0.375rem;
 }
 
 .border {
@@ -1172,12 +1167,12 @@ select {
   border-color: rgb(4 7 40 / var(--tw-border-opacity));
 }
 
-.border-theme-black {
+.border-theme-copper {
   --tw-border-opacity: 1;
-  border-color: rgb(7 9 30 / var(--tw-border-opacity));
+  border-color: rgb(220 127 90 / var(--tw-border-opacity));
 }
 
-.border-theme-blue {
+.border-theme-sky {
   --tw-border-opacity: 1;
   border-color: rgb(2 91 238 / var(--tw-border-opacity));
 }
@@ -1198,10 +1193,15 @@ select {
 
 .bg-theme-champagne {
   --tw-bg-opacity: 1;
-  background-color: rgb(255 238 215 / var(--tw-bg-opacity));
+  background-color: rgb(253 230 196 / var(--tw-bg-opacity));
 }
 
-.bg-theme-blue {
+.bg-theme-oldlace {
+  --tw-bg-opacity: 1;
+  background-color: rgb(254 243 226 / var(--tw-bg-opacity));
+}
+
+.bg-theme-sky {
   --tw-bg-opacity: 1;
   background-color: rgb(2 91 238 / var(--tw-bg-opacity));
 }
@@ -1212,6 +1212,18 @@ select {
 
 .bg-\[url\(\'\/ship-bg-04\.png\'\)\] {
   background-image: url("/ship-bg-04.png");
+}
+
+.bg-\[url\(\'\/ship-bg-03\.png\'\)\] {
+  background-image: url("/ship-bg-03.png");
+}
+
+.bg-\[url\(\'\/ship-bg-01\.png\'\)\] {
+  background-image: url("/ship-bg-01.png");
+}
+
+.bg-\[url\(\'\/ship-bg-02\.png\'\)\] {
+  background-image: url("/ship-bg-02.png");
 }
 
 .bg-cover {
@@ -1353,6 +1365,10 @@ select {
   text-align: center;
 }
 
+.font-morion {
+  font-family: Morion, Inter var;
+}
+
 .text-lg {
   font-size: 1.125rem;
   line-height: 1.75rem;
@@ -1412,19 +1428,9 @@ select {
   color: rgb(4 7 40 / var(--tw-text-opacity));
 }
 
-.text-theme-black {
-  --tw-text-opacity: 1;
-  color: rgb(7 9 30 / var(--tw-text-opacity));
-}
-
 .text-white {
   --tw-text-opacity: 1;
   color: rgb(255 255 255 / var(--tw-text-opacity));
-}
-
-.text-theme-blue {
-  --tw-text-opacity: 1;
-  color: rgb(2 91 238 / var(--tw-text-opacity));
 }
 
 .text-gray-900 {
@@ -1442,12 +1448,30 @@ select {
   color: rgb(156 163 175 / var(--tw-text-opacity));
 }
 
+.text-theme-sky {
+  --tw-text-opacity: 1;
+  color: rgb(2 91 238 / var(--tw-text-opacity));
+}
+
+.text-theme-champagne {
+  --tw-text-opacity: 1;
+  color: rgb(253 230 196 / var(--tw-text-opacity));
+}
+
 .opacity-100 {
   opacity: 1;
 }
 
 .opacity-0 {
   opacity: 0;
+}
+
+.opacity-20 {
+  opacity: 0.2;
+}
+
+.opacity-40 {
+  opacity: 0.4;
 }
 
 .shadow-sm {
@@ -1471,16 +1495,6 @@ select {
     0 1px 2px -1px var(--tw-shadow-color);
   box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000),
     var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
-}
-
-.shadow-theme-black {
-  --tw-shadow-color: #07091e;
-  --tw-shadow: var(--tw-shadow-colored);
-}
-
-.shadow-theme-blue {
-  --tw-shadow-color: #025bee;
-  --tw-shadow: var(--tw-shadow-colored);
 }
 
 .outline {
@@ -1551,11 +1565,149 @@ select {
   transition-timing-function: cubic-bezier(0.4, 0, 1, 1);
 }
 
+@font-face {
+  font-family: "Morion";
+
+  src: url("Morion/Morion-Regular.otf");
+
+  font-weight: normal;
+
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Morion";
+
+  src: url("Morion/Morion-Bold.otf");
+
+  font-weight: bold;
+
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Morion";
+
+  src: url("Morion/Morion-Semibold.otf");
+
+  font-weight: bolder;
+
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Morion";
+
+  src: url("Morion/Morion-Light.otf");
+
+  font-weight: lighter;
+
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Morion";
+
+  src: url("Morion/Morion-Thin.otf");
+
+  font-weight: thin;
+
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Wigrum";
+
+  src: url("Wigrum/wigrumweb-bold.eot") format("embedded-opentype"),
+    url("Wigrum/wigrumweb-bold.woff") format("woff");
+
+  font-weight: bold;
+
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Wigrum";
+
+  src: url("Wigrum/wigrumweb-bolditalic.eot") format("embedded-opentype"),
+    url("Wigrum/wigrumweb-bolditalic.woff") format("woff");
+
+  font-weight: bold;
+
+  font-style: italic;
+}
+
+@font-face {
+  font-family: "Wigrum";
+
+  src: url("Wigrum/wigrumweb-italic.eot") format("embedded-opentype"),
+    url("Wigrum/wigrumweb-italic.woff") format("woff");
+
+  font-weight: normal;
+
+  font-style: italic;
+}
+
+@font-face {
+  font-family: "Wigrum";
+
+  src: url("Wigrum/wigrumweb-light.eot") format("embedded-opentype"),
+    url("Wigrum/wigrumweb-light.woff") format("woff");
+
+  font-weight: lighter;
+
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Wigrum";
+
+  src: url("Wigrum/wigrumweb-lightitalic.eot") format("embedded-opentype"),
+    url("Wigrum/wigrumweb-lightitalic.woff") format("woff");
+
+  font-weight: lighter;
+
+  font-style: italic;
+}
+
+@font-face {
+  font-family: "Wigrum";
+
+  src: url("Wigrum/wigrumweb-medium.eot") format("embedded-opentype"),
+    url("Wigrum/wigrumweb-medium.woff") format("woff");
+
+  font-weight: normal;
+
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Wigrum";
+
+  src: url("Wigrum/wigrumweb-mediumitalic.eot") format("embedded-opentype"),
+    url("Wigrum/wigrumweb-mediumitalic.woff") format("woff");
+
+  font-weight: normal;
+
+  font-style: italic;
+}
+
+@font-face {
+  font-family: "Wigrum";
+
+  src: url("Wigrum/wigrumweb-regular.eot") format("embedded-opentype"),
+    url("Wigrum/wigrumweb-regular.woff") format("woff");
+
+  font-weight: normal;
+
+  font-style: normal;
+}
+
 .hover\:bg-opacity-75:hover {
   --tw-bg-opacity: 0.75;
 }
 
-.hover\:text-theme-blue:hover {
+.hover\:text-theme-sky:hover {
   --tw-text-opacity: 1;
   color: rgb(2 91 238 / var(--tw-text-opacity));
 }
@@ -1564,7 +1716,7 @@ select {
   border-style: none;
 }
 
-.focus\:border-theme-blue:focus {
+.focus\:border-theme-sky:focus {
   --tw-border-opacity: 1;
   border-color: rgb(2 91 238 / var(--tw-border-opacity));
 }
@@ -1583,7 +1735,7 @@ select {
     var(--tw-shadow, 0 0 #0000);
 }
 
-.focus\:ring-theme-blue:focus {
+.focus\:ring-theme-sky:focus {
   --tw-ring-opacity: 1;
   --tw-ring-color: rgb(2 91 238 / var(--tw-ring-opacity));
 }

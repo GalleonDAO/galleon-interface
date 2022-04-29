@@ -99,7 +99,7 @@ const QuickTradeSelector = (props: {
             onChange={(event) => onChangeInput(event.target.value)}
             name={props.title}
             id={props.title}
-            className="shadow-sm focus:ring-theme-blue focus:border-theme-blue block w-full pr-12 sm:text-md border-theme-black rounded-2xl border-2"
+            className="shadow-sm focus:ring-theme-sky focus:border-theme-sky block w-full pr-12 sm:text-md border-theme-navy rounded-2xl border-2"
           />
           <div className="absolute inset-y-0 right-0 flex py-1.5 ">
             <kbd className="inline-flex items-center px-2">

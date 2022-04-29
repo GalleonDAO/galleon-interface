@@ -67,7 +67,7 @@ const ConnectButton = () => {
       <div>
         <button
           onClick={handleConnectWallet}
-          className="ml-4 inline-block bg-theme-blue shadow-sm shadow-theme-black text-white  py-1.5 px-4 border-2 border-theme-blue rounded-2xl text-base font-medium  hover:bg-opacity-75"
+          className="ml-4 inline-block bg-theme-sky shadow-sm shadow-theme-black text-white  py-1.5 px-4 border-2 border-theme-sky rounded-2xl text-base font-medium  hover:bg-opacity-75"
         >
           Connect
         </button>
@@ -82,13 +82,13 @@ const ConnectButton = () => {
       <span>
         <span className="inline-flex items-center px-3 py-0.5 rounded-2xl text-base font-medium bg-transparent ">
           <svg
-            className="-ml-1 mr-1.5 h-2 w-2 text-theme-blue animate animate-pulse"
+            className="-ml-1 mr-1.5 h-2 w-2 text-theme-sky animate animate-pulse"
             fill="currentColor"
             viewBox="0 0 8 8"
           >
             <circle cx={4} cy={4} r={3} />
           </svg>
-          <span className="text-theme-blue">{handleAccount()}</span>
+          <span className="text-theme-sky">{handleAccount()}</span>
         </span>
 
         <button

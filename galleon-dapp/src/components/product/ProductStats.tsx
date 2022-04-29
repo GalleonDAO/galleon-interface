@@ -32,10 +32,10 @@ const ProductStats = ({ stats }: { stats: ProductStat[] }) => {
               key={productStat.title}
               className="px-4 py-5 bg-transparent shadow border-2 border-theme-navy rounded-2xl overflow-hidden sm:p-6"
             >
-              <dt className="text-sm font-medium text-theme-black truncate">
+              <dt className="text-sm font-bold font-morion text-theme-navy truncate">
                 {productStat.title}
               </dt>
-              <dd className="mt-1 text-3xl font-semibold text-theme-black">
+              <dd className="mt-1 text-3xl font-semibold text-theme-sky">
                 {productStat.value}
               </dd>
             </div>

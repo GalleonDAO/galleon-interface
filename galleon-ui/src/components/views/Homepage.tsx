@@ -1,11 +1,11 @@
-import Navigation from "components/Navigation";
-import Page from "components/Page";
-import Footer from "components/Footer";
+import Navigation from 'components/Navigation'
+import Page from 'components/Page'
+import Footer from 'components/Footer'
 
 const Dashboard = () => {
   return (
     <>
-      <div className="bg-theme-background">
+      <div className="bg-theme-oldlace">
         <div className="relative overflow-hidden">
           <Navigation>
             <></>
@@ -19,7 +19,7 @@ const Dashboard = () => {
         </div>
       </div>
     </>
-  );
-};
+  )
+}
 
-export default Dashboard;
+export default Dashboard

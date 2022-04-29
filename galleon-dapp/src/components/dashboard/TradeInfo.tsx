@@ -26,7 +26,7 @@ const TradeInfoItemRow = ({ title, value }: TradeInfoItem) => {
             <div>
               <span
                 className={classNames(
-                  "bg-theme-champagne",
+                  "bg-theme-oldlace",
                   "h-8 w-8 rounded-full flex items-center justify-center ring-2 ring-theme-navy"
                 )}
               >
@@ -65,7 +65,7 @@ const TradeInfoItemRow = ({ title, value }: TradeInfoItem) => {
         <div>
           <span
             className={classNames(
-              "bg-theme-champagne",
+              "bg-theme-oldlace",
               "h-8 w-8 rounded-full flex items-center justify-center ring-2 ring-theme-navy"
             )}
           >

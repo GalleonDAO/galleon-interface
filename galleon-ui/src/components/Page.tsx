@@ -151,12 +151,12 @@ const Page = (props: { children?: JSX.Element }) => {
                     <form action="#" className="sm:max-w-xl sm:mx-auto lg:mx-0">
                       <div className="sm:flex">
                         <div className="min-w-0">
-                          <button className="block w-full py-3 px-4 rounded-2xl shadow bg-gradient-to-r border-2 hover:text-theme-white from-theme-navy to-theme-blue text-theme-white hover:from-theme-blue hover:to-theme-navy focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-theme-blue focus:ring-offset-theme-black font-semibold">
+                          <button className="block w-full py-3 px-4 rounded-2xl shadow bg-gradient-to-r border-2 hover:text-theme-white from-theme-navy to-theme-sky text-theme-white hover:from-theme-sky hover:to-theme-navy focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-theme-sky focus:ring-offset-theme-black font-semibold">
                             Explore Products
                           </button>
                         </div>
                         <div className="mt-3 sm:mt-0 sm:ml-3">
-                          <button className="block w-full py-3 px-4 rounded-2xl shadow bg-gradient-to-r border-2 hover:text-theme-white from-theme-blue to-theme-navy text-theme-white hover:from-theme-navy hover:to-theme-blue focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-theme-blue focus:ring-offset-theme-black font-semibold">
+                          <button className="block w-full py-3 px-4 rounded-2xl shadow bg-gradient-to-r border-2 hover:text-theme-white from-theme-sky to-theme-navy text-theme-white hover:from-theme-navy hover:to-theme-sky focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-theme-sky focus:ring-offset-theme-black font-semibold">
                             Join the Crew
                           </button>
                         </div>
@@ -180,23 +180,23 @@ const Page = (props: { children?: JSX.Element }) => {
         </div>
 
         {/* Feature section with screenshot */}
-        <div className="relative bg-theme-background pt-16 sm:pt-24 lg:pt-32">
+        <div className="relative bg-theme-oldlace pt-16 sm:pt-24 lg:pt-32">
           <div className="mx-auto max-w-md px-4 text-center sm:px-6 sm:max-w-3xl lg:px-8 lg:max-w-7xl">
             <div>
-              <h2 className="text-base font-semibold tracking-wider text-theme-black uppercase">
+              <h2 className="text-base font-semibold tracking-wider text-theme-navy uppercase">
                 Structured Products
               </h2>
-              <p className="mt-2 text-3xl font-extrabold text-theme-black tracking-tight sm:text-4xl">
+              <p className="mt-2 text-3xl font-extrabold text-theme-navy tracking-tight sm:text-4xl">
                 One-click access to on-chain investment themes
               </p>
-              <p className="mt-5 max-w-prose mx-auto text-xl text-theme-black">
+              <p className="mt-5 max-w-prose mx-auto text-xl text-theme-navy">
                 Get access to a diverse range of crypto investment themes in a
                 cost and tax efficient way to buy, hold or actively trade. Built
                 by experienced methodologists on on Set Protocol contracts, we
                 deliver innovation in DeFi.
               </p>
             </div>
-            <div className="mt-12 border-2 border-theme-black rounded-2xl">
+            <div className="mt-12 border-2 border-theme-navy rounded-2xl">
               <img
                 className="rounded-lg shadow-xl ring-1 ring-black ring-opacity-5"
                 src="/dapp.png"
@@ -207,12 +207,12 @@ const Page = (props: { children?: JSX.Element }) => {
         </div>
 
         {/* Feature section with grid */}
-        <div className="relative bg-theme-background py-16 sm:py-24 lg:py-32">
+        <div className="relative bg-theme-oldlace py-16 sm:py-24 lg:py-32">
           <div className="mx-auto max-w-md px-4 text-center sm:max-w-3xl sm:px-6 lg:px-8 lg:max-w-7xl">
             <h2 className="text-base font-semibold tracking-wider text-cyan-600 uppercase">
               Deploy faster
             </h2>
-            <p className="mt-2 text-3xl font-extrabold text-theme-black tracking-tight sm:text-4xl">
+            <p className="mt-2 text-3xl font-extrabold text-theme-navy tracking-tight sm:text-4xl">
               Everything you need to deploy your app
             </p>
             <p className="mt-5 max-w-prose mx-auto text-xl text-gray-500">
@@ -224,7 +224,7 @@ const Page = (props: { children?: JSX.Element }) => {
               <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
                 {features.map((feature) => (
                   <div key={feature.name} className="pt-6">
-                    <div className="flow-root bg-theme-background rounded-2xl px-6 pb-8">
+                    <div className="flow-root bg-theme-oldlace rounded-2xl px-6 pb-8">
                       <div className="-mt-6">
                         <div>
                           <span className="inline-flex items-center justify-center p-3 bg-gradient-to-r from-teal-500 to-cyan-600 rounded-2xl shadow-md">
@@ -234,7 +234,7 @@ const Page = (props: { children?: JSX.Element }) => {
                             />
                           </span>
                         </div>
-                        <h3 className="mt-8 text-lg font-medium text-theme-black tracking-tight">
+                        <h3 className="mt-8 text-lg font-medium text-theme-navy tracking-tight">
                           {feature.name}
                         </h3>
                         <p className="mt-5 text-base text-gray-500">
@@ -255,7 +255,7 @@ const Page = (props: { children?: JSX.Element }) => {
             <div className="relative lg:-my-8">
               <div
                 aria-hidden="true"
-                className="absolute inset-x-0 top-0 h-1/2 bg-theme-background lg:hidden"
+                className="absolute inset-x-0 top-0 h-1/2 bg-theme-oldlace lg:hidden"
               />
               <div className="mx-auto max-w-md px-4 sm:max-w-3xl sm:px-6 lg:p-0 lg:h-full">
                 <div className="aspect-w-10 aspect-h-6 rounded-xl shadow-xl overflow-hidden sm:aspect-w-16 sm:aspect-h-7 lg:aspect-none lg:h-full">
@@ -300,13 +300,13 @@ const Page = (props: { children?: JSX.Element }) => {
         </div>
 
         {/* Blog section */}
-        <div className="relative bg-theme-background py-16 sm:py-24 lg:py-32">
+        <div className="relative bg-theme-oldlace py-16 sm:py-24 lg:py-32">
           <div className="relative">
             <div className="text-center mx-auto max-w-md px-4 sm:max-w-3xl sm:px-6 lg:px-8 lg:max-w-7xl">
               <h2 className="text-base font-semibold tracking-wider text-cyan-600 uppercase">
                 Learn
               </h2>
-              <p className="mt-2 text-3xl font-extrabold text-theme-black tracking-tight sm:text-4xl">
+              <p className="mt-2 text-3xl font-extrabold text-theme-navy tracking-tight sm:text-4xl">
                 Helpful Resources
               </p>
               <p className="mt-5 mx-auto max-w-prose text-xl text-gray-500">
@@ -328,7 +328,7 @@ const Page = (props: { children?: JSX.Element }) => {
                       alt=""
                     />
                   </div>
-                  <div className="flex-1 bg-theme-background p-6 flex flex-col justify-between">
+                  <div className="flex-1 bg-theme-oldlace p-6 flex flex-col justify-between">
                     <div className="flex-1">
                       <p className="text-sm font-medium text-cyan-600">
                         <a
@@ -411,7 +411,7 @@ const Page = (props: { children?: JSX.Element }) => {
                 <div className="inline-flex rounded-2xl shadow">
                   <a
                     href="#"
-                    className="inline-flex items-center justify-center px-5 py-3 border border-transparent text-base font-medium rounded-2xl text-theme-black bg-theme-background hover:bg-theme-background"
+                    className="inline-flex items-center justify-center px-5 py-3 border border-transparent text-base font-medium rounded-2xl text-theme-navy bg-theme-oldlace hover:bg-theme-oldlace"
                   >
                     Visit the help center
                     <ExternalLinkIcon

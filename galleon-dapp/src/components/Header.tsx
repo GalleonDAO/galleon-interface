@@ -1,4 +1,4 @@
-import logo from "assets/galleon.png";
+import logo from "assets/brand/Vector-Logo-2.png";
 import { Link } from "react-router-dom";
 import ConnectButton from "./header/ConnectButton";
 
@@ -13,13 +13,13 @@ const Header = () => {
               <img className="h-10 w-auto" src={logo} alt="" />
             </Link>
             <div className="hidden ml-10 space-x-8 lg:block">
-              <span className="text-lg font-semibold text-theme-navy hover:text-theme-blue">
+              <span className="text-lg font-semibold text-theme-navy hover:text-theme-sky">
                 <Link to="/">Dashboard</Link>
               </span>
-              <span className="text-lg font-semibold text-theme-navy hover:text-theme-blue">
+              <span className="text-lg font-semibold text-theme-navy hover:text-theme-sky">
                 <Link to="/products">Products</Link>
               </span>
-              <span className="text-lg font-semibold text-theme-navy hover:text-theme-blue">
+              <span className="text-lg font-semibold text-theme-navy hover:text-theme-sky">
                 <Link to="/dbl">$DBL</Link>
               </span>
             </div>
@@ -30,19 +30,19 @@ const Header = () => {
         </div>
         <div className="py-4 flex flex-wrap justify-center space-x-6 lg:hidden">
           <a
-            className="text-base font-semibold text-theme-navy hover:text-theme-blue"
+            className="text-base font-semibold text-theme-navy hover:text-theme-sky"
             href="/"
           >
             Dashboard
           </a>
           <a
-            className="text-base font-semibold text-theme-navy hover:text-theme-blue"
+            className="text-base font-semibold text-theme-navy hover:text-theme-sky"
             href="/products"
           >
             Products
           </a>
           <a
-            className="text-base font-semibold text-theme-navy hover:text-theme-blue"
+            className="text-base font-semibold text-theme-navy hover:text-theme-sky"
             href="/dbl"
           >
             $DBL

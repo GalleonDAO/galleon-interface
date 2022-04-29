@@ -126,7 +126,7 @@ const DoubloonPage = (props: {
             />
           </Box>
           <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-2">
-            <div className="col-span-1 bg-theme-champagne border-2 border-theme-black rounded-2xl shadow-md shadow-theme-black  divide-y divide-theme-navy">
+            <div className="col-span-1 bg-theme-oldlace border-2 border-theme-navy rounded-2xl shadow-md shadow-theme-black  divide-y divide-theme-navy">
               <div className="w-full items-center justify-between p-6 space-x-6">
                 <MarketChart
                   marketData={priceChartData}
@@ -142,11 +142,11 @@ const DoubloonPage = (props: {
                 />
               </div>
             </div>
-            <div className="col-span-1 bg-theme-champagne border-2 border-theme-black rounded-2xl shadow-md shadow-theme-black  divide-y divide-theme-navy">
+            <div className="col-span-1 bg-theme-oldlace border-2 border-theme-navy rounded-2xl shadow-md shadow-theme-black  divide-y divide-theme-navy">
               <div className="w-full flex items-center justify-between p-6 space-x-6">
                 <Flex direction="column" grow={1} flexBasis="0">
                   <div className=" px-2 pb-4 mb-4 sm:px-4">
-                    <h3 className="text-xl leading-6 font-semibold text-theme-navy">
+                    <h3 className="text-xl font-morion leading-6 font-semibold text-theme-navy">
                       Invest in Galleon & Govern
                     </h3>
                     <p className="mt-1 text-md text-theme-navy">
@@ -161,13 +161,13 @@ const DoubloonPage = (props: {
                         onClick={() =>
                           changeNetwork(ARBITRUM.chainId.toString())
                         }
-                        className="ml-4 inline-block bg-theme-blue shadow-sm shadow-theme-black text-white  py-1.5 px-4 border-2 border-theme-blue rounded-2xl text-base font-medium  hover:bg-opacity-75"
+                        className="ml-4 inline-block bg-theme-sky shadow-sm shadow-theme-black text-white  py-1.5 px-4 border-2 border-theme-sky rounded-2xl text-base font-medium  hover:bg-opacity-75"
                       >
                         Switch to Arbitrum
                       </button>
 
                       <Box
-                        className="justify-center text-center mx-auto"
+                        className="justify-center text-center mx-auto border-2 border-theme-navy rounded-md shadow-md"
                         mt="40px"
                         mb="8px"
                       >
@@ -198,7 +198,7 @@ const DoubloonPage = (props: {
             </div>
           </div>
           <div className="grid grid-cols-1 mt-10 gap-6 sm:grid-cols-1 lg:grid-cols-1">
-            <div className="col-span-1 bg-theme-champagne border-2 border-theme-black rounded-2xl shadow-md shadow-theme-black  divide-y divide-theme-navy">
+            <div className="col-span-1 bg-theme-oldlace border-2 border-theme-navy rounded-2xl shadow-md shadow-theme-black  divide-y divide-theme-navy">
               <div className="w-full items-center justify-between p-6 space-x-6">
                 <ProductPageSectionHeader title="Stats" topMargin="20px" />
                 <ProductStats stats={stats} />

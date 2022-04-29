@@ -16,7 +16,7 @@ const PerformanceCell = ({ percentChange }: { percentChange?: number }) => {
     );
   }
   return (
-    <Text color={colors.red[500]} fontWeight={"semibold"}>
+    <Text color={colors.themeCopper} fontWeight={"semibold"}>
       {formatPercent}
     </Text>
   );
