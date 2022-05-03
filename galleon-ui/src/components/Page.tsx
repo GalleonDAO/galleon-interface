@@ -594,7 +594,7 @@ const Page = (props: { children?: JSX.Element }) => {
                   <a
                     href="https://app.galleon.community/dbl"
                     target={"_blank"}
-                    className="block text-center m-auto mt-10 py-3 w-1/2 px-4 mb-10 rounded-2xl text-xl shadow bg-gradient-to-r border-2 hover:text-theme-navy bg-theme-white hover:bg-theme-oldlace text-theme-navy focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-theme-sky focus:ring-offset-theme-black" rel="noreferrer"
+                    className="block text-center m-auto mt-10 py-3 w-1/2 px-4 mb-10 font-semibold rounded-2xl text-xl shadow bg-gradient-to-r border-2 hover:text-theme-navy bg-theme-white hover:bg-theme-oldlace text-theme-navy focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-theme-sky focus:ring-offset-theme-black" rel="noreferrer"
                   >
                     Buy Doubloon ($DBL)
                   </a>
@@ -649,7 +649,7 @@ const Page = (props: { children?: JSX.Element }) => {
               />
             </span>
             <h3 className="mt-5 text-center text-3xl font-bold font-morion text-theme-navy  sm:text-5xl">
-              Contributute to Galleon
+              Contribute to Galleon
             </h3>
             <p className="text-xl text-center pt-1  font-semibold text-theme-navy">
               "Part of the ship, part of the crew"
