@@ -1,6 +1,6 @@
-import Navigation from "components/Navigation";
-import { Fragment } from "react";
-import { Popover, Transition, Disclosure } from "@headlessui/react";
+import Navigation from 'components/Navigation'
+import { Fragment } from 'react'
+import { Popover, Transition, Disclosure } from '@headlessui/react'
 import {
   CloudUploadIcon,
   CogIcon,
@@ -10,84 +10,85 @@ import {
   ServerIcon,
   ShieldCheckIcon,
   XIcon,
-} from "@heroicons/react/outline";
-import { ChevronRightIcon, ExternalLinkIcon } from "@heroicons/react/solid";
-import crewBackground from "assets/brand/crew-bg.png";
-import { ChevronDownIcon } from "@heroicons/react/outline";
-import ResourcesIcon from "assets/brand/Resources-Icon.png";
-import CommunityIcon from "assets/brand/Community-Icon.png";
-import AboutIcon from "assets/brand/About-Icon.png";
-import ApplicationIcon from "assets/brand/Application-Icon.png";
-import GovernanceIcon from "assets/brand/Governance-Icon.png";
-import ProductsIcon from "assets/brand/Products-Icon.png";
-import TreasuryIcon from "assets/brand/Treasury-Icon.png";
-import GalleonLogo from "assets/brand/Union-Logo-Light.png";
+} from '@heroicons/react/outline'
+import { ChevronRightIcon, ExternalLinkIcon } from '@heroicons/react/solid'
+import crewBackground from 'assets/brand/crew-bg.png'
+import { ChevronDownIcon } from '@heroicons/react/outline'
+import ResourcesIcon from 'assets/brand/Resources-Icon.png'
+import CommunityIcon from 'assets/brand/Community-Icon.png'
+import AboutIcon from 'assets/brand/About-Icon.png'
+import ApplicationIcon from 'assets/brand/Application-Icon.png'
+import GovernanceIcon from 'assets/brand/Governance-Icon.png'
+import ProductsIcon from 'assets/brand/Products-Icon.png'
+import TreasuryIcon from 'assets/brand/Treasury-Icon.png'
+import GalleonLogo from 'assets/brand/Union-Logo-Light.png'
 
-import ResourcesIconDark from "assets/brand/Resources-Icon-Dark.png";
-import CommunityIconDark from "assets/brand/Community-Icon-Dark.png";
-import AboutIconDark from "assets/brand/About-Icon-Dark.png";
-import ApplicationIconDark from "assets/brand/Application-Icon-Dark.png";
-import GovernanceIconDark from "assets/brand/Governance-Icon-Dark.png";
-import ProductsIconDark from "assets/brand/Products-Icon-Dark.png";
-import TreasuryIconDark from "assets/brand/Treasury-Icon-Dark.png";
-import { classNames } from "utils";
+import ResourcesIconDark from 'assets/brand/Resources-Icon-Dark.png'
+import CommunityIconDark from 'assets/brand/Community-Icon-Dark.png'
+import AboutIconDark from 'assets/brand/About-Icon-Dark.png'
+import ApplicationIconDark from 'assets/brand/Application-Icon-Dark.png'
+import GovernanceIconDark from 'assets/brand/Governance-Icon-Dark.png'
+import ProductsIconDark from 'assets/brand/Products-Icon-Dark.png'
+import TreasuryIconDark from 'assets/brand/Treasury-Icon-Dark.png'
+import { classNames } from 'utils'
 
 const features = [
   {
-    name: "Documentation",
+    name: 'Documentation',
     description:
-      "Read up on how Galleon operates, our optimistic governance model and contributor guidelines.",
-    link: "https://docs.galleon.community",
+      'Read up on how Galleon operates, our optimistic governance model and contributor guidelines.',
+    link: 'https://docs.galleon.community',
     icon: ResourcesIcon,
   },
   {
-    name: "Community Crew",
+    name: 'Community Crew',
     description:
-      "Join our thriving community and get involved in our many intiatives to earn governance power through $DBL.",
-    link: "https://discord.gg/galleondao",
+      'Join our thriving community and get involved in our many intiatives to earn governance power through $DBL.',
+    link: 'https://discord.gg/galleondao',
     icon: CommunityIcon,
   },
   {
-    name: "Technology",
+    name: 'Technology',
     description:
-      "We use our technology partner Set Protocol to create the most secure, battle-tested products in DeFi.",
-    link: "https://tokensets.com",
+      'We use our technology partner Set Protocol to create the most secure, battle-tested products in DeFi.',
+    link: 'https://tokensets.com',
     icon: ApplicationIcon,
   },
   {
-    name: "Decentralised",
+    name: 'Decentralised',
     description:
-      "Participate in Galleon proposals through on-chain voting mechanisms on Snapshot using held $DBL.",
-    link: "https://court.galleon.community",
+      'Participate in Galleon proposals through on-chain voting mechanisms on Snapshot using held $DBL.',
+    link: 'https://court.galleon.community',
     icon: GovernanceIcon,
   },
   {
-    name: "Products",
+    name: 'Products',
     description:
-      "Explore our growing suite on on-chain products across Ethereum, Optimism, Avalanche & Polygon",
-    link: "https://app.galleon.community",
+      'Explore our growing suite on on-chain products across Ethereum, Optimism, Avalanche & Polygon',
+    link: 'https://app.galleon.community',
     icon: ProductsIcon,
   },
   {
-    name: "Treasury",
+    name: 'Treasury',
     description:
-      "Take a look into the treasury and organisation health as all financial activity is executed transparently.",
-    link: "https://arbiscan.io/address/0x366C6aA72f717743FaEEdCaeF2b4dE8ec9589399",
+      'Take a look into the treasury and organisation health as all financial activity is executed transparently.',
+    link:
+      'https://arbiscan.io/address/0x366C6aA72f717743FaEEdCaeF2b4dE8ec9589399',
     icon: TreasuryIcon,
   },
-];
+]
 
 const faqs = [
   {
-    question: "What is our core mission?",
+    question: 'What is our core mission?',
     answer: (
       <span>
         The core mission that Galleon and its contributors align themselves
-        around is{" "}
+        around is{' '}
         <span className="text-theme-sky">
           building, growing and maintaining best-in-class decentralised,
           on-chain structured products.
-        </span>{" "}
+        </span>{' '}
         We create investment themes and strategies that appeal to retail and
         DeFi natives alike to make investing and capturing the upside of the
         crypto space as easy as one click. Major initiatives in the Galleon
@@ -97,23 +98,23 @@ const faqs = [
     ),
   },
   {
-    question: "What are Galleon ‘Voyages’?",
+    question: 'What are Galleon ‘Voyages’?',
     answer: (
       <span>
         Voyages are major initiatives and extensions of the Galleon
         organisation. They are independent workstreams outside of our core
         mission of creating decentralised structured products but instead
-        benefit the DAO through revenue and treasury diversification,{" "}
+        benefit the DAO through revenue and treasury diversification,{' '}
         <span className="text-theme-sky">
           direct benefits to $DBL tokenomics
-        </span>{" "}
+        </span>{' '}
         and exploration of the space to create a thriving, long-term aligned
         community.
       </span>
     ),
   },
   {
-    question: "Why we are here?",
+    question: 'Why we are here?',
     answer: (
       <span>
         We fundamentally believe that blockchain technology is the greatest
@@ -127,7 +128,7 @@ const faqs = [
         entities with the largest capital.<br></br>
         <br></br>Crypto projects turn things upside down. They issue their
         tokens in the earliest stages. Individuals can choose to invest any
-        large or small sum they want.{" "}
+        large or small sum they want.{' '}
         <span className="text-theme-sky">
           We at Galleon are building innovative on-chain products that anyone in
           the World can access, regardless of wealth, race, religion, gender, or
@@ -139,27 +140,28 @@ const faqs = [
     ),
   },
   {
-    question: "How does governance work in the DAO?",
+    question: 'How does governance work in the DAO?',
     answer: (
       <span>
         Galleon is governed ultimately by Doubloon (DBL) holders through Galleon
-        Improvement Proposals (GIP) and a model called{" "}
+        Improvement Proposals (GIP) and a model called{' '}
         <a
           href="https://docs.galleon.community/dao/governance"
-          target={"_blank"}
-          className="text-theme-sky" rel="noreferrer"
+          target={'_blank'}
+          className="text-theme-sky"
+          rel="noreferrer"
         >
-          {" "}
+          {' '}
           optimistic governance.
         </a>
       </span>
     ),
   },
-];
+]
 
 const workstreams = [
   {
-    title: "Product",
+    title: 'Product',
     answer: (
       <div className="">
         Within the product workstream, you’ll be responsible for guaranteeing
@@ -192,7 +194,7 @@ const workstreams = [
     ),
   },
   {
-    title: "Growth",
+    title: 'Growth',
     answer: (
       <div className="">
         Understanding our customer’s needs and having empathy with their pain
@@ -230,7 +232,7 @@ const workstreams = [
     ),
   },
   {
-    title: "Business Development",
+    title: 'Business Development',
     answer: (
       <div className="">
         Our Business Development workstream is aligned in parallel with Growth
@@ -269,7 +271,7 @@ const workstreams = [
     ),
   },
   {
-    title: "Design & Content",
+    title: 'Design & Content',
     answer: (
       <div className="">
         Support Growth & Business Development workstreams for presentation
@@ -287,7 +289,7 @@ const workstreams = [
     ),
   },
   {
-    title: "Treasury",
+    title: 'Treasury',
     answer: (
       <div className="">
         Our treasury workstream aims to diversify Galleon assets in two ways:
@@ -310,7 +312,7 @@ const workstreams = [
     ),
   },
   {
-    title: "Analytics",
+    title: 'Analytics',
     answer: (
       <div className="">
         Our Analytics workstream maximizes data capture and efficiency to track
@@ -338,44 +340,40 @@ const workstreams = [
     ),
   },
   {
-    title: "Engineering",
+    title: 'Engineering',
     answer: (
       <span>
-        Galleon is governed ultimately by Doubloon (DBL) holders through Galleon
-        Improvement Proposals (GIP) and a model called{" "}
-        <a
-          href="https://docs.galleon.community/dao/governance"
-          target={"_blank"}
-          className="text-theme-sky" rel="noreferrer"
-        >
-          optimistic governance.
-        </a>
+        Galleon's core workstream, building the most innovative, leading DeFi
+        products is our goal and therefore we need the greatest minds in-house
+        to develop them. Our engineering workstream ranges from deep smart
+        contract engineering to backend analytic and logging services all the
+        way to frontend user facing applications.
       </span>
     ),
   },
-];
+]
 
 const products = [
   {
-    title: "ETH Maxy Yield Index",
+    title: 'ETH Maxy Yield Index',
     description:
-      "ETHMAXY is the best leveraged $ETH liquid staking strategy in DeFi today, all within one tradable ERC20 token.",
+      'ETHMAXY is the best leveraged $ETH liquid staking strategy in DeFi today, all within one tradable ERC20 token.',
     source:
-      "https://github.com/GalleonDAO/galleon-tokenlist/blob/main/logos/ethmaxy.png?raw=true",
-    link: "https://app.galleon.community/ethmaxy",
+      'https://github.com/GalleonDAO/galleon-tokenlist/blob/main/logos/ethmaxy.png?raw=true',
+    link: 'https://app.galleon.community/ethmaxy',
     active: true,
   },
   {
-    title: "SOLUNAVAX Index",
+    title: 'SOLUNAVAX Index',
     description:
-      "SOLUNAVAX enables traders to gain L2 exposure to the popular, alternate Layer 1 assets, SOL, LUNA and AVAX",
+      'SOLUNAVAX enables traders to gain L2 exposure to the popular, alternate Layer 1 assets, SOL, LUNA and AVAX',
     source:
-      "https://github.com/GalleonDAO/galleon-tokenlist/blob/main/logos/solunavax-200px.png?raw=true",
-    link: "https://app.galleon.community/solunavax",
+      'https://github.com/GalleonDAO/galleon-tokenlist/blob/main/logos/solunavax-200px.png?raw=true',
+    link: 'https://app.galleon.community/solunavax',
     active: false,
   },
   // More files...
-];
+]
 
 const Page = (props: { children?: JSX.Element }) => {
   return (
@@ -404,8 +402,9 @@ const Page = (props: { children?: JSX.Element }) => {
                         <div className="min-w-0">
                           <a
                             href="https://app.galleon.community"
-                            target={"_blank"}
-                            className="block w-full py-3 px-4 mb-10 rounded-2xl shadow hover:border-2 hover:border-theme-champagne hover:text-theme-champagne  bg-theme-champagne hover:bg-theme-navy text-theme-navy focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-theme-sky focus:ring-offset-theme-black font-semibold" rel="noreferrer"
+                            target={'_blank'}
+                            className="block w-full py-3 px-4 mb-10 rounded-2xl shadow hover:border-2 hover:border-theme-champagne hover:text-theme-champagne  bg-theme-champagne hover:bg-theme-navy text-theme-navy focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-theme-sky focus:ring-offset-theme-black font-semibold"
+                            rel="noreferrer"
                           >
                             Application
                           </a>
@@ -413,8 +412,9 @@ const Page = (props: { children?: JSX.Element }) => {
                         <div className="mt-3 sm:mt-0 sm:ml-3">
                           <a
                             href="https://discord.gg/galleondao"
-                            target={"_blank"}
-                            className="block w-full py-3 px-4 mb-10 rounded-2xl shadow hover:border-2 hover:border-theme-champagne hover:text-theme-champagne  bg-theme-champagne  text-theme-navy hover:bg-theme-navy  focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-theme-sky focus:ring-offset-theme-black font-semibold" rel="noreferrer"
+                            target={'_blank'}
+                            className="block w-full py-3 px-4 mb-10 rounded-2xl shadow hover:border-2 hover:border-theme-champagne hover:text-theme-champagne  bg-theme-champagne  text-theme-navy hover:bg-theme-navy  focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-theme-sky focus:ring-offset-theme-black font-semibold"
+                            rel="noreferrer"
                           >
                             Join the Crew
                           </a>
@@ -435,8 +435,9 @@ const Page = (props: { children?: JSX.Element }) => {
                       </div>
                       <a
                         href="https://cursedpirates.xyz"
-                        target={"_blank"}
-                        className="flex  items-center  text-theme-white bg-transparent p-1 pr-2 sm:text-base lg:text-sm xl:text-base hover:text-theme-navy" rel="noreferrer"
+                        target={'_blank'}
+                        className="flex  items-center  text-theme-white bg-transparent p-1 pr-2 sm:text-base lg:text-sm xl:text-base hover:text-theme-navy"
+                        rel="noreferrer"
                       >
                         <img
                           src="/jollyroger-transp.png"
@@ -444,14 +445,15 @@ const Page = (props: { children?: JSX.Element }) => {
                           aria-hidden="true"
                         />
                         <span className="px-3 py-0.5 font-wigrum  text-xl text-theme-white hover:text-theme-champagne font-semibold leading-5 uppercase tracking-wide rounded-full">
-                          Cursed Pirates{" "}
+                          Cursed Pirates{' '}
                           <ChevronRightIcon className="w-8 h-8 -translate-y-1 inline-flex"></ChevronRightIcon>
                         </span>
                       </a>
                       <a
                         href="https://flyingdutchman.capital"
-                        target={"_blank"}
-                        className="flex  mt-3 items-center font-wigrum text-theme-white bg-transparent p-1 pr-2 sm:text-base lg:text-sm xl:text-base hover:text-theme-navy" rel="noreferrer"
+                        target={'_blank'}
+                        className="flex  mt-3 items-center font-wigrum text-theme-white bg-transparent p-1 pr-2 sm:text-base lg:text-sm xl:text-base hover:text-theme-navy"
+                        rel="noreferrer"
                       >
                         <img
                           src="/fdc-flag-transp.png"
@@ -459,7 +461,7 @@ const Page = (props: { children?: JSX.Element }) => {
                           aria-hidden="true"
                         />
                         <span className="px-3 py-0.5 text-xl text-theme-white hover:text-theme-champagne font-semibold leading-5 uppercase tracking-wide rounded-full">
-                          Flying Dutchman Capital{" "}
+                          Flying Dutchman Capital{' '}
                           <ChevronRightIcon className="w-8 h-8 -translate-y-1 inline-flex"></ChevronRightIcon>
                         </span>
                       </a>
@@ -509,8 +511,8 @@ const Page = (props: { children?: JSX.Element }) => {
                             <span className="ml-6 h-7 flex items-center">
                               <ChevronDownIcon
                                 className={classNames(
-                                  open ? "-rotate-180" : "rotate-0",
-                                  "h-6 w-6 transform text-theme=navy"
+                                  open ? '-rotate-180' : 'rotate-0',
+                                  'h-6 w-6 transform text-theme=navy',
                                 )}
                                 aria-hidden="true"
                               />
@@ -540,7 +542,8 @@ const Page = (props: { children?: JSX.Element }) => {
                             <a
                               href={feature.link}
                               className="hover:opacity-50"
-                              target={"_blank"} rel="noreferrer"
+                              target={'_blank'}
+                              rel="noreferrer"
                             >
                               <img
                                 src={feature.icon}
@@ -551,8 +554,12 @@ const Page = (props: { children?: JSX.Element }) => {
                           </span>
                         </div>
                         <h3 className="mt-8 text-2xl font-bold font-morion text-theme-navy hover:text-theme-copper">
-                          <a href={feature.link} target={"_blank"} rel="noreferrer">
-                            {feature.name}{" "}
+                          <a
+                            href={feature.link}
+                            target={'_blank'}
+                            rel="noreferrer"
+                          >
+                            {feature.name}{' '}
                             <ChevronRightIcon className="w-6 h-6 -translate-y-0.5 inline-flex"></ChevronRightIcon>
                           </a>
                         </h3>
@@ -593,8 +600,9 @@ const Page = (props: { children?: JSX.Element }) => {
 
                   <a
                     href="https://app.galleon.community/dbl"
-                    target={"_blank"}
-                    className="block text-center m-auto mt-10 py-3 w-1/2 px-4 mb-10 font-semibold rounded-2xl text-xl shadow bg-gradient-to-r border-2 hover:text-theme-navy bg-theme-white hover:bg-theme-oldlace text-theme-navy focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-theme-sky focus:ring-offset-theme-black" rel="noreferrer"
+                    target={'_blank'}
+                    className="block text-center m-auto mt-10 py-3 w-1/2 px-4 mb-10 font-semibold rounded-2xl text-xl shadow bg-gradient-to-r border-2 hover:text-theme-navy bg-theme-white hover:bg-theme-oldlace text-theme-navy focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-theme-sky focus:ring-offset-theme-black"
+                    rel="noreferrer"
                   >
                     Buy Doubloon ($DBL)
                   </a>
@@ -619,7 +627,7 @@ const Page = (props: { children?: JSX.Element }) => {
             >
               {products.map((product) => (
                 <li key={product.title} className="relative">
-                  <a href={product.link} target={"_blank"} rel="noreferrer">
+                  <a href={product.link} target={'_blank'} rel="noreferrer">
                     <div className="group block w-full aspect-w-4 aspect-h-4">
                       <img
                         src={product.source}
@@ -707,8 +715,9 @@ const Page = (props: { children?: JSX.Element }) => {
               <div className="mt-10 text-center justify-center">
                 <a
                   href="https://discord.gg/galleondao"
-                  target={"_blank"}
-                  className="block w-1/2 py-3 m-auto px-4 mb-10 rounded-2xl shadow border-2 border-theme-navy hover:border-theme-navy hover:text-theme-champagne  bg-theme-champagne  text-theme-navy hover:bg-theme-navy  no-underline font-semibold" rel="noreferrer"
+                  target={'_blank'}
+                  className="block w-1/2 py-3 m-auto px-4 mb-10 rounded-2xl shadow border-2 border-theme-navy hover:border-theme-navy hover:text-theme-champagne  bg-theme-champagne  text-theme-navy hover:bg-theme-navy  no-underline font-semibold"
+                  rel="noreferrer"
                 >
                   Join the Crew
                 </a>
@@ -730,8 +739,8 @@ const Page = (props: { children?: JSX.Element }) => {
                             <span className="ml-6 h-7 flex items-center">
                               <ChevronDownIcon
                                 className={classNames(
-                                  open ? "-rotate-180" : "rotate-0",
-                                  "h-6 w-6 transform text-theme=navy"
+                                  open ? '-rotate-180' : 'rotate-0',
+                                  'h-6 w-6 transform text-theme=navy',
                                 )}
                                 aria-hidden="true"
                               />
@@ -753,7 +762,7 @@ const Page = (props: { children?: JSX.Element }) => {
         </div>
       </main>
     </div>
-  );
-};
+  )
+}
 
-export default Page;
+export default Page
