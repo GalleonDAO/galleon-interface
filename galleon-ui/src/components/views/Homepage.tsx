@@ -1,6 +1,6 @@
-import Navigation from 'components/Navigation'
-import Page from 'components/Page'
-import Footer from 'components/Footer'
+import Navigation from "components/Navigation";
+import Page from "components/Page";
+import Footer from "components/Footer";
 
 const Dashboard = () => {
   return (
@@ -19,7 +19,7 @@ const Dashboard = () => {
         </div>
       </div>
     </>
-  )
-}
+  );
+};
 
-export default Dashboard
+export default Dashboard;

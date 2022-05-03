@@ -1,6 +1,6 @@
-import Navigation from 'components/Navigation'
-import { Fragment } from 'react'
-import { Popover, Transition } from '@headlessui/react'
+import Navigation from "components/Navigation";
+import { Fragment } from "react";
+import { Popover, Transition, Disclosure } from "@headlessui/react";
 import {
   CloudUploadIcon,
   CogIcon,
@@ -10,135 +10,386 @@ import {
   ServerIcon,
   ShieldCheckIcon,
   XIcon,
-} from '@heroicons/react/outline'
-import { ChevronRightIcon, ExternalLinkIcon } from '@heroicons/react/solid'
-import shipBackground from 'assets/ship-bg-01.png'
+} from "@heroicons/react/outline";
+import { ChevronRightIcon, ExternalLinkIcon } from "@heroicons/react/solid";
+import crewBackground from "assets/brand/crew-bg.png";
+import { ChevronDownIcon } from "@heroicons/react/outline";
+import ResourcesIcon from "assets/brand/Resources-Icon.png";
+import CommunityIcon from "assets/brand/Community-Icon.png";
+import AboutIcon from "assets/brand/About-Icon.png";
+import ApplicationIcon from "assets/brand/Application-Icon.png";
+import GovernanceIcon from "assets/brand/Governance-Icon.png";
+import ProductsIcon from "assets/brand/Products-Icon.png";
+import TreasuryIcon from "assets/brand/Treasury-Icon.png";
+import GalleonLogo from "assets/brand/Union-Logo-Light.png";
+
+import ResourcesIconDark from "assets/brand/Resources-Icon-Dark.png";
+import CommunityIconDark from "assets/brand/Community-Icon-Dark.png";
+import AboutIconDark from "assets/brand/About-Icon-Dark.png";
+import ApplicationIconDark from "assets/brand/Application-Icon-Dark.png";
+import GovernanceIconDark from "assets/brand/Governance-Icon-Dark.png";
+import ProductsIconDark from "assets/brand/Products-Icon-Dark.png";
+import TreasuryIconDark from "assets/brand/Treasury-Icon-Dark.png";
+import { classNames } from "utils";
 
 const features = [
   {
-    name: 'Push to Deploy',
+    name: "Documentation",
     description:
-      'Ac tincidunt sapien vehicula erat auctor pellentesque rhoncus. Et magna sit morbi vitae lobortis.',
-    icon: CloudUploadIcon,
+      "Read up on how Galleon operates, our optimistic governance model and contributor guidelines.",
+    link: "https://docs.galleon.community",
+    icon: ResourcesIcon,
   },
   {
-    name: 'SSL Certificates',
+    name: "Community Crew",
     description:
-      'Qui aut temporibus nesciunt vitae dicta repellat sit dolores pariatur. Temporibus qui illum aut.',
-    icon: LockClosedIcon,
+      "Join our thriving community and get involved in our many intiatives to earn governance power through $DBL.",
+    link: "https://discord.gg/galleondao",
+    icon: CommunityIcon,
   },
   {
-    name: 'Simple Queues',
+    name: "Technology",
     description:
-      'Rerum quas incidunt deleniti quaerat suscipit mollitia. Amet repellendus ut odit dolores qui.',
-    icon: RefreshIcon,
+      "We use our technology partner Set Protocol to create the most secure, battle-tested products in DeFi.",
+    link: "https://tokensets.com",
+    icon: ApplicationIcon,
   },
   {
-    name: 'Advanced Security',
+    name: "Decentralised",
     description:
-      'Ullam laboriosam est voluptatem maxime ut mollitia commodi. Et dignissimos suscipit perspiciatis.',
-    icon: ShieldCheckIcon,
+      "Participate in Galleon proposals through on-chain voting mechanisms on Snapshot using held $DBL.",
+    link: "https://court.galleon.community",
+    icon: GovernanceIcon,
   },
   {
-    name: 'Powerful API',
+    name: "Products",
     description:
-      'Ab a facere voluptatem in quia corrupti veritatis aliquam. Veritatis labore quaerat ipsum quaerat id.',
-    icon: CogIcon,
+      "Explore our growing suite on on-chain products across Ethereum, Optimism, Avalanche & Polygon",
+    link: "https://app.galleon.community",
+    icon: ProductsIcon,
   },
   {
-    name: 'Database Backups',
+    name: "Treasury",
     description:
-      'Quia qui et est officia cupiditate qui consectetur. Ratione similique et impedit ea ipsum et.',
-    icon: ServerIcon,
+      "Take a look into the treasury and organisation health as all financial activity is executed transparently.",
+    link: "https://arbiscan.io/address/0x366C6aA72f717743FaEEdCaeF2b4dE8ec9589399",
+    icon: TreasuryIcon,
   },
-]
-const blogPosts = [
+];
+
+const faqs = [
   {
-    id: 1,
-    title: 'Boost your conversion rate',
-    href: '#',
-    date: 'Mar 16, 2020',
-    datetime: '2020-03-16',
-    category: { name: 'Article', href: '#' },
-    imageUrl:
-      'https://images.unsplash.com/photo-1496128858413-b36217c2ce36?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1679&q=80',
-    preview:
-      'Lorem ipsum dolor sit amet consectetur adipisicing elit. Architecto accusantium praesentium eius, ut atque fuga culpa, similique sequi cum eos quis dolorum.',
-    author: {
-      name: 'Roel Aufderehar',
-      imageUrl:
-        'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
-      href: '#',
-    },
-    readingLength: '6 min',
-  },
-  {
-    id: 2,
-    title: 'How to use search engine optimization to drive sales',
-    href: '#',
-    date: 'Mar 10, 2020',
-    datetime: '2020-03-10',
-    category: { name: 'Video', href: '#' },
-    imageUrl:
-      'https://images.unsplash.com/photo-1547586696-ea22b4d4235d?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1679&q=80',
-    preview:
-      'Lorem ipsum dolor sit amet consectetur adipisicing elit. Velit facilis asperiores porro quaerat doloribus, eveniet dolore. Adipisci tempora aut inventore optio animi., tempore temporibus quo laudantium.',
-    author: {
-      name: 'Brenna Goyette',
-      imageUrl:
-        'https://images.unsplash.com/photo-1550525811-e5869dd03032?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
-      href: '#',
-    },
-    readingLength: '4 min',
+    question: "What is our core mission?",
+    answer: (
+      <span>
+        The core mission that Galleon and its contributors align themselves
+        around is{" "}
+        <span className="text-theme-sky">
+          building, growing and maintaining best-in-class decentralised,
+          on-chain structured products.
+        </span>{" "}
+        We create investment themes and strategies that appeal to retail and
+        DeFi natives alike to make investing and capturing the upside of the
+        crypto space as easy as one click. Major initiatives in the Galleon
+        organisation that do not fit within our core mission come under the flag
+        of a ‘Voyage’
+      </span>
+    ),
   },
   {
-    id: 3,
-    title: 'Improve your customer experience',
-    href: '#',
-    date: 'Feb 12, 2020',
-    datetime: '2020-02-12',
-    category: { name: 'Case Study', href: '#' },
-    imageUrl:
-      'https://images.unsplash.com/photo-1492724441997-5dc865305da7?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1679&q=80',
-    preview:
-      'Lorem ipsum dolor sit amet consectetur adipisicing elit. Sint harum rerum voluptatem quo recusandae magni placeat saepe molestiae, sed excepturi cumque corporis perferendis hic.',
-    author: {
-      name: 'Daniela Metz',
-      imageUrl:
-        'https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
-      href: '#',
-    },
-    readingLength: '11 min',
+    question: "What are Galleon ‘Voyages’?",
+    answer: (
+      <span>
+        Voyages are major initiatives and extensions of the Galleon
+        organisation. They are independent workstreams outside of our core
+        mission of creating decentralised structured products but instead
+        benefit the DAO through revenue and treasury diversification,{" "}
+        <span className="text-theme-sky">
+          direct benefits to $DBL tokenomics
+        </span>{" "}
+        and exploration of the space to create a thriving, long-term aligned
+        community.
+      </span>
+    ),
   },
-]
+  {
+    question: "Why we are here?",
+    answer: (
+      <span>
+        We fundamentally believe that blockchain technology is the greatest
+        innovation of our time. It is set to drastically disrupt and improve
+        industries and the ways people live, work, and play. In the process,
+        significant opportunities and wealth are created. Unlike with previous
+        revolutions, this time, the upside is available to the broader public
+        instead of just the select few. Historically, the companies shaping our
+        future only went public when much of the value had already accrued. Most
+        of the time, attractive investment opportunities were reserved for
+        entities with the largest capital.<br></br>
+        <br></br>Crypto projects turn things upside down. They issue their
+        tokens in the earliest stages. Individuals can choose to invest any
+        large or small sum they want.{" "}
+        <span className="text-theme-sky">
+          We at Galleon are building innovative on-chain products that anyone in
+          the World can access, regardless of wealth, race, religion, gender, or
+          any other attribute. All one needs to do to optimize your long-term
+          exposure to this powerful rising tide, is simply have an Ethereum
+          address and a wallet.
+        </span>
+      </span>
+    ),
+  },
+  {
+    question: "How does governance work in the DAO?",
+    answer: (
+      <span>
+        Galleon is governed ultimately by Doubloon (DBL) holders through Galleon
+        Improvement Proposals (GIP) and a model called{" "}
+        <a
+          href="https://docs.galleon.community/dao/governance"
+          target={"_blank"}
+          className="text-theme-sky" rel="noreferrer"
+        >
+          {" "}
+          optimistic governance.
+        </a>
+      </span>
+    ),
+  },
+];
+
+const workstreams = [
+  {
+    title: "Product",
+    answer: (
+      <div className="">
+        Within the product workstream, you’ll be responsible for guaranteeing
+        the success of new products, this includes making strategic decisions
+        based on market and competitor analyses.<br></br>
+        <br></br>
+        <span className="font-semibold text-theme-sky">
+          What you can expect:
+        </span>
+        <ul className="list-disc pl-5" role="list">
+          <li>
+            Identifying early-stage product eligible market trends and
+            narratives.
+          </li>
+          <li>
+            Liaising with Engineering as to the feasibility of potential product
+            concepts.
+          </li>
+          <li>
+            Planning and designing, acting as a guide of an idea from conception
+            through to execution.
+          </li>
+          <li>
+            Helping to bridge the gap among departments, enabling the team to
+            successfully bring your product(s) to market.
+          </li>
+          <li>Maintenance and Performance review of existing products</li>
+        </ul>
+      </div>
+    ),
+  },
+  {
+    title: "Growth",
+    answer: (
+      <div className="">
+        Understanding our customer’s needs and having empathy with their pain
+        points is vital in the Growth workstream. Continuously driving to
+        improve current processes and take Galleon and its products to the next
+        level, while not being afraid of failure.<br></br>
+        <br></br>
+        <span className="font-semibold text-theme-sky">
+          What you can expect:
+        </span>
+        <ul className="list-disc pl-5" role="list">
+          <li>
+            Always striving to promote Galleon’s brand, vision, and values.
+          </li>
+          <li>
+            Identifying DeFi collaboration opportunities and helping to build
+            strategic partnerships.
+          </li>
+          <li>
+            Engaging with potential listing partners and wallet providers.
+          </li>
+          <li>
+            Responsibility for product launch campaigns across all communication
+            channels.
+          </li>
+          <li>
+            Identifying opportunities for incentivising new user adoption and
+            growth.
+          </li>
+          <li>
+            Tracking AUM and monitoring products versus competitor offerings.
+          </li>
+        </ul>
+      </div>
+    ),
+  },
+  {
+    title: "Business Development",
+    answer: (
+      <div className="">
+        Our Business Development workstream is aligned in parallel with Growth
+        and includes implementing strategic partnerships, cross-over
+        collaborative products as well as utilizing market fit to help build
+        Galleon's reputation both internally and externally.<br></br>
+        <br></br>
+        <span className="text-theme-sky font-semibold">It will include:</span>
+        <ul className="list-disc pl-5" role="list">
+          <li>
+            Beneficially utilizing Galleon Investor networks and resources to
+            further the growth of Galleon.
+          </li>
+          <li>
+            Building healthy and engaging relationships with existing DeFi
+            protocols and builders.
+          </li>
+          <li>
+            Represent Galleon as a Business Development contributor in the wider
+            DeFi space.
+          </li>
+          <li>
+            Actively contribute to and help manage the in-house CRM for all BD
+            relationships.
+          </li>
+          <li>
+            Make sure communications to relationship partners are all consistent
+            and professional in their messaging.
+          </li>
+          <li>
+            Collaboratively support the Growth workstream group in all growth
+            strategies where required.
+          </li>
+        </ul>
+      </div>
+    ),
+  },
+  {
+    title: "Design & Content",
+    answer: (
+      <div className="">
+        Support Growth & Business Development workstreams for presentation
+        materials to be used both in-house and externally.
+        <br></br>
+        <br></br>
+        <ul className="list-disc pl-5" role="list">
+          <li>Creation of design materials for promotion and marketing .</li>
+          <li>
+            Provide support for Galleon Voyages: Cursed Pirates content
+            materials (twitter, medium), website graphics and more
+          </li>
+        </ul>
+      </div>
+    ),
+  },
+  {
+    title: "Treasury",
+    answer: (
+      <div className="">
+        Our treasury workstream aims to diversify Galleon assets in two ways:
+        preservation of capital so Galleon can thrive and sustain any future
+        market conditions. As well as investing back into the DeFi ecosystem via
+        its voyage: Flying Dutchman Capital.<br></br>
+        <br></br>
+        <span className="font-semibold text-theme-sky">
+          Other tasks include:
+        </span>
+        <ul className="list-disc pl-5" role="list">
+          <li>Maintaining a lean and well-aligned spending budget</li>
+          <li>
+            Liquidity / Methodology incentivisation schemes for new and existing
+            product launches.
+          </li>
+          <li>Identifying safe APY generating opportunities for Galleon</li>
+        </ul>
+      </div>
+    ),
+  },
+  {
+    title: "Analytics",
+    answer: (
+      <div className="">
+        Our Analytics workstream maximizes data capture and efficiency to track
+        both Galleon’s in-house as well as product strategy/methodology KPIs.
+        <br></br>
+        <br></br>
+        <span className="font-semibold text-theme-sky">
+          Other tasks include:
+        </span>
+        <ul className="list-disc pl-5" role="list">
+          <li>
+            Utilizing Dune Dashboards to develop detailed trend analysis and
+            growth metrics of both Galleon and its products.
+          </li>
+          <li>
+            Adding data-driven feedback and proposals to governance discussions
+            on the Brethren Court.
+          </li>
+          <li>
+            Tracking performance and engagement metrics that provides the Growth
+            workstream with details breakdowns of potential opportunities.
+          </li>
+        </ul>
+      </div>
+    ),
+  },
+  {
+    title: "Engineering",
+    answer: (
+      <span>
+        Galleon is governed ultimately by Doubloon (DBL) holders through Galleon
+        Improvement Proposals (GIP) and a model called{" "}
+        <a
+          href="https://docs.galleon.community/dao/governance"
+          target={"_blank"}
+          className="text-theme-sky" rel="noreferrer"
+        >
+          optimistic governance.
+        </a>
+      </span>
+    ),
+  },
+];
+
+const products = [
+  {
+    title: "ETH Maxy Yield Index",
+    description:
+      "ETHMAXY is the best leveraged $ETH liquid staking strategy in DeFi today, all within one tradable ERC20 token.",
+    source:
+      "https://github.com/GalleonDAO/galleon-tokenlist/blob/main/logos/ethmaxy.png?raw=true",
+    link: "https://app.galleon.community/ethmaxy",
+    active: true,
+  },
+  {
+    title: "SOLUNAVAX Index",
+    description:
+      "SOLUNAVAX enables traders to gain L2 exposure to the popular, alternate Layer 1 assets, SOL, LUNA and AVAX",
+    source:
+      "https://github.com/GalleonDAO/galleon-tokenlist/blob/main/logos/solunavax-200px.png?raw=true",
+    link: "https://app.galleon.community/solunavax",
+    active: false,
+  },
+  // More files...
+];
 
 const Page = (props: { children?: JSX.Element }) => {
   return (
     <div>
       {props.children}
       <main>
-        <div className="pt-10 bg-theme-black sm:pt-16 lg:pt-8 lg:pb-14 lg:overflow-hidden bg-[url('/ship-bg-01.png')] bg-cover bg-no-repeat bg-bottom  pb-10 bg-opacity-100  min-h-screen">
+        <div className="pt-10  bg-theme-black sm:pt-16 lg:pt-8 lg:pb-14 lg:overflow-hidden bg-[url('/ship-bg-01.png')] bg-cover bg-no-repeat bg-center  pb-10 bg-opacity-100  min-h-screen">
           <div className="mx-auto max-w-7xl lg:px-8">
             <div className="lg:grid lg:grid-cols-2 lg:gap-8">
               <div className="mx-auto max-w-md px-4 sm:max-w-2xl sm:px-6 sm:text-center lg:px-0 lg:text-left lg:flex lg:items-center">
                 <div className="lg:py-24">
-                  <a
-                    href="#"
-                    className="inline-flex  border-2 items-center text-theme-white bg-theme-navy rounded-full p-1 pr-2 sm:text-base lg:text-sm xl:text-base hover:text-gray-200"
-                  >
-                    <span className="px-3 py-0.5 text-theme-white text-xs font-semibold leading-5 uppercase tracking-wide rounded-full">
-                      New Voyages Revealed
-                    </span>
-                    <span className="ml-4 text-sm font-semibold">View</span>
-                    <ChevronRightIcon
-                      className="ml-2 w-5 h-5 text-theme-white"
-                      aria-hidden="true"
-                    />
-                  </a>
-                  <h1 className="mt-4 text-4xl tracking-tight font-extrabold text-theme-white sm:mt-5 sm:text-6xl lg:mt-6 xl:text-6xl">
-                    <span className="">The </span>
+                  <h1 className="mt-4 text-4xl font-morion tracking-tight font-extrabold text-theme-white sm:mt-5 sm:text-6xl lg:mt-6 xl:text-6xl">
                     <span className="pb-3  bg-clip-text text-transparent bg-gradient-to-r from-theme-champagne to-theme-oldlace sm:pb-5">
-                      Asset
+                      The Asset
                     </span>
                     <span className="pb-3 block bg-clip-text text-transparent bg-gradient-to-r from-theme-champagne to-theme-oldlace sm:pb-5">
                       Management Guild
@@ -147,22 +398,74 @@ const Page = (props: { children?: JSX.Element }) => {
                   <p className="text-3xl text-theme-white sm:text-3xl lg:text-lg xl:text-3xl">
                     We create on-chain investment themes.
                   </p>
-                  <div className="mt-10 sm:mt-12">
-                    <form action="#" className="sm:max-w-xl sm:mx-auto lg:mx-0">
+                  <div className="mt-8 sm:mt-8">
+                    <div className="sm:max-w-xl sm:mx-auto lg:mx-0">
                       <div className="sm:flex">
                         <div className="min-w-0">
-                          <button className="block w-full py-3 px-4 rounded-2xl shadow bg-gradient-to-r border-2 hover:text-theme-white from-theme-navy to-theme-sky text-theme-white hover:from-theme-sky hover:to-theme-navy focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-theme-sky focus:ring-offset-theme-black font-semibold">
-                            Explore Products
-                          </button>
+                          <a
+                            href="https://app.galleon.community"
+                            target={"_blank"}
+                            className="block w-full py-3 px-4 mb-10 rounded-2xl shadow hover:border-2 hover:border-theme-champagne hover:text-theme-champagne  bg-theme-champagne hover:bg-theme-navy text-theme-navy focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-theme-sky focus:ring-offset-theme-black font-semibold" rel="noreferrer"
+                          >
+                            Application
+                          </a>
                         </div>
                         <div className="mt-3 sm:mt-0 sm:ml-3">
-                          <button className="block w-full py-3 px-4 rounded-2xl shadow bg-gradient-to-r border-2 hover:text-theme-white from-theme-sky to-theme-navy text-theme-white hover:from-theme-navy hover:to-theme-sky focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-theme-sky focus:ring-offset-theme-black font-semibold">
+                          <a
+                            href="https://discord.gg/galleondao"
+                            target={"_blank"}
+                            className="block w-full py-3 px-4 mb-10 rounded-2xl shadow hover:border-2 hover:border-theme-champagne hover:text-theme-champagne  bg-theme-champagne  text-theme-navy hover:bg-theme-navy  focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-theme-sky focus:ring-offset-theme-black font-semibold" rel="noreferrer"
+                          >
                             Join the Crew
-                          </button>
+                          </a>
                         </div>
                       </div>
+                      <div className="relative">
+                        <div
+                          className="absolute inset-0 flex items-center"
+                          aria-hidden="true"
+                        >
+                          <div className="w-full border-t border-theme-oldlace" />
+                        </div>
+                      </div>
+                      <div className="relative flex pb-5 pt-5 justify-start">
+                        <span className="pr-2 text-2xl font-bold font-morion text-theme-white">
+                          Voyages
+                        </span>
+                      </div>
+                      <a
+                        href="https://cursedpirates.xyz"
+                        target={"_blank"}
+                        className="flex  items-center  text-theme-white bg-transparent p-1 pr-2 sm:text-base lg:text-sm xl:text-base hover:text-theme-navy" rel="noreferrer"
+                      >
+                        <img
+                          src="/jollyroger-transp.png"
+                          className="ml-2 w-16 h-16 bg-theme-oldlace  rounded-full text-theme-white"
+                          aria-hidden="true"
+                        />
+                        <span className="px-3 py-0.5 font-wigrum  text-xl text-theme-white hover:text-theme-champagne font-semibold leading-5 uppercase tracking-wide rounded-full">
+                          Cursed Pirates{" "}
+                          <ChevronRightIcon className="w-8 h-8 -translate-y-1 inline-flex"></ChevronRightIcon>
+                        </span>
+                      </a>
+                      <a
+                        href="https://flyingdutchman.capital"
+                        target={"_blank"}
+                        className="flex  mt-3 items-center font-wigrum text-theme-white bg-transparent p-1 pr-2 sm:text-base lg:text-sm xl:text-base hover:text-theme-navy" rel="noreferrer"
+                      >
+                        <img
+                          src="/fdc-flag-transp.png"
+                          className="ml-2 w-16 h-16 bg-theme-oldlace  rounded-full text-theme-white"
+                          aria-hidden="true"
+                        />
+                        <span className="px-3 py-0.5 text-xl text-theme-white hover:text-theme-champagne font-semibold leading-5 uppercase tracking-wide rounded-full">
+                          Flying Dutchman Capital{" "}
+                          <ChevronRightIcon className="w-8 h-8 -translate-y-1 inline-flex"></ChevronRightIcon>
+                        </span>
+                      </a>
+
                       <p className="mt-3 text-sm text-theme-white sm:mt-4"></p>
-                    </form>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -179,65 +482,81 @@ const Page = (props: { children?: JSX.Element }) => {
           </div>
         </div>
 
-        {/* Feature section with screenshot */}
-        <div className="relative bg-theme-oldlace pt-16 sm:pt-24 lg:pt-32">
-          <div className="mx-auto max-w-md px-4 text-center sm:px-6 sm:max-w-3xl lg:px-8 lg:max-w-7xl">
-            <div>
-              <h2 className="text-base font-semibold tracking-wider text-theme-navy uppercase">
-                Structured Products
-              </h2>
-              <p className="mt-2 text-3xl font-extrabold text-theme-navy tracking-tight sm:text-4xl">
-                One-click access to on-chain investment themes
-              </p>
-              <p className="mt-5 max-w-prose mx-auto text-xl text-theme-navy">
-                Get access to a diverse range of crypto investment themes in a
-                cost and tax efficient way to buy, hold or actively trade. Built
-                by experienced methodologists on on Set Protocol contracts, we
-                deliver innovation in DeFi.
-              </p>
-            </div>
-            <div className="mt-12 border-2 border-theme-navy rounded-2xl">
-              <img
-                className="rounded-lg shadow-xl ring-1 ring-black ring-opacity-5"
-                src="/dapp.png"
-                alt=""
-              />
-            </div>
-          </div>
-        </div>
-
         {/* Feature section with grid */}
-        <div className="relative bg-theme-oldlace py-16 sm:py-24 lg:py-32">
+        <div className="relative bg-theme-oldlace border-t-2 border-theme-navy py-16 sm:py-24 lg:py-32">
           <div className="mx-auto max-w-md px-4 text-center sm:max-w-3xl sm:px-6 lg:px-8 lg:max-w-7xl">
-            <h2 className="text-base font-semibold tracking-wider text-cyan-600 uppercase">
-              Deploy faster
-            </h2>
-            <p className="mt-2 text-3xl font-extrabold text-theme-navy tracking-tight sm:text-4xl">
-              Everything you need to deploy your app
+            <h3 className="mt-2 text-3xl font-bold font-morion text-theme-navy  sm:text-5xl">
+              About our decentralised organisation
+            </h3>
+            <p className="mt-5 max-w-prose mx-auto text-xl text-theme-navy">
+              Galleon is a guild of like-minded experienced and aspiring
+              investor product methodologists aiming to research, design, and
+              create best-in-class thematic, leverage and yield based structured
+              products on-chain.
             </p>
-            <p className="mt-5 max-w-prose mx-auto text-xl text-gray-500">
-              Phasellus lorem quam molestie id quisque diam aenean nulla in.
-              Accumsan in quis quis nunc, ullamcorper malesuada. Eleifend
-              condimentum id viverra nulla.
-            </p>
-            <div className="mt-12">
+
+            <div className="max-w-3xl mx-auto divide-y-2 pb-4 border-theme-navy border-l-2 pl-5  divide-theme-navy">
+              <dl className="mt-6 space-y-6 divide-y divide-theme-navy">
+                {faqs.map((faq) => (
+                  <Disclosure as="div" key={faq.question} className="pt-6">
+                    {({ open }) => (
+                      <>
+                        <dt className="text-lg">
+                          <Disclosure.Button className="text-left w-full flex justify-between items-start text-theme-navy">
+                            <span className="font-medium text-xl text-theme-navy">
+                              {faq.question}
+                            </span>
+                            <span className="ml-6 h-7 flex items-center">
+                              <ChevronDownIcon
+                                className={classNames(
+                                  open ? "-rotate-180" : "rotate-0",
+                                  "h-6 w-6 transform text-theme=navy"
+                                )}
+                                aria-hidden="true"
+                              />
+                            </span>
+                          </Disclosure.Button>
+                        </dt>
+                        <Disclosure.Panel as="dd" className="mt-2 pr-12">
+                          <p className="text-lg text-left text-theme-navy">
+                            {faq.answer}
+                          </p>
+                        </Disclosure.Panel>
+                      </>
+                    )}
+                  </Disclosure>
+                ))}
+              </dl>
+            </div>
+
+            <div className="mt-20">
               <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
                 {features.map((feature) => (
                   <div key={feature.name} className="pt-6">
-                    <div className="flow-root bg-theme-oldlace rounded-2xl px-6 pb-8">
+                    <div className="flow-root bg-theme-oldlace px-6 pb-8">
                       <div className="-mt-6">
                         <div>
-                          <span className="inline-flex items-center justify-center p-3 bg-gradient-to-r from-teal-500 to-cyan-600 rounded-2xl shadow-md">
-                            <feature.icon
-                              className="h-6 w-6 text-theme-white"
-                              aria-hidden="true"
-                            />
+                          <span className="inline-flex items-center justify-center">
+                            <a
+                              href={feature.link}
+                              className="hover:opacity-50"
+                              target={"_blank"} rel="noreferrer"
+                            >
+                              <img
+                                src={feature.icon}
+                                className="h-full w-full text-theme-white"
+                                aria-hidden="true"
+                              />
+                            </a>
                           </span>
                         </div>
-                        <h3 className="mt-8 text-lg font-medium text-theme-navy tracking-tight">
-                          {feature.name}
+                        <h3 className="mt-8 text-2xl font-bold font-morion text-theme-navy hover:text-theme-copper">
+                          <a href={feature.link} target={"_blank"} rel="noreferrer">
+                            {feature.name}{" "}
+                            <ChevronRightIcon className="w-6 h-6 -translate-y-0.5 inline-flex"></ChevronRightIcon>
+                          </a>
                         </h3>
-                        <p className="mt-5 text-base text-gray-500">
+                        <p className="mt-5 text-lg text-theme-navy">
                           {feature.description}
                         </p>
                       </div>
@@ -249,184 +568,192 @@ const Page = (props: { children?: JSX.Element }) => {
           </div>
         </div>
 
-        {/* Testimonial section */}
-        <div className="pb-16 bg-gradient-to-r from-teal-500 to-cyan-600 lg:pb-0 lg:z-10 lg:relative">
+        <div className=" bg-theme-navy  border-t-2 border-theme-champagne lg:z-10 py-24 lg:relative">
           <div className="lg:mx-auto lg:max-w-7xl lg:px-8 lg:grid lg:grid-cols-3 lg:gap-8">
-            <div className="relative lg:-my-8">
-              <div
-                aria-hidden="true"
-                className="absolute inset-x-0 top-0 h-1/2 bg-theme-oldlace lg:hidden"
-              />
-              <div className="mx-auto max-w-md px-4 sm:max-w-3xl sm:px-6 lg:p-0 lg:h-full">
-                <div className="aspect-w-10 aspect-h-6 rounded-xl shadow-xl overflow-hidden sm:aspect-w-16 sm:aspect-h-7 lg:aspect-none lg:h-full">
-                  <img
-                    className="object-cover lg:h-full lg:w-full"
-                    src="https://images.unsplash.com/photo-1520333789090-1afc82db536a?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2102&q=80"
-                    alt=""
-                  />
-                </div>
+            <div className="relative">
+              <div className="mx-auto max-w-md px-4 sm:max-w-3xl sm:px-6 lg:p-4">
+                <img className="mt-10 mb-10" src={GalleonLogo} alt="" />
               </div>
             </div>
             <div className="mt-12 lg:m-0 lg:col-span-2 lg:pl-8">
-              <div className="mx-auto max-w-md px-4 sm:max-w-2xl sm:px-6 lg:px-0 lg:py-20 lg:max-w-none">
-                <blockquote>
-                  <div>
-                    <svg
-                      className="h-12 w-12 text-theme-white opacity-25"
-                      fill="currentColor"
-                      viewBox="0 0 32 32"
-                      aria-hidden="true"
-                    >
-                      <path d="M9.352 4C4.456 7.456 1 13.12 1 19.36c0 5.088 3.072 8.064 6.624 8.064 3.36 0 5.856-2.688 5.856-5.856 0-3.168-2.208-5.472-5.088-5.472-.576 0-1.344.096-1.536.192.48-3.264 3.552-7.104 6.624-9.024L9.352 4zm16.512 0c-4.8 3.456-8.256 9.12-8.256 15.36 0 5.088 3.072 8.064 6.624 8.064 3.264 0 5.856-2.688 5.856-5.856 0-3.168-2.304-5.472-5.184-5.472-.576 0-1.248.096-1.44.192.48-3.264 3.456-7.104 6.528-9.024L25.864 4z" />
-                    </svg>
-                    <p className="mt-6 text-2xl font-medium text-theme-white">
-                      Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                      Sed urna nulla vitae laoreet augue. Amet feugiat est
-                      integer dolor auctor adipiscing nunc urna, sit.
-                    </p>
-                  </div>
-                  <footer className="mt-6">
-                    <p className="text-base font-medium text-theme-white">
-                      Judith Black
-                    </p>
-                    <p className="text-base font-medium text-cyan-100">
-                      CEO at PureInsights
-                    </p>
-                  </footer>
-                </blockquote>
-              </div>
-            </div>
-          </div>
-        </div>
+              <div className="mx-auto max-w-md px-4 sm:max-w-2xl sm:px-6 lg:px-0 lg:pb-10 lg:pt-14 lg:max-w-none">
+                <div>
+                  <h3 className="mt-2 text-5xl font-bold font-morion text-theme-oldlace  sm:text-5xl">
+                    Doubloon ($DBL)
+                  </h3>
+                  <p className="mt-6 text-xl font-medium text-theme-white">
+                    Galleon is a decentralized, autonomous asset manager that
+                    issued its own native token, $DBL. Holders of $DBL can take
+                    part in governing Galleon via proposals and voting following
+                    the optimistic governance model. $DBL is either earned
+                    through contribution to the DAO through professional
+                    services or via buying the token through our decentralised
+                    application or Uniswap on the Arbitrum network.
+                  </p>
 
-        {/* Blog section */}
-        <div className="relative bg-theme-oldlace py-16 sm:py-24 lg:py-32">
-          <div className="relative">
-            <div className="text-center mx-auto max-w-md px-4 sm:max-w-3xl sm:px-6 lg:px-8 lg:max-w-7xl">
-              <h2 className="text-base font-semibold tracking-wider text-cyan-600 uppercase">
-                Learn
-              </h2>
-              <p className="mt-2 text-3xl font-extrabold text-theme-navy tracking-tight sm:text-4xl">
-                Helpful Resources
-              </p>
-              <p className="mt-5 mx-auto max-w-prose text-xl text-gray-500">
-                Phasellus lorem quam molestie id quisque diam aenean nulla in.
-                Accumsan in quis quis nunc, ullamcorper malesuada. Eleifend
-                condimentum id viverra nulla.
-              </p>
-            </div>
-            <div className="mt-12 mx-auto max-w-md px-4 grid gap-8 sm:max-w-lg sm:px-6 lg:px-8 lg:grid-cols-3 lg:max-w-7xl">
-              {blogPosts.map((post) => (
-                <div
-                  key={post.id}
-                  className="flex flex-col rounded-lg shadow-md overflow-hidden"
-                >
-                  <div className="flex-shrink-0">
-                    <img
-                      className="h-48 w-full object-cover"
-                      src={post.imageUrl}
-                      alt=""
-                    />
-                  </div>
-                  <div className="flex-1 bg-theme-oldlace p-6 flex flex-col justify-between">
-                    <div className="flex-1">
-                      <p className="text-sm font-medium text-cyan-600">
-                        <a
-                          href={post.category.href}
-                          className="hover:underline"
-                        >
-                          {post.category.name}
-                        </a>
-                      </p>
-                      <a href={post.href} className="block mt-2">
-                        <p className="text-xl font-semibold text-gray-900">
-                          {post.title}
-                        </p>
-                        <p className="mt-3 text-base text-gray-500">
-                          {post.preview}
-                        </p>
-                      </a>
-                    </div>
-                    <div className="mt-6 flex items-center">
-                      <div className="flex-shrink-0">
-                        <a href={post.author.href}>
-                          <img
-                            className="h-10 w-10 rounded-full"
-                            src={post.author.imageUrl}
-                            alt={post.author.name}
-                          />
-                        </a>
-                      </div>
-                      <div className="ml-3">
-                        <p className="text-sm font-medium text-gray-900">
-                          <a
-                            href={post.author.href}
-                            className="hover:underline"
-                          >
-                            {post.author.name}
-                          </a>
-                        </p>
-                        <div className="flex space-x-1 text-sm text-gray-500">
-                          <time dateTime={post.datetime}>{post.date}</time>
-                          <span aria-hidden="true">&middot;</span>
-                          <span>{post.readingLength} read</span>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-
-        {/* CTA Section */}
-        <div className="relative bg-gray-900">
-          <div className="relative h-56 bg-indigo-600 sm:h-72 md:absolute md:left-0 md:h-full md:w-1/2">
-            <img
-              className="w-full h-full object-cover"
-              src="https://images.unsplash.com/photo-1525130413817-d45c1d127c42?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1920&q=60&sat=-100"
-              alt=""
-            />
-            <div
-              aria-hidden="true"
-              className="absolute inset-0 bg-gradient-to-r from-teal-500 to-cyan-600 mix-blend-multiply"
-            />
-          </div>
-          <div className="relative mx-auto max-w-md px-4 py-12 sm:max-w-7xl sm:px-6 sm:py-20 md:py-28 lg:px-8 lg:py-32">
-            <div className="md:ml-auto md:w-1/2 md:pl-10">
-              <h2 className="text-base font-semibold uppercase tracking-wider text-theme-white">
-                Award winning support
-              </h2>
-              <p className="mt-2 text-theme-white text-3xl font-extrabold tracking-tight sm:text-4xl">
-                We’re here to help
-              </p>
-              <p className="mt-3 text-lg text-theme-white">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Et,
-                egestas tempus tellus etiam sed. Quam a scelerisque amet
-                ullamcorper eu enim et fermentum, augue. Aliquet amet volutpat
-                quisque ut interdum tincidunt duis.
-              </p>
-              <div className="mt-8">
-                <div className="inline-flex rounded-2xl shadow">
                   <a
-                    href="#"
-                    className="inline-flex items-center justify-center px-5 py-3 border border-transparent text-base font-medium rounded-2xl text-theme-navy bg-theme-oldlace hover:bg-theme-oldlace"
+                    href="https://app.galleon.community/dbl"
+                    target={"_blank"}
+                    className="block text-center m-auto mt-10 py-3 w-1/2 px-4 mb-10 rounded-2xl text-xl shadow bg-gradient-to-r border-2 hover:text-theme-navy bg-theme-white hover:bg-theme-oldlace text-theme-navy focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-theme-sky focus:ring-offset-theme-black" rel="noreferrer"
                   >
-                    Visit the help center
-                    <ExternalLinkIcon
-                      className="-mr-1 ml-3 h-5 w-5 text-gray-400"
-                      aria-hidden="true"
-                    />
+                    Buy Doubloon ($DBL)
                   </a>
                 </div>
               </div>
             </div>
           </div>
         </div>
+
+        <div className=" border-t-2 bg-theme-white  border-theme-navy lg:relative">
+          <div className="lg:mx-auto lg:max-w-7xl  py-24">
+            <h3 className="mt-2 text-3xl  font-bold font-morion text-theme-navy text-center  sm:text-5xl">
+              Structured Products
+            </h3>
+            <p className="mt-5 pb-12 text-center  mx-auto text-xl text-theme-navy">
+              One-click on-chain investment themes for leveraged, yield and
+              diversified exposure.
+            </p>
+            <ul
+              role="list"
+              className="grid grid-cols-2 gap-x-4 gap-y-8 sm:grid-cols-3 sm:gap-x-6 lg:grid-cols-4 xl:gap-x-8"
+            >
+              {products.map((product) => (
+                <li key={product.title} className="relative">
+                  <a href={product.link} target={"_blank"} rel="noreferrer">
+                    <div className="group block w-full aspect-w-4 aspect-h-4">
+                      <img
+                        src={product.source}
+                        alt=""
+                        className="object-cover group-hover:opacity-75"
+                      />
+                    </div>
+                  </a>
+                  <p className="mt-5 block text-lg font-semibold text-center text-theme-navy truncate pointer-events-none">
+                    {product.title}
+                  </p>
+                  <p className="block text-md font-medium text-center  text-theme-navy pointer-events-none">
+                    {product.description}
+                  </p>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+        <div className="relative bg-theme-oldlace border-t-2 border-theme-navy py-16 sm:py-24 lg:py-32">
+          <div className="mx-auto max-w-md px-4 text-center  sm:max-w-3xl sm:px-6 lg:px-8 lg:max-w-7xl">
+            <span className="inline-flex items-center text-center justify-center">
+              <img
+                src={AboutIcon}
+                className="h-full w-full text-center"
+                aria-hidden="true"
+              />
+            </span>
+            <h3 className="mt-5 text-center text-3xl font-bold font-morion text-theme-navy  sm:text-5xl">
+              Contributute to Galleon
+            </h3>
+            <p className="text-xl text-center pt-1  font-semibold text-theme-navy">
+              "Part of the ship, part of the crew"
+            </p>
+
+            <div className="mt-6 text-left prose prose-indigo prose-xl text-theme-navy mx-auto">
+              <p className="mt-3 text-lg text-theme-navy">
+                As a contributor, you help to build, grow and improve Galleon.
+                You’ll take part in the DAOs governance, raising Galleon
+                Improvement Proposals (GIPs) or providing feedback via the
+                Brethren Court on strategic objectives, all for the purpose of
+                helping to guide our fellow pirate crewmates and steer Galleon
+                into prosperous waters.
+              </p>
+
+              <figure>
+                <img
+                  className="w-full border-2 border-theme-navy rounded-2xl "
+                  src={crewBackground}
+                  alt=""
+                  width={1310}
+                  height={873}
+                />
+              </figure>
+
+              <h3>Why become a buccaneer?</h3>
+
+              <p>
+                It’s never been a better time to become a pirate, helping to
+                build the best-in-class structured products and making crypto
+                investing simple.
+              </p>
+              <p>
+                You can be a significant part of the development of our on-chain
+                investment themes that make entry into new and exciting crypto
+                narratives as easy as one click.
+              </p>
+              <ul role="list" className="list-disc text-theme-navy">
+                <li>Earn rewards</li>
+                <li>
+                  Be part of an exciting web3 DAO and get compensated in $DBL
+                  for all the work you contribute.
+                </li>
+                <li>
+                  Liaise with the biggest protocols, and highest calibre
+                  builders, collaborate and help to innovate the cryptocurrency
+                  space and the future of finance.
+                </li>
+                <li>Autonomous working</li>
+                <li>
+                  Working remotely and to your own schedule is part of the
+                  Galleon life, feel empowered to be your own boss.
+                </li>
+              </ul>
+              <div className="mt-10 text-center justify-center">
+                <a
+                  href="https://discord.gg/galleondao"
+                  target={"_blank"}
+                  className="block w-1/2 py-3 m-auto px-4 mb-10 rounded-2xl shadow border-2 border-theme-navy hover:border-theme-navy hover:text-theme-champagne  bg-theme-champagne  text-theme-navy hover:bg-theme-navy  no-underline font-semibold" rel="noreferrer"
+                >
+                  Join the Crew
+                </a>
+              </div>
+              <h3>Our Workstreams</h3>
+            </div>
+
+            <div className="max-w-3xl mx-auto divide-y-2 pb-4 border-theme-navy border-l-2 pl-5  divide-theme-navy">
+              <dl className="mt-6 space-y-6 divide-y divide-theme-navy">
+                {workstreams.map((stream) => (
+                  <Disclosure as="div" key={stream.title} className="pt-6">
+                    {({ open }) => (
+                      <>
+                        <dt className="text-lg">
+                          <Disclosure.Button className="text-left w-full flex justify-between items-start text-theme-navy">
+                            <span className="font-medium text-xl text-theme-navy">
+                              {stream.title}
+                            </span>
+                            <span className="ml-6 h-7 flex items-center">
+                              <ChevronDownIcon
+                                className={classNames(
+                                  open ? "-rotate-180" : "rotate-0",
+                                  "h-6 w-6 transform text-theme=navy"
+                                )}
+                                aria-hidden="true"
+                              />
+                            </span>
+                          </Disclosure.Button>
+                        </dt>
+                        <Disclosure.Panel as="dd" className="mt-2 pr-12">
+                          <p className="text-lg text-left text-theme-navy">
+                            {stream.answer}
+                          </p>
+                        </Disclosure.Panel>
+                      </>
+                    )}
+                  </Disclosure>
+                ))}
+              </dl>
+            </div>
+          </div>
+        </div>
       </main>
     </div>
-  )
-}
+  );
+};
 
-export default Page
+export default Page;

@@ -1,38 +1,37 @@
-import { Fragment } from 'react'
-import { Popover, Transition } from '@headlessui/react'
-import { MenuIcon, ShieldCheckIcon, XIcon } from '@heroicons/react/outline'
-import galleon from 'assets/galleon.png'
+import { Fragment } from "react";
+import { Popover, Transition } from "@headlessui/react";
+import { MenuIcon, ShieldCheckIcon, XIcon } from "@heroicons/react/outline";
+import galleon from "assets/brand/Vector-Logo-1.png";
 
 const navigation = [
-  { name: 'DAO', href: '#' },
-  { name: 'Products', href: '#' },
-  { name: 'Marketplace', href: '#' },
-  { name: 'Company', href: '#' },
-]
+  { name: "DAO", href: "#" },
+  { name: "Products", href: "#" },
+  { name: "Marketplace", href: "#" },
+  { name: "Company", href: "#" },
+];
 
 const Navigation = (props: { children?: JSX.Element }) => {
   return (
     <>
       <Popover as="header" className="relative">
-        <div className="bg-theme-navy pt-6 pb-6">
+        <div className="bg-transparent h-0">
           <nav
-            className="relative max-w-7xl mx-auto flex items-center justify-between px-4 sm:px-6"
+            className="relative max-w-7xl  pt-5 mx-auto flex items-center justify-between px-4 sm:px-6"
             aria-label="Global"
           >
             <div className="flex items-center flex-1">
               <div className="flex items-center justify-between w-full md:w-auto">
-                <a href="#">
-                  <span className="sr-only">Galleon</span>
-                  <img className="h-8 w-auto sm:h-10" src={galleon} alt="" />
-                </a>
-                <div className="-mr-2 flex items-center md:hidden">
+                <span className="sr-only">Galleon</span>
+                <img className="h-6 w-auto sm:h-6" src={galleon} alt="" />
+
+                {/* <div className="-mr-2 flex items-center md:hidden">
                   <Popover.Button className="bg-theme-oldlace rounded-2xl p-2 inline-flex items-center justify-center text-gray-400 hover:bg-gray-800 focus:outline-none focus:ring-2 focus-ring-inset focus:ring-white">
                     <span className="sr-only">Open main menu</span>
                     <MenuIcon className="h-6 w-6" aria-hidden="true" />
                   </Popover.Button>
-                </div>
+                </div> */}
               </div>
-              <div className="hidden space-x-8 md:flex md:ml-10">
+              {/* <div className="hidden space-x-8 md:flex md:ml-10">
                 {navigation.map((item) => (
                   <a
                     key={item.name}
@@ -42,9 +41,9 @@ const Navigation = (props: { children?: JSX.Element }) => {
                     {item.name}
                   </a>
                 ))}
-              </div>
+              </div> */}
             </div>
-            <div className="hidden md:flex md:items-center md:space-x-6">
+            {/* <div className="hidden md:flex md:items-center md:space-x-6">
               <a
                 href="#"
                 className="text-base font-semibold text-white border-theme-sky border-2 py-2 px-4 rounded-2xl hover:text-gray-300"
@@ -57,11 +56,11 @@ const Navigation = (props: { children?: JSX.Element }) => {
               >
                 App
               </a>
-            </div>
+            </div> */}
           </nav>
         </div>
 
-        <Transition
+        {/* <Transition
           as={Fragment}
           enter="duration-150 ease-out"
           enterFrom="opacity-0 scale-95"
@@ -107,7 +106,7 @@ const Navigation = (props: { children?: JSX.Element }) => {
                     href="#"
                     className="block text-center w-full py-3 px-4 rounded-2xl shadow bg-gradient-to-r from-teal-500 to-cyan-600 text-white font-medium hover:from-teal-600 hover:to-cyan-700"
                   >
-                    Start free trial
+                  Join the Crew
                   </a>
                 </div>
                 <div className="mt-6 px-5">
@@ -121,11 +120,11 @@ const Navigation = (props: { children?: JSX.Element }) => {
               </div>
             </div>
           </Popover.Panel>
-        </Transition>
+        </Transition> */}
       </Popover>
       {props.children}
     </>
-  )
-}
+  );
+};
 
-export default Navigation
+export default Navigation;
