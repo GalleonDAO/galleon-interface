@@ -60,7 +60,7 @@ const Doubloon = () => {
               <a
                 href="https://app.galleon.community/dbl"
                 target={"_blank"}
-                className="block text-center m-auto mt-10 py-3 md:w-1/2 px-4 mb-10 font-semibold rounded-2xl text-xl shadow bg-gradient-to-r border-2 hover:text-theme-navy bg-theme-white hover:bg-theme-oldlace text-theme-navy focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-theme-sky focus:ring-offset-theme-black"
+                className="block text-center m-auto mt-10 py-4 md:w-1/2 w-full text-xl px-4 mb-10 rounded-2xl border-2 shadow border-theme-navy hover:border-theme-champagne hover:text-theme-champagne  bg-theme-champagne hover:bg-theme-navy text-theme-navy focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-theme-sky focus:ring-offset-theme-black font-semibold"
                 rel="noreferrer"
               >
                 Buy Doubloon ($DBL)

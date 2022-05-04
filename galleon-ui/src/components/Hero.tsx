@@ -84,7 +84,7 @@ const Hero = () => {
                       </div>
                     </div>
                     <div className="relative flex pb-5 pt-5 justify-start">
-                      <p className="pr-2 text-2xl font-bold font-morion text-theme-oldlace">
+                      <p className="pr-2 text-2xl font-bold font-morion text-theme-champagne">
                         Voyages
                       </p>
                     </div>
@@ -99,9 +99,9 @@ const Hero = () => {
                         className="ml-2 w-16 h-16 bg-theme-oldlace rounded-full text-theme-champagne"
                         aria-hidden="true"
                       />
-                      <span className="px-5 lg:px-3 py-2 lg:py-0.5 ml-3 lg:ml-0 border-theme-navy border-2 hover:border-theme-champagne lg:border-0 text-sm md:text-xl bg-theme-oldlace hover:bg-theme-navy lg:bg-transparent text-theme-navy lg:text-theme-champagne lg:hover:text-theme-champagne hover:text-theme-champagne font-semibold leading-5 tracking-wide rounded-2xl">
+                      <span className="px-5 lg:px-3 py-2 ml-3  border-theme-navy border-2 hover:border-theme-champagne lg:border-0 lg:hover:border-2 text-sm md:text-xl bg-theme-oldlace hover:bg-theme-navy sm:bg-transparent text-theme-navy lg:text-theme-champagne lg:hover:text-theme-champagne hover:text-theme-champagne font-semibold leading-5 tracking-wide rounded-2xl">
                         Cursed Pirates{" "}
-                        <ChevronRightIcon className="md:w-8 md:h-8 w-4 h-4 -translate-y-0.5 inline-flex"></ChevronRightIcon>
+                        <ChevronRightIcon className="md:w-8 md:h-8 w-4 h-4 -translate-y-0.5 lg:-translate-y-1 inline-flex"></ChevronRightIcon>
                       </span>
                     </a>
                     <a
@@ -115,9 +115,9 @@ const Hero = () => {
                         className="ml-2 w-16 h-16 bg-theme-oldlace  rounded-full  text-theme-champagne"
                         aria-hidden="true"
                       />
-                      <span className="px-5 lg:px-3 py-2 lg:py-0.5 ml-3 lg:ml-0 border-theme-navy border-2 hover:border-theme-champagne lg:border-0 text-sm md:text-xl bg-theme-oldlace hover:bg-theme-navy lg:bg-transparent text-theme-navy lg:text-theme-champagne lg:hover:text-theme-champagne hover:text-theme-champagne font-semibold leading-5 tracking-wide rounded-2xl">
+                      <span className="px-5 lg:px-3 py-2 ml-3  border-theme-navy border-2 hover:border-theme-champagne lg:border-0 lg:hover:border-2 text-sm md:text-xl bg-theme-oldlace hover:bg-theme-navy sm:bg-transparent text-theme-navy lg:text-theme-champagne lg:hover:text-theme-champagne hover:text-theme-champagne font-semibold leading-5 tracking-wide rounded-2xl">
                         Flying Dutchman Capital{" "}
-                        <ChevronRightIcon className="md:w-8 md:h-8 w-4 h-4 -translate-y-0.5  inline-flex"></ChevronRightIcon>
+                        <ChevronRightIcon className="md:w-8 md:h-8 w-4 h-4 -translate-y-0.5 lg:-translate-y-1  inline-flex"></ChevronRightIcon>
                       </span>
                     </a>
 
