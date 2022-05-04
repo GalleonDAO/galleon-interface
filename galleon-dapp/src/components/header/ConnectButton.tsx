@@ -93,7 +93,7 @@ const ConnectButton = () => {
 
         <button
           onClick={handleDisconnect}
-          className="ml-4 inline-block bg-theme-navy shadow-sm shadow-theme-black text-theme-oldlace py-1.5 px-4  rounded-2xl text-base font-semibold border-theme-oldlace border-2 hover:bg-opacity-75"
+          className="ml-4 inline-block bg-theme-navy shadow-sm shadow-theme-black text-theme-oldlace py-1.5 px-4  rounded-2xl text-base  border-theme-oldlace border-2 hover:bg-opacity-75"
         >
           Disconnect
         </button>

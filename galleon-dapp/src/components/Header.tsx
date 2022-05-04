@@ -17,13 +17,13 @@ const Header = () => {
               />
             </Link>
             <div className="hidden ml-10 space-x-8 lg:block">
-              <span className="text-lg font-semibold text-theme-oldlace hover:text-theme-champagne">
+              <span className="text-lg  text-theme-oldlace hover:text-theme-champagne">
                 <Link to="/">Dashboard</Link>
               </span>
-              <span className="text-lg font-semibold text-theme-oldlace hover:text-theme-champagne">
+              <span className="text-lg  text-theme-oldlace hover:text-theme-champagne">
                 <Link to="/products">Products</Link>
               </span>
-              <span className="text-lg font-semibold text-theme-oldlace hover:text-theme-champagne">
+              <span className="text-lg  text-theme-oldlace hover:text-theme-champagne">
                 <Link to="/dbl">$DBL</Link>
               </span>
             </div>
@@ -34,19 +34,19 @@ const Header = () => {
         </div>
         <div className="py-4 flex flex-wrap justify-center space-x-6 lg:hidden">
           <a
-            className="text-base font-semibold text-theme-oldlace hover:text-theme-champagne"
+            className="text-base  text-theme-oldlace hover:text-theme-champagne"
             href="/"
           >
             Dashboard
           </a>
           <a
-            className="text-base font-semibold text-theme-oldlace hover:text-theme-champagne"
+            className="text-base  text-theme-oldlace hover:text-theme-champagne"
             href="/products"
           >
             Products
           </a>
           <a
-            className="text-base font-semibold text-theme-oldlace hover:text-theme-champagne"
+            className="text-base  text-theme-oldlace hover:text-theme-champagne"
             href="/dbl"
           >
             $DBL

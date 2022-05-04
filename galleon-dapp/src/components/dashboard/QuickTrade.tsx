@@ -462,7 +462,7 @@ const TradeButton = (props: TradeButtonProps) => (
     color={colors.themeWhite}
     disabled={props.isDisabled}
     fontSize="24px"
-    fontWeight="600"
+    fontWeight="400"
     isLoading={props.isLoading}
     height="54px"
     w="100%"

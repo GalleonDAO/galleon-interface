@@ -16,6 +16,7 @@ const DownloadCsvView = React.forwardRef<
   <>
     <Text
       cursor="pointer"
+      fontWeight={400}
       style={{ color: colors.themeNavy }}
       onClick={props.onClickDownload}
     >
