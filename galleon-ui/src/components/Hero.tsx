@@ -58,7 +58,7 @@ const Hero = () => {
                         <a
                           href="https://app.galleon.community"
                           target={"_blank"}
-                          className="block w-1/2 md:w-full py-3 px-4 mb-10 rounded-2xl shadow hover:border-2 hover:border-theme-champagne hover:text-theme-champagne  bg-theme-champagne hover:bg-theme-navy text-theme-navy focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-theme-sky focus:ring-offset-theme-black font-semibold"
+                          className="block w-1/2 md:w-full py-3 px-4 mb-10 rounded-2xl shadow hover:text-theme-champagne  bg-theme-champagne hover:bg-theme-navy text-theme-navy focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-theme-sky focus:ring-offset-theme-black font-semibold"
                           rel="noreferrer"
                         >
                           Application
@@ -68,7 +68,7 @@ const Hero = () => {
                         <a
                           href="https://discord.gg/galleondao"
                           target={"_blank"}
-                          className="block w-1/2 md:w-full py-3 px-4 mb-10 rounded-2xl shadow hover:border-2 hover:border-theme-champagne hover:text-theme-champagne  bg-theme-champagne  text-theme-navy hover:bg-theme-navy  focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-theme-sky focus:ring-offset-theme-black font-semibold"
+                          className="block w-1/2 md:w-full py-3 px-4 mb-10 rounded-2xl shadow hover:text-theme-champagne  bg-theme-champagne  text-theme-navy hover:bg-theme-navy  focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-theme-sky focus:ring-offset-theme-black font-semibold"
                           rel="noreferrer"
                         >
                           Join the Crew
@@ -99,9 +99,9 @@ const Hero = () => {
                         className="ml-2 w-16 h-16 bg-theme-oldlace  rounded-full text-theme-white"
                         aria-hidden="true"
                       />
-                      <span className=" px-5 md:px-3 py-0.5 ml-3 md:ml-0  text-sm md:text-xl bg-theme-oldlace md:bg-transparent text-theme-navy md:text-theme-white md:hover:text-theme-champagne hover:text-theme-sky font-semibold leading-5 uppercase tracking-wide rounded-full">
+                      <span className="px-5 lg:px-3 py-2 lg:py-0.5 ml-3 lg:ml-0  text-sm md:text-xl bg-theme-oldlace lg:bg-transparent text-theme-navy lg:text-theme-white lg:hover:text-theme-champagne hover:text-theme-copper font-semibold leading-5 tracking-wide rounded-2xl">
                         Cursed Pirates{" "}
-                        <ChevronRightIcon className="md:w-8 md:h-8 w-4 h-4 -translate-y-1 inline-flex"></ChevronRightIcon>
+                        <ChevronRightIcon className="md:w-8 md:h-8 w-4 h-4 -translate-y-0.5 inline-flex"></ChevronRightIcon>
                       </span>
                     </a>
                     <a
@@ -112,12 +112,12 @@ const Hero = () => {
                     >
                       <img
                         src="/fdc-flag-transp.png"
-                        className="ml-2 w-16 h-16 bg-theme-oldlace  rounded-full text-theme-white"
+                        className="ml-2 w-16 h-16 bg-theme-oldlace  rounded-full  text-theme-white"
                         aria-hidden="true"
                       />
-                      <span className=" px-5 md:px-3 py-0.5 ml-3 md:ml-0  text-sm md:text-xl bg-theme-oldlace md:bg-transparent text-theme-navy md:text-theme-white md:hover:text-theme-champagne hover:text-theme-sky font-semibold leading-5 uppercase tracking-wide rounded-full">
+                      <span className=" px-5 lg:px-3 py-2 lg:py-0.5 ml-3 lg:ml-0   text-sm md:text-xl bg-theme-oldlace lg:bg-transparent text-theme-navy lg:text-theme-white lg:hover:text-theme-champagne hover:text-theme-copper font-semibold leading-5 tracking-wide rounded-2xl">
                         Flying Dutchman Capital{" "}
-                        <ChevronRightIcon className="md:w-8 md:h-8 w-4 h-4 -translate-y-1 inline-flex"></ChevronRightIcon>
+                        <ChevronRightIcon className="md:w-8 md:h-8 w-4 h-4 -translate-y-0.5  inline-flex"></ChevronRightIcon>
                       </span>
                     </a>
 
