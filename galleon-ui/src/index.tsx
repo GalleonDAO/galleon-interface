@@ -17,8 +17,36 @@ import { ARBITRUM, MAINNET, OPTIMISM, POLYGON } from "constants/chains";
 import "./index.css";
 import { MarketDataProvider } from "providers/MarketData/MarketDataProvider";
 import { initLogger } from "utils/logger";
-import { KNOWN_SERVICES, LOG_SEVERITY } from "@galleondao/logging-lib";
+import {
+  KNOWN_LABELS,
+  KNOWN_SERVICES,
+  LOG_SEVERITY,
+} from "@galleondao/logging-lib";
 export const logger = initLogger(process.env.REACT_APP_APIM_SUBSCRIPTION_KEY);
+
+document.addEventListener("click", (event) => {
+  // @ts-ignore
+  const eventName: string = event.target.innerText;
+  // @ts-ignore
+  const isAnchor = event.target.nodeName === "A";
+  // @ts-ignore
+  const isSpan = event.target.nodeName === "SPAN";
+  // @ts-ignore
+  const isParagraph = event.target.nodeName === "P";
+
+  if (isAnchor) {
+    // @ts-ignore
+    console.log(event.target.href);
+    console.dir(eventName);
+    logger.logCounter({
+      serviceName: KNOWN_SERVICES.GALLEON_UI,
+      environment: process.env.NODE_ENV,
+      label: KNOWN_LABELS.NAVIGATED,
+      // @ts-ignore
+      metadata: { url: event.target.href },
+    });
+  }
+});
 
 window.onerror = function (msg, url, line) {
   logger.logMessage({

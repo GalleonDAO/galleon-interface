@@ -1386,6 +1386,10 @@ select {
   margin-top: 2.5rem;
 }
 
+.ml-3 {
+  margin-left: 0.75rem;
+}
+
 .block {
   display: block;
 }
@@ -1438,6 +1442,10 @@ select {
   height: 100%;
 }
 
+.h-4 {
+  height: 1rem;
+}
+
 .min-h-screen {
   min-height: 100vh;
 }
@@ -1464,6 +1472,10 @@ select {
 
 .w-1\/2 {
   width: 50%;
+}
+
+.w-4 {
+  width: 1rem;
 }
 
 .min-w-0 {
@@ -1863,6 +1875,11 @@ select {
 .py-24 {
   padding-top: 6rem;
   padding-bottom: 6rem;
+}
+
+.py-1 {
+  padding-top: 0.25rem;
+  padding-bottom: 0.25rem;
 }
 
 .pt-12 {
@@ -2359,6 +2376,11 @@ select {
   color: rgb(220 127 90 / var(--tw-text-opacity));
 }
 
+.hover\:text-theme-sky:hover {
+  --tw-text-opacity: 1;
+  color: rgb(2 91 238 / var(--tw-text-opacity));
+}
+
 .hover\:underline:hover {
   -webkit-text-decoration-line: underline;
           text-decoration-line: underline;
@@ -2473,6 +2495,11 @@ select {
             column-gap: 1.5rem;
   }
 
+  .sm\:bg-theme-oldlace {
+    --tw-bg-opacity: 1;
+    background-color: rgb(254 243 226 / var(--tw-bg-opacity));
+  }
+
   .sm\:px-6 {
     padding-left: 1.5rem;
     padding-right: 1.5rem;
@@ -2525,6 +2552,10 @@ select {
     margin-left: 2.5rem;
   }
 
+  .md\:ml-0 {
+    margin-left: 0px;
+  }
+
   .md\:flex {
     display: flex;
   }
@@ -2537,8 +2568,24 @@ select {
     display: none;
   }
 
+  .md\:h-8 {
+    height: 2rem;
+  }
+
   .md\:w-auto {
     width: auto;
+  }
+
+  .md\:w-8 {
+    width: 2rem;
+  }
+
+  .md\:w-1\/2 {
+    width: 50%;
+  }
+
+  .md\:w-full {
+    width: 100%;
   }
 
   .md\:grid-cols-2 {
@@ -2557,6 +2604,59 @@ select {
     --tw-space-x-reverse: 0;
     margin-right: calc(1.5rem * var(--tw-space-x-reverse));
     margin-left: calc(1.5rem * calc(1 - var(--tw-space-x-reverse)));
+  }
+
+  .md\:rounded-full {
+    border-radius: 9999px;
+  }
+
+  .md\:bg-theme-oldlace {
+    --tw-bg-opacity: 1;
+    background-color: rgb(254 243 226 / var(--tw-bg-opacity));
+  }
+
+  .md\:bg-transparent {
+    background-color: transparent;
+  }
+
+  .md\:px-3 {
+    padding-left: 0.75rem;
+    padding-right: 0.75rem;
+  }
+
+  .md\:py-0\.5 {
+    padding-top: 0.125rem;
+    padding-bottom: 0.125rem;
+  }
+
+  .md\:py-0 {
+    padding-top: 0px;
+    padding-bottom: 0px;
+  }
+
+  .md\:text-xl {
+    font-size: 1.25rem;
+    line-height: 1.75rem;
+  }
+
+  .md\:text-5xl {
+    font-size: 3rem;
+    line-height: 1;
+  }
+
+  .md\:text-theme-white {
+    --tw-text-opacity: 1;
+    color: rgb(255 255 255 / var(--tw-text-opacity));
+  }
+
+  .md\:hover\:text-theme-champagne:hover {
+    --tw-text-opacity: 1;
+    color: rgb(253 230 196 / var(--tw-text-opacity));
+  }
+
+  .md\:hover\:text-theme-sky:hover {
+    --tw-text-opacity: 1;
+    color: rgb(2 91 238 / var(--tw-text-opacity));
   }
 }
 

@@ -1,6 +1,6 @@
 import Navigation from "components/Navigation";
-import Page from "components/Page";
 import Footer from "components/Footer";
+import Landing from "components/Landing";
 
 const Dashboard = () => {
   return (
@@ -10,9 +10,7 @@ const Dashboard = () => {
           <Navigation>
             <></>
           </Navigation>
-          <Page>
-            <></>
-          </Page>
+          <Landing></Landing>
           <Footer>
             <></>
           </Footer>
