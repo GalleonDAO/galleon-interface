@@ -1,7 +1,7 @@
 {
-  "short_name": "SetSwap",
-  "name": "SetSwap by Galleon DAO",
-  "description": "Set Ecosystem Structured Products",
+  "short_name": "Galleon",
+  "name": "Galleon",
+  "description": "We create on-chain investment themes.",
   "iconPath": "icon.png",
   "icons": [
     {
