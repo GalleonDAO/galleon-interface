@@ -58,7 +58,7 @@ const Hero = () => {
                         <a
                           href="https://app.galleon.community"
                           target={"_blank"}
-                          className="block w-1/2 md:w-full py-3 px-4 mb-10 rounded-2xl border-2 shadow border-theme-navy hover:border-theme-champagne hover:text-theme-champagne  bg-theme-champagne hover:bg-theme-navy text-theme-navy focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-theme-sky focus:ring-offset-theme-black font-semibold"
+                          className="block w-1/2 md:w-full py-3 px-4 mb-10 rounded-2xl border-2 shadow border-theme-navy hover:border-theme-champagne hover:text-theme-champagne  bg-theme-champagne hover:bg-theme-navy text-theme-navy focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-theme-champagne text-sm md:text-xl focus:ring-offset-theme-black "
                           rel="noreferrer"
                         >
                           Application
@@ -68,7 +68,7 @@ const Hero = () => {
                         <a
                           href="https://discord.gg/galleondao"
                           target={"_blank"}
-                          className="block w-1/2 md:w-full py-3 px-4 mb-10 rounded-2xl shadow border-theme-navy border-2 hover:border-theme-champagne hover:text-theme-champagne  bg-theme-champagne  text-theme-navy hover:bg-theme-navy  focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-theme-sky focus:ring-offset-theme-black font-semibold"
+                          className="block w-1/2 md:w-full py-3 px-4 mb-10 rounded-2xl shadow border-theme-navy border-2 hover:border-theme-champagne hover:text-theme-champagne  bg-theme-champagne  text-theme-navy hover:bg-theme-navy  focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-theme-champagne text-sm md:text-xl focus:ring-offset-theme-black "
                           rel="noreferrer"
                         >
                           Join the Crew
@@ -99,7 +99,7 @@ const Hero = () => {
                         className="ml-2 w-16 h-16 bg-theme-oldlace rounded-full text-theme-champagne"
                         aria-hidden="true"
                       />
-                      <span className="px-5 lg:px-3 py-2 ml-3  border-theme-navy border-2 hover:border-theme-champagne lg:border-0 lg:hover:border-2 text-sm md:text-xl bg-theme-oldlace hover:bg-theme-navy sm:bg-transparent text-theme-navy lg:text-theme-champagne lg:hover:text-theme-champagne hover:text-theme-champagne font-semibold leading-5 tracking-wide rounded-2xl">
+                      <span className="px-5 lg:px-3 py-2 ml-3  border-theme-navy border-2 hover:border-theme-champagne lg:border-0 lg:hover:border-2 text-sm md:text-xl bg-theme-oldlace hover:bg-theme-navy sm:bg-transparent text-theme-navy lg:text-theme-champagne lg:hover:text-theme-champagne hover:text-theme-champagne  leading-5 tracking-wide rounded-2xl">
                         Cursed Pirates{" "}
                         <ChevronRightIcon className="md:w-8 md:h-8 w-4 h-4 -translate-y-0.5 lg:-translate-y-1 inline-flex"></ChevronRightIcon>
                       </span>
@@ -115,7 +115,7 @@ const Hero = () => {
                         className="ml-2 w-16 h-16 bg-theme-oldlace  rounded-full  text-theme-champagne"
                         aria-hidden="true"
                       />
-                      <span className="px-5 lg:px-3 py-2 ml-3  border-theme-navy border-2 hover:border-theme-champagne lg:border-0 lg:hover:border-2 text-sm md:text-xl bg-theme-oldlace hover:bg-theme-navy sm:bg-transparent text-theme-navy lg:text-theme-champagne lg:hover:text-theme-champagne hover:text-theme-champagne font-semibold leading-5 tracking-wide rounded-2xl">
+                      <span className="px-5 lg:px-3 py-2 ml-3  border-theme-navy border-2 hover:border-theme-champagne lg:border-0 lg:hover:border-2 text-sm md:text-xl bg-theme-oldlace hover:bg-theme-navy sm:bg-transparent text-theme-navy lg:text-theme-champagne lg:hover:text-theme-champagne hover:text-theme-champagne  leading-5 tracking-wide rounded-2xl">
                         Flying Dutchman Capital{" "}
                         <ChevronRightIcon className="md:w-8 md:h-8 w-4 h-4 -translate-y-0.5 lg:-translate-y-1  inline-flex"></ChevronRightIcon>
                       </span>

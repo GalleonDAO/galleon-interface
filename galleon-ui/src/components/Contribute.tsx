@@ -296,7 +296,7 @@ const Contribute = () => {
             <a
               href="https://discord.gg/galleondao"
               target={"_blank"}
-              className="block w-1/2 py-3 m-auto px-4 mb-10 rounded-2xl shadow border-2 border-theme-navy hover:border-theme-navy hover:text-theme-champagne  bg-theme-champagne  text-theme-navy hover:bg-theme-navy  no-underline font-semibold"
+              className="block w-1/2 py-3 m-auto px-4 mb-10 rounded-2xl shadow border-2 border-theme-navy hover:border-theme-navy hover:text-theme-champagne  bg-theme-champagne  text-theme-navy hover:bg-theme-navy text-sm md:text-xl  no-underline "
               rel="noreferrer"
             >
               Join the Crew
