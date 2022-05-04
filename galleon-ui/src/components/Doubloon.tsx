@@ -47,7 +47,7 @@ const Doubloon = () => {
               <h3 className="mt-2 text-4xl md:text-5xl font-bold font-morion text-theme-oldlace  sm:text-5xl">
                 Doubloon ($DBL)
               </h3>
-              <p className="mt-6 text-xl font-medium text-theme-white">
+              <p className="mt-6 text-xl font-medium text-theme-oldlace">
                 Galleon is a decentralized, autonomous asset manager that issued
                 its own native token, $DBL. Holders of $DBL can take part in
                 governing Galleon via proposals and voting following the

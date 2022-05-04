@@ -58,7 +58,7 @@ const Hero = () => {
                         <a
                           href="https://app.galleon.community"
                           target={"_blank"}
-                          className="block w-1/2 md:w-full py-3 px-4 mb-10 rounded-2xl shadow hover:text-theme-champagne  bg-theme-champagne hover:bg-theme-navy text-theme-navy focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-theme-sky focus:ring-offset-theme-black font-semibold"
+                          className="block w-1/2 md:w-full py-3 px-4 mb-10 rounded-2xl border-2 shadow border-theme-navy hover:border-theme-champagne hover:text-theme-champagne  bg-theme-champagne hover:bg-theme-navy text-theme-navy focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-theme-sky focus:ring-offset-theme-black font-semibold"
                           rel="noreferrer"
                         >
                           Application
@@ -68,7 +68,7 @@ const Hero = () => {
                         <a
                           href="https://discord.gg/galleondao"
                           target={"_blank"}
-                          className="block w-1/2 md:w-full py-3 px-4 mb-10 rounded-2xl shadow hover:text-theme-champagne  bg-theme-champagne  text-theme-navy hover:bg-theme-navy  focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-theme-sky focus:ring-offset-theme-black font-semibold"
+                          className="block w-1/2 md:w-full py-3 px-4 mb-10 rounded-2xl shadow border-theme-navy border-2 hover:border-theme-champagne hover:text-theme-champagne  bg-theme-champagne  text-theme-navy hover:bg-theme-navy  focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-theme-sky focus:ring-offset-theme-black font-semibold"
                           rel="noreferrer"
                         >
                           Join the Crew
@@ -84,22 +84,22 @@ const Hero = () => {
                       </div>
                     </div>
                     <div className="relative flex pb-5 pt-5 justify-start">
-                      <span className="pr-2 text-2xl font-bold font-morion text-theme-white">
+                      <p className="pr-2 text-2xl font-bold font-morion text-theme-oldlace">
                         Voyages
-                      </span>
+                      </p>
                     </div>
                     <a
                       href="https://cursedpirates.xyz"
                       target={"_blank"}
-                      className="flex  items-center  text-theme-white bg-transparent p-1 pr-2 sm:text-base lg:text-sm xl:text-base hover:text-theme-navy"
+                      className="flex  items-center  text-theme-champagne bg-transparent p-1 pr-2 sm:text-base lg:text-sm xl:text-base hover:text-theme-navy"
                       rel="noreferrer"
                     >
                       <img
                         src="/jollyroger-transp.png"
-                        className="ml-2 w-16 h-16 bg-theme-oldlace  rounded-full text-theme-white"
+                        className="ml-2 w-16 h-16 bg-theme-oldlace rounded-full text-theme-champagne"
                         aria-hidden="true"
                       />
-                      <span className="px-5 lg:px-3 py-2 lg:py-0.5 ml-3 lg:ml-0  text-sm md:text-xl bg-theme-oldlace lg:bg-transparent text-theme-navy lg:text-theme-white lg:hover:text-theme-champagne hover:text-theme-copper font-semibold leading-5 tracking-wide rounded-2xl">
+                      <span className="px-5 lg:px-3 py-2 lg:py-0.5 ml-3 lg:ml-0 border-theme-navy border-2 hover:border-theme-champagne lg:border-0 text-sm md:text-xl bg-theme-oldlace hover:bg-theme-navy lg:bg-transparent text-theme-navy lg:text-theme-champagne lg:hover:text-theme-champagne hover:text-theme-champagne font-semibold leading-5 tracking-wide rounded-2xl">
                         Cursed Pirates{" "}
                         <ChevronRightIcon className="md:w-8 md:h-8 w-4 h-4 -translate-y-0.5 inline-flex"></ChevronRightIcon>
                       </span>
@@ -107,21 +107,21 @@ const Hero = () => {
                     <a
                       href="https://flyingdutchman.capital"
                       target={"_blank"}
-                      className="flex  mt-3 items-center font-wigrum text-theme-white bg-transparent p-1 pr-2 sm:text-base lg:text-sm xl:text-base hover:text-theme-navy"
+                      className="flex  mt-3 items-center font-wigrum text-theme-champagne bg-transparent p-1 pr-2 sm:text-base lg:text-sm xl:text-base hover:text-theme-navy"
                       rel="noreferrer"
                     >
                       <img
                         src="/fdc-flag-transp.png"
-                        className="ml-2 w-16 h-16 bg-theme-oldlace  rounded-full  text-theme-white"
+                        className="ml-2 w-16 h-16 bg-theme-oldlace  rounded-full  text-theme-champagne"
                         aria-hidden="true"
                       />
-                      <span className=" px-5 lg:px-3 py-2 lg:py-0.5 ml-3 lg:ml-0   text-sm md:text-xl bg-theme-oldlace lg:bg-transparent text-theme-navy lg:text-theme-white lg:hover:text-theme-champagne hover:text-theme-copper font-semibold leading-5 tracking-wide rounded-2xl">
+                      <span className="px-5 lg:px-3 py-2 lg:py-0.5 ml-3 lg:ml-0 border-theme-navy border-2 hover:border-theme-champagne lg:border-0 text-sm md:text-xl bg-theme-oldlace hover:bg-theme-navy lg:bg-transparent text-theme-navy lg:text-theme-champagne lg:hover:text-theme-champagne hover:text-theme-champagne font-semibold leading-5 tracking-wide rounded-2xl">
                         Flying Dutchman Capital{" "}
                         <ChevronRightIcon className="md:w-8 md:h-8 w-4 h-4 -translate-y-0.5  inline-flex"></ChevronRightIcon>
                       </span>
                     </a>
 
-                    <p className="mt-3 text-sm text-theme-white sm:mt-4"></p>
+                    <p className="mt-3 text-sm text-theme-champagne sm:mt-4"></p>
                   </div>
                 </div>
               </div>
