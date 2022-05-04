@@ -427,8 +427,8 @@ const QuickTrade = (props: {
           </Text>
         )}
         {ethmaxyErrorMessage && (
-          <Text align="center" color={colors.themeChampagne} p="16px">
-            You can only issue the displayed amout of ETHMAXY at a time (you'll
+          <Text align="center" color={colors.themeNavy} p="16px">
+            You can only issue the displayed amount of ETHMAXY at a time (you'll
             pay this amount of ETH, instead of the quantity you want to spend).
           </Text>
         )}

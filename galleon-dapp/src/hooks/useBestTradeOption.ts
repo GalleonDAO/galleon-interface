@@ -158,7 +158,7 @@ export const useBestTradeOption = () => {
     setResult(result);
     setIsFetching(false);
     setTime(Date.now() - time);
-
+    console.log(time);
     if (result.success) {
       logger.logTimer({
         serviceName: KNOWN_SERVICES.GALLEON_DAPP,
