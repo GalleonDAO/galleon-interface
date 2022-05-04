@@ -116,7 +116,7 @@ const QuickTradeSelector = (props: {
                 <select
                   name="token"
                   disabled={config.isSelectorDisabled ?? false}
-                  className=" inline-flex w-full pl-3 py-2 rounded-2xl text-base border-none focus:outline-none focus:ring-none focus:border-none sm:text-md2xl border-2"
+                  className=" inline-flex w-full pl-3 py-2 rounded-2xl text-base border-none text-theme-navy focus:outline-none focus:ring-none focus:border-none sm:text-md2xl border-2"
                   defaultValue="Canada"
                   onChange={(event) =>
                     props.onSelectedToken(event.target.value)
@@ -125,7 +125,11 @@ const QuickTradeSelector = (props: {
                 >
                   {props.tokenList.map((token) => {
                     return (
-                      <option key={token.symbol} value={token.symbol}>
+                      <option
+                        className="text-theme-navy"
+                        key={token.symbol}
+                        value={token.symbol}
+                      >
                         {token.symbol}
                       </option>
                     );

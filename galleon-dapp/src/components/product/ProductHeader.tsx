@@ -6,7 +6,12 @@ import { colors } from "styles/colors";
 
 const ProductPageHeaderMobile = (props: { tokenData: Token }) => {
   return (
-    <Flex direction="column" justifyContent="flex-end" alignItems="left">
+    <Flex
+      className="md:pl-0 pl-4"
+      direction="column"
+      justifyContent="flex-end"
+      alignItems="left"
+    >
       <Flex>
         <Image
           src={props.tokenData.image}

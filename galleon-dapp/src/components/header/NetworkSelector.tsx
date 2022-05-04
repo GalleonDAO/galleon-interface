@@ -27,13 +27,13 @@ const NetworkSelector = () => {
         {({ open }) => (
           <>
             <div className="mt-1 relative">
-              <Listbox.Button className="theme-sky relative w-full border-2 border-theme-sky cursor-pointer  bg-theme-sky rounded-2xl pl-3 pr-10 py-1.5 text-left shadow-sm shadow-theme-black focus:outline-none focus:ring-1 focus:ring-theme-sky focus:border-theme-sky font-medium ">
-                <span className="block truncat font-semibold text-white">
+              <Listbox.Button className="theme-sky relative w-full border-2 border-theme-oldlace cursor-pointer  bg-theme-oldlace rounded-2xl pl-3 pr-10 py-1.5 text-left shadow-sm shadow-theme-black focus:outline-none focus:ring-1 focus:ring-theme-oldlace focus:border-theme-oldlace font-medium ">
+                <span className="block truncat font-semibold text-theme-navy">
                   {selected.name}
                 </span>
                 <span className="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
                   <SelectorIcon
-                    className="h-5 w-5 text-white"
+                    className="h-5 w-5 text-theme-navy"
                     aria-hidden="true"
                   />
                 </span>
@@ -52,7 +52,9 @@ const NetworkSelector = () => {
                       key={network.chainId}
                       className={({ active }) =>
                         classNames(
-                          active ? "text-white bg-theme-sky" : "text-gray-900",
+                          active
+                            ? "text-theme-navy bg-theme-oldlace"
+                            : "text-gray-900",
                           "select-none relative py-2 pl-3 pr-9 cursor-pointer "
                         )
                       }
@@ -77,7 +79,7 @@ const NetworkSelector = () => {
                           {selected ? (
                             <span
                               className={classNames(
-                                active ? "text-white" : "text-indigo-600",
+                                active ? "text-theme-navy" : "text-indigo-600",
                                 "absolute  inset-y-0 right-0 flex items-center pr-4"
                               )}
                             >

@@ -67,7 +67,7 @@ const ConnectButton = () => {
       <div>
         <button
           onClick={handleConnectWallet}
-          className="ml-4 inline-block bg-theme-sky shadow-sm shadow-theme-black text-white  py-1.5 px-4 border-2 border-theme-sky rounded-2xl text-base font-medium  hover:bg-opacity-75"
+          className="ml-4 inline-block bg-theme-oldlace shadow-sm shadow-theme-black text-theme-navy  py-1.5 px-4 border-2 border-theme-champagne rounded-2xl text-base font-medium  hover:bg-theme-champagne"
         >
           Connect
         </button>
@@ -80,20 +80,20 @@ const ConnectButton = () => {
   const disconnectButton = () => {
     return (
       <span>
-        <span className="inline-flex items-center px-3 py-0.5 rounded-2xl text-base font-medium bg-transparent ">
+        <span className="hidden md:inline-flex items-center px-3 py-0.5 rounded-2xl text-base font-medium bg-transparent ">
           <svg
-            className="-ml-1 mr-1.5 h-2 w-2 text-theme-sky animate animate-pulse"
+            className="-ml-1 mr-1.5 h-2 w-2 text-theme-oldlace animate animate-pulse"
             fill="currentColor"
             viewBox="0 0 8 8"
           >
             <circle cx={4} cy={4} r={3} />
           </svg>
-          <span className="text-theme-sky">{handleAccount()}</span>
+          <span className="text-theme-oldlace">{handleAccount()}</span>
         </span>
 
         <button
           onClick={handleDisconnect}
-          className="ml-4 inline-block bg-theme-navy shadow-sm shadow-theme-black text-white py-1.5 px-4  rounded-2xl text-base font-semibold border-theme-navy border-2 hover:bg-opacity-75"
+          className="ml-4 inline-block bg-theme-navy shadow-sm shadow-theme-black text-theme-oldlace py-1.5 px-4  rounded-2xl text-base font-semibold border-theme-oldlace border-2 hover:bg-opacity-75"
         >
           Disconnect
         </button>

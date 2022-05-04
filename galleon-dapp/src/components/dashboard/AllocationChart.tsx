@@ -3,7 +3,7 @@ import { PureComponent } from "react";
 import { Cell, Pie, PieChart, Tooltip } from "recharts";
 
 import { Box, Flex, Image, Text } from "@chakra-ui/react";
-import piePlaceholder from "assets/map-bg-01.png";
+import piePlaceholder from "assets/brand/Treasury-Icon.png";
 import PieChartTooltip from "./PieChartTooltip";
 import { colors } from "styles/colors";
 
@@ -70,7 +70,7 @@ const AllocationChart = (props: { positions: Position[] }) => {
   return (
     <Flex align="center" direction="column" pt="20px" px="40px">
       <div className="px-2 pb-4 border-b border-theme-navy sm:px-4">
-        <h3 className="text-xl font-morion leading-6 font-semibold text-theme-navy">
+        <h3 className="text-2xl font-morion leading-6 font-semibold text-theme-navy">
           Allocation of Galleon Products
         </h3>
         <p className="mt-1 text-md text-theme-navy">
@@ -83,9 +83,9 @@ const AllocationChart = (props: { positions: Position[] }) => {
         {props.positions.length === 0 && (
           // <ChartPieIcon className="w-full h-full"></ChartPieIcon>
           <Image
-            height={["150", "225"]}
+            height={["225", "225"]}
             borderRadius={"25"}
-            opacity={"90%"}
+            opacity={"910%"}
             src={piePlaceholder}
             alt="pie chart placeholder"
           />

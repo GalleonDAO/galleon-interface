@@ -31,6 +31,7 @@ import { colors } from "styles/colors";
 import theme from "theme";
 import { useNetwork } from "hooks/useNetwork";
 import { ARBITRUM } from "constants/chains";
+import logo from "assets/brand/Products-Icon.png";
 
 const jsonRpcEndpoint =
   "https://mainnet.infura.io/v3/" + process.env.REACT_APP_INFURA_KEY ?? "";
@@ -145,8 +146,8 @@ const DoubloonPage = (props: {
             <div className="col-span-1 bg-theme-oldlace border-2 border-theme-navy rounded-2xl shadow-md shadow-theme-black  divide-y divide-theme-navy">
               <div className="w-full flex items-center justify-between p-6 space-x-6">
                 <Flex direction="column" grow={1} flexBasis="0">
-                  <div className=" px-2 pb-4 mb-4 sm:px-4">
-                    <h3 className="text-xl font-morion leading-6 font-semibold text-theme-navy">
+                  <div className=" px-2 pb-4  border-b border-theme-navy  mb-4 sm:px-4">
+                    <h3 className="text-2xl font-morion leading-6 font-semibold text-theme-navy">
                       Invest in Galleon & Govern
                     </h3>
                     <p className="mt-1 text-md text-theme-navy">
@@ -156,30 +157,31 @@ const DoubloonPage = (props: {
                     </p>
                   </div>
                   {chainId !== ARBITRUM.chainId ? (
-                    <>
+                    <div>
                       <button
                         onClick={() =>
                           changeNetwork(ARBITRUM.chainId.toString())
                         }
-                        className="ml-4 inline-block bg-theme-sky shadow-sm shadow-theme-black text-white  py-1.5 px-4 border-2 border-theme-sky rounded-2xl text-base font-medium  hover:bg-opacity-75"
+                        className="md:w-full  justify-center text-center block bg-theme-sky shadow-sm shadow-theme-black text-white  py-1.5 px-4 border-2 border-theme-sky rounded-2xl text-base font-medium  hover:bg-opacity-75 m-auto"
                       >
                         Switch to Arbitrum
                       </button>
 
                       <Box
-                        className="justify-center text-center mx-auto border-2 border-theme-navy rounded-md shadow-md"
+                        className="justify-center text-center m-auto "
                         mt="40px"
                         mb="8px"
                       >
                         <Image
-                          height={["150", "225"]}
+                          height={["225", "225"]}
                           borderRadius={"25"}
-                          opacity={"90%"}
-                          src={"/wave.png"}
+                          opacity={"100%"}
+                          className="m-auto"
+                          src={logo}
                           alt="pie chart placeholder"
                         />{" "}
                       </Box>
-                    </>
+                    </div>
                   ) : (
                     <SwapWidget
                       provider={library}

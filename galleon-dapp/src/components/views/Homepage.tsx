@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 
-import { Box, Flex, useBreakpointValue } from "@chakra-ui/react";
+import { Box, Flex, Image, useBreakpointValue } from "@chakra-ui/react";
 import { useEthers } from "@usedapp/core";
 import { Disclosure } from "@headlessui/react";
 import { ChevronDownIcon } from "@heroicons/react/outline";
@@ -24,14 +24,15 @@ import { exportCsv } from "utils/exportToCsv";
 import { getFormattedChartPriceChanges } from "utils/priceChange";
 
 import { getPieChartPositions } from "./DashboardData";
-import { MAINNET, POLYGON } from "constants/chains";
+import { ARBITRUM, MAINNET, POLYGON, SUPPORTED_CHAINS } from "constants/chains";
 import { classNames } from "utils";
 import { logger } from "index";
 import { KNOWN_LABELS, KNOWN_SERVICES } from "@galleondao/logging-lib";
+import { useNetwork } from "hooks/useNetwork";
 
 const Dashboard = () => {
   const { ethmaxy } = useMarketData();
-
+  const { changeNetwork } = useNetwork();
   const { userBalances, totalBalanceInUSD, totalHourlyPrices, priceChanges } =
     useUserMarketData();
   const { account, chainId } = useEthers();
@@ -188,7 +189,7 @@ const Dashboard = () => {
                 <Flex direction="column" grow={1} flexBasis="0">
                   <QuickTrade>
                     <div className=" px-2 pb-4 border-b border-theme-navy sm:px-4">
-                      <h3 className="text-xl leading-6 font-morion font-semibold text-theme-navy">
+                      <h3 className="text-2xl leading-6 font-morion font-semibold text-theme-navy">
                         Trade Investment Themes
                       </h3>
                       <p className="mt-1 text-md text-theme-navy">
@@ -199,7 +200,45 @@ const Dashboard = () => {
                   </QuickTrade>
                 </Flex>
               ) : (
-                <></>
+                <>
+                  <div className=" px-2 pb-4 sm:px-4">
+                    <h3 className="text-xl leading-6 font-morion font-semibold text-theme-navy">
+                      Change Network
+                    </h3>
+                    <p className="mt-1 text-md text-theme-navy">
+                      Currently our structured products are available on{" "}
+                      <span className="font-semibold">
+                        {SUPPORTED_CHAINS.map((x) => x.name)
+                          .filter((x) => x !== ARBITRUM.name)
+                          .join(", ")}
+                      </span>
+                    </p>
+                    <>
+                      <button
+                        onClick={() =>
+                          changeNetwork(MAINNET.chainId.toString())
+                        }
+                        className="m-auto justify-center text-center block mt-4 bg-theme-sky shadow-sm shadow-theme-black text-white  py-1.5 px-4 border-2 border-theme-sky rounded-2xl text-base font-medium  hover:bg-opacity-75"
+                      >
+                        Switch to Ethereum
+                      </button>
+
+                      <Box
+                        className="justify-center text-center mx-auto border-2 border-theme-navy rounded-md shadow-md"
+                        mt="40px"
+                        mb="8px"
+                      >
+                        <Image
+                          height={["150", "225"]}
+                          borderRadius={"25"}
+                          opacity={"90%"}
+                          src={"/wave.png"}
+                          alt="pie chart placeholder"
+                        />{" "}
+                      </Box>
+                    </>
+                  </div>
+                </>
               )}
             </div>
           </div>
