@@ -1,6 +1,6 @@
-import Navigation from 'components/Navigation'
-import Footer from 'components/Footer'
-import Landing from 'components/Landing'
+import Navigation from "components/Navigation";
+import Footer from "components/Footer";
+import Landing from "components/Landing";
 
 const Dummy = () => {
   return (
@@ -19,8 +19,8 @@ const Dummy = () => {
                 <div className="inline-flex rounded-md shadow">
                   <a
                     href="https://discord.gg/galleondao"
-                    target={'_blank'}
-                    className="inline-flex items-center justify-center px-5 py-3 border border-transparent text-base font-medium rounded-2xl text-theme-oldlace bg-theme-navy hover:opacity-70"
+                    target={"_blank"}
+                    className="inline-flex items-center justify-center px-5 py-3 border border-transparent text-base font-medium rounded-2xl text-theme-oldlace bg-theme-navy hover:opacity-70" rel="noreferrer"
                   >
                     Discord
                   </a>
@@ -31,7 +31,7 @@ const Dummy = () => {
         </div>
       </div>
     </>
-  )
-}
+  );
+};
 
-export default Dummy
+export default Dummy;
