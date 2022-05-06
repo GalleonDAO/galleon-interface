@@ -8,7 +8,7 @@ import { useEthers } from "@usedapp/core";
 
 import { Token } from "constants/tokens";
 import { useBalance } from "hooks/useBalance";
-import { isValidTokenInput } from "utils";
+import { displayFromWei, isValidTokenInput } from "utils";
 
 import { formattedBalance } from "./QuickTradeFormatter";
 
@@ -141,15 +141,30 @@ const QuickTradeSelector = (props: {
         </div>
       </div>
       <Text
+        className="cursor-pointer"
         align="left"
         fontWeight="400"
         mt="5px"
         onClick={() => {
-          if (tokenBalance) onChangeInput(tokenBalance);
+          // @ts-ignore
+          if (tokenBalance)
+            onChangeInput(
+              displayFromWei(
+                getBalance(props.selectedToken),
+                4,
+                props.selectedToken.decimals
+              )
+            );
         }}
-        cursor="pointer"
       >
-        <span className="text-sm">Balance: {tokenBalance}</span>
+        <span className="text-sm">
+          Balance:{" "}
+          {displayFromWei(
+            getBalance(props.selectedToken),
+            4,
+            props.selectedToken.decimals
+          )}
+        </span>
       </Text>
     </Flex>
   );
