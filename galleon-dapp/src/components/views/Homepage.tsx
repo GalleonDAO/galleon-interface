@@ -244,7 +244,8 @@ const Dashboard = () => {
           </div>
         </div>
 
-        {chainId === MAINNET.chainId || chainId === POLYGON.chainId ? (
+        {account &&
+        (chainId === MAINNET.chainId || chainId === POLYGON.chainId) ? (
           <>
             <div className="mb-10">
               <dl className="mt-6 space-y-6 divide-y border-2 rounded-2xl m-auto justify-center bg-theme-oldlace border-theme-navy">
