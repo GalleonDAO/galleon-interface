@@ -61,7 +61,7 @@ const Hero = () => {
                           className="block w-1/2 md:w-full py-3 px-4 mb-10 rounded-2xl border-2 shadow border-theme-navy hover:border-theme-champagne hover:text-theme-oldlace  bg-theme-oldlace hover:bg-theme-navy text-theme-navy focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-theme-champagne text-sm md:text-xl focus:ring-offset-theme-black "
                           rel="noreferrer"
                         >
-                          Application
+                          Enter App
                         </a>
                       </div>
                       <div className="mt-3 sm:mt-0 sm:ml-3">
