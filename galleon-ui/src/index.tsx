@@ -22,7 +22,7 @@ import {
   KNOWN_SERVICES,
   LOG_SEVERITY,
 } from "@galleondao/logging-lib";
-import Dummy from "components/views/Dummy";
+
 export const logger = initLogger(process.env.REACT_APP_APIM_SUBSCRIPTION_KEY);
 
 document.addEventListener("click", (event) => {
@@ -83,11 +83,8 @@ ReactDOM.render(
       <Providers>
         <ColorModeScript initialColorMode={theme.config.initialColorMode} />
         <Routes>
-          {/* <Route path="/" element={<App />}>
-            <Route index element={<Dashboard />} />
-          </Route> */}
           <Route path="/" element={<App />}>
-            <Route index element={<Dummy />} />
+            <Route index element={<Dashboard />} />
           </Route>
         </Routes>
       </Providers>

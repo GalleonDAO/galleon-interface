@@ -99,9 +99,9 @@ const Hero = () => {
                         className="ml-2 w-16 h-16 bg-theme-oldlace rounded-full text-theme-champagne"
                         aria-hidden="true"
                       />
-                      <span className="px-5 md:px-3 py-2 ml-3  border-theme-navy border-2 hover:border-theme-champagne md:border-0 md:hover:border-2 text-sm md:text-xl bg-theme-oldlace hover:bg-theme-navy md:bg-transparent text-theme-navy md:text-theme-champagne md:hover:text-theme-champagne hover:text-theme-champagne  leading-5 tracking-wide rounded-2xl">
+                      <span className="px-5 md:px-3 py-2 ml-3  border-theme-navy border-2 hover:border-theme-champagne 2xl:border-0 2xl:hover:border-2 text-sm 2xl:text-xl bg-theme-oldlace hover:bg-theme-navy 2xl:bg-transparent text-theme-navy 2xl:text-theme-champagne 2xl:hover:text-theme-champagne hover:text-theme-champagne  leading-5 tracking-wide rounded-2xl">
                         Cursed Pirates{" "}
-                        <ChevronRightIcon className="md:w-8 md:h-8 w-4 h-4 -translate-y-0.5 md:-translate-y-1 inline-flex"></ChevronRightIcon>
+                        <ChevronRightIcon className="2xl:w-8 2xl:h-8 w-4 h-4 -translate-y-0.5 2xl:-translate-y-1 inline-flex"></ChevronRightIcon>
                       </span>
                     </a>
                     <a
@@ -115,9 +115,9 @@ const Hero = () => {
                         className="ml-2 w-16 h-16 bg-theme-oldlace  rounded-full  text-theme-champagne"
                         aria-hidden="true"
                       />
-                      <span className="px-5 md:px-3 py-2 ml-3  border-theme-navy border-2 hover:border-theme-champagne md:border-0 md:hover:border-2 text-sm md:text-xl bg-theme-oldlace hover:bg-theme-navy md:bg-transparent text-theme-navy md:text-theme-champagne md:hover:text-theme-champagne hover:text-theme-champagne  leading-5 tracking-wide rounded-2xl">
+                      <span className="px-5 2xl:px-3 py-2 ml-3  border-theme-navy border-2 hover:border-theme-champagne 2xl:border-0 2xl:hover:border-2 text-sm 2xl:text-xl bg-theme-oldlace hover:bg-theme-navy 2xl:bg-transparent text-theme-navy 2xl:text-theme-champagne 2xl:hover:text-theme-champagne hover:text-theme-champagne  leading-5 tracking-wide rounded-2xl">
                         Flying Dutchman Capital{" "}
-                        <ChevronRightIcon className="md:w-8 md:h-8 w-4 h-4 -translate-y-0.5 md:-translate-y-1  inline-flex"></ChevronRightIcon>
+                        <ChevronRightIcon className="2xl:w-8 2xl:h-8 w-4 h-4 -translate-y-0.5 2xl:-translate-y-1  inline-flex"></ChevronRightIcon>
                       </span>
                     </a>
 

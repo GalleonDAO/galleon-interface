@@ -294,7 +294,7 @@ const Contribute = () => {
           </ul>
           <div className="mt-10 text-center justify-center">
             <a
-              href="https://discord.gg/galleondao"
+              href="https://galleon.notion.site/Welcome-to-Galleon-3a8c6ddbc8794c05bed8d1a7fac0bb85"
               target={"_blank"}
               className="block w-1/2 py-3 m-auto px-4 mb-10 rounded-2xl shadow border-2 border-theme-navy hover:border-theme-navy hover:text-theme-champagne  bg-theme-champagne  text-theme-navy hover:bg-theme-navy text-sm md:text-xl  no-underline "
               rel="noreferrer"

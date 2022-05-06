@@ -170,7 +170,7 @@ const Footer = (props: { children?: JSX.Element }) => {
               speculative and involve a substantial degree of risk, including
               the risk of complete loss. There can be no assurance that any
               cryptocurrency, token, coin, or other crypto asset will be viable,
-              liquid, or solvent.No Galleon communication is intended to imply
+              liquid, or solvent. No Galleon communication is intended to imply
               that any digital assets are low-risk or risk-free. Galleon works
               hard to provide accurate information on this website, but cannot
               guarantee all content is correct, complete, or updated.

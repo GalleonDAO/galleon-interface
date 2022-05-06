@@ -80,10 +80,10 @@ const Products = () => {
                   />
                 </div>
               </a>
-              <p className="mt-5 block text-lg font-semibold text-center text-theme-navy truncate pointer-events-none">
+              <p className="mt-6 block text-xl font-bold font-morion text-center text-theme-navy truncate pointer-events-none">
                 {product.title}
               </p>
-              <p className="block text-md font-medium text-center  text-theme-navy pointer-events-none">
+              <p className="block text-md font-lg text-center  text-theme-navy pointer-events-none">
                 {product.description}
               </p>
             </li>
