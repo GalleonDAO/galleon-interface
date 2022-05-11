@@ -37,6 +37,7 @@ const ETHMAXY = () => {
       components={ethmaxyComponents || []}
       isLeveragedToken={true}
       apy={formattedApy}
+      hasDashboard={true}
     />
   );
 };
