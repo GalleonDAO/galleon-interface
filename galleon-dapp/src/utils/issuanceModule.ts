@@ -4,6 +4,7 @@ import {
   basicIssuanceModuleAddress,
   basicIssuanceModulePolygonAddress,
   debtIssuanceModuleAddress,
+  debtIssuanceModuleV2Address,
   debtIssuanceModuleV2PolygonAddress,
 } from "constants/ethContractAddresses";
 import // Bitcoin2xFlexibleLeverageIndex,
@@ -12,6 +13,7 @@ import // Bitcoin2xFlexibleLeverageIndex,
 // GmiIndex,
 // IEthereumFLIP,
 // IMaticFLIP,
+// JPGIndex,
 // Matic2xFLIP,
 "constants/tokens";
 
@@ -25,7 +27,9 @@ function getEthIssuanceModuleAddress(tokenSymbol: string): IssuanceModule {
     // case Bitcoin2xFlexibleLeverageIndex.symbol:
     // case Ethereum2xFlexibleLeverageIndex.symbol:
     // case GmiIndex.symbol:
-    //   return { address: debtIssuanceModuleAddress, isDebtIssuance: true };
+    //   return { address: debtIssuanceModuleAddress, isDebtIssuance: true }
+    // case JPGIndex.symbol:
+    //   return { address: debtIssuanceModuleV2Address, isDebtIssuance: true }
     default:
       return { address: basicIssuanceModuleAddress, isDebtIssuance: false };
   }
@@ -33,15 +37,15 @@ function getEthIssuanceModuleAddress(tokenSymbol: string): IssuanceModule {
 
 function getPolygonIssuanceModuleAddress(tokenSymbol: string): IssuanceModule {
   switch (tokenSymbol) {
-    // // case Ethereum2xFLIP.symbol:
-    // // case IEthereumFLIP.symbol:
-    // // case IMaticFLIP.symbol:
-    // // case GmiIndex.symbol:
-    // // case Matic2xFLIP.symbol:
-    //   return {
-    //     address: debtIssuanceModuleV2PolygonAddress,
-    //     isDebtIssuance: true,
-    //   };
+    // case Ethereum2xFLIP.symbol:
+    // case IEthereumFLIP.symbol:
+    // case IMaticFLIP.symbol:
+    // case GmiIndex.symbol:
+    // case Matic2xFLIP.symbol:
+    // return {
+    //   address: debtIssuanceModuleV2PolygonAddress,
+    //   isDebtIssuance: true,
+    // }
     default:
       return {
         address: basicIssuanceModulePolygonAddress,

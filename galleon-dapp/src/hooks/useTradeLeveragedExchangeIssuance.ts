@@ -1,16 +1,13 @@
+// @ts-nocheck
 import { useCallback, useState } from "react";
 
 import { BigNumber } from "@ethersproject/bignumber";
-import { ChainId, useEthers } from "@usedapp/core";
+import { useEthers } from "@usedapp/core";
 
-import {
-  collateralDebtSwapData,
-  debtCollateralSwapData,
-  inputSwapData,
-  outputSwapData,
-} from "constants/exchangeIssuanceLeveragedData";
+import { POLYGON } from "constants/chains";
 import { ETH, MATIC, Token } from "constants/tokens";
 import { fromWei } from "utils";
+import { SwapData } from "utils/exchangeIssuanceQuotes";
 
 import { useBalance } from "./useBalance";
 import {
@@ -25,7 +22,9 @@ export const useTradeLeveragedExchangeIssuance = (
   // buy / sell token amount
   tokenAmout: BigNumber,
   // max input / min output
-  inputOutputLimit: BigNumber
+  inputOutputLimit: BigNumber,
+  debtCollateralSwapData?: SwapData,
+  inputOutputSwapData?: SwapData
 ) => {
   const { account, chainId, library } = useEthers();
   const {
@@ -36,19 +35,27 @@ export const useTradeLeveragedExchangeIssuance = (
   } = useExchangeIssuanceLeveraged();
   const { getBalance } = useBalance();
 
-  const spendingTokenBalance = getBalance(inputToken) || BigNumber.from(0);
+  const spendingTokenBalance =
+    getBalance(inputToken.symbol) || BigNumber.from(0);
 
   const [isTransactingLevEI, setIsTransacting] = useState(false);
 
   const executeLevEITrade = useCallback(async () => {
-    if (!account || inputOutputLimit.isZero() || tokenAmout.isZero()) return;
+    if (
+      !account ||
+      inputOutputLimit.isZero() ||
+      tokenAmout.isZero() ||
+      debtCollateralSwapData === undefined ||
+      inputOutputSwapData === undefined
+    )
+      return;
 
     const outputTokenAddress =
-      chainId === ChainId.Polygon
+      chainId === POLYGON.chainId
         ? outputToken.polygonAddress
         : outputToken.address;
     const inputTokenAddress =
-      chainId === ChainId.Polygon
+      chainId === POLYGON.chainId
         ? inputToken.polygonAddress
         : inputToken.address;
     if (!outputTokenAddress || !inputTokenAddress) return;
@@ -64,31 +71,14 @@ export const useTradeLeveragedExchangeIssuance = (
           inputToken.symbol === ETH.symbol ||
           inputToken.symbol === MATIC.symbol;
 
-        let addressKey;
-        switch (outputToken.symbol) {
-          case "ETHMAXY":
-            addressKey = "0x0FE20E0Fa9C78278702B05c333Cc000034bb69E2";
-            break;
-
-          default:
-            addressKey = "0x0FE20E0Fa9C78278702B05c333Cc000034bb69E2";
-        }
-
-        const debtCollateralSwap =
-          debtCollateralSwapData[addressKey as keyof object];
-        const inputSwap =
-          inputSwapData[addressKey as keyof object][
-            inputTokenAddress as keyof object
-          ];
-
         if (isSellingNativeChainToken) {
           await issueExactSetFromETH(
             library,
             chainId,
             outputTokenAddress,
             amountOfSetToken,
-            debtCollateralSwap,
-            inputSwap,
+            debtCollateralSwapData,
+            inputOutputSwapData,
             inputOutputLimit
           );
         } else {
@@ -99,18 +89,14 @@ export const useTradeLeveragedExchangeIssuance = (
             amountOfSetToken,
             inputTokenAddress,
             inputOutputLimit,
-            debtCollateralSwap,
-            inputSwap
+            debtCollateralSwapData,
+            inputOutputSwapData
           );
         }
       } else {
         const isRedeemingToNativeChainToken =
           outputToken.symbol === ETH.symbol ||
           outputToken.symbol === MATIC.symbol;
-
-        const collateralDebtSwap = collateralDebtSwapData[inputToken.symbol];
-        const outputSwap =
-          outputSwapData[inputToken.symbol][outputToken.symbol as keyof object];
 
         const contract = await getExchangeIssuanceLeveragedContract(
           library?.getSigner(),
@@ -123,8 +109,8 @@ export const useTradeLeveragedExchangeIssuance = (
             inputTokenAddress,
             tokenAmout,
             inputOutputLimit,
-            collateralDebtSwap,
-            outputSwap
+            debtCollateralSwapData,
+            inputOutputSwapData
           );
         } else {
           await redeemExactSetForERC20(
@@ -133,8 +119,8 @@ export const useTradeLeveragedExchangeIssuance = (
             tokenAmout,
             outputTokenAddress,
             inputOutputLimit,
-            collateralDebtSwap,
-            outputSwap
+            debtCollateralSwapData,
+            inputOutputSwapData
           );
         }
       }

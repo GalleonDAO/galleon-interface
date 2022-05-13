@@ -5,16 +5,10 @@ import { BigNumber } from "@ethersproject/bignumber";
 import { useEthers, useSendTransaction } from "@usedapp/core";
 
 import { Token } from "constants/tokens";
-import { fromWei, toWei } from "utils";
+import { fromWei } from "utils";
 import { ZeroExData } from "utils/zeroExUtils";
 
 import { useBalance } from "./useBalance";
-import { logger } from "index";
-import {
-  KNOWN_LABELS,
-  KNOWN_SERVICES,
-  LOG_SEVERITY,
-} from "@galleondao/logging-lib";
 
 export const useTrade = (sellToken: Token, tradeData?: ZeroExData | null) => {
   const { account, library } = useEthers();
@@ -48,33 +42,10 @@ export const useTrade = (sellToken: Token, tradeData?: ZeroExData | null) => {
     try {
       setIsTransacting(true);
       // const tx = await library?.getSigner().sendTransaction(txRequest)
-      logger.logCounter({
-        serviceName: KNOWN_SERVICES.GALLEON_DAPP,
-        environment: process.env.NODE_ENV,
-        label: KNOWN_LABELS.TRADE_TRANSACTION_SENT,
-        metadata: {
-          from: account,
-          to: tradeData.to,
-          value: tradeData.value,
-          address: account,
-        },
-      });
-
       await sendTransaction(txRequest);
     } catch (error) {
       setIsTransacting(false);
       console.log("Error sending transaction", error);
-      logger.logMessage({
-        serviceName: KNOWN_SERVICES.GALLEON_DAPP,
-        environment: process.env.NODE_ENV,
-        timestamp: new Date().toISOString(),
-        severity: LOG_SEVERITY.ERROR,
-        functionName: "fetchAndCompareOptions",
-        // @ts-ignore
-        exception: JSON.stringify(result.error),
-        message: `Trade transaction failed: ${sellToken}, from: ${account}, to: ${tradeData.to}, value: ${tradeData.value}`,
-        correlationId: undefined,
-      });
     }
   }, [account, tradeData]);
 

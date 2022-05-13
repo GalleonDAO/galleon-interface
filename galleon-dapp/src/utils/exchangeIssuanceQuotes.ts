@@ -2,22 +2,57 @@ import { BigNumber, ethers } from "ethers";
 
 import { ChainId } from "@usedapp/core";
 
-import { Token } from "constants/tokens";
+import {
+  collateralDebtSwapData,
+  debtCollateralSwapData,
+  inputSwapData,
+  outputSwapData,
+} from "constants/exchangeIssuanceLeveragedData";
+import {
+  ETH,
+  EthMaxYieldIndex,
+  MATIC,
+  STETH,
+  Token,
+  WETH,
+} from "constants/tokens";
 import {
   getExchangeIssuanceLeveragedContract,
   getLeveragedTokenData,
 } from "hooks/useExchangeIssuanceLeveraged";
 import {
+  getExchangeIssuanceZeroExContract,
   getRequiredIssuanceComponents,
   getRequiredRedemptionComponents,
 } from "hooks/useExchangeIssuanceZeroEx";
-import { displayFromWei, toWei } from "utils";
+import { toWei } from "utils";
+import { getExchangeIssuanceGasEstimate } from "utils/exchangeIssuanceGasEstimate";
 import { getIssuanceModule } from "utils/issuanceModule";
+import {
+  getSwapData,
+  getSwapDataCollateralDebt,
+  getSwapDataDebtCollateral,
+} from "utils/swapData";
+import { getAddressForToken } from "utils/tokens";
 import { get0xQuote } from "utils/zeroExUtils";
+
+// Slippage hard coded to .5% (will be increased if there are revert issues)
+export const slippagePercentage = 0.5;
+
+export enum Exchange {
+  None,
+  Quickswap,
+  Sushiswap,
+  UniV3,
+  Curve,
+}
 
 export interface ExchangeIssuanceQuote {
   tradeData: string[];
   inputTokenAmount: BigNumber;
+  setTokenAmount: BigNumber;
+  gas: BigNumber;
+  gasPrice: BigNumber;
 }
 
 export interface LeveragedExchangeIssuanceQuote {
@@ -28,12 +63,12 @@ export interface LeveragedExchangeIssuanceQuote {
   gasPrice: BigNumber;
 }
 
-export enum Exchange {
-  None,
-  Quickswap,
-  Sushiswap,
-  UniV3,
-  Curve,
+export interface LeveragedTokenData {
+  collateralAToken: string;
+  collateralToken: string;
+  debtToken: string;
+  collateralAmount: BigNumber;
+  debtAmount: BigNumber;
 }
 
 export interface SwapData {
@@ -41,14 +76,6 @@ export interface SwapData {
   path: string[];
   fees: number[];
   pool: string;
-}
-
-export interface LeveragedTokenData {
-  collateralAToken: Token;
-  collateralToken: Token;
-  debtToken: Token;
-  collateralAmount: BigNumber;
-  debtAmount: BigNumber;
 }
 
 // 0x keys https://github.com/0xProject/protocol/blob/4f32f3174f25858644eae4c3de59c3a6717a757c/packages/asset-swapper/src/utils/market_operation_utils/types.ts#L38
@@ -67,12 +94,46 @@ function get0xEchangeKey(exchange: Exchange): string {
   }
 }
 
+export async function getRequiredComponents(
+  isIssuance: boolean,
+  setToken: string | undefined,
+  setTokenSymbol: string,
+  setTokenAmount: BigNumber,
+  chainId: ChainId | undefined,
+  provider: ethers.providers.Web3Provider | undefined
+) {
+  const issuanceModule = getIssuanceModule(setTokenSymbol, chainId);
+
+  const contract = await getExchangeIssuanceZeroExContract(
+    provider,
+    chainId ?? ChainId.Mainnet
+  );
+
+  const { components, positions } = isIssuance
+    ? await getRequiredIssuanceComponents(
+        contract,
+        issuanceModule.address,
+        issuanceModule.isDebtIssuance,
+        setToken ?? "",
+        setTokenAmount
+      )
+    : await getRequiredRedemptionComponents(
+        contract,
+        issuanceModule.address,
+        issuanceModule.isDebtIssuance,
+        setToken ?? "",
+        setTokenAmount
+      );
+
+  return { components, positions };
+}
+
 /**
  * Returns exchange issuance quotes (incl. 0x trade data) or null
  *
  * @param buyToken            The token to buy
- * @param buyTokenAmount      The amount of buy token that should be acquired
- * @param sellToken           The sell token
+ * @param setTokenAmount      The amount of set token that should be acquired/sold
+ * @param sellToken           The token to sell
  * @param chainId             ID for current chain
  * @param library             Web3Provider instance
  *
@@ -81,57 +142,81 @@ function get0xEchangeKey(exchange: Exchange): string {
  */
 export const getExchangeIssuanceQuotes = async (
   buyToken: Token,
-  buyTokenAmount: BigNumber,
+  setTokenAmount: BigNumber,
   sellToken: Token,
   isIssuance: boolean,
   chainId: ChainId = ChainId.Mainnet,
-  library: ethers.providers.JsonRpcProvider | undefined
+  provider: ethers.providers.Web3Provider | undefined
 ): Promise<ExchangeIssuanceQuote | null> => {
-  const tokenSymbol = isIssuance ? buyToken.symbol : sellToken.symbol;
-  const issuanceModule = getIssuanceModule(tokenSymbol, chainId);
+  const isPolygon = chainId === ChainId.Polygon;
+  const buyTokenAddress = isPolygon
+    ? buyToken.polygonAddress
+    : buyToken.address;
+  const sellTokenAddress = isPolygon
+    ? sellToken.polygonAddress
+    : sellToken.address;
+  const wethAddress = isPolygon ? WETH.polygonAddress : WETH.address;
 
-  const { components, positions } = isIssuance
-    ? await getRequiredIssuanceComponents(
-        library,
-        issuanceModule.address,
-        issuanceModule.isDebtIssuance,
-        buyToken.address!,
-        buyTokenAmount
-      )
-    : await getRequiredRedemptionComponents(
-        library,
-        issuanceModule.address,
-        issuanceModule.isDebtIssuance,
-        sellToken.address!,
-        buyTokenAmount
-      );
+  const setTokenAddress = isIssuance ? buyTokenAddress : sellTokenAddress;
+  const setTokenSymbol = isIssuance ? buyToken.symbol : sellToken.symbol;
+
+  const { components, positions } = await getRequiredComponents(
+    isIssuance,
+    setTokenAddress,
+    setTokenSymbol,
+    setTokenAmount,
+    chainId,
+    provider
+  );
 
   let positionQuotes: string[] = [];
-  let inputTokenAmount = BigNumber.from(0);
-  // Slippage hard coded to .5% (will be increased if there are revert issues)
-  const slippagePercents = 1;
+  // Input for issuing / output for redeeming
+  let inputOutputTokenAmount = BigNumber.from(0);
+  // TODO: do we wannt .5% or 5% slippage?
   // 0xAPI expects percentage as value between 0-1 e.g. 5% -> 0.05
-  const slippagePercentage = slippagePercents / 100;
+  // const isJPG = setTokenSymbol === JPGIndex.symbol
+  const slippage = slippagePercentage / 100;
 
   const quotePromises: Promise<any>[] = [];
   components.forEach((component, index) => {
+    const sellAmount = positions[index];
     const buyAmount = positions[index];
-    const buyTokenAddress = component;
-    const sellTokenAddress =
-      sellToken.symbol === "ETH" ? "ETH" : sellToken.address;
+    // TODO: check again if .address is correcct
+    const buyTokenAddress = isIssuance
+      ? component
+      : buyToken.symbol === "ETH"
+      ? wethAddress
+      : buyToken.address;
+    const sellTokenAddress = isIssuance
+      ? sellToken.symbol === "ETH"
+        ? wethAddress
+        : sellToken.address
+      : component;
 
     if (buyTokenAddress === sellTokenAddress) {
-      inputTokenAmount = inputTokenAmount.add(buyAmount);
+      inputOutputTokenAmount = isIssuance
+        ? inputOutputTokenAmount.add(buyAmount)
+        : inputOutputTokenAmount.add(sellAmount);
     } else {
-      const quotePromise = get0xQuote(
-        {
-          buyToken: buyTokenAddress,
-          sellToken: sellTokenAddress,
-          buyAmount: buyAmount.toString(),
-          slippagePercentage,
-        },
-        chainId ?? 1
-      );
+      const quotePromise = isIssuance
+        ? get0xQuote(
+            {
+              buyToken: buyTokenAddress,
+              sellToken: sellTokenAddress,
+              buyAmount: buyAmount.toString(),
+              slippagePercentage: slippage,
+            },
+            chainId ?? 1
+          )
+        : get0xQuote(
+            {
+              buyToken: buyTokenAddress,
+              sellToken: sellTokenAddress,
+              sellAmount: sellAmount.toString(),
+              slippagePercentage: slippage,
+            },
+            chainId ?? 1
+          );
       quotePromises.push(quotePromise);
     }
   });
@@ -140,20 +225,190 @@ export const getExchangeIssuanceQuotes = async (
   if (results.length < 1) return null;
 
   positionQuotes = results.map((result) => result.data);
-  inputTokenAmount = results
-    .map((result) => BigNumber.from(result.sellAmount))
+  inputOutputTokenAmount = results
+    .map((result) =>
+      BigNumber.from(isIssuance ? result.sellAmount : result.buyAmount)
+    )
     .reduce((prevValue, currValue) => {
       return currValue.add(prevValue);
     });
 
   // Christn: I assume that this is the correct math to make sure we have enough weth to cover the slippage
   // based on the fact that the slippagePercentage is limited between 0.0 and 1.0 on the 0xApi
-  inputTokenAmount = inputTokenAmount
-    .mul(toWei(100, sellToken.decimals))
-    .div(toWei(100 - slippagePercents, sellToken.decimals));
+  inputOutputTokenAmount = inputOutputTokenAmount
+    .mul(toWei(100, isIssuance ? sellToken.decimals : buyToken.decimals))
+    .div(
+      toWei(
+        100 - slippagePercentage,
+        isIssuance ? sellToken.decimals : buyToken.decimals
+      )
+    );
 
-  return { tradeData: positionQuotes, inputTokenAmount };
+  const gasPrice = (await provider?.getGasPrice()) ?? BigNumber.from(1800000);
+
+  // TODO: get balance and check if inputAmount exceeds balance
+  // TODO: only fetch gasEstimate if inputAmount <= balance
+  // TODO: otherwise skip, to still return a quote
+  const gasEstimate = await getExchangeIssuanceGasEstimate(
+    provider,
+    chainId,
+    isIssuance,
+    sellToken,
+    buyToken,
+    setTokenAmount,
+    inputOutputTokenAmount,
+    positionQuotes
+  );
+
+  return {
+    tradeData: positionQuotes,
+    inputTokenAmount: inputOutputTokenAmount,
+    setTokenAmount,
+    gas: gasEstimate,
+    gasPrice,
+  };
 };
+
+// Returns a comma separated string of sources to be included for 0x API calls
+export function getIncludedSources(isEthmaxy: boolean): string {
+  const curve = get0xEchangeKey(Exchange.Curve);
+  const quickswap = get0xEchangeKey(Exchange.Quickswap);
+  const sushi = get0xEchangeKey(Exchange.Sushiswap);
+  const uniswap = get0xEchangeKey(Exchange.UniV3);
+  let includedSources: string = isEthmaxy
+    ? [curve].toString()
+    : [quickswap, sushi, uniswap].toString();
+  return includedSources;
+}
+
+async function getLevTokenData(
+  setToken: Token,
+  setTokenAmount: BigNumber,
+  isIssuance: boolean,
+  chainId: number,
+  signer: ethers.providers.Web3Provider | undefined
+): Promise<LeveragedTokenData> {
+  const contract = await getExchangeIssuanceLeveragedContract(signer, chainId);
+  const setTokenAddress = getAddressForToken(setToken, chainId);
+  return await getLeveragedTokenData(
+    contract,
+    setTokenAddress ?? "",
+    setTokenAmount,
+    isIssuance
+  );
+}
+
+export function getLevEIPaymentTokenAddress(
+  paymentToken: Token,
+  isIssuance: boolean,
+  chainId: number
+): string {
+  if (paymentToken.symbol === ETH.symbol) {
+    return "ETH";
+  }
+
+  if (paymentToken.symbol === EthMaxYieldIndex.symbol && !isIssuance) {
+    // TODO: should this always be the collateralToken?
+    // paymentTokenAddress = leveragedTokenData.collateralToken
+    return STETH.address!;
+  }
+
+  if (chainId === ChainId.Polygon && paymentToken.symbol === MATIC.symbol) {
+    const WMATIC_ADDRESS = "0x0d500B1d8E8eF31E21C99d1Db9A6444d3ADf1270";
+    return WMATIC_ADDRESS;
+  }
+
+  const paymentTokenAddress = getAddressForToken(paymentToken, chainId);
+  return paymentTokenAddress ?? "";
+}
+
+export async function getSwapDataAndPaymentTokenAmount(
+  setToken: Token,
+  collateralToken: string,
+  collateralShortfall: BigNumber,
+  leftoverCollateral: BigNumber,
+  paymentTokenAddress: string,
+  includedSources: string,
+  isIssuance: boolean,
+  chainId: number
+): Promise<{
+  swapDataPaymentToken: SwapData;
+  paymentTokenAmount: BigNumber;
+}> {
+  const setTokenSymbol = setToken.symbol;
+  // By default the input/output swap data can be empty (as it will be ignored)
+  let swapDataPaymentToken: SwapData = {
+    exchange: Exchange.None,
+    path: [],
+    fees: [],
+    pool: "0x0000000000000000000000000000000000000000",
+  };
+
+  const issuanceParams = {
+    buyToken: collateralToken,
+    buyAmount: collateralShortfall.toString(),
+    sellToken: paymentTokenAddress,
+    includedSources,
+  };
+
+  const redeemingParams = {
+    buyToken: paymentTokenAddress,
+    sellAmount: leftoverCollateral.toString(),
+    sellToken: collateralToken,
+    includedSources,
+  };
+
+  // Default if collateral token should be equal to payment token
+  let paymentTokenAmount = isIssuance
+    ? collateralShortfall
+    : leftoverCollateral;
+
+  // Only fetch input/output swap data if collateral token is not the same as payment token
+  if (
+    collateralToken !== paymentTokenAddress &&
+    setTokenSymbol !== EthMaxYieldIndex.symbol
+  ) {
+    const result = await getSwapData(
+      isIssuance ? issuanceParams : redeemingParams,
+      chainId
+    );
+    if (result) {
+      const { swapData, zeroExQuote } = result;
+      swapDataPaymentToken = swapData;
+      paymentTokenAmount = isIssuance
+        ? BigNumber.from(zeroExQuote.sellAmount)
+        : BigNumber.from(zeroExQuote.buyAmount);
+    }
+  }
+
+  if (setTokenSymbol === EthMaxYieldIndex.symbol) {
+    const outputTokenSymbol =
+      paymentTokenAddress === STETH.address ? STETH.symbol : ETH.symbol;
+    // just use the static versions here
+    swapDataPaymentToken = isIssuance
+      ? inputSwapData[setTokenSymbol][outputTokenSymbol]
+      : outputSwapData[setTokenSymbol][ETH.symbol];
+  }
+
+  return { swapDataPaymentToken, paymentTokenAmount };
+}
+
+export function getSlippageAdjustedTokenAmount(
+  tokenAmount: BigNumber,
+  tokenDecimals: number,
+  slippagePercentage: number,
+  isIssuance: boolean
+): BigNumber {
+  if (isIssuance) {
+    return tokenAmount
+      .mul(toWei(100, tokenDecimals))
+      .div(toWei(100 - slippagePercentage, tokenDecimals));
+  }
+
+  return tokenAmount
+    .mul(toWei(100, tokenDecimals))
+    .div(toWei(100 + slippagePercentage, tokenDecimals));
+}
 
 export const getLeveragedExchangeIssuanceQuotes = async (
   setToken: Token,
@@ -161,31 +416,21 @@ export const getLeveragedExchangeIssuanceQuotes = async (
   paymentToken: Token,
   isIssuance: boolean,
   chainId: ChainId = ChainId.Mainnet,
-  library: ethers.providers.JsonRpcProvider | undefined
+  provider: ethers.providers.Web3Provider | undefined
 ): Promise<LeveragedExchangeIssuanceQuote | null> => {
   const tokenSymbol = setToken.symbol;
   const isEthmaxy = tokenSymbol === "ETHMAXY";
+  const includedSources = getIncludedSources(isEthmaxy);
 
-  const setTokenAddress =
-    chainId === ChainId.Polygon ? setToken.polygonAddress : setToken.address;
-  const contract = await getExchangeIssuanceLeveragedContract(
-    library?.getSigner(),
-    chainId
-  );
-  const leveragedTokenData: LeveragedTokenData = await getLeveragedTokenData(
-    contract,
-    setTokenAddress ?? "",
+  const leveragedTokenData = await getLevTokenData(
+    setToken,
     setTokenAmount,
-    isIssuance
+    isIssuance,
+    chainId,
+    provider
   );
 
-  // TODO: multi sources?
-  //TODO: Allow Quickswap and UniV3
-  let includedSources: string = isEthmaxy
-    ? [get0xEchangeKey(Exchange.Curve)].toString()
-    : [get0xEchangeKey(Exchange.Sushiswap)].toString();
-
-  let { swapDataDebtCollateral, collateralObtained } = isIssuance
+  let debtCollateralResult = isIssuance
     ? await getSwapDataDebtCollateral(
         leveragedTokenData,
         includedSources,
@@ -197,128 +442,62 @@ export const getLeveragedExchangeIssuanceQuotes = async (
         chainId
       );
 
-  const collateralShortfall =
-    leveragedTokenData.collateralAmount.sub(collateralObtained);
+  if (!debtCollateralResult) return null;
 
-  const WMATIC_ADDRESS = "0x0d500B1d8E8eF31E21C99d1Db9A6444d3ADf1270";
-  let paymentTokenAddress =
-    chainId === ChainId.Polygon && paymentToken.symbol === "MATIC"
-      ? WMATIC_ADDRESS
-      : chainId === ChainId.Polygon
-      ? paymentToken.polygonAddress
-      : paymentToken.address;
-  if (paymentToken.symbol === "ETH") {
-    paymentTokenAddress = "ETH";
-  }
-
-  if (isIssuance) {
-    if (isEthmaxy) {
-      swapDataDebtCollateral.exchange = Exchange.Curve;
-      swapDataDebtCollateral.path = [];
-      swapDataDebtCollateral.pool =
-        "0xDC24316b9AE028F1497c275EB9192a3Ea0f67022";
-    } else {
-      swapDataDebtCollateral.exchange = Exchange.Sushiswap;
-      swapDataDebtCollateral.path = [];
-      // pool should be zero address
-    }
-  } else {
-    if (isEthmaxy) {
-      paymentTokenAddress = "0xae7ab96520DE3A18E5e111B5EaAb095312D7fE84"; // stETH
-      swapDataDebtCollateral.exchange = Exchange.Curve;
-      swapDataDebtCollateral.path = [];
-      swapDataDebtCollateral.pool =
-        "0xDC24316b9AE028F1497c275EB9192a3Ea0f67022";
-    } else {
-      swapDataDebtCollateral.exchange = Exchange.Sushiswap;
-      swapDataDebtCollateral.path = [];
-      swapDataDebtCollateral.pool =
-        "0x34965ba0ac2451a34a0471f04cca3f990b8dea27";
-    }
-  }
-
-  const { swapData: swapDataPaymentToken, zeroExQuote } = await getSwapData(
-    {
-      buyToken: isIssuance
-        ? leveragedTokenData.collateralToken
-        : leveragedTokenData.debtToken,
-      buyAmount: collateralShortfall.toString(),
-      sellToken: paymentTokenAddress,
-      includedSources,
-    },
-    chainId
-  );
-  const inputTokenAmount = BigNumber.from(zeroExQuote.sellAmount);
+  let { swapDataDebtCollateral, collateralObtainedOrSold } =
+    debtCollateralResult;
 
   if (isEthmaxy) {
-    swapDataPaymentToken.exchange = Exchange.None;
-    swapDataPaymentToken.path = [];
+    // just using the static versions
+    swapDataDebtCollateral = isIssuance
+      ? debtCollateralSwapData[tokenSymbol]
+      : collateralDebtSwapData[tokenSymbol];
   }
 
-  const gasPrice = (await library?.getGasPrice()) ?? BigNumber.from(0);
+  // Relevant when issuing
+  const collateralShortfall = leveragedTokenData.collateralAmount.sub(
+    collateralObtainedOrSold
+  );
+  // Relevant when redeeming
+  const leftoverCollateral = leveragedTokenData.collateralAmount.sub(
+    collateralObtainedOrSold
+  );
+
+  let paymentTokenAddress = getLevEIPaymentTokenAddress(
+    paymentToken,
+    isIssuance,
+    chainId
+  );
+
+  let { swapDataPaymentToken, paymentTokenAmount } =
+    await getSwapDataAndPaymentTokenAmount(
+      setToken,
+      leveragedTokenData.collateralToken,
+      collateralShortfall,
+      leftoverCollateral,
+      paymentTokenAddress,
+      includedSources,
+      isIssuance,
+      chainId
+    );
+
+  const slip = !isIssuance && isEthmaxy ? 5 : slippagePercentage;
+
+  // Need to add some slippage similar to EI quote - as there were failed tx
+  paymentTokenAmount = getSlippageAdjustedTokenAmount(
+    paymentTokenAmount,
+    paymentToken.decimals,
+    slip,
+    isIssuance
+  );
+
+  const gasPrice = (await provider?.getGasPrice()) ?? BigNumber.from(0);
 
   return {
     swapDataDebtCollateral,
     swapDataPaymentToken,
-    inputTokenAmount,
+    inputTokenAmount: paymentTokenAmount,
     setTokenAmount,
     gasPrice,
   };
-};
-
-const getSwapDataCollateralDebt = async (
-  leveragedTokenData: LeveragedTokenData,
-  includedSources: string,
-  chainId: ChainId = ChainId.Polygon
-) => {
-  let { swapData: swapDataDebtCollateral, zeroExQuote } = await getSwapData(
-    {
-      buyToken: leveragedTokenData.debtToken,
-      sellToken: leveragedTokenData.collateralToken,
-      sellAmount: leveragedTokenData.collateralAmount.toString(),
-      includedSources,
-    },
-    chainId
-  );
-  const collateralObtained = BigNumber.from(zeroExQuote.buyAmount);
-  return { swapDataDebtCollateral, collateralObtained };
-};
-
-const getSwapDataDebtCollateral = async (
-  leveragedTokenData: LeveragedTokenData,
-  includedSources: string,
-  chainId: ChainId = ChainId.Polygon
-) => {
-  let { swapData: swapDataDebtCollateral, zeroExQuote } = await getSwapData(
-    {
-      buyToken: leveragedTokenData.collateralToken,
-      sellToken: leveragedTokenData.debtToken,
-      sellAmount: leveragedTokenData.debtAmount.toString(),
-      includedSources,
-    },
-    chainId
-  );
-  const collateralObtained = BigNumber.from(zeroExQuote.buyAmount);
-  return { swapDataDebtCollateral, collateralObtained };
-};
-
-const getSwapData = async (params: any, chainId: number = 137) => {
-  // TODO: error handling (for INSUFFICIENT_ASSET_LIQUIDITY)
-  const zeroExQuote = await get0xQuote(
-    {
-      ...params,
-      slippagePercentage: 0.5,
-    },
-    chainId
-  );
-
-  // TODO: ?
-  const swapData = {
-    exchange: Exchange.Sushiswap,
-    path: zeroExQuote.orders[0].fillData.tokenAddressPath,
-    fees: [],
-    pool: "0x0000000000000000000000000000000000000000",
-  };
-
-  return { swapData, zeroExQuote };
 };

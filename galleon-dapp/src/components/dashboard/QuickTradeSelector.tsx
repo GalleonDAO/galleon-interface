@@ -4,15 +4,17 @@ import { BigNumber } from "set.js";
 import { colors } from "styles/colors";
 
 import { Box, Flex, Image, Input, Select, Text } from "@chakra-ui/react";
+import { formatUnits } from "@ethersproject/units";
 import { useEthers } from "@usedapp/core";
 
 import { Token } from "constants/tokens";
 import { useBalance } from "hooks/useBalance";
-import { displayFromWei, isValidTokenInput } from "utils";
+import { isValidTokenInput } from "utils";
 
 import { formattedBalance } from "./QuickTradeFormatter";
 
 interface InputSelectorConfig {
+  isNarrowVersion: boolean;
   isInputDisabled?: boolean;
   isSelectorDisabled?: boolean;
   isReadOnly?: boolean;
@@ -23,13 +25,13 @@ const QuickTradeSelector = (props: {
   config: InputSelectorConfig;
   selectedToken: Token;
   selectedTokenAmount?: string;
+  priceImpact?: { priceImpact: string; colorCoding: string };
+  formattedFiat: string;
   tokenList: Token[];
   onChangeInput: (token: Token, input: string) => void;
   onSelectedToken: (symbol: string) => void;
-  isNarrowVersion: boolean;
 }) => {
   const { chainId } = useEthers();
-
   const { getBalance } = useBalance();
 
   const [inputString, setInputString] = useState<string>(
@@ -58,9 +60,10 @@ const QuickTradeSelector = (props: {
   const borderColor = colors.themeNavy;
   const borderRadius = 16;
 
-  const wideWidths = ["150px", "150px"];
-  const narrowWidths = ["150px"];
-  const widths = props.isNarrowVersion ? narrowWidths : wideWidths;
+  const height = "64px";
+  const wideWidths = ["250px", "180px"];
+  const narrowWidths = ["250px"];
+  const widths = config.isNarrowVersion ? narrowWidths : wideWidths;
 
   const onChangeInput = (amount: string) => {
     if (!amount) {
@@ -83,88 +86,81 @@ const QuickTradeSelector = (props: {
 
   return (
     <Flex direction="column">
-      <div>
-        <label
-          htmlFor={props.title}
-          className="block text-lg font-semibold text-theme-navy"
+      <Text fontSize="20px" fontWeight="700">
+        {props.title}
+      </Text>
+      <Flex mt="10px" h={height}>
+        <Flex
+          align="flex-start"
+          direction="column"
+          justify="center"
+          className="border-l-2 border-t-2 border-b-2 border-r-2 rounded-l-2xl  border-theme-navy"
+          borderColor={borderColor}
+          // borderLeftRadius={borderRadius}
+          px={["16px", "30px"]}
         >
-          {props.title}
-        </label>
-        <div className="mt-1 relative flex items-center">
-          <input
+          <Input
+            fontSize="20px"
             placeholder="0.0"
             type="number"
+            step="any"
+            variant="unstyled"
+            className="border-transparent focus:border-transparent focus:ring-0"
             disabled={config.isInputDisabled ?? false}
+            isReadOnly={config.isReadOnly ?? false}
             value={inputString}
             onChange={(event) => onChangeInput(event.target.value)}
-            name={props.title}
-            id={props.title}
-            className="shadow-sm focus:ring-theme-sky focus:border-theme-sky block w-full pr-12 sm:text-md border-theme-navy rounded-2xl border-2"
           />
-          <div className="absolute inset-y-0 right-0 flex py-1.5 ">
-            <kbd className="inline-flex items-center px-2">
-              <Flex align="center" h="54px" w={widths}>
-                {!props.isNarrowVersion && (
-                  <Box pl="10px" pr="0px">
-                    <Image
-                      src={selectedToken.image}
-                      alt={`${selectedToken.symbol} logo`}
-                      w="24px"
-                    />
-                  </Box>
-                )}
-                <select
-                  name="token"
-                  disabled={config.isSelectorDisabled ?? false}
-                  className=" inline-flex w-full pl-3 py-2 rounded-2xl text-base border-none text-theme-navy focus:outline-none focus:ring-none focus:border-none sm:text-md2xl border-2"
-                  defaultValue="Canada"
-                  onChange={(event) =>
-                    props.onSelectedToken(event.target.value)
-                  }
-                  value={props.selectedToken.symbol}
-                >
-                  {props.tokenList.map((token) => {
-                    return (
-                      <option
-                        className="text-theme-navy"
-                        key={token.symbol}
-                        value={token.symbol}
-                      >
-                        {token.symbol}
-                      </option>
-                    );
-                  })}
-                </select>
-              </Flex>
-            </kbd>
-          </div>
-        </div>
-      </div>
+          <Flex>
+            <Text fontSize="12px" textColor={colors.themeNavy}>
+              {props.formattedFiat}
+            </Text>
+            {props.priceImpact && (
+              <Text fontSize="12px" textColor={props.priceImpact.colorCoding}>
+                &nbsp;{props.priceImpact.priceImpact}
+              </Text>
+            )}
+          </Flex>
+        </Flex>
+        <Flex
+          align="center"
+          h={height}
+          className=" border-t-2 border-b-2 border-r-2 rounded-r-2xl border-theme-navy"
+          borderColor={borderColor}
+          // borderRightRadius={borderRadius}
+          cursor="pointer"
+          w={widths}
+          onClick={() => props.onSelectedToken(props.selectedToken.symbol)}
+        >
+          {!config.isNarrowVersion && (
+            <Box pl="10px" pr="0px">
+              <Image
+                src={selectedToken.image}
+                alt={`${selectedToken.symbol} logo`}
+                w="24px"
+              />
+            </Box>
+          )}
+          <Text ml="8px">{props.selectedToken.symbol}</Text>
+        </Flex>
+      </Flex>
       <Text
-        className="cursor-pointer"
         align="left"
+        fontSize="12px"
         fontWeight="400"
         mt="5px"
         onClick={() => {
-          // @ts-ignore
-          if (tokenBalance)
-            onChangeInput(
-              displayFromWei(
-                getBalance(props.selectedToken),
-                4,
-                props.selectedToken.decimals
-              )
+          if (tokenBalance) {
+            const fullTokenBalance = formatUnits(
+              getBalance(props.selectedToken) ?? "0",
+              props.selectedToken.decimals
             );
+            onChangeInput(fullTokenBalance);
+          }
         }}
+        cursor="pointer"
       >
-        <span className="text-sm">
-          Balance:{" "}
-          {displayFromWei(
-            getBalance(props.selectedToken),
-            4,
-            props.selectedToken.decimals
-          )}
-        </span>
+        Balance: {tokenBalance}
       </Text>
     </Flex>
   );

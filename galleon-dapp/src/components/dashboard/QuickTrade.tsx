@@ -29,15 +29,32 @@ import { useTrade } from "hooks/useTrade";
 import { useTradeExchangeIssuance } from "hooks/useTradeExchangeIssuance";
 import { useTradeLeveragedExchangeIssuance } from "hooks/useTradeLeveragedExchangeIssuance";
 import { useTradeTokenLists } from "hooks/useTradeTokenLists";
-import { isValidTokenInput, toWei } from "utils";
+import { isSupportedNetwork, isValidTokenInput, toWei } from "utils";
+
+import { MAINNET, OPTIMISM, POLYGON } from "constants/chains";
+import {
+  ExchangeIssuanceZeroExMainnetAddress,
+  ExchangeIssuanceZeroExPolygonAddress,
+} from "constants/ethContractAddresses";
+import {
+  indexNamesMainnet,
+  indexNamesOptimism,
+  indexNamesPolygon,
+} from "constants/tokens";
+
+import { maxPriceImpact } from "hooks/useBestTradeOption";
 
 import {
   getHasInsufficientFunds,
   getTradeInfoData0x,
   getTradeInfoDataFromEI,
+  formattedFiat,
+  getFormattedOuputTokenAmount,
+  getFormattedPriceImpact,
 } from "./QuickTradeFormatter";
 import QuickTradeSelector from "./QuickTradeSelector";
 import TradeInfo, { TradeInfoItem } from "./TradeInfo";
+import { getSelectTokenListItems, SelectTokenModal } from "./SelectTokenModal";
 
 enum QuickTradeBestOption {
   zeroEx,
@@ -51,14 +68,28 @@ const QuickTrade = (props: {
   children: any;
 }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const {
+    isOpen: isSelectInputTokenOpen,
+    onOpen: onOpenSelectInputToken,
+    onClose: onCloseSelectInputToken,
+  } = useDisclosure();
+  const {
+    isOpen: isSelectOutputTokenOpen,
+    onOpen: onOpenSelectOutputToken,
+    onClose: onCloseSelectOutputToken,
+  } = useDisclosure();
   const { account, chainId } = useEthers();
+
+  const supportedNetwork = isSupportedNetwork(chainId ?? -1);
 
   const {
     isBuying,
     buyToken,
     buyTokenList,
+    buyTokenPrice,
     sellToken,
     sellTokenList,
+    sellTokenPrice,
     changeBuyToken,
     changeSellToken,
     swapTokenLists,
@@ -68,11 +99,9 @@ const QuickTrade = (props: {
   const [bestOption, setBestOption] = useState<QuickTradeBestOption | null>(
     null
   );
+  const [buyTokenAmountFormatted, setBuyTokenAmountFormatted] = useState("0.0");
   const [sellTokenAmount, setSellTokenAmount] = useState("0");
   const [tradeInfoData, setTradeInfoData] = useState<TradeInfoItem[]>([]);
-
-  const [ethmaxyErrorMessage, setEthmaxyErrorMessage] =
-    useState<boolean>(false);
 
   const { bestOptionResult, isFetchingTradeData, fetchAndCompareOptions } =
     useBestTradeOption();
@@ -80,13 +109,35 @@ const QuickTrade = (props: {
   const hasFetchingError =
     bestOptionResult && !bestOptionResult.success && !isFetchingTradeData;
 
+  const spenderAddress0x =
+    chainId === POLYGON.chainId
+      ? ExchangeIssuanceZeroExMainnetAddress
+      : ExchangeIssuanceZeroExPolygonAddress;
   const spenderAddressLevEIL =
-    chainId === ChainId.Polygon
+    chainId === POLYGON.chainId
       ? ExchangeIssuanceLeveragedPolygonAddress
       : ExchangeIssuanceLeveragedMainnetAddress;
 
   const sellTokenAmountInWei = toWei(sellTokenAmount, sellToken.decimals);
-  const buyTokenAmountFormatted = tradeInfoData[0]?.value ?? "0";
+
+  const sellTokenFiat = formattedFiat(
+    parseFloat(sellTokenAmount),
+    sellTokenPrice
+  );
+  const buyTokenFiat = formattedFiat(
+    parseFloat(buyTokenAmountFormatted),
+    buyTokenPrice
+  );
+
+  const priceImpact = isFetchingTradeData
+    ? null
+    : getFormattedPriceImpact(
+        parseFloat(sellTokenAmount),
+        sellTokenPrice,
+        parseFloat(buyTokenAmountFormatted),
+        buyTokenPrice,
+        false
+      );
 
   const {
     isApproved: isApprovedForSwap,
@@ -102,11 +153,7 @@ const QuickTrade = (props: {
     isApproved: isApprovedForEIZX,
     isApproving: isApprovingForEIZX,
     onApprove: onApproveForEIZX,
-  } = useApproval(
-    sellToken,
-    ExchangeIssuanceZeroExAddress,
-    sellTokenAmountInWei
-  );
+  } = useApproval(sellToken, spenderAddress0x, sellTokenAmountInWei);
 
   const { executeTrade, isTransacting } = useTrade(
     sellToken,
@@ -116,17 +163,16 @@ const QuickTrade = (props: {
     isBuying,
     sellToken,
     buyToken,
-    bestOptionResult?.success
-      ? bestOptionResult.exchangeIssuanceData?.inputTokenAmount ??
-          BigNumber.from(0)
-      : BigNumber.from(0),
     bestOptionResult?.success ? bestOptionResult.exchangeIssuanceData : null
   );
+
   const { executeLevEITrade, isTransactingLevEI } =
     useTradeLeveragedExchangeIssuance(
       isBuying,
       sellToken,
       buyToken,
+      // TODO: simplify by just passing leveragedExchangeIssuanceData || null
+      // TODO: test inside to only exectue trade when data !== null
       bestOptionResult?.success
         ? bestOptionResult.leveragedExchangeIssuanceData?.setTokenAmount ??
             BigNumber.from(0)
@@ -134,7 +180,14 @@ const QuickTrade = (props: {
       bestOptionResult?.success
         ? bestOptionResult.leveragedExchangeIssuanceData?.inputTokenAmount ??
             BigNumber.from(0)
-        : BigNumber.from(0)
+        : BigNumber.from(0),
+      bestOptionResult?.success
+        ? bestOptionResult?.leveragedExchangeIssuanceData
+            ?.swapDataDebtCollateral
+        : undefined,
+      bestOptionResult?.success
+        ? bestOptionResult?.leveragedExchangeIssuanceData?.swapDataPaymentToken
+        : undefined
     );
 
   const hasInsufficientFunds = getHasInsufficientFunds(
@@ -156,61 +209,87 @@ const QuickTrade = (props: {
     const gasPrice0x = BigNumber.from(
       bestOptionResult.dexData?.gasPrice ?? "0"
     );
+    const gasPriceEI = BigNumber.from(
+      bestOptionResult.exchangeIssuanceData?.gasPrice ?? "0"
+    );
     const gasPriceLevEI =
       bestOptionResult.leveragedExchangeIssuanceData?.gasPrice ??
       BigNumber.from(0);
     const gasLimit = 1800000; // TODO: Make gasLimit dynamic
 
     const gas0x = gasPrice0x.mul(gasLimit0x);
+    const gasEI = gasPriceEI.mul(gasLimit);
     const gasLevEI = gasPriceLevEI.mul(gasLimit);
 
     const fullCosts0x = toWei(sellTokenAmount, sellToken.decimals).add(gas0x);
+    const fullCostsEI = bestOptionResult.exchangeIssuanceData
+      ? bestOptionResult.exchangeIssuanceData.inputTokenAmount.add(gasEI)
+      : null;
     const fullCostsLevEI = bestOptionResult.leveragedExchangeIssuanceData
       ? bestOptionResult.leveragedExchangeIssuanceData.inputTokenAmount.add(
           gasLevEI
         )
       : null;
 
-    const bestOptionIs0x =
+    const priceImpactDex = parseFloat(
+      bestOptionResult?.dexData?.estimatedPriceImpact ?? "5"
+    );
+    let bestOption = QuickTradeBestOption.zeroEx;
+    let bestOptionIs0x =
       !fullCostsLevEI ||
-      fullCosts0x.lt(
-        //NOTE: Change to .gt if you wanna pay up to taste EI
-        fullCostsLevEI
-      );
+      (fullCosts0x.lt(fullCostsLevEI) && priceImpactDex < maxPriceImpact);
 
-    const buyTokenDecimals = buyToken.decimals;
-
-    const dexTradeInfoData = bestOptionIs0x
-      ? getTradeInfoData0x(
-          bestOptionResult.dexData,
-          buyTokenDecimals,
-          buyToken,
-          chainId
-        )
-      : getTradeInfoDataFromEI(
-          bestOptionResult.leveragedExchangeIssuanceData?.setTokenAmount ??
-            BigNumber.from(0),
-          gasPriceLevEI,
-          buyToken,
-          bestOptionResult.leveragedExchangeIssuanceData,
-          isBuying ? buyToken.decimals : sellToken.decimals,
-          chainId
-        );
-    setTradeInfoData(dexTradeInfoData);
-
-    setBestOption(
-      bestOptionIs0x
+    if (bestOptionIs0x) {
+      bestOptionIs0x =
+        !fullCostsEI ||
+        (fullCosts0x.lt(fullCostsEI) && priceImpactDex < maxPriceImpact);
+      bestOption = bestOptionIs0x
         ? QuickTradeBestOption.zeroEx
-        : QuickTradeBestOption.leveragedExchangeIssuance
+        : QuickTradeBestOption.exchangeIssuance;
+    } else {
+      const bestOptionIsLevEI = !fullCostsEI || fullCostsLevEI!.lt(fullCostsEI);
+      bestOption = bestOptionIsLevEI
+        ? QuickTradeBestOption.leveragedExchangeIssuance
+        : QuickTradeBestOption.exchangeIssuance;
+    }
+
+    const bestOptionIsLevEI =
+      bestOption === QuickTradeBestOption.leveragedExchangeIssuance;
+    const tradeDataEI = bestOptionIsLevEI
+      ? bestOptionResult.leveragedExchangeIssuanceData
+      : bestOptionResult.exchangeIssuanceData;
+    const tradeDataGasPriceEI = bestOptionIsLevEI ? gasPriceLevEI : gasPriceEI;
+    const tradeDataSetAmountEI = bestOptionIsLevEI
+      ? bestOptionResult.leveragedExchangeIssuanceData?.setTokenAmount ??
+        BigNumber.from(0)
+      : bestOptionResult.exchangeIssuanceData?.setTokenAmount ??
+        BigNumber.from(0);
+
+    const tradeInfoData = bestOptionIs0x
+      ? getTradeInfoData0x(bestOptionResult.dexData, buyToken, chainId)
+      : getTradeInfoDataFromEI(
+          tradeDataSetAmountEI,
+          tradeDataGasPriceEI,
+          buyToken,
+          sellToken,
+          tradeDataEI,
+          chainId,
+          isBuying
+        );
+
+    const buyTokenAmountFormatted = getFormattedOuputTokenAmount(
+      bestOption !== QuickTradeBestOption.zeroEx,
+      buyToken.decimals,
+      bestOptionResult?.success
+        ? bestOptionResult.dexData?.minOutput
+        : undefined,
+      isBuying ? tradeDataEI?.setTokenAmount : tradeDataEI?.inputTokenAmount
     );
 
-    // Temporary needed as ETHMAXY EI can't provide more than 120 ETHMAXY
-    const shouldShowethmaxyErrorMessage =
-      !bestOptionIs0x &&
-      sellToken.symbol === ETH.symbol &&
-      buyToken.symbol === EthMaxYieldIndex.symbol &&
-      toWei(sellTokenAmount, sellToken.decimals).gt(toWei(120));
-    setEthmaxyErrorMessage(shouldShowethmaxyErrorMessage);
+    console.log("BESTOPTION", bestOption);
+    setTradeInfoData(tradeInfoData);
+    setBestOption(bestOption);
+    setBuyTokenAmountFormatted(buyTokenAmountFormatted);
   }, [bestOptionResult]);
 
   useEffect(() => {
@@ -229,8 +308,10 @@ const QuickTrade = (props: {
     fetchAndCompareOptions(
       sellToken,
       sellTokenAmount,
+      sellTokenPrice,
       buyToken,
       // buyTokenAmount,
+      buyTokenPrice,
       isBuying
     );
   };
@@ -268,13 +349,48 @@ const QuickTrade = (props: {
     }
   };
 
+  const isNotTradable = (token: Token | undefined) => {
+    if (token && chainId === MAINNET.chainId)
+      return (
+        indexNamesMainnet.filter((t) => t.symbol === token.symbol).length === 0
+      );
+    if (token && chainId === POLYGON.chainId)
+      return (
+        indexNamesPolygon.filter((t) => t.symbol === token.symbol).length === 0
+      );
+    if (token && chainId === OPTIMISM.chainId)
+      return (
+        indexNamesOptimism.filter((t) => t.symbol === token.symbol).length === 0
+      );
+    return false;
+  };
+
   /**
    * Get the correct trade button label according to different states
    * @returns string label for trade button
    */
   const getTradeButtonLabel = () => {
+    if (!supportedNetwork) return "Wrong Network";
+
     if (!account) {
       return "Connect Wallet";
+    }
+
+    if (isNotTradable(props.singleToken)) {
+      let chainName = "This Network";
+      switch (chainId) {
+        case MAINNET.chainId:
+          chainName = "Mainnet";
+          break;
+        case POLYGON.chainId:
+          chainName = "Polygon";
+          break;
+        case OPTIMISM.chainId:
+          chainName = "Optimism";
+          break;
+      }
+
+      return `Not Available on ${chainName}`;
     }
 
     if (sellTokenAmount === "0") {
@@ -304,13 +420,6 @@ const QuickTrade = (props: {
       return "Trading...";
 
     return "Trade";
-  };
-
-  const onChangeBuyTokenAmount = (token: Token, input: string) => {
-    // const inputNumber = Number(input)
-    // if (input === buyTokenAmount || input.slice(-1) === '.') return
-    // if (isNaN(inputNumber) || inputNumber < 0) return
-    // setBuyTokenAmount(inputNumber.toString())
   };
 
   const onChangeSellTokenAmount = (token: Token, input: string) => {
@@ -354,9 +463,8 @@ const QuickTrade = (props: {
     }
   };
 
-  const isLoading = getIsApproving() || isFetchingTradeData;
-
   const getButtonDisabledState = () => {
+    if (!supportedNetwork) return true;
     if (!account) return false;
     if (hasFetchingError) return false;
     return (
@@ -364,15 +472,32 @@ const QuickTrade = (props: {
       hasInsufficientFunds ||
       isTransacting ||
       isTransactingEI ||
-      isTransactingLevEI
+      isTransactingLevEI ||
+      isNotTradable(props.singleToken)
     );
   };
 
   const buttonLabel = getTradeButtonLabel();
   const isButtonDisabled = getButtonDisabledState();
+  const isLoading = getIsApproving() || isFetchingTradeData;
 
   const isNarrow = props.isNarrowVersion ?? false;
   const paddingX = isNarrow ? "16px" : "40px";
+
+  const inputTokenBalances = sellTokenList.map(
+    (sellToken) => getBalance(sellToken) ?? BigNumber.from(0)
+  );
+  const outputTokenBalances = buyTokenList.map(
+    (buyToken) => getBalance(buyToken) ?? BigNumber.from(0)
+  );
+  const inputTokenItems = getSelectTokenListItems(
+    sellTokenList,
+    inputTokenBalances
+  );
+  const outputTokenItems = getSelectTokenListItems(
+    buyTokenList,
+    outputTokenBalances
+  );
 
   return (
     <Flex direction="column" py="20px" px={["16px", paddingX]} height={"100%"}>
@@ -381,15 +506,18 @@ const QuickTrade = (props: {
         <QuickTradeSelector
           title="From"
           config={{
-            isInputDisabled: false,
+            isInputDisabled: isNotTradable(props.singleToken),
+            isNarrowVersion: isNarrow,
             isSelectorDisabled: false,
             isReadOnly: false,
           }}
           selectedToken={sellToken}
+          formattedFiat={sellTokenFiat}
           tokenList={sellTokenList}
           onChangeInput={onChangeSellTokenAmount}
-          onSelectedToken={(tokenSymbol) => changeSellToken(tokenSymbol)}
-          isNarrowVersion={isNarrow}
+          onSelectedToken={(_) => {
+            if (inputTokenItems.length > 1) onOpenSelectInputToken();
+          }}
         />
         <Box h="12px" alignSelf={"flex-end"} m={"-12px 0 12px 0"}>
           <IconButton
@@ -407,31 +535,30 @@ const QuickTrade = (props: {
           title="To"
           config={{
             isInputDisabled: true,
+            isNarrowVersion: isNarrow,
             isSelectorDisabled: false,
             isReadOnly: true,
           }}
           selectedToken={buyToken}
           selectedTokenAmount={buyTokenAmountFormatted}
+          formattedFiat={buyTokenFiat}
+          priceImpact={priceImpact ?? undefined}
           tokenList={buyTokenList}
-          onChangeInput={onChangeBuyTokenAmount}
-          onSelectedToken={(tokenSymbol) => changeBuyToken(tokenSymbol)}
-          isNarrowVersion={isNarrow}
+          onChangeInput={(token: Token, input: string) => {}}
+          onSelectedToken={(_) => {
+            if (outputTokenItems.length > 1) onOpenSelectOutputToken();
+          }}
         />
       </Flex>
       <Flex direction="column">
         {tradeInfoData.length > 0 && <TradeInfo data={tradeInfoData} />}
         {hasFetchingError && (
-          <Text align="center" color={colors.red} p="16px">
+          <Text align="center" color={colors.themeNavy} p="16px">
             {/* @ts-ignore */}
             {bestOptionResult.error.message}
           </Text>
         )}
-        {ethmaxyErrorMessage && (
-          <Text align="center" color={colors.themeNavy} p="16px">
-            You can only issue the displayed amount of ETHMAXY at a time (you'll
-            pay this amount of ETH, instead of the quantity you want to spend).
-          </Text>
-        )}
+
         <TradeButton
           label={buttonLabel}
           background={colors.themeChampagne}
@@ -441,6 +568,24 @@ const QuickTrade = (props: {
         />
       </Flex>
       <ConnectModal isOpen={isOpen} onClose={onClose} />
+      <SelectTokenModal
+        isOpen={isSelectInputTokenOpen}
+        onClose={onCloseSelectInputToken}
+        onSelectedToken={(tokenSymbol) => {
+          changeSellToken(tokenSymbol);
+          onCloseSelectInputToken();
+        }}
+        items={inputTokenItems}
+      />
+      <SelectTokenModal
+        isOpen={isSelectOutputTokenOpen}
+        onClose={onCloseSelectOutputToken}
+        onSelectedToken={(tokenSymbol) => {
+          changeBuyToken(tokenSymbol);
+          onCloseSelectOutputToken();
+        }}
+        items={outputTokenItems}
+      />
     </Flex>
   );
 };

@@ -1,22 +1,25 @@
+// @ts-nocheck
 import { useCallback, useState } from "react";
 
 import { BigNumber } from "@ethersproject/bignumber";
-import { ChainId, useEthers } from "@usedapp/core";
+import { useEthers } from "@usedapp/core";
 
+import { MAINNET, POLYGON } from "constants/chains";
 import { ETH, MATIC, Token } from "constants/tokens";
 import { fromWei } from "utils";
 import { ExchangeIssuanceQuote } from "utils/exchangeIssuanceQuotes";
 import { getIssuanceModule } from "utils/issuanceModule";
 
 import { useBalance } from "./useBalance";
-import { useExchangeIssuanceZeroEx } from "./useExchangeIssuanceZeroEx";
+import {
+  getExchangeIssuanceZeroExContract,
+  useExchangeIssuanceZeroEx,
+} from "./useExchangeIssuanceZeroEx";
 
 export const useTradeExchangeIssuance = (
   isIssuance: boolean,
   inputToken: Token,
   outputToken: Token,
-  // buy token amount
-  tokenAmout: BigNumber,
   quoteData?: ExchangeIssuanceQuote | null
 ) => {
   const { account, chainId, library } = useEthers();
@@ -28,21 +31,23 @@ export const useTradeExchangeIssuance = (
   } = useExchangeIssuanceZeroEx();
   const { getBalance } = useBalance();
 
-  const tokenSymbol = isIssuance ? outputToken.symbol : inputToken.symbol;
-  const issuanceModule = getIssuanceModule(tokenSymbol, chainId);
-  const spendingTokenBalance = getBalance(inputToken) || BigNumber.from(0);
+  const setTokenAmount = quoteData?.setTokenAmount;
+  const setTokenSymbol = isIssuance ? outputToken.symbol : inputToken.symbol;
+  const issuanceModule = getIssuanceModule(setTokenSymbol, chainId);
+  const spendingTokenBalance =
+    getBalance(inputToken.symbol) || BigNumber.from(0);
 
   const [isTransactingEI, setIsTransacting] = useState(false);
 
   const executeEITrade = useCallback(async () => {
-    if (!account || !quoteData) return;
+    if (!account || !quoteData || !setTokenAmount) return;
 
     const outputTokenAddress =
-      chainId === ChainId.Polygon
+      chainId === POLYGON.chainId
         ? outputToken.polygonAddress
         : outputToken.address;
     const inputTokenAddress =
-      chainId === ChainId.Polygon
+      chainId === POLYGON.chainId
         ? inputToken.polygonAddress
         : inputToken.address;
     if (!outputTokenAddress || !inputTokenAddress) return;
@@ -55,59 +60,70 @@ export const useTradeExchangeIssuance = (
 
     try {
       setIsTransacting(true);
+
+      const contract = await getExchangeIssuanceZeroExContract(
+        library?.getSigner(),
+        chainId ?? MAINNET.chainId
+      );
+
       if (isIssuance) {
-        const amountOfSetToken = tokenAmout;
         const isSellingNativeChainToken =
           inputToken.symbol === ETH.symbol ||
           inputToken.symbol === MATIC.symbol;
 
         if (isSellingNativeChainToken) {
           await issueExactSetFromETH(
-            library,
+            contract,
             outputTokenAddress,
-            amountOfSetToken,
+            setTokenAmount,
             quoteData.tradeData,
             issuanceModule.address,
-            issuanceModule.isDebtIssuance
+            issuanceModule.isDebtIssuance,
+            quoteData.inputTokenAmount,
+            quoteData.gas
           );
         } else {
           const maxAmountInputToken = quoteData.inputTokenAmount;
           await issueExactSetFromToken(
-            library,
+            contract,
             outputTokenAddress,
             inputTokenAddress,
-            amountOfSetToken,
+            setTokenAmount,
             maxAmountInputToken,
             quoteData.tradeData,
             issuanceModule.address,
-            issuanceModule.isDebtIssuance
+            issuanceModule.isDebtIssuance,
+            quoteData.gas
           );
         }
       } else {
         const isRedeemingNativeChainToken =
-          inputToken.symbol === ETH.symbol ||
-          inputToken.symbol === MATIC.symbol;
-        const minAmountToReceive = tokenAmout;
+          outputToken.symbol === ETH.symbol ||
+          outputToken.symbol === MATIC.symbol;
+        const minOutputReceive = quoteData.inputTokenAmount;
 
         if (isRedeemingNativeChainToken) {
           await redeemExactSetForETH(
-            library,
+            contract,
             inputTokenAddress,
-            minAmountToReceive,
+            setTokenAmount,
+            minOutputReceive,
             quoteData.tradeData,
             issuanceModule.address,
-            issuanceModule.isDebtIssuance
+            issuanceModule.isDebtIssuance,
+            quoteData.gas
           );
         } else {
           await redeemExactSetForToken(
-            library,
+            contract,
             inputTokenAddress,
             outputTokenAddress,
-            requiredBalance,
-            minAmountToReceive,
+            setTokenAmount,
+            minOutputReceive,
             quoteData.tradeData,
             issuanceModule.address,
-            issuanceModule.isDebtIssuance
+            issuanceModule.isDebtIssuance,
+            quoteData.gas
           );
         }
       }

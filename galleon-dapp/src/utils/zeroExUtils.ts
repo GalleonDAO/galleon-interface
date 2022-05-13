@@ -16,6 +16,7 @@ type Result<T, E = Error> =
 export type ZeroExData = {
   chainId: string;
   data: string;
+  estimatedPriceImpact: string;
   price: string;
   guaranteedPrice: string;
   buyTokenAddress: string;
@@ -88,9 +89,6 @@ export const getZeroExTradeData = async (
     chainId
   );
 
-  if (params.sellToken === "0x0FE20E0Fa9C78278702B05c333Cc000034bb69E2") {
-    params.sellToken = "0xae7ab96520DE3A18E5e111B5EaAb095312D7fE84";
-  }
   const query = querystring.stringify(params);
   const url = getApiUrl(query, chainId);
   try {
@@ -103,8 +101,7 @@ export const getZeroExTradeData = async (
           isExactInput,
           sellToken,
           buyToken,
-          amount,
-          chainId
+          amount
         );
     return { success: true, value: apiResult };
   } catch (e) {
@@ -154,6 +151,8 @@ export const get0xApiParams = (
 const getChainTokenAddress = (token: Token, chainId: number) => {
   if (chainId === POLYGON.chainId)
     return token.symbol === "MATIC" ? "MATIC" : token.polygonAddress;
+  if (chainId === OPTIMISM.chainId)
+    return token.symbol === "ETH" ? "ETH" : token.optimismAddress;
   return token.symbol === "ETH" ? "ETH" : token.address;
 };
 
@@ -182,8 +181,7 @@ const processApiResult = async (
   isExactInput: boolean,
   sellToken: Token,
   buyToken: Token,
-  amount: string,
-  chainId: number
+  amount: string
 ): Promise<ZeroExData> => {
   zeroExData.displaySellAmount = getDisplayAdjustedAmount(
     zeroExData.sellAmount,
@@ -212,23 +210,6 @@ const processApiResult = async (
         .div(BigNumber.from(10).pow(buyToken.decimals));
 
   zeroExData.formattedSources = formatSources(zeroExData.sources);
-
-  // Not used right now - and an issue as it would cause too many fetches from EI
-  // const buyTokenPrice = await fetchCoingeckoTokenPrice(
-  //   zeroExData.buyTokenAddress,
-  //   chainId
-  // )
-  // zeroExData.buyTokenCost = (
-  //   buyTokenPrice * zeroExData.displayBuyAmount
-  // ).toFixed(2)
-  //
-  // const sellTokenPrice: number = await fetchCoingeckoTokenPrice(
-  //   zeroExData.sellTokenAddress,
-  //   chainId
-  // )
-  // zeroExData.sellTokenCost = (
-  //   sellTokenPrice * zeroExData.displaySellAmount
-  // ).toFixed(2)
 
   return zeroExData;
 };

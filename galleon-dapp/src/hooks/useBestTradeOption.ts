@@ -1,16 +1,16 @@
+// @ts-nocheck
 import { useState } from "react";
 
 import { BigNumber } from "@ethersproject/bignumber";
 import { useEthers } from "@usedapp/core";
-import {
-  KNOWN_SERVICES,
-  KNOWN_LABELS,
-  LOG_SEVERITY,
-} from "@galleondao/logging-lib";
+
+import { MAINNET } from "constants/chains";
 import {
   eligibleLeveragedExchangeIssuanceTokens,
   ETH,
   EthMaxYieldIndex,
+  // JPGIndex,
+  STETH,
   Token,
 } from "constants/tokens";
 import { toWei } from "utils";
@@ -21,19 +21,18 @@ import {
   LeveragedExchangeIssuanceQuote,
 } from "utils/exchangeIssuanceQuotes";
 import { getZeroExTradeData, ZeroExData } from "utils/zeroExUtils";
-import { logger } from "index";
 
 type Result<_, E = Error> =
   | {
       success: true;
       dexData: ZeroExData | null;
       exchangeIssuanceData: ExchangeIssuanceQuote | null | undefined;
-      leveragedExchangeIssuanceData:
-        | LeveragedExchangeIssuanceQuote
-        | null
-        | undefined;
+      leveragedExchangeIssuanceData: LeveragedExchangeIssuanceQuote | null;
     }
   | { success: false; error: E };
+
+// To determine if price impact for DEX is smaller 5%
+export const maxPriceImpact = 5;
 
 /* Determines if the token is eligible for Leveraged Exchange Issuance */
 const isEligibleLeveragedToken = (token: Token) =>
@@ -49,39 +48,71 @@ const isEligibleTradePair = (
     ? isEligibleLeveragedToken(outputToken)
     : isEligibleLeveragedToken(inputToken);
 
-  const isEthmaxy =
+  const isEthMaxy =
     inputToken.symbol === EthMaxYieldIndex.symbol ||
     outputToken.symbol === EthMaxYieldIndex.symbol;
 
-  if (tokenEligible && isEthmaxy && isIssuance) {
-    // Only ETH is allowed as input for ethmaxy issuance at the moment
-    return inputToken.symbol === ETH.symbol;
+  if (tokenEligible && isEthMaxy && isIssuance) {
+    // Only ETH or stETH is allowed as input for ETHMAXY issuance at the moment
+    return (
+      inputToken.symbol === ETH.symbol || inputToken.symbol === STETH.symbol
+    );
   }
 
-  if (tokenEligible && isEthmaxy && !isIssuance) {
-    // Only ETH is allowed as output for ethmaxy redeeming at the moment
+  if (tokenEligible && isEthMaxy && !isIssuance) {
+    // Only ETH is allowed as output for ETHMAXY redeeming at the moment
     return outputToken.symbol === ETH.symbol;
   }
 
   return tokenEligible;
 };
 
+export const getSetTokenAmount = (
+  isIssuance: boolean,
+  sellTokenAmount: string,
+  sellTokenDecimals: number,
+  sellTokenPrice: number,
+  buyTokenPrice: number,
+  dexSwapOption: ZeroExData | null
+): BigNumber => {
+  if (!isIssuance) {
+    return toWei(sellTokenAmount, sellTokenDecimals);
+  }
+
+  let setTokenAmount = BigNumber.from(dexSwapOption?.buyAmount ?? "0");
+
+  const priceImpact =
+    dexSwapOption && dexSwapOption.estimatedPriceImpact
+      ? parseFloat(dexSwapOption.estimatedPriceImpact)
+      : 0;
+
+  if (!dexSwapOption || priceImpact >= maxPriceImpact) {
+    // Recalculate the exchange issue/redeem quotes if not enough DEX liquidity
+    const sellTokenTotal = parseFloat(sellTokenAmount) * sellTokenPrice;
+    const approxOutputAmount =
+      buyTokenPrice === 0 ? 0 : Math.floor(sellTokenTotal / buyTokenPrice);
+    setTokenAmount = toWei(approxOutputAmount, sellTokenDecimals);
+  }
+
+  return setTokenAmount;
+};
+
 export const useBestTradeOption = () => {
-  const { account, chainId, library } = useEthers();
+  const { chainId, library } = useEthers();
 
   const [isFetching, setIsFetching] = useState<boolean>(false);
   const [result, setResult] = useState<Result<ZeroExData, Error> | null>(null);
-  const [time, setTime] = useState(0);
 
   const fetchAndCompareOptions = async (
     sellToken: Token,
     sellTokenAmount: string,
+    sellTokenPrice: number,
     buyToken: Token,
     // buyTokenAmount: string,
+    buyTokenPrice: number,
     isIssuance: boolean
   ) => {
     setIsFetching(true);
-    setTime(Date.now());
 
     /* Check 0x for DEX Swap option*/
     const zeroExResult = await getZeroExTradeData(
@@ -98,45 +129,34 @@ export const useBestTradeOption = () => {
     // @ts-ignore
     const dexSwapError = zeroExResult.success ? null : zeroExResult.error;
 
-    const tokenEligible = isEligibleTradePair(sellToken, buyToken, isIssuance);
-
-    const tokenAmount =
-      isIssuance && dexSwapOption
-        ? BigNumber.from(dexSwapOption.buyAmount)
-        : toWei(sellTokenAmount, sellToken.decimals);
+    /* Determine set token amount based on different factors */
+    let setTokenAmount = getSetTokenAmount(
+      isIssuance,
+      sellTokenAmount,
+      sellToken.decimals,
+      sellTokenPrice,
+      buyTokenPrice,
+      dexSwapOption
+    );
 
     /* Check for Exchange Issuance option */
-    let exchangeIssuanceOption: ExchangeIssuanceQuote | null | undefined =
-      undefined;
-    // if (account && !isBuyingTokenEligible) {
-    //   try {
-    //     exchangeIssuanceOption = await getExchangeIssuanceQuotes(
-    //       buyToken,
-    //       tokenAmount,
-    //       sellToken,
-    //       isIssuance,
-    //       chainId,
-    //       library
-    //     )
-    //   } catch (e) {
-    //     console.warn('error when generating zeroexei option', e)
-    //   }
-    // }
-
-    /* Check ExchangeIssuanceLeveraged option */
+    let exchangeIssuanceOption: ExchangeIssuanceQuote | null = null;
     let leveragedExchangeIssuanceOption: LeveragedExchangeIssuanceQuote | null =
       null;
-    // TODO: Recalculate the exchange issue/redeem quotes if not enough DEX liquidity on ETHMAXY/ETH
-    // if (account && !dexSwapError && tokenEligible) {
-    if (account && !dexSwapError && tokenEligible) {
+
+    const tokenEligibleForLeveragedEI = isEligibleTradePair(
+      sellToken,
+      buyToken,
+      isIssuance
+    );
+    if (tokenEligibleForLeveragedEI) {
       const setToken = isIssuance ? buyToken : sellToken;
-      const setAmount = tokenAmount;
 
       try {
         leveragedExchangeIssuanceOption =
           await getLeveragedExchangeIssuanceQuotes(
             setToken,
-            setAmount,
+            setTokenAmount,
             sellToken,
             isIssuance,
             chainId,
@@ -145,7 +165,41 @@ export const useBestTradeOption = () => {
       } catch (e) {
         console.warn("error when generating leveraged ei option", e);
       }
+    } else {
+      const isEthMaxy =
+        sellToken.symbol === EthMaxYieldIndex.symbol ||
+        buyToken.symbol === EthMaxYieldIndex.symbol;
+      // const isJpg =
+      //   sellToken.symbol === JPGIndex.symbol ||
+      //   buyToken.symbol === JPGIndex.symbol
+      // For now only run on mainnet and if not ETHMAXY
+      // ETHMAXY token pair (with non ETH token) could not be eligible and land here
+      // temporarily - disabled JPG for EI
+      if (chainId === MAINNET.chainId && !isEthMaxy)
+        try {
+          exchangeIssuanceOption = await getExchangeIssuanceQuotes(
+            buyToken,
+            setTokenAmount,
+            sellToken,
+            isIssuance,
+            chainId,
+            library
+          );
+        } catch (e) {
+          console.warn("error when generating zeroexei option", e);
+        }
     }
+
+    console.log(
+      "exchangeIssuanceOption",
+      exchangeIssuanceOption,
+      exchangeIssuanceOption?.inputTokenAmount.toString()
+    );
+    console.log(
+      "levExchangeIssuanceOption",
+      leveragedExchangeIssuanceOption,
+      leveragedExchangeIssuanceOption?.inputTokenAmount.toString()
+    );
 
     const result: Result<ZeroExData, Error> = dexSwapError
       ? { success: false, error: dexSwapError }
@@ -157,43 +211,6 @@ export const useBestTradeOption = () => {
         };
     setResult(result);
     setIsFetching(false);
-    setTime(Date.now() - time);
-    console.log(time);
-    if (result.success) {
-      logger.logTimer({
-        serviceName: KNOWN_SERVICES.GALLEON_DAPP,
-        environment: process.env.NODE_ENV,
-        label: KNOWN_LABELS.QUOTE_TIMER,
-        duration: time,
-      });
-
-      logger.logCounter({
-        serviceName: KNOWN_SERVICES.GALLEON_DAPP,
-        environment: process.env.NODE_ENV,
-        label: KNOWN_LABELS.QUOTE_GENERATED,
-        metadata: {
-          sellToken: sellToken.symbol,
-          sellTokenAmount: sellTokenAmount.toString(),
-          buyToken: buyToken.symbol,
-          isIssuance: isIssuance.toString(),
-          address: account,
-        },
-      });
-
-      if (!result.success) {
-        logger.logMessage({
-          serviceName: KNOWN_SERVICES.GALLEON_DAPP,
-          environment: process.env.NODE_ENV,
-          timestamp: new Date().toISOString(),
-          severity: LOG_SEVERITY.ERROR,
-          functionName: "fetchAndCompareOptions",
-          // @ts-ignore
-          exception: JSON.stringify(result.error),
-          message: `quote generation failed for sellToken: ${sellToken}, sellTokenAmount: ${sellTokenAmount}, buyToken: ${buyToken}, isIssuance: ${isIssuance}`,
-          correlationId: undefined,
-        });
-      }
-    }
   };
 
   return {
