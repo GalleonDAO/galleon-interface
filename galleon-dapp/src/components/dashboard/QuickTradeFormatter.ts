@@ -162,7 +162,7 @@ export function getTradeInfoDataFromEI(
     ? parseFloat(networkFee).toFixed(4)
     : "-";
   const networkToken = chainId === ChainId.Polygon ? "MATIC" : "ETH";
-  const offeredFrom = "Index - Exchange Issuance";
+  const offeredFrom = "Galleon - Exchange Issuance";
   return [
     {
       title: getReceivedAmount(isBuying, buyToken, sellToken),
