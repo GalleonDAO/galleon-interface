@@ -42,15 +42,15 @@ const products = [
     link: "https://app.galleon.community/ethmaxy",
     active: true,
   },
-  {
-    title: "SOLUNAVAX Index",
-    description:
-      "SOLUNAVAX enables traders to gain L2 exposure to the popular, alternate Layer 1 assets, SOL, LUNA and AVAX",
-    source:
-      "https://github.com/GalleonDAO/galleon-tokenlist/blob/main/logos/solunavax-200px.png?raw=true",
-    link: "https://app.galleon.community/solunavax",
-    active: false,
-  },
+  // {
+  //   title: "SOLUNAVAX Index",
+  //   description:
+  //     "SOLUNAVAX enables traders to gain L2 exposure to the popular, alternate Layer 1 assets, SOL, LUNA and AVAX",
+  //   source:
+  //     "https://github.com/GalleonDAO/galleon-tokenlist/blob/main/logos/solunavax-200px.png?raw=true",
+  //   link: "https://app.galleon.community/solunavax",
+  //   active: false,
+  // },
   // More files...
 ];
 
