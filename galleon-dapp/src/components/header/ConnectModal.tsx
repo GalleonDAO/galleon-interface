@@ -13,7 +13,7 @@ import {
 } from "@chakra-ui/react";
 import { useEthers } from "@usedapp/core";
 import { WalletConnectConnector } from "@web3-react/walletconnect-connector";
-
+import { WalletLinkConnector } from "@web3-react/walletlink-connector";
 import metamaskIcon from "assets/metamask.png";
 import walletconnectIcon from "assets/walletconnect.svg";
 import { metaMaskLink } from "constants/externalLinks";
@@ -37,6 +37,25 @@ export default function ConnectModal(props: { isOpen: any; onClose: any }) {
       chainId: 1,
     });
     activate(wc)
+      .then((res) => {
+        props.onClose();
+        console.log(res);
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  };
+
+  const handleCoinbaseConnect = () => {
+    const cw = new WalletLinkConnector({
+      url:
+        process.env.REACT_APP_MAINNET_ALCHEMY_API ||
+        "https://eth-mainnet.alchemyapi.io/v2/RUwft-_xhH_-Vg8CXWomBhXIqcevPS19",
+      appName: "Galleon",
+      supportedChainIds: [1, 10, 137, 42161],
+    });
+
+    activate(cw)
       .then((res) => {
         props.onClose();
         console.log(res);
@@ -126,6 +145,30 @@ export default function ConnectModal(props: { isOpen: any; onClose: any }) {
                 WalletConnect
               </Text>
               <Image src={walletconnectIcon} width={"10%"} />
+            </Flex>
+          </Box>
+          <Box
+            border="1px"
+            borderStyle="solid"
+            borderColor="gray.600"
+            backgroundColor="gray.700"
+            onClick={handleCoinbaseConnect}
+            _hover={{ borderColor: "blue.600" }}
+            px={5}
+            pt={4}
+            pb={2}
+            mb={3}
+          >
+            <Flex justifyContent="space-between" alignItems="center" mb={3}>
+              <Text color="white" fontSize="lg">
+                Coinbase Wallet
+              </Text>
+              <Image
+                src={
+                  "https://avatars.githubusercontent.com/u/18060234?s=200&v=4"
+                }
+                width={"10%"}
+              />
             </Flex>
           </Box>
         </ModalBody>
