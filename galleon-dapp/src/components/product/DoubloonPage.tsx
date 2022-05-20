@@ -153,7 +153,8 @@ const DoubloonPage = (props: {
                     <a
                       target={"_blank"}
                       href="https://app.xtokenterminal.io/mining/pools/arbitrum/0x7CC778c9b8fB55Bb874D0EaEf0751ff465f80498"
-                      className="flex items-center justify-center px-4 py-2  rounded-2xl shadow-sm  font-medium text-lg text-theme-navy bg-theme-champagne border-2 border-theme-navy hover:opacity-70" rel="noreferrer"
+                      className="flex items-center justify-center px-4 py-2  rounded-2xl shadow-sm  font-medium text-lg text-theme-navy bg-theme-champagne border-2 border-theme-navy hover:opacity-70"
+                      rel="noreferrer"
                     >
                       Go to xTokenTerminal
                     </a>

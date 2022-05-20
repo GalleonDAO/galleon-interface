@@ -202,7 +202,8 @@ const ProductPage = (props: {
                       <a
                         target={"_blank"}
                         href={props.tokenData.dashboard}
-                        className="flex items-center justify-center px-4 py-2  rounded-2xl shadow-sm font-medium text-lg text-theme-navy bg-theme-champagne border-2 border-theme-navy hover:opacity-70" rel="noreferrer"
+                        className="flex items-center justify-center px-4 py-2  rounded-2xl shadow-sm font-medium text-lg text-theme-navy bg-theme-champagne border-2 border-theme-navy hover:opacity-70"
+                        rel="noreferrer"
                       >
                         Dashboard
                       </a>
