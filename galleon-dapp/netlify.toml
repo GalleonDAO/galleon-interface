@@ -36,7 +36,4 @@
 	  ]
 
 [[plugins]]
-  package = "netlify-plugin-image-optim"
-
-[[plugins]]
 package = "@commandbar/netlify-plugin-commandbar"
