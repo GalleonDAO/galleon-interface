@@ -97,7 +97,7 @@ const Footer = (props: { children?: JSX.Element }) => {
                       <li key={item.name}>
                         <a
                           href={item.href}
-                          className="text-base text-theme-oldlace hover:text-gray-900"
+                          className="text-base text-theme-oldlace hover:text-theme-champagne"
                         >
                           {item.name}
                         </a>
@@ -114,7 +114,7 @@ const Footer = (props: { children?: JSX.Element }) => {
                       <li key={item.name}>
                         <a
                           href={item.href}
-                          className="text-base text-theme-oldlace hover:text-gray-900"
+                          className="text-base text-theme-oldlace hover:text-theme-champagne"
                         >
                           {item.name}
                         </a>
@@ -133,7 +133,7 @@ const Footer = (props: { children?: JSX.Element }) => {
                       <li key={item.name}>
                         <a
                           href={item.href}
-                          className="text-base text-theme-oldlace hover:text-gray-900"
+                          className="text-base text-theme-oldlace hover:text-theme-champagne"
                         >
                           {item.name}
                         </a>
@@ -150,7 +150,7 @@ const Footer = (props: { children?: JSX.Element }) => {
                       <li key={item.name}>
                         <a
                           href={item.href}
-                          className="text-base text-theme-oldlace hover:text-gray-900"
+                          className="text-base text-theme-oldlace hover:text-theme-champagne"
                         >
                           {item.name}
                         </a>
@@ -162,7 +162,7 @@ const Footer = (props: { children?: JSX.Element }) => {
             </div>
           </div>
           <div className="mt-12 border-t border-gray-200 py-8">
-            <p className="text-base text-theme-white xl:text-center">
+            <p className="text-base text-theme-oldlace xl:text-center">
               Information is for educational and illustrative purposes only.
               Galleon is not engaged in the business of the offer, sale or
               trading of securities and does not provide legal, tax, or
