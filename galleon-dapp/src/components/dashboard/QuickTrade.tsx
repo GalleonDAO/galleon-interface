@@ -111,12 +111,12 @@ const QuickTrade = (props: {
 
   const spenderAddress0x =
     chainId === POLYGON.chainId
-      ? ExchangeIssuanceZeroExMainnetAddress
-      : ExchangeIssuanceZeroExPolygonAddress;
+      ? ExchangeIssuanceZeroExPolygonAddress
+      : ExchangeIssuanceZeroExMainnetAddress;
   const spenderAddressLevEIL =
     chainId === POLYGON.chainId
-      ? ExchangeIssuanceLeveragedPolygonAddress
-      : ExchangeIssuanceLeveragedMainnetAddress;
+      ? ExchangeIssuanceLeveragedMainnetAddress
+      : ExchangeIssuanceLeveragedPolygonAddress;
 
   const sellTokenAmountInWei = toWei(sellTokenAmount, sellToken.decimals);
 
