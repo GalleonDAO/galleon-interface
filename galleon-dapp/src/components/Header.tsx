@@ -1,6 +1,7 @@
-import logo from "assets/brand/Vector-Logo-1.png";
-import { Link } from "react-router-dom";
-import ConnectButton from "./header/ConnectButton";
+import logo from 'assets/brand/Vector-Logo-1.png'
+import { Link } from 'react-router-dom'
+import CoinbaseButton from './CoinbaseButton'
+import ConnectButton from './header/ConnectButton'
 
 const Header = () => {
   return (
@@ -25,6 +26,9 @@ const Header = () => {
               </span>
               <span className="text-lg  text-theme-oldlace hover:text-theme-champagne">
                 <Link to="/dbl">$DBL</Link>
+              </span>
+              <span className="text-lg text-theme-oldlace hover:text-theme-champagne">
+                <CoinbaseButton></CoinbaseButton>
               </span>
             </div>
           </div>
@@ -51,10 +55,11 @@ const Header = () => {
           >
             $DBL
           </a>
+           <CoinbaseButton></CoinbaseButton>
         </div>
       </nav>
     </header>
-  );
-};
+  )
+}
 
-export default Header;
+export default Header
