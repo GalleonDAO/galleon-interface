@@ -10,75 +10,75 @@ import {
   ModalHeader,
   ModalOverlay,
   Text,
-} from '@chakra-ui/react'
-import { useEthers } from '@usedapp/core'
-import { WalletConnectConnector } from '@web3-react/walletconnect-connector'
-import { WalletLinkConnector } from '@web3-react/walletlink-connector'
-import metamaskIcon from 'assets/metamask.png'
-import walletconnectIcon from 'assets/walletconnect.svg'
-import { ARBITRUM, MAINNET, OPTIMISM, POLYGON } from 'constants/chains'
-import { metaMaskLink } from 'constants/externalLinks'
-import { colors } from 'styles/colors'
-import argentIcon from 'assets/argent.png'
-import coinbaseWalletIcon from 'assets/coinbaseWalletIcon.png'
-import rainbowIcon from 'assets/rainbow-wallet.png'
-import zengoIcon from 'assets/zengo.png'
+} from "@chakra-ui/react";
+import { useEthers } from "@usedapp/core";
+import { WalletConnectConnector } from "@web3-react/walletconnect-connector";
+import { WalletLinkConnector } from "@web3-react/walletlink-connector";
+import metamaskIcon from "assets/metamask.png";
+import walletconnectIcon from "assets/walletconnect.svg";
+import { ARBITRUM, MAINNET, OPTIMISM, POLYGON } from "constants/chains";
+import { metaMaskLink } from "constants/externalLinks";
+import { colors } from "styles/colors";
+import argentIcon from "assets/argent.png";
+import coinbaseWalletIcon from "assets/coinbaseWalletIcon.png";
+import rainbowIcon from "assets/rainbow-wallet.png";
+import zengoIcon from "assets/zengo.png";
 
 export default function ConnectModal(props: {
-  isOpen: boolean
-  onClose: () => void
+  isOpen: boolean;
+  onClose: () => void;
 }) {
-  const { activateBrowserWallet, activate } = useEthers()
-  const isMetaMaskInstalled = window.ethereum?.isMetaMask
-  const backgroundColor = colors.themeChampagne
-  const borderColor = colors.themeNavy
+  const { activateBrowserWallet, activate } = useEthers();
+  const isMetaMaskInstalled = window.ethereum?.isMetaMask;
+  const backgroundColor = colors.themeChampagne;
+  const borderColor = colors.themeNavy;
 
   const handleMetamask = () => {
     if (isMetaMaskInstalled) {
-      activateBrowserWallet()
-      props.onClose()
+      activateBrowserWallet();
+      props.onClose();
     } else {
-      window.open(metaMaskLink, '_blank')
+      window.open(metaMaskLink, "_blank");
     }
-  }
+  };
 
   const handleWalletConnect = () => {
     const wc = new WalletConnectConnector({
       rpc: {
         1:
           process.env.REACT_APP_MAINNET_ALCHEMY_API ||
-          'https://eth-mainnet.alchemyapi.io/v2/RUwft-_xhH_-Vg8CXWomBhXIqcevPS19',
+          "https://eth-mainnet.alchemyapi.io/v2/RUwft-_xhH_-Vg8CXWomBhXIqcevPS19",
       },
       chainId: 1,
-    })
+    });
     activate(wc)
       .then(() => {})
       .then((err) => {
-        props.onClose()
-        console.error(err)
-      })
-  }
+        props.onClose();
+        console.error(err);
+      });
+  };
 
   const handleCoinbaseWallet = () => {
     const coinbase = new WalletLinkConnector({
       url:
         process.env.REACT_APP_MAINNET_ALCHEMY_API ||
-        'https://eth-mainnet.alchemyapi.io/v2/RUwft-_xhH_-Vg8CXWomBhXIqcevPS19',
-      appName: 'Galleon',
+        "https://eth-mainnet.alchemyapi.io/v2/RUwft-_xhH_-Vg8CXWomBhXIqcevPS19",
+      appName: "Galleon",
       supportedChainIds: [
         MAINNET.chainId,
         POLYGON.chainId,
         OPTIMISM.chainId,
         ARBITRUM.chainId,
       ],
-    })
+    });
     activate(coinbase)
       .then(() => {})
       .then((err) => {
-        props.onClose()
-        console.error(err)
-      })
-  }
+        props.onClose();
+        console.error(err);
+      });
+  };
 
   return (
     <Modal isOpen={props.isOpen} onClose={props.onClose} isCentered size="md">
@@ -97,7 +97,7 @@ export default function ConnectModal(props: {
         <ModalCloseButton
           fontSize="sm"
           _hover={{
-            color: 'whiteAlpha.700',
+            color: "whiteAlpha.700",
             borderColor: borderColor,
           }}
           _focus={{
@@ -107,7 +107,7 @@ export default function ConnectModal(props: {
         <ModalBody pt={0} px={4} color={borderColor}>
           <WalletButton
             buttonIcon={metamaskIcon}
-            buttonText={isMetaMaskInstalled ? 'MetaMask' : 'Install MetaMask'}
+            buttonText={isMetaMaskInstalled ? "MetaMask" : "Install MetaMask"}
             borderColor={borderColor}
             handleConnection={handleMetamask}
           />
@@ -144,14 +144,14 @@ export default function ConnectModal(props: {
         </ModalBody>
       </ModalContent>
     </Modal>
-  )
+  );
 }
 
 const WalletButton = (props: {
-  buttonText: string
-  buttonIcon: string
-  borderColor: string
-  handleConnection: () => void
+  buttonText: string;
+  buttonIcon: string;
+  borderColor: string;
+  handleConnection: () => void;
 }) => {
   return (
     <Box
@@ -169,8 +169,8 @@ const WalletButton = (props: {
     >
       <Flex justifyContent="space-between" alignItems="center" mb={3}>
         <Text fontSize="lg">{props.buttonText}</Text>
-        <Image src={props.buttonIcon} width={'10%'} />
+        <Image src={props.buttonIcon} width={"10%"} />
       </Flex>
     </Box>
-  )
-}
+  );
+};
