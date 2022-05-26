@@ -38,7 +38,17 @@ const ETHMAXY = () => {
       isLeveragedToken={true}
       apy={formattedApy}
       hasDashboard={true}
-    />
+    >
+      <div className=" px-2 pb-4 border-b border-theme-navy sm:px-4">
+        <h3 className="text-xl leading-6 font-morion font-semibold text-theme-navy">
+          Trade the ETH Max Yield Index
+        </h3>
+        <p className="mt-1 text-md text-theme-navy">
+          Gain exposure to one of the highest, decentralised and fully
+          composable leveraged ETH Yield in DeFi with ETHMAXY.
+        </p>
+      </div>
+    </ProductPage>
   );
 };
 
