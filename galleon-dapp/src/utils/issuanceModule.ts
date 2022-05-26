@@ -1,4 +1,4 @@
-import { ChainId } from "@usedapp/core";
+import { ChainId } from '@usedapp/core'
 
 import {
   basicIssuanceModuleAddress,
@@ -6,20 +6,14 @@ import {
   debtIssuanceModuleAddress,
   debtIssuanceModuleV2Address,
   debtIssuanceModuleV2PolygonAddress,
-} from "constants/ethContractAddresses";
-import // Bitcoin2xFlexibleLeverageIndex,
-// Ethereum2xFlexibleLeverageIndex,
-// Ethereum2xFLIP,
-// GmiIndex,
-// IEthereumFLIP,
-// IMaticFLIP,
-// JPGIndex,
-// Matic2xFLIP,
-"constants/tokens";
+} from 'constants/ethContractAddresses'
+import {
+ CryptoKaiBlueChip
+} from 'constants/tokens'
 
 interface IssuanceModule {
-  address: string;
-  isDebtIssuance: boolean;
+  address: string
+  isDebtIssuance: boolean
 }
 
 function getEthIssuanceModuleAddress(tokenSymbol: string): IssuanceModule {
@@ -31,7 +25,7 @@ function getEthIssuanceModuleAddress(tokenSymbol: string): IssuanceModule {
     // case JPGIndex.symbol:
     //   return { address: debtIssuanceModuleV2Address, isDebtIssuance: true }
     default:
-      return { address: basicIssuanceModuleAddress, isDebtIssuance: false };
+      return { address: basicIssuanceModuleAddress, isDebtIssuance: false }
   }
 }
 
@@ -42,15 +36,15 @@ function getPolygonIssuanceModuleAddress(tokenSymbol: string): IssuanceModule {
     // case IMaticFLIP.symbol:
     // case GmiIndex.symbol:
     // case Matic2xFLIP.symbol:
-    // return {
-    //   address: debtIssuanceModuleV2PolygonAddress,
-    //   isDebtIssuance: true,
-    // }
+    //   return {
+    //     address: debtIssuanceModuleV2PolygonAddress,
+    //     isDebtIssuance: true,
+    //   }
     default:
       return {
         address: basicIssuanceModulePolygonAddress,
         isDebtIssuance: false,
-      };
+      }
   }
 }
 
@@ -60,5 +54,5 @@ export function getIssuanceModule(
 ): IssuanceModule {
   return chainId === ChainId.Polygon
     ? getPolygonIssuanceModuleAddress(tokenSymbol)
-    : getEthIssuanceModuleAddress(tokenSymbol);
+    : getEthIssuanceModuleAddress(tokenSymbol)
 }

@@ -6,7 +6,6 @@ import { Position } from "components/dashboard/AllocationChart";
 import {
   EthMaxYieldIndex,
   DoubloonToken,
-  SolunavaxIndex,
 } from "constants/tokens";
 import { displayFromWei } from "utils";
 
@@ -27,7 +26,6 @@ export const QuickTradeData = {
   tokenList2: [
     { symbol: "ETHMAXY", icon: EthMaxYieldIndex.image },
     { symbol: "DBL", icon: DoubloonToken.image },
-    { symbol: "SOLUNAVAX", icon: SolunavaxIndex.image },
   ],
 };
 
