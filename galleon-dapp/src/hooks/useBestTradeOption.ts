@@ -1,10 +1,10 @@
 // @ts-nocheck
-import { useState } from 'react'
+import { useState } from "react";
 
-import { BigNumber } from '@ethersproject/bignumber'
-import { useEthers } from '@usedapp/core'
+import { BigNumber } from "@ethersproject/bignumber";
+import { useEthers } from "@usedapp/core";
 
-import { MAINNET } from 'constants/chains'
+import { MAINNET } from "constants/chains";
 import {
   eligibleLeveragedExchangeIssuanceTokens,
   ETH,
@@ -12,62 +12,62 @@ import {
   // JPGIndex,
   STETH,
   Token,
-} from 'constants/tokens'
-import { toWei } from 'utils'
+} from "constants/tokens";
+import { toWei } from "utils";
 import {
   ExchangeIssuanceQuote,
   getExchangeIssuanceQuotes,
   getLeveragedExchangeIssuanceQuotes,
   LeveragedExchangeIssuanceQuote,
-} from 'utils/exchangeIssuanceQuotes'
-import { getZeroExTradeData, ZeroExData } from 'utils/zeroExUtils'
-import { getNetAssetValue } from 'utils/nav'
-import { SetComponent } from 'providers/SetComponents/SetComponentsProvider'
+} from "utils/exchangeIssuanceQuotes";
+import { getZeroExTradeData, ZeroExData } from "utils/zeroExUtils";
+import { getNetAssetValue } from "utils/nav";
+import { SetComponent } from "providers/SetComponents/SetComponentsProvider";
 
 type Result<_, E = Error> =
   | {
-      success: true
-      dexData: ZeroExData | null
-      exchangeIssuanceData: ExchangeIssuanceQuote | null | undefined
-      leveragedExchangeIssuanceData: LeveragedExchangeIssuanceQuote | null
+      success: true;
+      dexData: ZeroExData | null;
+      exchangeIssuanceData: ExchangeIssuanceQuote | null | undefined;
+      leveragedExchangeIssuanceData: LeveragedExchangeIssuanceQuote | null;
     }
-  | { success: false; error: E }
+  | { success: false; error: E };
 
 // To determine if price impact for DEX is smaller 5%
-export const maxPriceImpact = 5
+export const maxPriceImpact = 5;
 
 /* Determines if the token is eligible for Leveraged Exchange Issuance */
 const isEligibleLeveragedToken = (token: Token) =>
-  eligibleLeveragedExchangeIssuanceTokens.includes(token)
+  eligibleLeveragedExchangeIssuanceTokens.includes(token);
 
 /* Determines if the token pair is eligible for Leveraged Exchange Issuance */
 const isEligibleTradePair = (
   inputToken: Token,
   outputToken: Token,
-  isIssuance: boolean,
+  isIssuance: boolean
 ) => {
   const tokenEligible = isIssuance
     ? isEligibleLeveragedToken(outputToken)
-    : isEligibleLeveragedToken(inputToken)
+    : isEligibleLeveragedToken(inputToken);
 
   const isEthMaxy =
     inputToken.symbol === EthMaxYieldIndex.symbol ||
-    outputToken.symbol === EthMaxYieldIndex.symbol
+    outputToken.symbol === EthMaxYieldIndex.symbol;
 
   if (tokenEligible && isEthMaxy && isIssuance) {
     // Only ETH or stETH is allowed as input for ETHMAXY issuance at the moment
     return (
       inputToken.symbol === ETH.symbol || inputToken.symbol === STETH.symbol
-    )
+    );
   }
 
   if (tokenEligible && isEthMaxy && !isIssuance) {
     // Only ETH is allowed as output for ETHMAXY redeeming at the moment
-    return outputToken.symbol === ETH.symbol
+    return outputToken.symbol === ETH.symbol;
   }
 
-  return tokenEligible
-}
+  return tokenEligible;
+};
 
 export const getSetTokenAmount = (
   isIssuance: boolean,
@@ -76,47 +76,47 @@ export const getSetTokenAmount = (
   sellTokenPrice: number,
   buyTokenPrice: number,
   dexSwapOption: ZeroExData | null,
-  components?: SetComponent[],
+  components?: SetComponent[]
 ): BigNumber => {
   if (!isIssuance) {
-    return toWei(sellTokenAmount, sellTokenDecimals)
+    return toWei(sellTokenAmount, sellTokenDecimals);
   }
 
   let buyTokenPriceOrNav =
-    buyTokenPrice === 0 ? getNetAssetValue(components) : 0
-  let setTokenAmount = BigNumber.from(dexSwapOption?.buyAmount ?? '0')
+    buyTokenPrice === 0 ? getNetAssetValue(components) : 0;
+  let setTokenAmount = BigNumber.from(dexSwapOption?.buyAmount ?? "0");
 
   const priceImpact =
     dexSwapOption && dexSwapOption.estimatedPriceImpact
       ? parseFloat(dexSwapOption.estimatedPriceImpact)
-      : 0
+      : 0;
 
   if (!dexSwapOption || priceImpact >= maxPriceImpact) {
-    console.log('DEX SWAP OPTION: ', dexSwapOption)
-    console.log('BUY TOKEN PRICE:', buyTokenPriceOrNav)
-    console.log('COMPONENTS:', components)
-    console.log('NAV:', getNetAssetValue(components))
+    console.log("DEX SWAP OPTION: ", dexSwapOption);
+    console.log("BUY TOKEN PRICE:", buyTokenPriceOrNav);
+    console.log("COMPONENTS:", components);
+    console.log("NAV:", getNetAssetValue(components));
     // Recalculate the exchange issue/redeem quotes if not enough DEX liquidity
-    const sellTokenTotal = parseFloat(sellTokenAmount) * sellTokenPrice
+    const sellTokenTotal = parseFloat(sellTokenAmount) * sellTokenPrice;
     const approxOutputAmount =
       buyTokenPriceOrNav === 0
         ? 0
-        : Math.floor(sellTokenTotal / buyTokenPriceOrNav)
-    setTokenAmount = toWei(approxOutputAmount, sellTokenDecimals)
-    console.log('estimate, ', sellTokenTotal, approxOutputAmount)
+        : Math.floor(sellTokenTotal / buyTokenPriceOrNav);
+    setTokenAmount = toWei(approxOutputAmount, sellTokenDecimals);
+    console.log("estimate, ", sellTokenTotal, approxOutputAmount);
   }
 
-  return setTokenAmount
-}
+  return setTokenAmount;
+};
 
 export const useBestTradeOption = (
   eiOnly?: boolean,
-  components?: SetComponent[],
+  components?: SetComponent[]
 ) => {
-  const { chainId, library } = useEthers()
+  const { chainId, library } = useEthers();
 
-  const [isFetching, setIsFetching] = useState<boolean>(false)
-  const [result, setResult] = useState<Result<ZeroExData, Error> | null>(null)
+  const [isFetching, setIsFetching] = useState<boolean>(false);
+  const [result, setResult] = useState<Result<ZeroExData, Error> | null>(null);
 
   const fetchAndCompareOptions = async (
     sellToken: Token,
@@ -125,12 +125,12 @@ export const useBestTradeOption = (
     buyToken: Token,
     // buyTokenAmount: string,
     buyTokenPrice: number,
-    isIssuance: boolean,
+    isIssuance: boolean
   ) => {
-    setIsFetching(true)
+    setIsFetching(true);
 
-    let dexSwapOption = null
-    let dexSwapError = Error()
+    let dexSwapOption = null;
+    let dexSwapError = Error();
 
     if (!eiOnly) {
       /* Check 0x for DEX Swap option*/
@@ -142,11 +142,11 @@ export const useBestTradeOption = (
         // for now we only allow specifing selling amount,
         // so sell token amount will always be correct
         sellTokenAmount,
-        chainId || 1,
-      )
-      dexSwapOption = zeroExResult.success ? zeroExResult.value : null
+        chainId || 1
+      );
+      dexSwapOption = zeroExResult.success ? zeroExResult.value : null;
       // @ts-ignore
-      dexSwapError = zeroExResult.success ? null : zeroExResult.error
+      dexSwapError = zeroExResult.success ? null : zeroExResult.error;
     }
 
     /* Determine set token amount based on different factors */
@@ -157,39 +157,41 @@ export const useBestTradeOption = (
       sellTokenPrice,
       buyTokenPrice,
       dexSwapOption,
-      components,
-    )
+      components
+    );
 
-    console.log('SET TOKEN AMOUNT: ', setTokenAmount)
+    console.log("SET TOKEN AMOUNT: ", setTokenAmount);
 
     /* Check for Exchange Issuance option */
-    let exchangeIssuanceOption: ExchangeIssuanceQuote | null = null
-    let leveragedExchangeIssuanceOption: LeveragedExchangeIssuanceQuote | null = null
+    let exchangeIssuanceOption: ExchangeIssuanceQuote | null = null;
+    let leveragedExchangeIssuanceOption: LeveragedExchangeIssuanceQuote | null =
+      null;
 
     const tokenEligibleForLeveragedEI = isEligibleTradePair(
       sellToken,
       buyToken,
-      isIssuance,
-    )
+      isIssuance
+    );
     if (tokenEligibleForLeveragedEI) {
-      const setToken = isIssuance ? buyToken : sellToken
+      const setToken = isIssuance ? buyToken : sellToken;
 
       try {
-        leveragedExchangeIssuanceOption = await getLeveragedExchangeIssuanceQuotes(
-          setToken,
-          setTokenAmount,
-          sellToken,
-          isIssuance,
-          chainId,
-          library,
-        )
+        leveragedExchangeIssuanceOption =
+          await getLeveragedExchangeIssuanceQuotes(
+            setToken,
+            setTokenAmount,
+            sellToken,
+            isIssuance,
+            chainId,
+            library
+          );
       } catch (e) {
-        console.warn('error when generating leveraged ei option', e)
+        console.warn("error when generating leveraged ei option", e);
       }
     } else {
       const isEthMaxy =
         sellToken.symbol === EthMaxYieldIndex.symbol ||
-        buyToken.symbol === EthMaxYieldIndex.symbol
+        buyToken.symbol === EthMaxYieldIndex.symbol;
       // const isJpg =
       //   sellToken.symbol === JPGIndex.symbol ||
       //   buyToken.symbol === JPGIndex.symbol
@@ -204,23 +206,23 @@ export const useBestTradeOption = (
             sellToken,
             isIssuance,
             chainId,
-            library,
-          )
+            library
+          );
         } catch (e) {
-          console.warn('error when generating zeroexei option', e)
+          console.warn("error when generating zeroexei option", e);
         }
     }
 
     console.log(
-      'exchangeIssuanceOption',
+      "exchangeIssuanceOption",
       exchangeIssuanceOption,
-      exchangeIssuanceOption?.inputTokenAmount.toString(),
-    )
+      exchangeIssuanceOption?.inputTokenAmount.toString()
+    );
     console.log(
-      'levExchangeIssuanceOption',
+      "levExchangeIssuanceOption",
       leveragedExchangeIssuanceOption,
-      leveragedExchangeIssuanceOption?.inputTokenAmount.toString(),
-    )
+      leveragedExchangeIssuanceOption?.inputTokenAmount.toString()
+    );
 
     const result: Result<ZeroExData, Error> =
       dexSwapError &&
@@ -232,14 +234,14 @@ export const useBestTradeOption = (
             dexData: dexSwapOption,
             exchangeIssuanceData: exchangeIssuanceOption,
             leveragedExchangeIssuanceData: leveragedExchangeIssuanceOption,
-          }
-    setResult(result)
-    setIsFetching(false)
-  }
+          };
+    setResult(result);
+    setIsFetching(false);
+  };
 
   return {
     bestOptionResult: result,
     isFetchingTradeData: isFetching,
     fetchAndCompareOptions,
-  }
-}
+  };
+};

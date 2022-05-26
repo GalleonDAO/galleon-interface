@@ -1,4 +1,4 @@
-import { ChainId } from '@usedapp/core'
+import { ChainId } from "@usedapp/core";
 
 import {
   basicIssuanceModuleAddress,
@@ -6,14 +6,12 @@ import {
   debtIssuanceModuleAddress,
   debtIssuanceModuleV2Address,
   debtIssuanceModuleV2PolygonAddress,
-} from 'constants/ethContractAddresses'
-import {
- CryptoKaiBlueChip
-} from 'constants/tokens'
+} from "constants/ethContractAddresses";
+import { CryptoKaiBlueChip } from "constants/tokens";
 
 interface IssuanceModule {
-  address: string
-  isDebtIssuance: boolean
+  address: string;
+  isDebtIssuance: boolean;
 }
 
 function getEthIssuanceModuleAddress(tokenSymbol: string): IssuanceModule {
@@ -25,7 +23,7 @@ function getEthIssuanceModuleAddress(tokenSymbol: string): IssuanceModule {
     // case JPGIndex.symbol:
     //   return { address: debtIssuanceModuleV2Address, isDebtIssuance: true }
     default:
-      return { address: basicIssuanceModuleAddress, isDebtIssuance: false }
+      return { address: basicIssuanceModuleAddress, isDebtIssuance: false };
   }
 }
 
@@ -44,7 +42,7 @@ function getPolygonIssuanceModuleAddress(tokenSymbol: string): IssuanceModule {
       return {
         address: basicIssuanceModulePolygonAddress,
         isDebtIssuance: false,
-      }
+      };
   }
 }
 
@@ -54,5 +52,5 @@ export function getIssuanceModule(
 ): IssuanceModule {
   return chainId === ChainId.Polygon
     ? getPolygonIssuanceModuleAddress(tokenSymbol)
-    : getEthIssuanceModuleAddress(tokenSymbol)
+    : getEthIssuanceModuleAddress(tokenSymbol);
 }

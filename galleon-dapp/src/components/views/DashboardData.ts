@@ -3,10 +3,7 @@ import { colors } from "styles/colors";
 import { BigNumber } from "@ethersproject/bignumber";
 
 import { Position } from "components/dashboard/AllocationChart";
-import {
-  EthMaxYieldIndex,
-  DoubloonToken,
-} from "constants/tokens";
+import { EthMaxYieldIndex, DoubloonToken } from "constants/tokens";
 import { displayFromWei } from "utils";
 
 const chartColors = [

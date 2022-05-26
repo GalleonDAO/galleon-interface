@@ -1,74 +1,74 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState } from "react";
 
-import { BigNumber } from 'set.js'
-import { colors } from 'styles/colors'
+import { BigNumber } from "set.js";
+import { colors } from "styles/colors";
 
-import { Box, Flex, Image, Input, Select, Text } from '@chakra-ui/react'
-import { formatUnits } from '@ethersproject/units'
-import { useEthers } from '@usedapp/core'
+import { Box, Flex, Image, Input, Select, Text } from "@chakra-ui/react";
+import { formatUnits } from "@ethersproject/units";
+import { useEthers } from "@usedapp/core";
 
-import { Token } from 'constants/tokens'
-import { useBalance } from 'hooks/useBalance'
-import { isValidTokenInput } from 'utils'
+import { Token } from "constants/tokens";
+import { useBalance } from "hooks/useBalance";
+import { isValidTokenInput } from "utils";
 
-import { formattedBalance } from './QuickTradeFormatter'
+import { formattedBalance } from "./QuickTradeFormatter";
 
 interface InputSelectorConfig {
-  isNarrowVersion: boolean
-  isInputDisabled?: boolean
-  isSelectorDisabled?: boolean
-  isReadOnly?: boolean
+  isNarrowVersion: boolean;
+  isInputDisabled?: boolean;
+  isSelectorDisabled?: boolean;
+  isReadOnly?: boolean;
 }
 
 const QuickTradeSelector = (props: {
-  title: string
-  config: InputSelectorConfig
-  selectedToken: Token
-  selectedTokenAmount?: string
-  priceImpact?: { priceImpact: string; colorCoding: string }
-  formattedFiat: string
-  tokenList: Token[]
-  onChangeInput: (token: Token, input: string) => void
-  onSelectedToken: (symbol: string) => void
+  title: string;
+  config: InputSelectorConfig;
+  selectedToken: Token;
+  selectedTokenAmount?: string;
+  priceImpact?: { priceImpact: string; colorCoding: string };
+  formattedFiat: string;
+  tokenList: Token[];
+  onChangeInput: (token: Token, input: string) => void;
+  onSelectedToken: (symbol: string) => void;
 }) => {
-  const { chainId } = useEthers()
-  const { getBalance } = useBalance()
+  const { chainId } = useEthers();
+  const { getBalance } = useBalance();
 
   const [inputString, setInputString] = useState<string>(
-    props.selectedTokenAmount === '0' ? '' : props.selectedTokenAmount || '',
-  )
+    props.selectedTokenAmount === "0" ? "" : props.selectedTokenAmount || ""
+  );
   const [tokenBalance, setTokenBalance] = useState<string>(
-    BigNumber.from(0).toString(),
-  )
+    BigNumber.from(0).toString()
+  );
 
   useEffect(() => {
     setInputString(
-      props.selectedTokenAmount === '0' ? '' : props.selectedTokenAmount || '',
-    )
-  }, [props.selectedTokenAmount])
+      props.selectedTokenAmount === "0" ? "" : props.selectedTokenAmount || ""
+    );
+  }, [props.selectedTokenAmount]);
 
   useEffect(() => {
-    onChangeInput('')
-  }, [chainId])
+    onChangeInput("");
+  }, [chainId]);
 
   useEffect(() => {
-    const tokenBal = getBalance(props.selectedToken)
-    setTokenBalance(formattedBalance(props.selectedToken, tokenBal))
-  }, [props.selectedToken, getBalance, chainId])
+    const tokenBal = getBalance(props.selectedToken);
+    setTokenBalance(formattedBalance(props.selectedToken, tokenBal));
+  }, [props.selectedToken, getBalance, chainId]);
 
-  const { config, selectedToken } = props
-  const borderColor = colors.themeNavy
-  const borderRadius = 16
+  const { config, selectedToken } = props;
+  const borderColor = colors.themeNavy;
+  const borderRadius = 16;
 
-  const height = '64px'
-  const wideWidths = ['250px', '180px']
-  const narrowWidths = ['250px']
-  const widths = config.isNarrowVersion ? narrowWidths : wideWidths
+  const height = "64px";
+  const wideWidths = ["250px", "180px"];
+  const narrowWidths = ["250px"];
+  const widths = config.isNarrowVersion ? narrowWidths : wideWidths;
 
   const onChangeInput = (amount: string) => {
     if (!amount) {
-      setInputString('')
-      props.onChangeInput(props.selectedToken, '')
+      setInputString("");
+      props.onChangeInput(props.selectedToken, "");
     }
 
     if (
@@ -78,11 +78,11 @@ const QuickTradeSelector = (props: {
       config.isReadOnly ||
       !isValidTokenInput(amount, selectedToken.decimals)
     )
-      return
+      return;
 
-    setInputString(amount)
-    props.onChangeInput(props.selectedToken, amount)
-  }
+    setInputString(amount);
+    props.onChangeInput(props.selectedToken, amount);
+  };
 
   return (
     <Flex direction="column">
@@ -97,7 +97,7 @@ const QuickTradeSelector = (props: {
           className="border-l-2 border-t-2 border-b-2 border-r-2 rounded-l-2xl  border-theme-navy"
           borderColor={borderColor}
           // borderLeftRadius={borderRadius}
-          px={['16px', '30px']}
+          px={["16px", "30px"]}
         >
           <Input
             fontSize="20px"
@@ -112,7 +112,7 @@ const QuickTradeSelector = (props: {
             onChange={(event) => onChangeInput(event.target.value)}
           />
           <Flex>
-            {props.formattedFiat !== '$0.00' && (
+            {props.formattedFiat !== "$0.00" && (
               <>
                 <Text fontSize="12px" textColor={colors.themeNavy}>
                   {props.formattedFiat}
@@ -159,10 +159,10 @@ const QuickTradeSelector = (props: {
         onClick={() => {
           if (tokenBalance) {
             const fullTokenBalance = formatUnits(
-              getBalance(props.selectedToken) ?? '0',
-              props.selectedToken.decimals,
-            )
-            onChangeInput(fullTokenBalance)
+              getBalance(props.selectedToken) ?? "0",
+              props.selectedToken.decimals
+            );
+            onChangeInput(fullTokenBalance);
           }
         }}
         cursor="pointer"
@@ -170,7 +170,7 @@ const QuickTradeSelector = (props: {
         Balance: {tokenBalance}
       </Text>
     </Flex>
-  )
-}
+  );
+};
 
-export default QuickTradeSelector
+export default QuickTradeSelector;
