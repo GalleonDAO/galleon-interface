@@ -13,7 +13,7 @@ const CoinbaseButton = () => {
             {
               address: account,
               blockchains: ['ethereum'],
-              assets: 'ETH',
+              assets: ['ETH', 'USDC'],
             },
           ],
         },
