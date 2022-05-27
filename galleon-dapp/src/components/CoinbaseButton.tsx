@@ -12,11 +12,16 @@ const CoinbaseButton = () => {
           destinationWallets: [
             {
               address: account,
+              blockchains: ['ethereum'],
+              assets: 'ETH',
             },
           ],
         },
         // host: 'https://*.galleon.community',
         appId: process.env.REACT_APP_COINBASE_APP_ID,
+        onReady: () => {
+          console.log('ready')
+        },
         onSuccess: () => {
           console.log('success')
         },
