@@ -1,7 +1,7 @@
-import logo from 'assets/brand/Vector-Logo-1.png'
-import { Link } from 'react-router-dom'
-import CoinbaseButton from './CoinbaseButton'
-import ConnectButton from './header/ConnectButton'
+import logo from "assets/brand/Vector-Logo-1.png";
+import { Link } from "react-router-dom";
+import CoinbaseButton from "./CoinbaseButton";
+import ConnectButton from "./header/ConnectButton";
 
 const Header = () => {
   return (
@@ -55,11 +55,11 @@ const Header = () => {
           >
             $DBL
           </a>
-           <CoinbaseButton></CoinbaseButton>
+          <CoinbaseButton></CoinbaseButton>
         </div>
       </nav>
     </header>
-  )
-}
+  );
+};
 
-export default Header
+export default Header;

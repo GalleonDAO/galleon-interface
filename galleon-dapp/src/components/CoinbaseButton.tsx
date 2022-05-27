@@ -1,14 +1,14 @@
-import { useEffect, useRef, useState } from 'react'
-import { initOnRamp } from '@coinbase/cbpay-js'
-import { useEthers } from '@usedapp/core'
-import coinbase from 'assets/coinbase-logo.png'
-import { useToast } from '@chakra-ui/react'
+import { useEffect, useRef, useState } from "react";
+import { initOnRamp } from "@coinbase/cbpay-js";
+import { useEthers } from "@usedapp/core";
+import coinbase from "assets/coinbase-logo.png";
+import { useToast } from "@chakra-ui/react";
 
 const CoinbaseButton = () => {
-  const [isReady, setIsReady] = useState(false)
-  const toast = useToast()
-  const [cb, setCb] = useState(null)
-  const { account } = useEthers()
+  const [isReady, setIsReady] = useState(false);
+  const toast = useToast();
+  const [cb, setCb] = useState(null);
+  const { account } = useEthers();
   useEffect(() => {
     setCb(
       initOnRamp({
@@ -16,53 +16,53 @@ const CoinbaseButton = () => {
           destinationWallets: [
             {
               address: account,
-              blockchains: ['ethereum'],
-              assets: ['ETH', 'USDC'],
+              blockchains: ["ethereum"],
+              assets: ["ETH", "USDC"],
             },
           ],
         },
         // host: 'https://*.galleon.community',
         appId: process.env.REACT_APP_COINBASE_APP_ID,
         onReady: () => {
-          console.log('ready')
-          setIsReady(true)
+          console.log("ready");
+          setIsReady(true);
         },
         onSuccess: () => {
-          console.log('success')
+          console.log("success");
           toast({
-            title: 'Success',
-            description: 'Coinbase Pay Process Complete',
-            variant: 'info',
+            title: "Success",
+            description: "Coinbase Pay Process Complete",
+            variant: "info",
             duration: 5000,
             isClosable: true,
             containerStyle: {
-              borderRadius: '1rem',
-              border: '2px solid #040728',
-              backgroundColor: ' #FEF3E2',
-              color: '#040728',
+              borderRadius: "1rem",
+              border: "2px solid #040728",
+              backgroundColor: " #FEF3E2",
+              color: "#040728",
             },
-          })
+          });
         },
         onExit: () => {
-          window.location.reload()
-          console.log('exit')
+          window.location.reload();
+          console.log("exit");
         },
         onEvent: (event) => {
-          console.log('ON RAMP EVENT: ', event)
+          console.log("ON RAMP EVENT: ", event);
         },
-        experienceLoggedIn: 'embedded',
-        experienceLoggedOut: 'popup',
+        experienceLoggedIn: "embedded",
+        experienceLoggedOut: "popup",
         closeOnExit: true,
         closeOnSuccess: true,
-      }),
-    )
-  }, [account])
+      })
+    );
+  }, [account]);
 
   const handleClick = () => {
     // @ts-ignore
-    console.log('Open CB On Ramp: ', cb)
-    cb.open()
-  }
+    console.log("Open CB On Ramp: ", cb);
+    cb.open();
+  };
 
   return (
     isReady && (
@@ -74,7 +74,7 @@ const CoinbaseButton = () => {
         Buy ETH
       </button>
     )
-  )
-}
+  );
+};
 
-export default CoinbaseButton
+export default CoinbaseButton;
