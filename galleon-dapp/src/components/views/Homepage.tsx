@@ -193,8 +193,8 @@ const Dashboard = () => {
                         Trade Investment Themes
                       </h3>
                       <p className="mt-1 text-md text-theme-navy">
-                        Powered by 0x Protocol and Flash Issuance, get the most
-                        efficient order routing for your trade.
+                        Powered by 0x Protocol and Exchange Issuance, get the
+                        most efficient order routing for your trade.
                       </p>
                     </div>
                   </QuickTrade>
