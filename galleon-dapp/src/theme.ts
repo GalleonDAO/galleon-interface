@@ -18,6 +18,17 @@ const components = {
   Heading,
   Tabs,
   Text,
+  Alert: {
+      variants: {
+        subtle: (props) => { // only applies to `subtle` variant
+          return {
+            container: {
+              bg: colors.themeOldlace, // or literal color, e.g. "#0984ff"
+            },
+          }
+        }
+      }
+    }
 };
 
 const theme = extendTheme({

@@ -2,8 +2,11 @@ import { useEffect, useRef, useState } from 'react'
 import { initOnRamp } from '@coinbase/cbpay-js'
 import { useEthers } from '@usedapp/core'
 import coinbase from 'assets/coinbase-logo.png'
+import { useToast } from '@chakra-ui/react'
+
 const CoinbaseButton = () => {
   const [isReady, setIsReady] = useState(false)
+  const toast = useToast()
   const [cb, setCb] = useState(null)
   const { account } = useEthers()
   useEffect(() => {
@@ -26,6 +29,19 @@ const CoinbaseButton = () => {
         },
         onSuccess: () => {
           console.log('success')
+          toast({
+            title: 'Success',
+            description: 'Coinbase Pay Process Complete',
+            variant: 'info',
+            duration: 5000,
+            isClosable: true,
+            containerStyle: {
+              borderRadius: '1rem',
+              border: '2px solid #040728',
+              backgroundColor: ' #FEF3E2',
+              color: '#040728',
+            },
+          })
         },
         onExit: () => {
           window.location.reload()
