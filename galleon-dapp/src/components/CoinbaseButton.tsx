@@ -16,7 +16,7 @@ const CoinbaseButton = () => {
             },
           ],
         },
-        host: 'https://*.galleon.community',
+        // host: 'https://*.galleon.community',
         appId: process.env.REACT_APP_COINBASE_APP_ID,
         onSuccess: () => {
           console.log('success')
