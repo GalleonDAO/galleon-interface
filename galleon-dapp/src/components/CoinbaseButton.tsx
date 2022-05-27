@@ -6,7 +6,6 @@ const CoinbaseButton = () => {
   const [cb, setCb] = useState(null)
   const { account } = useEthers()
   useEffect(() => {
-    console.log(cb)
     setCb(
       initOnRamp({
         widgetParameters: {
@@ -27,8 +26,8 @@ const CoinbaseButton = () => {
         onEvent: (event) => {
           console.log('ON RAMP EVENT: ', event)
         },
-        experienceLoggedIn: 'popup',
-        experienceLoggedOut: 'popup',
+        experienceLoggedIn: 'embedded',
+        experienceLoggedOut: 'embedded',
         closeOnExit: true,
         closeOnSuccess: true,
       }),
