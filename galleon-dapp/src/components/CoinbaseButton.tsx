@@ -28,7 +28,7 @@ const CoinbaseButton = () => {
           console.log('exit')
         },
         onEvent: (event) => {
-          console.log(event)
+          console.log('ON RAMP EVENT: ', event)
         },
         experienceLoggedIn: 'popup',
         experienceLoggedOut: 'popup',
@@ -37,11 +37,10 @@ const CoinbaseButton = () => {
       }),
     )
 
-    console.log(cb)
-
     return () => {
       // @ts-ignore
       if (cb) {
+        console.log('Destroy CB On Ramp: ', cb)
         cb.destroy()
       }
     }
@@ -49,18 +48,20 @@ const CoinbaseButton = () => {
 
   const handleClick = () => {
     // @ts-ignore
-    console.log(cb)
+    console.log('Open CB On Ramp: ', cb)
     cb.open()
   }
 
   return (
-    <button className="px-4 -ml-4 py-1.5" onClick={handleClick}>
-      <img
-        src={coinbase}
-        className=" inline-flex -translate-y-0.5 mr-1.5 h-6 w-6 text-theme-white"
-      ></img>
-      Buy ETH
-    </button>
+    isReady && (
+      <button className="px-4 -ml-4 py-1.5" onClick={handleClick}>
+        <img
+          src={coinbase}
+          className=" inline-flex -translate-y-0.5 mr-1.5 h-6 w-6 text-theme-white"
+        ></img>
+        Buy ETH
+      </button>
+    )
   )
 }
 
