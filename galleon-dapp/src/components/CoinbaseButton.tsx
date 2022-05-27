@@ -4,51 +4,57 @@ import { useEthers } from '@usedapp/core'
 import coinbase from 'assets/coinbase-logo.png'
 const CoinbaseButton = () => {
   const [isReady, setIsReady] = useState(false)
-  const onrampInstance = useRef(null)
+  const [cb, setCb] = useState(null)
   const { account } = useEthers()
   useEffect(() => {
-    initOnRamp({
-      widgetParameters: {
-        destinationWallets: [
-          {
-            address: account,
-          },
-        ],
-      },
-      host: 'https://*.galleon.community',
-      appId: 'Galleon',
-      onReady: () => {
-        setIsReady(true)
-      },
-      onSuccess: () => {
-        console.log('success')
-      },
-      onExit: () => {
-        console.log('exit')
-      },
-      onEvent: (event) => {
-        console.log(event)
-      },
-      experienceLoggedIn: 'popup',
-      experienceLoggedOut: 'popup',
-      closeOnExit: true,
-      closeOnSuccess: true,
-    })
+    setCb(
+      initOnRamp({
+        widgetParameters: {
+          destinationWallets: [
+            {
+              address: account,
+            },
+          ],
+        },
+        // host: 'https://app.galleon.community',
+        appId: process.env.REACT_APP_COINBASE_APP_ID,
+        onReady: () => {
+          setIsReady(true)
+        },
+        onSuccess: () => {
+          console.log('success')
+        },
+        onExit: () => {
+          console.log('exit')
+        },
+        onEvent: (event) => {
+          console.log(event)
+        },
+        experienceLoggedIn: 'popup',
+        experienceLoggedOut: 'popup',
+        closeOnExit: true,
+        closeOnSuccess: true,
+      }),
+    )
+
+    console.log(cb)
 
     return () => {
-      onrampInstance.current?.destroy()
+      // @ts-ignore
+      if (cb) {
+        cb.destroy()
+      }
     }
-  }, [])
+  }, [account])
 
   const handleClick = () => {
-    onrampInstance.current?.open()
+    // @ts-ignore
+    console.log(cb)
+    cb.open()
   }
 
   return (
-    <button
-      className="px-4 -ml-4 py-1.5"
-      onClick={handleClick}
-    >
+    <button className="px-4 -ml-4 py-1.5" onClick={handleClick}>
       <img
         src={coinbase}
         className=" inline-flex -translate-y-0.5 mr-1.5 h-6 w-6 text-theme-white"
