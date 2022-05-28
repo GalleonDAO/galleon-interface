@@ -286,7 +286,6 @@ const QuickTrade = (props: {
       isBuying ? tradeDataEI?.setTokenAmount : tradeDataEI?.inputTokenAmount
     );
 
-    console.log("BESTOPTION", bestOption);
     setTradeInfoData(tradeInfoData);
     setBestOption(bestOption);
     setBuyTokenAmountFormatted(buyTokenAmountFormatted);

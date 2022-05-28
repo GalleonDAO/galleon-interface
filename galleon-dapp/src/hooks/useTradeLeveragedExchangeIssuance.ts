@@ -34,9 +34,7 @@ export const useTradeLeveragedExchangeIssuance = (
     redeemExactSetForERC20,
   } = useExchangeIssuanceLeveraged();
   const { getBalance } = useBalance();
-
-  const spendingTokenBalance =
-    getBalance(inputToken.symbol) || BigNumber.from(0);
+  const spendingTokenBalance = getBalance(inputToken) || BigNumber.from(0);
 
   const [isTransactingLevEI, setIsTransacting] = useState(false);
 
@@ -58,9 +56,11 @@ export const useTradeLeveragedExchangeIssuance = (
       chainId === POLYGON.chainId
         ? inputToken.polygonAddress
         : inputToken.address;
+
     if (!outputTokenAddress || !inputTokenAddress) return;
 
     let requiredBalance = fromWei(inputOutputLimit, inputToken.decimals);
+
     if (spendingTokenBalance.lt(requiredBalance)) return;
 
     try {

@@ -179,6 +179,8 @@ export const useBalance = () => {
 
   const getBalance = useCallback(
     (token: Token): BigNumber | undefined => {
+      console.log(token.symbol);
+
       switch (token.symbol) {
         case DAI.symbol:
           return daiBalance;
