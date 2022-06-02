@@ -1,7 +1,6 @@
-// import solunavaxLogo from 'assets/solunavax.png'
 import ethmaxyLogo from "assets/ethmaxy.png";
 import doubloonLogo from "assets/brand/dbl.png";
-import solunavaxLogo from "assets/solunavax.png";
+import byeLogo from "assets/bye.png";
 import { TokenContextKeys } from "providers/MarketData/MarketDataProvider";
 
 export interface Token {
@@ -169,29 +168,30 @@ export const EthMaxYieldIndex: Token = {
   dashboard: "https://dune.xyz/galleondao/ETHMAXY-KPIs",
 };
 
-export const SolunavaxIndex: Token = {
-  name: "SOLUNAVAX Index",
-  symbol: "SOLUNAVAX",
+export const BasisYieldEthIndex: Token = {
+  name: "Basis Yield ETH Index",
+  symbol: "BYE",
   address: undefined,
   polygonAddress: undefined,
   optimismAddress: "0xbA6a2Fa321BB06D668c5192Be77428106c5C01E5",
   arbitrumAddress: undefined,
   decimals: 18,
-  url: "solunavax",
-  image: solunavaxLogo,
-  coingeckoId: "solunavax-index",
-  tokensetsId: "solunavax",
-  tokenContextKey: "solunavax",
+  url: "bye",
+  image: byeLogo,
+  coingeckoId: "bye-index",
+  tokensetsId: "bye",
+  tokenContextKey: "bye",
   fees: {
     streamingFee: "0.5%",
   },
-  theme: "Layer 1",
+  theme: "Yield",
   dashboard: undefined,
 };
 
 export const productTokensBySymbol = {
   DBL: DoubloonToken,
   ETHMAXY: EthMaxYieldIndex,
+  BYE: BasisYieldEthIndex,
 };
 
 export const mainnetCurrencyTokens = [ETH, DAI, USDC, STETH];
@@ -203,8 +203,8 @@ export const optimismCurrencyTokens = [ETH, DAI, USDC];
 export const arbitrumCurrencyTokens = [ETH, DAI, USDC];
 
 export const eligibleLeveragedExchangeIssuanceTokens = [EthMaxYieldIndex];
-
-const indexNames = [EthMaxYieldIndex];
+export const eligiblePerpIssuanceTokens = [BasisYieldEthIndex];
+const indexNames = [EthMaxYieldIndex, BasisYieldEthIndex];
 
 export const indexNamesMainnet = indexNames.filter(
   (index) => index.address !== undefined

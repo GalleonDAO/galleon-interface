@@ -19,6 +19,7 @@ import {
   ExchangeIssuanceLeveragedMainnetAddress,
   ExchangeIssuanceLeveragedPolygonAddress,
   ExchangeIssuanceZeroExAddress,
+  perpExchangeIssuanceOptimismAddress,
   zeroExRouterAddress,
 } from "constants/ethContractAddresses";
 import { ETH, EthMaxYieldIndex, Token } from "constants/tokens";
@@ -55,11 +56,13 @@ import {
 import QuickTradeSelector from "./QuickTradeSelector";
 import TradeInfo, { TradeInfoItem } from "./TradeInfo";
 import { getSelectTokenListItems, SelectTokenModal } from "./SelectTokenModal";
+import { useTradePerpExchangeIssuance } from "hooks/useTradePerpExchangeIssuance";
 
 enum QuickTradeBestOption {
   zeroEx,
   exchangeIssuance,
   leveragedExchangeIssuance,
+  perpExchangeIssuance,
 }
 
 const QuickTrade = (props: {
@@ -118,6 +121,8 @@ const QuickTrade = (props: {
       ? ExchangeIssuanceLeveragedPolygonAddress
       : ExchangeIssuanceLeveragedMainnetAddress;
 
+  const spenderAddressPerpEI = perpExchangeIssuanceOptimismAddress;
+
   const sellTokenAmountInWei = toWei(sellTokenAmount, sellToken.decimals);
 
   const sellTokenFiat = formattedFiat(
@@ -155,6 +160,12 @@ const QuickTrade = (props: {
     onApprove: onApproveForEIZX,
   } = useApproval(sellToken, spenderAddress0x, sellTokenAmountInWei);
 
+  const {
+    isApproved: isApprovedForPerpEI,
+    isApproving: isApprovingForPerpEI,
+    onApprove: onApproveForPerpEI,
+  } = useApproval(sellToken, spenderAddressPerpEI, sellTokenAmountInWei);
+
   const { executeTrade, isTransacting } = useTrade(
     sellToken,
     bestOptionResult?.success ? bestOptionResult.dexData : null
@@ -165,6 +176,16 @@ const QuickTrade = (props: {
     buyToken,
     bestOptionResult?.success ? bestOptionResult.exchangeIssuanceData : null
   );
+
+  const { executePerpEITrade, isTransactingPerpEI } =
+    useTradePerpExchangeIssuance(
+      isBuying,
+      sellToken,
+      buyToken,
+      sellTokenAmountInWei,
+      null,
+      null
+    );
 
   const { executeLevEITrade, isTransactingLevEI } =
     useTradeLeveragedExchangeIssuance(
@@ -296,6 +317,7 @@ const QuickTrade = (props: {
   }, [chainId]);
 
   useDebouncedEffect(
+    // TODO: branch into seperate perp issuance logic here
     () => {
       fetchOptions();
     },

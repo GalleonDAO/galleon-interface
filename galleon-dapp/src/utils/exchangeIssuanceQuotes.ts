@@ -78,6 +78,11 @@ export interface SwapData {
   pool: string;
 }
 
+export interface PerpData {
+  componentQuotes: BigNumber[];
+  totalAmount: BigNumber;
+}
+
 // 0x keys https://github.com/0xProject/protocol/blob/4f32f3174f25858644eae4c3de59c3a6717a757c/packages/asset-swapper/src/utils/market_operation_utils/types.ts#L38
 function get0xEchangeKey(exchange: Exchange): string {
   switch (exchange) {
@@ -499,5 +504,21 @@ export const getLeveragedExchangeIssuanceQuotes = async (
     inputTokenAmount: paymentTokenAmount,
     setTokenAmount,
     gasPrice,
+  };
+};
+
+export const getPerpExchangeIssuanceQuotes = async (
+  setToken: Token,
+  setTokenAmount: BigNumber,
+  paymentToken: Token,
+  isIssuance: boolean,
+  chainId: ChainId = ChainId.Optimism,
+  provider: ethers.providers.Web3Provider | undefined
+): Promise<PerpData | null> => {
+  const tokenSymbol = setToken.symbol;
+
+  return {
+    componentQuotes: null,
+    totalAmount: null,
   };
 };

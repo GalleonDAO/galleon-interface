@@ -9,6 +9,7 @@ import {
   indexNamesOptimism,
   indexNamesPolygon,
   mainnetCurrencyTokens,
+  optimismCurrencyTokens,
   polygonCurrencyTokens,
   Token,
 } from "constants/tokens";
@@ -123,6 +124,7 @@ const getCurrencyTokensByChain = (
   chainId: ChainId | undefined = ChainId.Mainnet
 ) => {
   if (chainId === ChainId.Polygon) return polygonCurrencyTokens;
+  if (chainId === ChainId.Optimism) return optimismCurrencyTokens;
   return mainnetCurrencyTokens;
 };
 

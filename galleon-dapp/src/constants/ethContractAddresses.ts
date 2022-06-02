@@ -121,5 +121,4 @@ export const streamingFeeExtensionOptimismAddress =
   "0x6a7aE5124677314dc32C5ba3004CbFC9c7Febff0";
 export const tradeExtensionOptimismAddress =
   "0x7215f38011C3e4058Ca3cF7d2b99033016EeFBD8";
-export const perpExchangeIssuanceOptimismAddress =
-  "";
+export const perpExchangeIssuanceOptimismAddress = "";
