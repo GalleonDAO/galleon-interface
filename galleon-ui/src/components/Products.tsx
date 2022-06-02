@@ -31,6 +31,7 @@ import GovernanceIconDark from "assets/brand/Governance-Icon-Dark.png";
 import ProductsIconDark from "assets/brand/Products-Icon-Dark.png";
 import TreasuryIconDark from "assets/brand/Treasury-Icon-Dark.png";
 import { classNames } from "utils";
+import links from "constants/externalLinks";
 
 const products = [
   {
@@ -39,17 +40,17 @@ const products = [
       "ETHMAXY is the best leveraged $ETH liquid staking strategy in DeFi today, all within one tradable ERC20 token.",
     source:
       "https://github.com/GalleonDAO/galleon-tokenlist/blob/main/logos/ethmaxy.png?raw=true",
-    link: "https://app.galleon.community/ethmaxy",
+    link: links.dapp + "/ethmaxy",
     active: true,
   },
   // {
-  //   title: "SOLUNAVAX Index",
+  //   title: 'Basis Yield ETH Index',
   //   description:
-  //     "SOLUNAVAX enables traders to gain L2 exposure to the popular, alternate Layer 1 assets, SOL, LUNA and AVAX",
+  //     'BYE utilises Perpetual Protocol on Optimism to create a delta neutral position of ETH, offering a high yield based on funding rate',
   //   source:
-  //     "https://github.com/GalleonDAO/galleon-tokenlist/blob/main/logos/solunavax-200px.png?raw=true",
-  //   link: "https://app.galleon.community/solunavax",
-  //   active: false,
+  //     'https://github.com/GalleonDAO/galleon-tokenlist/blob/main/logos/BYE.png?raw=true',
+  //   link: links.dapp + '/bye',
+  //   active: true,
   // },
   // More files...
 ];
@@ -75,7 +76,7 @@ const Products = () => {
                 <div className="group block w-full aspect-w-4 aspect-h-4">
                   <img
                     src={product.source}
-                    alt=""
+                    alt="product logo"
                     className="object-cover group-hover:opacity-75"
                   />
                 </div>

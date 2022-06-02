@@ -31,48 +31,49 @@ import GovernanceIconDark from "assets/brand/Governance-Icon-Dark.png";
 import ProductsIconDark from "assets/brand/Products-Icon-Dark.png";
 import TreasuryIconDark from "assets/brand/Treasury-Icon-Dark.png";
 import { classNames } from "utils";
+import links from "constants/externalLinks";
 
 const features = [
   {
     name: "Documentation",
     description:
       "Read up on how Galleon operates, our optimistic governance model and contributor guidelines.",
-    link: "https://docs.galleon.community",
+    link: links.handbookLink,
     icon: ResourcesIcon,
   },
   {
     name: "Community Crew",
     description:
       "Join our thriving community and get involved in our many intiatives to earn governance power through $DBL.",
-    link: "https://discord.gg/galleondao",
+    link: links.discordLink,
     icon: CommunityIcon,
   },
   {
     name: "Technology",
     description:
       "We use our technology partner Set Protocol to create the most secure, battle-tested products in DeFi.",
-    link: "https://tokensets.com",
+    link: links.tokensets,
     icon: ApplicationIcon,
   },
   {
     name: "Decentralised",
     description:
       "Participate in Galleon proposals through on-chain voting mechanisms on Snapshot using held $DBL.",
-    link: "https://court.galleon.community",
+    link: links.forumLink,
     icon: GovernanceIcon,
   },
   {
     name: "Products",
     description:
       "Explore our growing suite on on-chain products across Ethereum, Optimism, Avalanche & Polygon",
-    link: "https://app.galleon.community",
+    link: links.dapp,
     icon: ProductsIcon,
   },
   {
     name: "Treasury",
     description:
       "Take a look into the treasury and organisation health as all financial activity is executed transparently.",
-    link: "https://arbiscan.io/address/0x366C6aA72f717743FaEEdCaeF2b4dE8ec9589399",
+    link: links.treasury,
     icon: TreasuryIcon,
   },
 ];

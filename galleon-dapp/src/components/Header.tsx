@@ -13,7 +13,7 @@ const Header = () => {
               <img
                 className="hidden md:block md:h-8 md:w-auto"
                 src={logo}
-                alt=""
+                alt="logo"
               />
             </Link>
             <div className="hidden ml-10 space-x-8 lg:block">

@@ -31,6 +31,7 @@ import GovernanceIconDark from "assets/brand/Governance-Icon-Dark.png";
 import ProductsIconDark from "assets/brand/Products-Icon-Dark.png";
 import TreasuryIconDark from "assets/brand/Treasury-Icon-Dark.png";
 import { classNames } from "utils";
+import links from "constants/externalLinks";
 
 const workstreams = [
   {
@@ -257,7 +258,7 @@ const Contribute = () => {
             <img
               className="w-full border-2 border-theme-navy rounded-2xl "
               src={crewBackground}
-              alt=""
+              alt="background"
               width={1310}
               height={873}
             />
@@ -294,7 +295,7 @@ const Contribute = () => {
           </ul>
           <div className="mt-10 text-center justify-center">
             <a
-              href="https://galleon.notion.site/Welcome-to-Galleon-3a8c6ddbc8794c05bed8d1a7fac0bb85"
+              href={links.contribute}
               target={"_blank"}
               className="block w-1/2 py-3 m-auto px-4 mb-10 rounded-2xl shadow border-2 border-theme-navy hover:border-theme-navy hover:text-theme-champagne  bg-theme-champagne  text-theme-navy hover:bg-theme-navy text-sm md:text-xl  no-underline "
               rel="noreferrer"
