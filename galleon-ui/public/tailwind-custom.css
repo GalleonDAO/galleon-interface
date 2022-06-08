@@ -1474,8 +1474,18 @@ select {
   width: auto;
 }
 
+.w-min {
+  width: -webkit-min-content;
+  width: min-content;
+}
+
 .min-w-0 {
   min-width: 0px;
+}
+
+.min-w-min {
+  min-width: -webkit-min-content;
+  min-width: min-content;
 }
 
 .max-w-md {
@@ -1580,6 +1590,10 @@ select {
 
 .justify-between {
   justify-content: space-between;
+}
+
+.justify-evenly {
+  justify-content: space-evenly;
 }
 
 .gap-8 {
@@ -1746,6 +1760,11 @@ select {
 .bg-theme-white {
   --tw-bg-opacity: 1;
   background-color: rgb(255 255 255 / var(--tw-bg-opacity));
+}
+
+.bg-theme-copper {
+  --tw-bg-opacity: 1;
+  background-color: rgb(220 127 90 / var(--tw-bg-opacity));
 }
 
 .bg-opacity-100 {
@@ -1926,6 +1945,10 @@ select {
   padding-bottom: 3rem;
 }
 
+.pt-2 {
+  padding-top: 0.5rem;
+}
+
 .text-left {
   text-align: left;
 }
@@ -2060,6 +2083,11 @@ select {
 .text-gray-500 {
   --tw-text-opacity: 1;
   color: rgb(107 114 128 / var(--tw-text-opacity));
+}
+
+.text-black {
+  --tw-text-opacity: 1;
+  color: rgb(0 0 0 / var(--tw-text-opacity));
 }
 
 .no-underline {
@@ -2283,6 +2311,11 @@ select {
   border-color: rgb(253 230 196 / var(--tw-border-opacity));
 }
 
+.hover\:border-black:hover {
+  --tw-border-opacity: 1;
+  border-color: rgb(0 0 0 / var(--tw-border-opacity));
+}
+
 .hover\:bg-theme-navy:hover {
   --tw-bg-opacity: 1;
   background-color: rgb(4 7 40 / var(--tw-bg-opacity));
@@ -2306,6 +2339,11 @@ select {
 .hover\:bg-gray-50:hover {
   --tw-bg-opacity: 1;
   background-color: rgb(249 250 251 / var(--tw-bg-opacity));
+}
+
+.hover\:bg-theme-oldlace:hover {
+  --tw-bg-opacity: 1;
+  background-color: rgb(254 243 226 / var(--tw-bg-opacity));
 }
 
 .hover\:from-teal-600:hover {
@@ -2384,6 +2422,16 @@ select {
 .focus\:ring-cyan-600:focus {
   --tw-ring-opacity: 1;
   --tw-ring-color: rgb(8 145 178 / var(--tw-ring-opacity));
+}
+
+.focus\:ring-theme-navy:focus {
+  --tw-ring-opacity: 1;
+  --tw-ring-color: rgb(4 7 40 / var(--tw-ring-opacity));
+}
+
+.focus\:ring-theme-oldlace:focus {
+  --tw-ring-opacity: 1;
+  --tw-ring-color: rgb(254 243 226 / var(--tw-ring-opacity));
 }
 
 .focus\:ring-offset-2:focus {
