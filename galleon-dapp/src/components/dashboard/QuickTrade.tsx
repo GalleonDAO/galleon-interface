@@ -118,8 +118,8 @@ const QuickTrade = (props: {
       : ExchangeIssuanceZeroExMainnetAddress;
   const spenderAddressLevEIL =
     chainId === POLYGON.chainId
-      ? ExchangeIssuanceLeveragedMainnetAddress
-      : ExchangeIssuanceLeveragedPolygonAddress;
+      ? ExchangeIssuanceLeveragedPolygonAddress
+      : ExchangeIssuanceLeveragedMainnetAddress;
 
   const sellTokenAmountInWei = toWei(sellTokenAmount, sellToken.decimals);
 
@@ -289,7 +289,6 @@ const QuickTrade = (props: {
       isBuying ? tradeDataEI?.setTokenAmount : tradeDataEI?.inputTokenAmount
     );
 
-    console.log("BESTOPTION", bestOption);
     setTradeInfoData(tradeInfoData);
     setBestOption(bestOption);
     setBuyTokenAmountFormatted(buyTokenAmountFormatted);
@@ -532,7 +531,7 @@ const QuickTrade = (props: {
         <Box h="12px" alignSelf={"flex-end"} m={"-12px 0 12px 0"}>
           <IconButton
             background="transparent"
-            margin={"-3px 12px"}
+            margin={"6px 12px"}
             aria-label="Search database"
             borderColor={colors.themeNavy}
             borderRadius={"50px"}

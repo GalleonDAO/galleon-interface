@@ -31,48 +31,49 @@ import GovernanceIconDark from "assets/brand/Governance-Icon-Dark.png";
 import ProductsIconDark from "assets/brand/Products-Icon-Dark.png";
 import TreasuryIconDark from "assets/brand/Treasury-Icon-Dark.png";
 import { classNames } from "utils";
+import links from "constants/externalLinks";
 
 const features = [
   {
     name: "Documentation",
     description:
       "Read up on how Galleon operates, our optimistic governance model and contributor guidelines.",
-    link: "https://docs.galleon.community",
+    link: links.handbookLink,
     icon: ResourcesIcon,
   },
   {
     name: "Community Crew",
     description:
       "Join our thriving community and get involved in our many intiatives to earn governance power through $DBL.",
-    link: "https://discord.gg/galleondao",
+    link: links.discordLink,
     icon: CommunityIcon,
   },
   {
     name: "Technology",
     description:
       "We use our technology partner Set Protocol to create the most secure, battle-tested products in DeFi.",
-    link: "https://tokensets.com",
+    link: links.tokensets,
     icon: ApplicationIcon,
   },
   {
     name: "Decentralised",
     description:
       "Participate in Galleon proposals through on-chain voting mechanisms on Snapshot using held $DBL.",
-    link: "https://court.galleon.community",
+    link: links.forumLink,
     icon: GovernanceIcon,
   },
   {
     name: "Products",
     description:
       "Explore our growing suite on on-chain products across Ethereum, Optimism, Avalanche & Polygon",
-    link: "https://app.galleon.community",
+    link: links.dapp,
     icon: ProductsIcon,
   },
   {
     name: "Treasury",
     description:
       "Take a look into the treasury and organisation health as all financial activity is executed transparently.",
-    link: "https://arbiscan.io/address/0x366C6aA72f717743FaEEdCaeF2b4dE8ec9589399",
+    link: links.treasury,
     icon: TreasuryIcon,
   },
 ];
@@ -168,10 +169,9 @@ const Feature = () => {
             About our decentralised organisation
           </h3>
           <p className="mt-5 max-w-prose mx-auto text-xl text-theme-navy">
-            Galleon is a guild of like-minded experienced and aspiring investor
-            product methodologists aiming to research, design, and create
-            best-in-class thematic, leverage and yield based structured products
-            on-chain.
+            Galleon is a guild of experienced methodologists aiming to research,
+            design, and create best-in-class thematic, leverage and yield based
+            structured products on-chain across all EVM-based networks.
           </p>
 
           <div className="max-w-3xl mx-auto divide-y-2 pb-4 border-theme-navy border-l-2 pl-5  divide-theme-navy">

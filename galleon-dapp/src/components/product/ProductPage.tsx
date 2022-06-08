@@ -75,6 +75,7 @@ const ProductPage = (props: {
   isLeveragedToken?: boolean;
   apy?: string;
   hasDashboard?: boolean;
+  children?: any;
 }) => {
   const isMobile = useBreakpointValue({ base: true, lg: false });
   const { marketData, tokenData } = props;
@@ -157,21 +158,8 @@ const ProductPage = (props: {
             <div className="col-span-1 bg-theme-oldlace border-2 border-theme-navy rounded-2xl shadow-md shadow-theme-black  divide-y divide-theme-navy">
               <div className="w-full flex items-center justify-between p-6 space-x-6">
                 <Flex direction="column" grow={1} flexBasis="0">
-                  <QuickTrade
-                    isNarrowVersion={false}
-                    singleToken={tokenData}
-                    components={props.components}
-                  >
-                    <div className=" px-2 pb-4 border-b border-theme-navy sm:px-4">
-                      <h3 className="text-xl leading-6 font-morion font-semibold text-theme-navy">
-                        Trade the ETH Max Yield Index
-                      </h3>
-                      <p className="mt-1 text-md text-theme-navy">
-                        Gain exposure to one of the highest, decentralised and
-                        fully composable leveraged ETH Yield in DeFi with
-                        ETHMAXY.
-                      </p>
-                    </div>
+                  <QuickTrade isNarrowVersion={false} singleToken={tokenData}>
+                    {props.children}
                   </QuickTrade>
                 </Flex>
                 )

@@ -1457,6 +1457,11 @@ select {
   line-height: 1.5rem;
 }
 
+.text-theme-navy {
+  --tw-text-opacity: 1;
+  color: rgb(4 7 40 / var(--tw-text-opacity));
+}
+
 .text-theme-oldlace {
   --tw-text-opacity: 1;
   color: rgb(254 243 226 / var(--tw-text-opacity));
@@ -1465,11 +1470,6 @@ select {
 .text-theme-champagne {
   --tw-text-opacity: 1;
   color: rgb(253 230 196 / var(--tw-text-opacity));
-}
-
-.text-theme-navy {
-  --tw-text-opacity: 1;
-  color: rgb(4 7 40 / var(--tw-text-opacity));
 }
 
 .text-gray-900 {
@@ -1736,6 +1736,11 @@ select {
 
 .hover\:bg-opacity-75:hover {
   --tw-bg-opacity: 0.75;
+}
+
+.hover\:text-theme-sky:hover {
+  --tw-text-opacity: 1;
+  color: rgb(2 91 238 / var(--tw-text-opacity));
 }
 
 .hover\:text-theme-champagne:hover {

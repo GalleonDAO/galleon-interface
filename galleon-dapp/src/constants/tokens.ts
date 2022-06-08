@@ -1,6 +1,6 @@
 // import solunavaxLogo from 'assets/solunavax.png'
 import ethmaxyLogo from "assets/ethmaxy.png";
-import doubloonLogo from "assets/brand/logo-profile.png";
+import doubloonLogo from "assets/brand/dbl.png";
 import solunavaxLogo from "assets/solunavax.png";
 import { TokenContextKeys } from "providers/MarketData/MarketDataProvider";
 
