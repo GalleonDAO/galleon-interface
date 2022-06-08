@@ -10,7 +10,7 @@ import {
   ETH,
   EthMaxYieldIndex,
   DoubloonToken,
-  CryptoKaiBlueChip,
+  // DummyExchangeIssuanceSet,
 } from "constants/tokens";
 import { fetchHistoricalTokenMarketData } from "utils/coingeckoApi";
 
@@ -25,7 +25,7 @@ export interface TokenContext {
   eth?: TokenMarketDataValues;
   doubloon?: TokenMarketDataValues;
   ethmaxy?: TokenMarketDataValues;
-  ckb?: TokenMarketDataValues;
+  // dummy?: TokenMarketDataValues;
   selectLatestMarketData: (...args: any) => number;
 }
 
@@ -41,7 +41,7 @@ export const MarketDataProvider = (props: { children: any }) => {
   const [ethMarketData, setEthMarketData] = useState<any>({});
   const [doubloonMarketData, setDoubloonMarketData] = useState<any>({});
   const [ethmaxyMarketData, setEthmaxyMarketData] = useState<any>({});
-  const [ckbMarketData, setCkbMarketData] = useState<any>({});
+  // const [dummyMarketData, setDummyMarketData] = useState<any>({});
   const selectLatestMarketData = (marketData?: number[][]) =>
     marketData?.[marketData.length - 1]?.[1] || 0;
 
@@ -50,13 +50,13 @@ export const MarketDataProvider = (props: { children: any }) => {
       fetchHistoricalTokenMarketData(ETH.coingeckoId),
       fetchHistoricalTokenMarketData(DoubloonToken.coingeckoId),
       fetchHistoricalTokenMarketData(EthMaxYieldIndex.coingeckoId),
-      fetchHistoricalTokenMarketData(CryptoKaiBlueChip.coingeckoId),
+      // fetchHistoricalTokenMarketData(DummyExchangeIssuanceSet.coingeckoId),
     ]);
 
     setEthMarketData(marketData[0]);
     setDoubloonMarketData(marketData[1]);
     setEthmaxyMarketData(marketData[2]);
-    setCkbMarketData(marketData[3]);
+    // setDummyMarketData(marketData[3]);
   }, []);
 
   useEffect(() => {
@@ -70,7 +70,7 @@ export const MarketDataProvider = (props: { children: any }) => {
         eth: ethMarketData,
         doubloon: doubloonMarketData,
         ethmaxy: ethmaxyMarketData,
-        ckb: ckbMarketData,
+        // dummy: dummyMarketData,
       }}
     >
       {props.children}

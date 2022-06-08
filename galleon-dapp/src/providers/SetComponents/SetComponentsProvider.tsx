@@ -11,7 +11,7 @@ import { BigNumber } from "@ethersproject/bignumber";
 import { useEthers } from "@usedapp/core";
 
 import { MAINNET, POLYGON } from "constants/chains";
-import { EthMaxYieldIndex, CryptoKaiBlueChip } from "constants/tokens";
+import { EthMaxYieldIndex, DummyExchangeIssuanceSet } from "constants/tokens";
 import { useMarketData } from "providers/MarketData/MarketDataProvider";
 import { displayFromWei, safeDiv } from "utils";
 import { getSetDetails } from "utils/setjsApi";
@@ -25,11 +25,11 @@ export function useSetComponents() {
 }
 
 const SetComponentsProvider = (props: { children: any }) => {
-  const { selectLatestMarketData, ethmaxy, ckb } = useMarketData();
+  const { selectLatestMarketData, ethmaxy } = useMarketData();
   const [ethmaxyComponents, setEthmaxyComponents] = useState<SetComponent[]>(
     []
   );
-  const [ckbComponents, setCkbComponents] = useState<SetComponent[]>([]);
+  // const [dummyComponents, setDummyComponents] = useState<SetComponent[]>([])
 
   const { account, chainId, library } = useEthers();
   const tokenList = getTokenList(chainId);
@@ -42,9 +42,9 @@ const SetComponentsProvider = (props: { children: any }) => {
       library &&
       tokenList &&
       ethmaxy &&
-      ckb &&
-      EthMaxYieldIndex.address &&
-      CryptoKaiBlueChip.address
+      // dummy &&
+      EthMaxYieldIndex.address
+      // && DummyExchangeIssuanceSet.address
     ) {
       getSetDetails(library, [EthMaxYieldIndex.address], chainId).then(
         async (result) => {
@@ -75,34 +75,34 @@ const SetComponentsProvider = (props: { children: any }) => {
         }
       );
 
-      getSetDetails(library, [CryptoKaiBlueChip.address], chainId).then(
-        async (result) => {
-          const [ckbSet] = result;
+      // getSetDetails(library, [DummyExchangeIssuanceSet.address], chainId).then(
+      //   async (result) => {
+      //     const [dummySet] = result;
 
-          const ckbComponetPrices = await getPositionPrices(ckbSet);
-          if (ckbComponetPrices != null) {
-            const ckbPositions = ckbSet.positions.map(async (position) => {
-              return await convertPositionToSetComponent(
-                position,
-                tokenList,
-                ckbComponetPrices[position.component.toLowerCase()]?.[
-                  VS_CURRENCY
-                ],
-                ckbComponetPrices[position.component.toLowerCase()]?.[
-                  `${VS_CURRENCY}_24h_change`
-                ],
+      //     const dummyComponetPrices = await getPositionPrices(dummySet);
+      //     if (dummyComponetPrices != null) {
+      //       const dummyPositions = dummySet.positions.map(async (position) => {
+      //         return await convertPositionToSetComponent(
+      //           position,
+      //           tokenList,
+      //           dummyComponetPrices[position.component.toLowerCase()]?.[
+      //             VS_CURRENCY
+      //           ],
+      //           dummyComponetPrices[position.component.toLowerCase()]?.[
+      //             `${VS_CURRENCY}_24h_change`
+      //           ],
 
-                selectLatestMarketData(ckb.hourlyPrices)
-              );
-            });
-            Promise.all(ckbPositions)
-              .then(sortPositionsByPercentOfSet)
-              .then(setCkbComponents);
-          }
-        }
-      );
+      //           selectLatestMarketData(dummy.hourlyPrices)
+      //         );
+      //       });
+      //       Promise.all(dummyPositions)
+      //         .then(sortPositionsByPercentOfSet)
+      //         .then(setCkbComponents);
+      //     }
+      //   }
+      // );
     }
-  }, [library, tokenList, ethmaxy, ckb, selectLatestMarketData()]);
+  }, [library, tokenList, ethmaxy, selectLatestMarketData()]);
 
   useEffect(() => {
     if (chainId && chainId === POLYGON.chainId && library && tokenList) {
@@ -118,7 +118,7 @@ const SetComponentsProvider = (props: { children: any }) => {
     <SetComponentsContext.Provider
       value={{
         ethmaxyComponents: ethmaxyComponents,
-        ckbComponents: ckbComponents,
+        // dummyComponents: dummyComponents,
       }}
     >
       {props.children}
@@ -239,7 +239,7 @@ export default SetComponentsProvider;
 
 interface SetComponentsProps {
   ethmaxyComponents?: SetComponent[];
-  ckbComponents?: SetComponent[];
+  // dummyComponents?: SetComponent[]
 }
 
 export const SetComponentsContext = createContext<SetComponentsProps>({});

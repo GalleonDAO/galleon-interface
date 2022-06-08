@@ -169,19 +169,19 @@ export const EthMaxYieldIndex: Token = {
   dashboard: "https://dune.xyz/galleondao/ETHMAXY-KPIs",
 };
 
-export const CryptoKaiBlueChip: Token = {
-  name: "Crypto Kai Blue Chip Index",
-  symbol: "CKB",
+export const DummyExchangeIssuanceSet: Token = {
+  name: "Dummy Exchange Issuance Set",
+  symbol: "DUMMY",
   address: "0xD13bF4acF5d4b2407d785d2528D746fA75CF9778",
   polygonAddress: undefined,
   optimismAddress: undefined,
   arbitrumAddress: undefined,
   decimals: 18,
-  url: "ckb",
+  url: "dummy",
   image:
     "https://raw.githubusercontent.com/SetProtocol/uniswap-tokenlist/main/assets/tokens/ckb-set.png",
-  coingeckoId: "ckb",
-  tokensetsId: "ckb",
+  coingeckoId: "dummy",
+  tokensetsId: "dummy",
   tokenContextKey: undefined,
   fees: {
     streamingFee: "3%",
@@ -213,7 +213,6 @@ export const CryptoKaiBlueChip: Token = {
 export const productTokensBySymbol = {
   DBL: DoubloonToken,
   ETHMAXY: EthMaxYieldIndex,
-  CKB: CryptoKaiBlueChip,
 };
 
 export const mainnetCurrencyTokens = [ETH, DAI, USDC, STETH];
@@ -226,7 +225,9 @@ export const arbitrumCurrencyTokens = [ETH, DAI, USDC];
 
 export const eligibleLeveragedExchangeIssuanceTokens = [EthMaxYieldIndex];
 
-const indexNames = [EthMaxYieldIndex, CryptoKaiBlueChip];
+const indexNames = [EthMaxYieldIndex];
+
+export const portfolios = [];
 
 export const indexNamesMainnet = indexNames.filter(
   (index) => index.address !== undefined

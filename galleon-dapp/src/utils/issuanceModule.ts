@@ -7,7 +7,6 @@ import {
   debtIssuanceModuleV2Address,
   debtIssuanceModuleV2PolygonAddress,
 } from "constants/ethContractAddresses";
-import { CryptoKaiBlueChip } from "constants/tokens";
 
 interface IssuanceModule {
   address: string;

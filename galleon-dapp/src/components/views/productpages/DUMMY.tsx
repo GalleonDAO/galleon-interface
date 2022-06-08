@@ -1,6 +1,6 @@
 import { KNOWN_LABELS, KNOWN_SERVICES } from "@galleondao/logging-lib";
 import ProductPage from "components/product/ProductPage";
-import { CryptoKaiBlueChip, EthMaxYieldIndex } from "constants/tokens";
+import { DummyExchangeIssuanceSet, EthMaxYieldIndex } from "constants/tokens";
 import { useEthmaxyApy } from "hooks/useEthmaxyApy";
 import { logger } from "index";
 import { useMarketData } from "providers/MarketData/MarketDataProvider";
@@ -9,7 +9,7 @@ import { useEffect, useState } from "react";
 import { displayFromWei } from "utils";
 
 const CKB = () => {
-  const { ckbComponents } = useSetComponents();
+  // const { dummyComponents } = useSetComponents();
   const [visited, setVisited] = useState(false);
   useEffect(() => {
     if (!visited) {
@@ -28,9 +28,9 @@ const CKB = () => {
 
   return (
     <ProductPage
-      tokenData={CryptoKaiBlueChip}
+      tokenData={DummyExchangeIssuanceSet}
       marketData={{}}
-      components={ckbComponents || []}
+      components={[] || []}
       isLeveragedToken={false}
       hasDashboard={false}
     />
