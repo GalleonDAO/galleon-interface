@@ -55,6 +55,7 @@ import {
 import QuickTradeSelector from "./QuickTradeSelector";
 import TradeInfo, { TradeInfoItem } from "./TradeInfo";
 import { getSelectTokenListItems, SelectTokenModal } from "./SelectTokenModal";
+import { SetComponent } from "providers/SetComponents/SetComponentsProvider";
 
 enum QuickTradeBestOption {
   zeroEx,
@@ -65,6 +66,8 @@ enum QuickTradeBestOption {
 const QuickTrade = (props: {
   isNarrowVersion?: boolean;
   singleToken?: Token;
+  components?: SetComponent[];
+  eiOnly?: boolean;
   children: any;
 }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -104,7 +107,7 @@ const QuickTrade = (props: {
   const [tradeInfoData, setTradeInfoData] = useState<TradeInfoItem[]>([]);
 
   const { bestOptionResult, isFetchingTradeData, fetchAndCompareOptions } =
-    useBestTradeOption();
+    useBestTradeOption(props.eiOnly, props.components);
 
   const hasFetchingError =
     bestOptionResult && !bestOptionResult.success && !isFetchingTradeData;

@@ -25,7 +25,8 @@ const App = () => {
                 explorer.blockExplorerUrl +
                 "tx/" +
                 notification.transaction.hash
-              } rel="noreferrer"
+              }
+              rel="noreferrer"
             >
               Go to transaction explorer
             </a>
