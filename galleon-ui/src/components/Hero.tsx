@@ -31,6 +31,7 @@ import GovernanceIconDark from "assets/brand/Governance-Icon-Dark.png";
 import ProductsIconDark from "assets/brand/Products-Icon-Dark.png";
 import TreasuryIconDark from "assets/brand/Treasury-Icon-Dark.png";
 import { classNames } from "utils";
+import links from "constants/externalLinks";
 
 const Hero = () => {
   return (
@@ -56,7 +57,7 @@ const Hero = () => {
                     <div className="sm:flex">
                       <div className="min-w-0">
                         <a
-                          href="https://app.galleon.community"
+                          href={links.dapp}
                           target={"_blank"}
                           className="block w-1/2 md:w-full py-3 px-4 mb-10 rounded-2xl border-2 shadow border-theme-navy hover:border-theme-champagne hover:text-theme-oldlace  bg-theme-oldlace hover:bg-theme-navy text-theme-navy focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-theme-champagne text-sm md:text-xl focus:ring-offset-theme-black "
                           rel="noreferrer"
@@ -66,7 +67,7 @@ const Hero = () => {
                       </div>
                       <div className="mt-3 sm:mt-0 sm:ml-3">
                         <a
-                          href="https://discord.gg/galleondao"
+                          href={links.discordLink}
                           target={"_blank"}
                           className="block w-1/2 md:w-full py-3 px-4 mb-10 rounded-2xl shadow border-theme-navy border-2 hover:border-theme-champagne hover:text-theme-oldlace  bg-theme-oldlace  text-theme-navy hover:bg-theme-navy  focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-theme-champagne text-sm md:text-xl focus:ring-offset-theme-black "
                           rel="noreferrer"
@@ -89,7 +90,7 @@ const Hero = () => {
                       </p>
                     </div>
                     <a
-                      href="https://cursedpirates.xyz"
+                      href={links.cursedPirates}
                       target={"_blank"}
                       className="flex  items-center  text-theme-champagne bg-transparent p-1 pr-2 sm:text-base lg:text-sm xl:text-base hover:text-theme-navy"
                       rel="noreferrer"
@@ -105,7 +106,7 @@ const Hero = () => {
                       </span>
                     </a>
                     <a
-                      href="https://flyingdutchman.capital"
+                      href={links.fdc}
                       target={"_blank"}
                       className="flex  mt-3 items-center font-wigrum text-theme-champagne bg-transparent p-1 pr-2 sm:text-base lg:text-sm xl:text-base hover:text-theme-navy"
                       rel="noreferrer"

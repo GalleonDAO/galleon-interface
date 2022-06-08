@@ -112,13 +112,20 @@ const QuickTradeSelector = (props: {
             onChange={(event) => onChangeInput(event.target.value)}
           />
           <Flex>
-            <Text fontSize="12px" textColor={colors.themeNavy}>
-              {props.formattedFiat}
-            </Text>
-            {props.priceImpact && (
-              <Text fontSize="12px" textColor={props.priceImpact.colorCoding}>
-                &nbsp;{props.priceImpact.priceImpact}
-              </Text>
+            {props.formattedFiat !== "$0.00" && (
+              <>
+                <Text fontSize="12px" textColor={colors.themeNavy}>
+                  {props.formattedFiat}
+                </Text>
+                {props.priceImpact && (
+                  <Text
+                    fontSize="12px"
+                    textColor={props.priceImpact.colorCoding}
+                  >
+                    &nbsp;{props.priceImpact.priceImpact}
+                  </Text>
+                )}
+              </>
             )}
           </Flex>
         </Flex>

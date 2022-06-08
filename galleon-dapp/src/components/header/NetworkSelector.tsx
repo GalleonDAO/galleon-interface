@@ -71,7 +71,7 @@ const NetworkSelector = () => {
                             <img
                               className="h-5 inline-flex w-auto pr-2"
                               src={network.icon}
-                              alt=""
+                              alt="network logo"
                             />
                             {network.name}
                           </span>

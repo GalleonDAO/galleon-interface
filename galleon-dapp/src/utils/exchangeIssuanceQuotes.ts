@@ -44,6 +44,7 @@ export enum Exchange {
   Quickswap,
   Sushiswap,
   UniV3,
+  UniV2,
   Curve,
 }
 
@@ -89,6 +90,8 @@ function get0xEchangeKey(exchange: Exchange): string {
       return "SushiSwap";
     case Exchange.UniV3:
       return "Uniswap_V3";
+    case Exchange.UniV2:
+      return "Uniswap_V2";
     default:
       return "";
   }
@@ -169,18 +172,24 @@ export const getExchangeIssuanceQuotes = async (
     provider
   );
 
+  console.log("setTokenAmount: ", setTokenAmount);
+
   let positionQuotes: string[] = [];
   // Input for issuing / output for redeeming
   let inputOutputTokenAmount = BigNumber.from(0);
   // TODO: do we wannt .5% or 5% slippage?
   // 0xAPI expects percentage as value between 0-1 e.g. 5% -> 0.05
   // const isJPG = setTokenSymbol === JPGIndex.symbol
-  const slippage = slippagePercentage / 100;
-
+  // const slippage = slippagePercentage / 100;
+  const slippage = 0.05;
   const quotePromises: Promise<any>[] = [];
   components.forEach((component, index) => {
     const sellAmount = positions[index];
     const buyAmount = positions[index];
+    console.log("SELL AMOUNT: ", sellAmount);
+    console.log("BUY AMOUNT: ", buyAmount);
+    console.log("ISSUANCE; ", isIssuance);
+
     // TODO: check again if .address is correcct
     const buyTokenAddress = isIssuance
       ? component

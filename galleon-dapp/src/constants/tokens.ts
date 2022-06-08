@@ -1,6 +1,6 @@
 // import solunavaxLogo from 'assets/solunavax.png'
 import ethmaxyLogo from "assets/ethmaxy.png";
-import doubloonLogo from "assets/brand/logo-profile.png";
+import doubloonLogo from "assets/brand/dbl.png";
 import solunavaxLogo from "assets/solunavax.png";
 import { TokenContextKeys } from "providers/MarketData/MarketDataProvider";
 
@@ -169,25 +169,46 @@ export const EthMaxYieldIndex: Token = {
   dashboard: "https://dune.xyz/galleondao/ETHMAXY-KPIs",
 };
 
-export const SolunavaxIndex: Token = {
-  name: "SOLUNAVAX Index",
-  symbol: "SOLUNAVAX",
-  address: undefined,
+export const DummyExchangeIssuanceSet: Token = {
+  name: "Dummy Exchange Issuance Set",
+  symbol: "DUMMY",
+  address: "0xD13bF4acF5d4b2407d785d2528D746fA75CF9778",
   polygonAddress: undefined,
-  optimismAddress: "0xbA6a2Fa321BB06D668c5192Be77428106c5C01E5",
+  optimismAddress: undefined,
   arbitrumAddress: undefined,
   decimals: 18,
-  url: "solunavax",
-  image: solunavaxLogo,
-  coingeckoId: "solunavax-index",
-  tokensetsId: "solunavax",
-  tokenContextKey: "solunavax",
+  url: "dummy",
+  image:
+    "https://raw.githubusercontent.com/SetProtocol/uniswap-tokenlist/main/assets/tokens/ckb-set.png",
+  coingeckoId: "dummy",
+  tokensetsId: "dummy",
+  tokenContextKey: undefined,
   fees: {
-    streamingFee: "0.5%",
+    streamingFee: "3%",
   },
-  theme: "Layer 1",
+  theme: "Thematic",
   dashboard: undefined,
 };
+
+// export const SolunavaxIndex: Token = {
+//   name: "SOLUNAVAX Index",
+//   symbol: "SOLUNAVAX",
+//   address: undefined,
+//   polygonAddress: undefined,
+//   optimismAddress: "0xbA6a2Fa321BB06D668c5192Be77428106c5C01E5",
+//   arbitrumAddress: undefined,
+//   decimals: 18,
+//   url: "solunavax",
+//   image: solunavaxLogo,
+//   coingeckoId: "solunavax-index",
+//   tokensetsId: "solunavax",
+//   tokenContextKey: "solunavax",
+//   fees: {
+//     streamingFee: "0.5%",
+//   },
+//   theme: "Layer 1",
+//   dashboard: undefined,
+// };
 
 export const productTokensBySymbol = {
   DBL: DoubloonToken,
@@ -205,6 +226,8 @@ export const arbitrumCurrencyTokens = [ETH, DAI, USDC];
 export const eligibleLeveragedExchangeIssuanceTokens = [EthMaxYieldIndex];
 
 const indexNames = [EthMaxYieldIndex];
+
+export const portfolios = [];
 
 export const indexNamesMainnet = indexNames.filter(
   (index) => index.address !== undefined

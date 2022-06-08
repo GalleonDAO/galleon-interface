@@ -1,6 +1,13 @@
 import { useEffect, useState } from "react";
 
-import { Area, AreaChart, CartesianGrid, XAxis, YAxis } from "recharts";
+import {
+  Area,
+  AreaChart,
+  CartesianGrid,
+  XAxis,
+  YAxis,
+  ResponsiveContainer,
+} from "recharts";
 import { colors } from "styles/colors";
 
 import { Box, Flex, Spacer } from "@chakra-ui/layout";
@@ -182,65 +189,67 @@ const MarketChart = (props: {
           <RangeSelector onChange={onChangeDuration} />
         </Box>
       </Flex>
-      <AreaChart
-        width={props.options.width ?? 900}
-        height={props.options.height ?? 400}
-        data={chartData}
-      >
-        <CartesianGrid stroke={strokeColor} strokeOpacity={0.2} />
-        <YAxis
-          axisLine={true}
-          domain={props.isDoubloon ? yAxisDomainDbl : yAxisDomain}
-          stroke={strokeColor}
-          tickCount={10}
-          tickFormatter={
-            props.isDoubloon ? yAxisTickFormatterDbl : yAxisTickFormatter
-          }
-          tickLine={true}
-          hide={props.options.hideYAxis ?? true}
-        />
-        <XAxis
-          axisLine={false}
-          dataKey="x"
-          dy={10}
-          interval="preserveStart"
-          minTickGap={10}
-          stroke={strokeColor}
-          tickCount={6}
-          tickFormatter={xAxisTickFormatter}
-          tickLine={true}
-        />
-        <Area
-          type="monotone"
-          dataKey="y1"
-          stroke={theme.colors.themeBlue}
-          fill={theme.colors.themeBlue}
-        />
-        <Area
-          type="monotone"
-          dataKey="y2"
-          stroke={theme.colors.themeBlue}
-          fill={theme.colors.themeBlue}
-        />
-        <Area
-          type="monotone"
-          dataKey="y3"
-          stroke={theme.colors.themeBlue}
-          fill={theme.colors.themeBlue}
-        />
-        <Area
-          type="monotone"
-          dataKey="y4"
-          stroke={theme.colors.themeBlue}
-          fill={theme.colors.themeBlue}
-        />
-        <Area
-          type="monotone"
-          dataKey="y5"
-          stroke={theme.colors.themeBlue}
-          fill={theme.colors.themeBlue}
-        />
-      </AreaChart>
+      <ResponsiveContainer width="100%" height={props.options.height ?? 400}>
+        <AreaChart
+          // width={props.options.width ?? 900}
+          // height={props.options.height ?? 400}
+          data={chartData}
+        >
+          <CartesianGrid stroke={strokeColor} strokeOpacity={0.2} />
+          <YAxis
+            axisLine={true}
+            domain={props.isDoubloon ? yAxisDomainDbl : yAxisDomain}
+            stroke={strokeColor}
+            tickCount={10}
+            tickFormatter={
+              props.isDoubloon ? yAxisTickFormatterDbl : yAxisTickFormatter
+            }
+            tickLine={true}
+            hide={props.options.hideYAxis ?? true}
+          />
+          <XAxis
+            axisLine={false}
+            dataKey="x"
+            dy={10}
+            interval="preserveStart"
+            minTickGap={10}
+            stroke={strokeColor}
+            tickCount={6}
+            tickFormatter={xAxisTickFormatter}
+            tickLine={true}
+          />
+          <Area
+            type="monotone"
+            dataKey="y1"
+            stroke={theme.colors.themeBlue}
+            fill={theme.colors.themeBlue}
+          />
+          <Area
+            type="monotone"
+            dataKey="y2"
+            stroke={theme.colors.themeBlue}
+            fill={theme.colors.themeBlue}
+          />
+          <Area
+            type="monotone"
+            dataKey="y3"
+            stroke={theme.colors.themeBlue}
+            fill={theme.colors.themeBlue}
+          />
+          <Area
+            type="monotone"
+            dataKey="y4"
+            stroke={theme.colors.themeBlue}
+            fill={theme.colors.themeBlue}
+          />
+          <Area
+            type="monotone"
+            dataKey="y5"
+            stroke={theme.colors.themeBlue}
+            fill={theme.colors.themeBlue}
+          />
+        </AreaChart>
+      </ResponsiveContainer>
     </Flex>
   );
 };
@@ -275,7 +284,7 @@ const PriceDisplay = ({
         >
           {apy && (
             <Text
-              fontSize={["md", "md", "xl", "2xl"]}
+              fontSize={["md", "md", "xl", "xl"]}
               color={colors.themeBlue}
               fontWeight="normal"
               mr={["0", "0", "0", "16px"]}
@@ -284,7 +293,7 @@ const PriceDisplay = ({
             </Text>
           )}
           <Text
-            fontSize={["md", "md", "xl", "2xl"]}
+            fontSize={["md", "md", "xl", "xl"]}
             color={color}
             fontWeight="normal"
           >

@@ -1,4 +1,5 @@
 import GalleonLogo from "assets/brand/Union-Logo-Light.png";
+import links from "constants/externalLinks";
 
 const footerNavigation = {
   information: [
@@ -6,36 +7,36 @@ const footerNavigation = {
     { name: "Analytics", href: "https://dune.xyz/galleondao" },
     {
       name: "Treasury",
-      href: "https://arbiscan.io/address/0x366C6aA72f717743FaEEdCaeF2b4dE8ec9589399",
+      href: links.treasury,
     },
     {
       name: "DBL Contract",
-      href: "https://arbiscan.io/token/0xd3f1da62cafb7e7bc6531ff1cef6f414291f03d3",
+      href: links.dblContract,
     },
   ],
   products: [
-    { name: "Products", href: "https://app.galleon.community" },
-    { name: "Set Protocol", href: "https://tokensets.com" },
+    { name: "Products", href: links.dapp },
+    { name: "Set Protocol", href: links.tokensets },
     {
       name: "ETHMAXY",
-      href: "https://docs.galleon.community/products/ethmaxy",
+      href: links.dapp + "/ethmaxy",
     },
-    {
-      name: "SOLUNAVAX",
-      href: "https://docs.galleon.community/products/solunavax",
-    },
+    // {
+    //   name: "BYE",
+    //   href: links.dapp + "/bye",
+    // },
   ],
   community: [
-    { name: "Discord", href: "https://discord.gg/galleondao" },
-    { name: "Blog", href: "https://blog.galleon.community" },
-    { name: "Brethren Court", href: "https://court.galleon.community" },
-    { name: "Voting", href: "https://vote.galleon.community" },
+    { name: "Discord", href: links.discordLink },
+    { name: "Blog", href: links.blog },
+    { name: "Brethren Court", href: links.forumLink },
+    { name: "Voting", href: links.voteLink },
   ],
   legal: [],
   social: [
     {
       name: "Twitter",
-      href: "https://twitter.com/galleondao",
+      href: links.twitterLink,
       icon: (props) => (
         <svg fill="currentColor" viewBox="0 0 24 24" {...props}>
           <path d="M8.29 20.251c7.547 0 11.675-6.253 11.675-11.675 0-.178 0-.355-.012-.53A8.348 8.348 0 0022 5.92a8.19 8.19 0 01-2.357.646 4.118 4.118 0 001.804-2.27 8.224 8.224 0 01-2.605.996 4.107 4.107 0 00-6.993 3.743 11.65 11.65 0 01-8.457-4.287 4.106 4.106 0 001.27 5.477A4.072 4.072 0 012.8 9.713v.052a4.105 4.105 0 003.292 4.022 4.095 4.095 0 01-1.853.07 4.108 4.108 0 003.834 2.85A8.233 8.233 0 012 18.407a11.616 11.616 0 006.29 1.84" />
@@ -44,7 +45,7 @@ const footerNavigation = {
     },
     {
       name: "GitHub",
-      href: "https://github.com/GalleonDAO",
+      href: links.github,
       icon: (props) => (
         <svg fill="currentColor" viewBox="0 0 24 24" {...props}>
           <path

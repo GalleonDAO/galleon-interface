@@ -14,7 +14,7 @@ const Header = () => {
               <img
                 className="hidden md:block md:h-8 md:w-auto"
                 src={logo}
-                alt=""
+                alt="logo"
               />
             </Link>
             <div className="hidden ml-10 space-x-8 lg:block">
@@ -22,7 +22,10 @@ const Header = () => {
                 <Link to="/">Dashboard</Link>
               </span>
               <span className="text-lg  text-theme-oldlace hover:text-theme-champagne">
-                <Link to="/products">Products</Link>
+                <Link to="/products">Flagship Products</Link>
+              </span>
+              <span className="text-lg  text-theme-oldlace hover:text-theme-champagne">
+                <Link to="/portfolios">Portfolios</Link>
               </span>
               <span className="text-lg  text-theme-oldlace hover:text-theme-champagne">
                 <Link to="/dbl">$DBL</Link>
@@ -47,7 +50,13 @@ const Header = () => {
             className="text-base  text-theme-oldlace hover:text-theme-champagne"
             href="/products"
           >
-            Products
+            Flagship Products
+          </a>
+          <a
+            className="text-base  text-theme-oldlace hover:text-theme-champagne"
+            href="/portfolios"
+          >
+            Portfolios
           </a>
           <a
             className="text-base  text-theme-oldlace hover:text-theme-champagne"
