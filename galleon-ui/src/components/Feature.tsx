@@ -169,10 +169,9 @@ const Feature = () => {
             About our decentralised organisation
           </h3>
           <p className="mt-5 max-w-prose mx-auto text-xl text-theme-navy">
-            Galleon is a guild of like-minded experienced and aspiring investor
-            product methodologists aiming to research, design, and create
-            best-in-class thematic, leverage and yield based structured products
-            on-chain.
+            Galleon is a guild of experienced methodologists aiming to research,
+            design, and create best-in-class thematic, leverage and yield based
+            structured products on-chain across all EVM-based networks.
           </p>
 
           <div className="max-w-3xl mx-auto divide-y-2 pb-4 border-theme-navy border-l-2 pl-5  divide-theme-navy">

@@ -41,6 +41,7 @@ const products = [
     source:
       "https://github.com/GalleonDAO/galleon-tokenlist/blob/main/logos/ethmaxy.png?raw=true",
     link: links.dapp + "/ethmaxy",
+    dashboard: "https://dune.com/galleondao/ETHMAXY-KPIs",
     active: true,
   },
   // {
@@ -87,6 +88,24 @@ const Products = () => {
               <p className="block text-md font-lg text-center  text-theme-navy pointer-events-none">
                 {product.description}
               </p>
+              <div className="pt-2 justify-evenly text-center">
+                <a
+                  href={product.link}
+                  target={"_blank"}
+                  className="inline-flex py-2 px-4 rounded-2xl border-2 shadow border-theme-navy hover:border-theme-navy hover:text-theme-navy  bg-theme-navy hover:bg-theme-oldlace text-theme-oldlace focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-theme-navy text-sm md:text-xl focus:ring-offset-theme-black "
+                  rel="noreferrer"
+                >
+                  Buy
+                </a>
+                <a
+                  href={product.dashboard}
+                  target={"_blank"}
+                  className="inline-flex py-2 px-4 ml-2 rounded-2xl border-2 shadow border-theme-navy hover:border-black hover:text-theme-navy  bg-theme-copper hover:bg-theme-oldlace text-black focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-theme-navy text-sm md:text-xl focus:ring-offset-theme-black "
+                  rel="noreferrer"
+                >
+                  Analytics
+                </a>
+              </div>
             </li>
           ))}
         </ul>
