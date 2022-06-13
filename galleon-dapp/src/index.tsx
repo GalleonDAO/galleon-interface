@@ -81,22 +81,6 @@ document.addEventListener("click", (event) => {
       metadata: {},
     });
   }
-
-  const PRODUCTS = [
-    ...Indices.map((x) => x.symbol),
-    ...Indices.map((x) => x.name),
-  ];
-  if (PRODUCTS.includes(eventName) && isParagraph) {
-    // @ts-ignore
-    console.log(event.target.nodeName);
-    console.dir(eventName);
-    logger.logCounter({
-      serviceName: KNOWN_SERVICES.GALLEON_DAPP,
-      environment: process.env.NODE_ENV,
-      label: KNOWN_LABELS.PRODUCT_SELECT,
-      metadata: { product: eventName },
-    });
-  }
 });
 
 window.onerror = function (msg, url, line) {
