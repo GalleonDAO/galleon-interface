@@ -1,5 +1,5 @@
-import { MAINNET, OPTIMISM, POLYGON } from 'constants/chains'
-import { ETH, MATIC, Token } from 'constants/tokens'
+import { MAINNET, OPTIMISM, POLYGON } from "constants/chains";
+import { ETH, MATIC, Token } from "constants/tokens";
 
 export function getAddressForToken(
   token: Token,
@@ -7,25 +7,25 @@ export function getAddressForToken(
 ): string | undefined {
   switch (chainId) {
     case MAINNET.chainId:
-      return token.address
+      return token.address;
     case OPTIMISM.chainId:
-      return token.optimismAddress
+      return token.optimismAddress;
     case POLYGON.chainId:
-      return token.polygonAddress
+      return token.polygonAddress;
     default:
-      return undefined
+      return undefined;
   }
 }
 
 export function getNativeToken(chainId: number | undefined): Token | null {
   switch (chainId) {
     case MAINNET.chainId:
-      return ETH
+      return ETH;
     case OPTIMISM.chainId:
-      return ETH
+      return ETH;
     case POLYGON.chainId:
-      return MATIC
+      return MATIC;
     default:
-      return null
+      return null;
   }
 }

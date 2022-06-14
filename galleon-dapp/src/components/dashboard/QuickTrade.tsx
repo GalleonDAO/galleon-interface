@@ -1,8 +1,8 @@
-import { useEffect, useState } from 'react'
-import useDebouncedEffect from 'use-debounced-effect'
-import { colors } from 'styles/colors'
+import { useEffect, useState } from "react";
+import useDebouncedEffect from "use-debounced-effect";
+import { colors } from "styles/colors";
 
-import { InfoOutlineIcon, UpDownIcon } from '@chakra-ui/icons'
+import { InfoOutlineIcon, UpDownIcon } from "@chakra-ui/icons";
 import {
   Box,
   Button,
@@ -12,39 +12,39 @@ import {
   Text,
   Tooltip,
   useDisclosure,
-} from '@chakra-ui/react'
-import { BigNumber } from '@ethersproject/bignumber'
-import { ChainId, useEthers } from '@usedapp/core'
+} from "@chakra-ui/react";
+import { BigNumber } from "@ethersproject/bignumber";
+import { ChainId, useEthers } from "@usedapp/core";
 
-import ConnectModal from 'components/header/ConnectModal'
+import ConnectModal from "components/header/ConnectModal";
 import {
   ExchangeIssuanceLeveragedMainnetAddress,
   ExchangeIssuanceLeveragedPolygonAddress,
   ExchangeIssuanceZeroExAddress,
   zeroExRouterAddress,
-} from 'constants/ethContractAddresses'
-import { ETH, EthMaxYieldIndex, Token } from 'constants/tokens'
-import { useApproval } from 'hooks/useApproval'
-import { useBalance } from 'hooks/useBalance'
-import { useBestTradeOption } from 'hooks/useBestTradeOption'
-import { useTrade } from 'hooks/useTrade'
-import { useTradeExchangeIssuance } from 'hooks/useTradeExchangeIssuance'
-import { useTradeLeveragedExchangeIssuance } from 'hooks/useTradeLeveragedExchangeIssuance'
-import { useTradeTokenLists } from 'hooks/useTradeTokenLists'
-import { isSupportedNetwork, isValidTokenInput, toWei } from 'utils'
+} from "constants/ethContractAddresses";
+import { ETH, EthMaxYieldIndex, Token } from "constants/tokens";
+import { useApproval } from "hooks/useApproval";
+import { useBalance } from "hooks/useBalance";
+import { useBestTradeOption } from "hooks/useBestTradeOption";
+import { useTrade } from "hooks/useTrade";
+import { useTradeExchangeIssuance } from "hooks/useTradeExchangeIssuance";
+import { useTradeLeveragedExchangeIssuance } from "hooks/useTradeLeveragedExchangeIssuance";
+import { useTradeTokenLists } from "hooks/useTradeTokenLists";
+import { isSupportedNetwork, isValidTokenInput, toWei } from "utils";
 
-import { MAINNET, OPTIMISM, POLYGON } from 'constants/chains'
+import { MAINNET, OPTIMISM, POLYGON } from "constants/chains";
 import {
   ExchangeIssuanceZeroExMainnetAddress,
   ExchangeIssuanceZeroExPolygonAddress,
-} from 'constants/ethContractAddresses'
+} from "constants/ethContractAddresses";
 import {
   indexNamesMainnet,
   indexNamesOptimism,
   indexNamesPolygon,
-} from 'constants/tokens'
+} from "constants/tokens";
 
-import { maxPriceImpact } from 'hooks/useBestTradeOption'
+import { maxPriceImpact } from "hooks/useBestTradeOption";
 
 import {
   getHasInsufficientFunds,
@@ -53,22 +53,23 @@ import {
   formattedFiat,
   getFormattedOuputTokenAmount,
   getFormattedPriceImpact,
-} from './QuickTradeFormatter'
-import QuickTradeSelector from './QuickTradeSelector'
-import TradeInfo, { TradeInfoItem } from './TradeInfo'
-import { getSelectTokenListItems, SelectTokenModal } from './SelectTokenModal'
-import { SetComponent } from 'providers/SetComponents/SetComponentsProvider'
-import { useAccount } from 'hooks/useAccount'
-import { useNetwork } from 'hooks/useNetwork'
+} from "./QuickTradeFormatter";
+import QuickTradeSelector from "./QuickTradeSelector";
+import TradeInfo, { TradeInfoItem } from "./TradeInfo";
+import { getSelectTokenListItems, SelectTokenModal } from "./SelectTokenModal";
+import { SetComponent } from "providers/SetComponents/SetComponentsProvider";
+import { useAccount } from "hooks/useAccount";
+import { useNetwork } from "hooks/useNetwork";
 import {
   get0xExchangeIssuanceContract,
+  get0xRouterContract,
   getLeveragedExchangeIssuanceContract,
-} from 'utils/contracts'
+} from "utils/contracts";
 import {
   getFullCostsInUsd,
   getLeveragedExchangeIssuanceQuotes,
-} from 'utils/exchangeIssuanceQuotes'
-import { debounce } from 'lodash'
+} from "utils/exchangeIssuanceQuotes";
+import { debounce } from "lodash";
 
 enum QuickTradeBestOption {
   zeroEx,
@@ -77,28 +78,27 @@ enum QuickTradeBestOption {
 }
 
 const QuickTrade = (props: {
-  isNarrowVersion?: boolean
-  singleToken?: Token
-  components?: SetComponent[]
-  eiOnly?: boolean
-  children: any
+  isNarrowVersion?: boolean;
+  singleToken?: Token;
+  components?: SetComponent[];
+  eiOnly?: boolean;
+  children: any;
 }) => {
-  const { account } = useAccount()
-  const { chainId } = useNetwork()
-  const { isOpen, onOpen, onClose } = useDisclosure()
+  const { account } = useAccount();
+  const { chainId } = useNetwork();
+  const { isOpen, onOpen, onClose } = useDisclosure();
   const {
     isOpen: isSelectInputTokenOpen,
     onOpen: onOpenSelectInputToken,
     onClose: onCloseSelectInputToken,
-  } = useDisclosure()
+  } = useDisclosure();
   const {
     isOpen: isSelectOutputTokenOpen,
     onOpen: onOpenSelectOutputToken,
     onClose: onCloseSelectOutputToken,
-  } = useDisclosure()
+  } = useDisclosure();
 
-
-  const supportedNetwork = isSupportedNetwork(chainId ?? -1)
+  const supportedNetwork = isSupportedNetwork(chainId ?? -1);
 
   const {
     isBuying,
@@ -112,38 +112,36 @@ const QuickTrade = (props: {
     changeBuyToken,
     changeSellToken,
     swapTokenLists,
-  } = useTradeTokenLists(chainId, props.singleToken)
-  const { getBalance } = useBalance()
+  } = useTradeTokenLists(chainId, props.singleToken);
+  const { getBalance } = useBalance();
 
   const [bestOption, setBestOption] = useState<QuickTradeBestOption | null>(
-    null,
-  )
-  const [buyTokenAmountFormatted, setBuyTokenAmountFormatted] = useState('0.0')
-  const [sellTokenAmount, setSellTokenAmount] = useState('0')
-  const [tradeInfoData, setTradeInfoData] = useState<TradeInfoItem[]>([])
+    null
+  );
+  const [buyTokenAmountFormatted, setBuyTokenAmountFormatted] = useState("0.0");
+  const [sellTokenAmount, setSellTokenAmount] = useState("0");
+  const [tradeInfoData, setTradeInfoData] = useState<TradeInfoItem[]>([]);
 
-  const {
-    bestOptionResult,
-    isFetchingTradeData,
-    fetchAndCompareOptions,
-  } = useBestTradeOption()
+  const { bestOptionResult, isFetchingTradeData, fetchAndCompareOptions } =
+    useBestTradeOption();
 
   const hasFetchingError =
-    bestOptionResult && !bestOptionResult.success && !isFetchingTradeData
+    bestOptionResult && !bestOptionResult.success && !isFetchingTradeData;
 
-  const spenderAddress0x = get0xExchangeIssuanceContract(chainId)
-  const spenderAddressLevEIL = getLeveragedExchangeIssuanceContract(chainId)
+  const routerAddress = get0xRouterContract(chainId);
+  const spenderAddress0x = get0xExchangeIssuanceContract(chainId);
+  const spenderAddressLevEIL = getLeveragedExchangeIssuanceContract(chainId);
 
-  const sellTokenAmountInWei = toWei(sellTokenAmount, sellToken.decimals)
+  const sellTokenAmountInWei = toWei(sellTokenAmount, sellToken.decimals);
 
   const sellTokenFiat = formattedFiat(
     parseFloat(sellTokenAmount),
-    sellTokenPrice,
-  )
+    sellTokenPrice
+  );
   const buyTokenFiat = formattedFiat(
     parseFloat(buyTokenAmountFormatted),
-    buyTokenPrice,
-  )
+    buyTokenPrice
+  );
 
   const priceImpact = isFetchingTradeData
     ? null
@@ -152,136 +150,137 @@ const QuickTrade = (props: {
         sellTokenPrice,
         parseFloat(buyTokenAmountFormatted),
         buyTokenPrice,
-        false,
-      )
+        false
+      );
 
   const {
     isApproved: isApprovedForSwap,
     isApproving: isApprovingForSwap,
     onApprove: onApproveForSwap,
-  } = useApproval(sellToken, zeroExRouterAddress, sellTokenAmountInWei)
+  } = useApproval(sellToken, routerAddress, sellTokenAmountInWei);
   const {
     isApproved: isApprovedForEIL,
     isApproving: isApprovingForEIL,
     onApprove: onApproveForEIL,
-  } = useApproval(sellToken, spenderAddressLevEIL, sellTokenAmountInWei)
+  } = useApproval(sellToken, spenderAddressLevEIL, sellTokenAmountInWei);
   const {
     isApproved: isApprovedForEIZX,
     isApproving: isApprovingForEIZX,
     onApprove: onApproveForEIZX,
-  } = useApproval(sellToken, spenderAddress0x, sellTokenAmountInWei)
+  } = useApproval(sellToken, spenderAddress0x, sellTokenAmountInWei);
 
   const { executeTrade, isTransacting } = useTrade(
     sellToken,
-    bestOptionResult?.success ? bestOptionResult.dexData : null,
-  )
+    bestOptionResult?.success ? bestOptionResult.dexData : null
+  );
   const { executeEITrade, isTransactingEI } = useTradeExchangeIssuance(
     isBuying,
     sellToken,
     buyToken,
-    bestOptionResult?.success ? bestOptionResult.exchangeIssuanceData : null,
-  )
+    bestOptionResult?.success ? bestOptionResult.exchangeIssuanceData : null
+  );
 
-  const {
-    executeLevEITrade,
-    isTransactingLevEI,
-  } = useTradeLeveragedExchangeIssuance(
-    isBuying,
-    sellToken,
-    buyToken,
-    // TODO: simplify by just passing leveragedExchangeIssuanceData || null
-    // TODO: test inside to only exectue trade when data !== null
-    bestOptionResult?.success
-      ? bestOptionResult.leveragedExchangeIssuanceData?.setTokenAmount ??
-          BigNumber.from(0)
-      : BigNumber.from(0),
-    bestOptionResult?.success
-      ? bestOptionResult.leveragedExchangeIssuanceData?.inputTokenAmount ??
-          BigNumber.from(0)
-      : BigNumber.from(0),
-    bestOptionResult?.success
-      ? bestOptionResult?.leveragedExchangeIssuanceData?.swapDataDebtCollateral
-      : undefined,
-    bestOptionResult?.success
-      ? bestOptionResult?.leveragedExchangeIssuanceData?.swapDataPaymentToken
-      : undefined,
-  )
+  const { executeLevEITrade, isTransactingLevEI } =
+    useTradeLeveragedExchangeIssuance(
+      isBuying,
+      sellToken,
+      buyToken,
+      // TODO: simplify by just passing leveragedExchangeIssuanceData || null
+      // TODO: test inside to only exectue trade when data !== null
+      bestOptionResult?.success
+        ? bestOptionResult.leveragedExchangeIssuanceData?.setTokenAmount ??
+            BigNumber.from(0)
+        : BigNumber.from(0),
+      bestOptionResult?.success
+        ? bestOptionResult.leveragedExchangeIssuanceData?.inputTokenAmount ??
+            BigNumber.from(0)
+        : BigNumber.from(0),
+      bestOptionResult?.success
+        ? bestOptionResult?.leveragedExchangeIssuanceData
+            ?.swapDataDebtCollateral
+        : undefined,
+      bestOptionResult?.success
+        ? bestOptionResult?.leveragedExchangeIssuanceData?.swapDataPaymentToken
+        : undefined
+    );
 
   const hasInsufficientFunds = getHasInsufficientFunds(
     bestOption === null,
     sellTokenAmountInWei,
-    getBalance(sellToken.symbol),
-  )
+    getBalance(sellToken.symbol)
+  );
 
   /**
    * Determine the best trade option.
    */
   useEffect(() => {
     if (bestOptionResult === null || !bestOptionResult.success) {
-      setTradeInfoData([])
-      return
+      setTradeInfoData([]);
+      return;
     }
 
-    const gasLimit0x = BigNumber.from(bestOptionResult.dexData?.gas ?? '0')
-    const gasPrice0x = BigNumber.from(bestOptionResult.dexData?.gasPrice ?? '0')
+    const gasLimit0x = BigNumber.from(bestOptionResult.dexData?.gas ?? "0");
+    const gasPrice0x = BigNumber.from(
+      bestOptionResult.dexData?.gasPrice ?? "0"
+    );
     const gasPriceEI = BigNumber.from(
-      bestOptionResult.exchangeIssuanceData?.gasPrice ?? '0',
-    )
+      bestOptionResult.exchangeIssuanceData?.gasPrice ?? "0"
+    );
     const gasPriceLevEI =
       bestOptionResult.leveragedExchangeIssuanceData?.gasPrice ??
-      BigNumber.from(0)
-    const gasLimit = 1800000 // TODO: Make gasLimit dynamic
+      BigNumber.from(0);
+    const gasLimit = 1800000; // TODO: Make gasLimit dynamic
 
-    const gas0x = gasPrice0x.mul(gasLimit0x)
-    const gasEI = gasPriceEI.mul(gasLimit)
-    const gasLevEI = gasPriceLevEI.mul(gasLimit)
+    const gas0x = gasPrice0x.mul(gasLimit0x);
+    const gasEI = gasPriceEI.mul(gasLimit);
+    const gasLevEI = gasPriceLevEI.mul(gasLimit);
 
     const fullCosts0x = getFullCostsInUsd(
       toWei(sellTokenAmount, sellToken.decimals),
       gas0x,
       sellToken.decimals,
       sellTokenPrice,
-      nativeTokenPrice,
-    )
+      nativeTokenPrice
+    );
     const fullCostsEI = getFullCostsInUsd(
       bestOptionResult.exchangeIssuanceData?.inputTokenAmount,
       gasEI,
       sellToken.decimals,
       sellTokenPrice,
-      nativeTokenPrice,
-    )
+      nativeTokenPrice
+    );
     const fullCostsLevEI = getFullCostsInUsd(
       bestOptionResult.leveragedExchangeIssuanceData?.inputTokenAmount,
       gasLevEI,
       sellToken.decimals,
       sellTokenPrice,
-      nativeTokenPrice,
-    )
+      nativeTokenPrice
+    );
 
-    console.log(fullCosts0x, fullCostsEI, fullCostsLevEI, 'FC')
+    console.log(fullCosts0x, fullCostsEI, fullCostsLevEI, "FC");
 
     const priceImpactDex = parseFloat(
-      bestOptionResult?.dexData?.estimatedPriceImpact ?? '5',
-    )
+      bestOptionResult?.dexData?.estimatedPriceImpact ?? "5"
+    );
     const bestOption = getBestTradeOption(
       fullCosts0x,
       fullCostsEI,
       fullCostsLevEI,
-      priceImpactDex,
-    )
-    const bestOptionIs0x = bestOption === QuickTradeBestOption.zeroEx
+      priceImpactDex
+    );
+    const bestOptionIs0x = bestOption === QuickTradeBestOption.zeroEx;
     const bestOptionIsLevEI =
-      bestOption === QuickTradeBestOption.leveragedExchangeIssuance
+      bestOption === QuickTradeBestOption.leveragedExchangeIssuance;
 
     const tradeDataEI = bestOptionIsLevEI
       ? bestOptionResult.leveragedExchangeIssuanceData
-      : bestOptionResult.exchangeIssuanceData
-    const tradeDataGasPriceEI = bestOptionIsLevEI ? gasPriceLevEI : gasPriceEI
+      : bestOptionResult.exchangeIssuanceData;
+    const tradeDataGasPriceEI = bestOptionIsLevEI ? gasPriceLevEI : gasPriceEI;
     const tradeDataSetAmountEI = bestOptionIsLevEI
       ? bestOptionResult.leveragedExchangeIssuanceData?.setTokenAmount ??
         BigNumber.from(0)
       : bestOptionResult.exchangeIssuanceData?.setTokenAmount ??
-        BigNumber.from(0)
+        BigNumber.from(0);
 
     const tradeInfoData = bestOptionIs0x
       ? getTradeInfoData0x(bestOptionResult.dexData, buyToken, chainId)
@@ -292,8 +291,8 @@ const QuickTrade = (props: {
           sellToken,
           tradeDataEI,
           chainId,
-          isBuying,
-        )
+          isBuying
+        );
 
     const buyTokenAmountFormatted = getFormattedOuputTokenAmount(
       bestOption !== QuickTradeBestOption.zeroEx,
@@ -301,18 +300,18 @@ const QuickTrade = (props: {
       bestOptionResult?.success
         ? bestOptionResult.dexData?.minOutput
         : undefined,
-      isBuying ? tradeDataEI?.setTokenAmount : tradeDataEI?.inputTokenAmount,
-    )
+      isBuying ? tradeDataEI?.setTokenAmount : tradeDataEI?.inputTokenAmount
+    );
 
-    console.log('BESTOPTION', bestOption)
-    setTradeInfoData(tradeInfoData)
-    setBestOption(bestOption)
-    setBuyTokenAmountFormatted(buyTokenAmountFormatted)
-  }, [bestOptionResult])
+    console.log("BESTOPTION", bestOption);
+    setTradeInfoData(tradeInfoData);
+    setBestOption(bestOption);
+    setBuyTokenAmountFormatted(buyTokenAmountFormatted);
+  }, [bestOptionResult]);
 
   useEffect(() => {
-    setTradeInfoData([])
-  }, [chainId])
+    setTradeInfoData([]);
+  }, [chainId]);
 
   // useDebouncedEffect(
   //   () => {
@@ -326,17 +325,17 @@ const QuickTrade = (props: {
   // )
 
   useEffect(() => {
-    fetchOptions()
-  }, [buyToken, sellToken, sellTokenAmount])
+    fetchOptions();
+  }, [buyToken, sellToken, sellTokenAmount]);
 
   // Does user need protecting from productive assets?
-  const [requiresProtection, setRequiresProtection] = useState(false)
+  const [requiresProtection, setRequiresProtection] = useState(false);
 
   const fetchOptions = () => {
     // Right now we only allow setting the sell amount, so no need to check
     // buy token amount here
-    const sellTokenInWei = toWei(sellTokenAmount, sellToken.decimals)
-    if (sellTokenInWei.isZero() || sellTokenInWei.isNegative()) return
+    const sellTokenInWei = toWei(sellTokenAmount, sellToken.decimals);
+    if (sellTokenInWei.isZero() || sellTokenInWei.isNegative()) return;
     fetchAndCompareOptions(
       sellToken,
       sellTokenAmount,
@@ -344,195 +343,195 @@ const QuickTrade = (props: {
       buyToken,
       // buyTokenAmount,
       buyTokenPrice,
-      isBuying,
-    )
-  }
+      isBuying
+    );
+  };
 
   const getIsApproved = () => {
     switch (bestOption) {
       case QuickTradeBestOption.exchangeIssuance:
-        return isApprovedForEIZX
+        return isApprovedForEIZX;
       case QuickTradeBestOption.leveragedExchangeIssuance:
-        return isApprovedForEIL
+        return isApprovedForEIL;
       default:
-        return isApprovedForSwap
+        return isApprovedForSwap;
     }
-  }
+  };
 
   const getIsApproving = () => {
     switch (bestOption) {
       case QuickTradeBestOption.exchangeIssuance:
-        return isApprovingForEIZX
+        return isApprovingForEIZX;
       case QuickTradeBestOption.leveragedExchangeIssuance:
-        return isApprovingForEIL
+        return isApprovingForEIL;
       default:
-        return isApprovingForSwap
+        return isApprovingForSwap;
     }
-  }
+  };
 
   const getOnApprove = () => {
     switch (bestOption) {
       case QuickTradeBestOption.exchangeIssuance:
-        return onApproveForEIZX()
+        return onApproveForEIZX();
       case QuickTradeBestOption.leveragedExchangeIssuance:
-        return onApproveForEIL()
+        return onApproveForEIL();
       default:
-        return onApproveForSwap()
+        return onApproveForSwap();
     }
-  }
+  };
 
   const isNotTradable = (token: Token | undefined) => {
     if (token && chainId === MAINNET.chainId)
       return (
         indexNamesMainnet.filter((t) => t.symbol === token.symbol).length === 0
-      )
+      );
     if (token && chainId === POLYGON.chainId)
       return (
         indexNamesPolygon.filter((t) => t.symbol === token.symbol).length === 0
-      )
+      );
     if (token && chainId === OPTIMISM.chainId)
       return (
         indexNamesOptimism.filter((t) => t.symbol === token.symbol).length === 0
-      )
-    return false
-  }
+      );
+    return false;
+  };
 
   /**
    * Get the correct trade button label according to different states
    * @returns string label for trade button
    */
   const getTradeButtonLabel = () => {
-    if (!supportedNetwork) return 'Wrong Network'
+    if (!supportedNetwork) return "Wrong Network";
 
     if (!account) {
-      return 'Connect Wallet'
+      return "Connect Wallet";
     }
 
     if (isNotTradable(props.singleToken)) {
-      let chainName = 'This Network'
+      let chainName = "This Network";
       switch (chainId) {
         case MAINNET.chainId:
-          chainName = 'Mainnet'
-          break
+          chainName = "Mainnet";
+          break;
         case POLYGON.chainId:
-          chainName = 'Polygon'
-          break
+          chainName = "Polygon";
+          break;
         case OPTIMISM.chainId:
-          chainName = 'Optimism'
-          break
+          chainName = "Optimism";
+          break;
       }
 
-      return `Not Available on ${chainName}`
+      return `Not Available on ${chainName}`;
     }
 
-    if (sellTokenAmount === '0') {
-      return 'Enter an amount'
+    if (sellTokenAmount === "0") {
+      return "Enter an amount";
     }
 
     if (hasInsufficientFunds) {
-      return 'Insufficient funds'
+      return "Insufficient funds";
     }
 
     if (hasFetchingError) {
-      return 'Try again'
+      return "Try again";
     }
 
     const isNativeToken =
-      sellToken.symbol === 'ETH' || sellToken.symbol === 'MATIC'
+      sellToken.symbol === "ETH" || sellToken.symbol === "MATIC";
 
     if (!isNativeToken && getIsApproving()) {
-      return 'Approving...'
+      return "Approving...";
     }
 
     if (!isNativeToken && !getIsApproved()) {
-      return 'Approve Tokens'
+      return "Approve Tokens";
     }
 
     if (isTransacting || isTransactingEI || isTransactingLevEI)
-      return 'Trading...'
+      return "Trading...";
 
-    return 'Trade'
-  }
+    return "Trade";
+  };
 
   const onChangeSellTokenAmount = debounce((token: Token, input: string) => {
-    if (!isValidTokenInput(input, token.decimals)) return
-    setSellTokenAmount(input || '0')
-  }, 1000)
+    if (!isValidTokenInput(input, token.decimals)) return;
+    setSellTokenAmount(input || "0");
+  }, 1000);
 
   const onClickTradeButton = async () => {
     if (!account) {
       // Open connect wallet modal
-      onOpen()
-      return
+      onOpen();
+      return;
     }
 
-    if (hasInsufficientFunds) return
+    if (hasInsufficientFunds) return;
 
     if (hasFetchingError) {
-      fetchOptions()
-      return
+      fetchOptions();
+      return;
     }
 
     const isNativeToken =
-      sellToken.symbol === 'ETH' || sellToken.symbol === 'MATIC'
+      sellToken.symbol === "ETH" || sellToken.symbol === "MATIC";
     if (!getIsApproved() && !isNativeToken) {
-      await getOnApprove()
-      return
+      await getOnApprove();
+      return;
     }
 
     switch (bestOption) {
       case QuickTradeBestOption.zeroEx:
-        await executeTrade()
-        break
+        await executeTrade();
+        break;
       case QuickTradeBestOption.exchangeIssuance:
-        await executeEITrade()
-        break
+        await executeEITrade();
+        break;
       case QuickTradeBestOption.leveragedExchangeIssuance:
-        await executeLevEITrade()
-        break
+        await executeLevEITrade();
+        break;
       default:
       // Nothing
     }
-  }
+  };
 
   const getButtonDisabledState = () => {
-    if (!supportedNetwork) return true
-    if (!account) return false
-    if (hasFetchingError) return false
+    if (!supportedNetwork) return true;
+    if (!account) return false;
+    if (hasFetchingError) return false;
     return (
-      sellTokenAmount === '0' ||
+      sellTokenAmount === "0" ||
       hasInsufficientFunds ||
       isTransacting ||
       isTransactingEI ||
       isTransactingLevEI ||
       isNotTradable(props.singleToken)
-    )
-  }
+    );
+  };
 
-  const buttonLabel = getTradeButtonLabel()
-  const isButtonDisabled = getButtonDisabledState()
-  const isLoading = getIsApproving() || isFetchingTradeData
+  const buttonLabel = getTradeButtonLabel();
+  const isButtonDisabled = getButtonDisabledState();
+  const isLoading = getIsApproving() || isFetchingTradeData;
 
-  const isNarrow = props.isNarrowVersion ?? false
-  const paddingX = isNarrow ? '16px' : '40px'
+  const isNarrow = props.isNarrowVersion ?? false;
+  const paddingX = isNarrow ? "16px" : "40px";
 
   const inputTokenBalances = sellTokenList.map(
-    (sellToken) => getBalance(sellToken.symbol) ?? BigNumber.from(0),
-  )
+    (sellToken) => getBalance(sellToken.symbol) ?? BigNumber.from(0)
+  );
   const outputTokenBalances = buyTokenList.map(
-    (buyToken) => getBalance(buyToken.symbol) ?? BigNumber.from(0),
-  )
+    (buyToken) => getBalance(buyToken.symbol) ?? BigNumber.from(0)
+  );
   const inputTokenItems = getSelectTokenListItems(
     sellTokenList,
-    inputTokenBalances,
-  )
+    inputTokenBalances
+  );
   const outputTokenItems = getSelectTokenListItems(
     buyTokenList,
-    outputTokenBalances,
-  )
+    outputTokenBalances
+  );
 
   return (
-    <Flex direction="column" py="20px" px={['16px', paddingX]} height={'100%'}>
+    <Flex direction="column" py="20px" px={["16px", paddingX]} height={"100%"}>
       <>{props.children}</>
       <Flex direction="column" my="20px">
         <QuickTradeSelector
@@ -548,16 +547,16 @@ const QuickTrade = (props: {
           tokenList={sellTokenList}
           onChangeInput={onChangeSellTokenAmount}
           onSelectedToken={(_) => {
-            if (inputTokenItems.length > 1) onOpenSelectInputToken()
+            if (inputTokenItems.length > 1) onOpenSelectInputToken();
           }}
         />
-        <Box h="12px" alignSelf={'flex-end'} m={'-12px 0 12px 0'}>
+        <Box h="12px" alignSelf={"flex-end"} m={"-12px 0 12px 0"}>
           <IconButton
             background="transparent"
-            margin={'6px 12px'}
+            margin={"6px 12px"}
             aria-label="Search database"
             borderColor={colors.themeNavy}
-            borderRadius={'50px'}
+            borderRadius={"50px"}
             color={colors.themeNavy}
             icon={<UpDownIcon />}
             onClick={() => swapTokenLists()}
@@ -578,12 +577,11 @@ const QuickTrade = (props: {
           tokenList={buyTokenList}
           onChangeInput={(token: Token, input: string) => {}}
           onSelectedToken={(_) => {
-            if (outputTokenItems.length > 1) onOpenSelectOutputToken()
+            if (outputTokenItems.length > 1) onOpenSelectOutputToken();
           }}
         />
       </Flex>
       <Flex direction="column">
-
         {tradeInfoData.length > 0 && <TradeInfo data={tradeInfoData} />}
         {hasFetchingError && (
           <Text align="center" color={colors.themeNavy} p="16px">
@@ -605,8 +603,8 @@ const QuickTrade = (props: {
         isOpen={isSelectInputTokenOpen}
         onClose={onCloseSelectInputToken}
         onSelectedToken={(tokenSymbol) => {
-          changeSellToken(tokenSymbol)
-          onCloseSelectInputToken()
+          changeSellToken(tokenSymbol);
+          onCloseSelectInputToken();
         }}
         items={inputTokenItems}
       />
@@ -614,21 +612,21 @@ const QuickTrade = (props: {
         isOpen={isSelectOutputTokenOpen}
         onClose={onCloseSelectOutputToken}
         onSelectedToken={(tokenSymbol) => {
-          changeBuyToken(tokenSymbol)
-          onCloseSelectOutputToken()
+          changeBuyToken(tokenSymbol);
+          onCloseSelectOutputToken();
         }}
         items={outputTokenItems}
       />
     </Flex>
-  )
-}
+  );
+};
 
 interface TradeButtonProps {
-  label: string
-  background: string
-  isDisabled: boolean
-  isLoading: boolean
-  onClick: () => void
+  label: string;
+  background: string;
+  isDisabled: boolean;
+  isLoading: boolean;
+  onClick: () => void;
 }
 
 const TradeButton = (props: TradeButtonProps) => (
@@ -648,44 +646,43 @@ const TradeButton = (props: TradeButtonProps) => (
   >
     {props.label}
   </Button>
-)
-
+);
 
 export function getBestTradeOption(
   fullCosts0x: number | null,
   fullCostsEI: number | null,
   fullCostsLevEI: number | null,
-  priceImpactDex: number,
+  priceImpactDex: number
 ): QuickTradeBestOption {
   if (fullCostsEI === null && fullCostsLevEI === null) {
-    return QuickTradeBestOption.zeroEx
+    return QuickTradeBestOption.zeroEx;
   }
 
-  const quotes: number[][] = []
+  const quotes: number[][] = [];
   if (fullCosts0x) {
-    quotes.push([QuickTradeBestOption.zeroEx, fullCosts0x])
+    quotes.push([QuickTradeBestOption.zeroEx, fullCosts0x]);
   }
   if (fullCostsEI) {
-    quotes.push([QuickTradeBestOption.exchangeIssuance, fullCostsEI])
+    quotes.push([QuickTradeBestOption.exchangeIssuance, fullCostsEI]);
   }
   if (fullCostsLevEI) {
     quotes.push([
       QuickTradeBestOption.leveragedExchangeIssuance,
       fullCostsLevEI,
-    ])
+    ]);
   }
-  const cheapestQuotes = quotes.sort((q1, q2) => q1[1] - q2[1])
+  const cheapestQuotes = quotes.sort((q1, q2) => q1[1] - q2[1]);
 
   if (cheapestQuotes.length <= 0) {
-    return QuickTradeBestOption.zeroEx
+    return QuickTradeBestOption.zeroEx;
   }
 
-  const cheapestQuote = cheapestQuotes[0]
-  const bestOption = cheapestQuote[0]
+  const cheapestQuote = cheapestQuotes[0];
+  const bestOption = cheapestQuote[0];
 
   // If only one quote, return best option immediately
   if (cheapestQuotes.length === 1) {
-    return bestOption
+    return bestOption;
   }
 
   // If multiple quotes, check price impact of 0x option
@@ -694,10 +691,10 @@ export function getBestTradeOption(
     priceImpactDex >= maxPriceImpact
   ) {
     // In case price impact is too high, return cheapest exchange issuance
-    return cheapestQuotes[1][0]
+    return cheapestQuotes[1][0];
   }
 
-  return bestOption
+  return bestOption;
 }
 
-export default QuickTrade
+export default QuickTrade;

@@ -1,64 +1,64 @@
-import { colors } from 'styles/colors'
+import { colors } from "styles/colors";
 
-import { Button, Flex, Text, useDisclosure } from '@chakra-ui/react'
-import { useEthers, useLookupAddress } from '@usedapp/core'
+import { Button, Flex, Text, useDisclosure } from "@chakra-ui/react";
+import { useEthers, useLookupAddress } from "@usedapp/core";
 
-import ConnectModal from './ConnectModal'
-import NetworkSelector from './NetworkSelector'
-import { useState } from 'react'
-import { logger } from 'index'
-import { KNOWN_SERVICES, KNOWN_LABELS } from '@galleondao/logging-lib'
-import { useNetwork } from 'hooks/useNetwork'
+import ConnectModal from "./ConnectModal";
+import NetworkSelector from "./NetworkSelector";
+import { useState } from "react";
+import { logger } from "index";
+import { KNOWN_SERVICES, KNOWN_LABELS } from "@galleondao/logging-lib";
+import { useNetwork } from "hooks/useNetwork";
 import {
   PendingTransactionState,
   useWaitForTransaction,
-} from 'hooks/useWaitForTransaction'
-import { isSupportedNetwork } from 'utils'
-import { getBlockExplorerUrl } from 'utils/blockExplorer'
+} from "hooks/useWaitForTransaction";
+import { isSupportedNetwork } from "utils";
+import { getBlockExplorerUrl } from "utils/blockExplorer";
 import TransactionStateHeader, {
   TransactionStateHeaderState,
-} from './TransactionStateHeader'
+} from "./TransactionStateHeader";
 
 const ConnectButton = () => {
-  const { account, chainId, deactivate } = useEthers()
-  const { isOpen, onOpen, onClose } = useDisclosure()
-  const { changeNetwork } = useNetwork()
-  let ens = useLookupAddress()
-  const { pendingTxHash, pendingTxState } = useWaitForTransaction()
-  const txStateHeaderState = getHeaderState(pendingTxState)
-  const supportedNetwork = isSupportedNetwork(chainId ?? -1)
+  const { account, chainId, deactivate } = useEthers();
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const { changeNetwork } = useNetwork();
+  let ens = useLookupAddress();
+  const { pendingTxHash, pendingTxState } = useWaitForTransaction();
+  const txStateHeaderState = getHeaderState(pendingTxState);
+  const supportedNetwork = isSupportedNetwork(chainId ?? -1);
 
   const handleConnectWallet = () => {
-    onOpen()
-  }
+    onOpen();
+  };
 
   const handleDisconnect = () => {
-    deactivate()
-    onClose()
-  }
+    deactivate();
+    onClose();
+  };
 
   const onClickTransactionState = () => {
     if (!pendingTxHash || pendingTxState === PendingTransactionState.none)
-      return
-    const explorerUrl = getBlockExplorerUrl(pendingTxHash, chainId)
-    const newWindow = window.open(explorerUrl, '_blank')
-    newWindow?.focus()
-  }
+      return;
+    const explorerUrl = getBlockExplorerUrl(pendingTxHash, chainId);
+    const newWindow = window.open(explorerUrl, "_blank");
+    newWindow?.focus();
+  };
 
   const onWrongNetworkButtonClicked = () => {
-    changeNetwork('1')
-  }
+    changeNetwork("1");
+  };
 
   const formatAccountName = () => {
-    if (ens) return `${ens}`
+    if (ens) return `${ens}`;
     return (
       account &&
       `${account.slice(0, 6)}...${account.slice(
         account.length - 4,
-        account.length,
+        account.length
       )}`
-    )
-  }
+    );
+  };
 
   const connectButton = () => {
     return (
@@ -72,13 +72,13 @@ const ConnectButton = () => {
 
         <ConnectModal isOpen={isOpen} onClose={onClose} />
       </div>
-    )
-  }
+    );
+  };
 
   const disconnectButton = () => {
     return (
       <span>
-        {pendingTxState === PendingTransactionState.none ? (
+        {/* {pendingTxState === PendingTransactionState.none ? (
           <span className="hidden md:inline-flex items-center px-3 py-0.5 rounded-2xl text-base font-medium bg-transparent ">
             <svg
               className="-ml-1 mr-1.5 h-2 w-2 text-theme-oldlace animate animate-pulse"
@@ -95,7 +95,18 @@ const ConnectButton = () => {
             onClick={onClickTransactionState}
             state={txStateHeaderState}
           />
-        )}
+        )} */}
+
+        <span className="hidden md:inline-flex items-center px-3 py-0.5 rounded-2xl text-base font-medium bg-transparent ">
+          <svg
+            className="-ml-1 mr-1.5 h-2 w-2 text-theme-oldlace animate animate-pulse"
+            fill="currentColor"
+            viewBox="0 0 8 8"
+          >
+            <circle cx={4} cy={4} r={3} />
+          </svg>
+          <span className="text-theme-oldlace">{formatAccountName()}</span>
+        </span>
 
         <button
           onClick={handleDisconnect}
@@ -105,8 +116,8 @@ const ConnectButton = () => {
         </button>
         <NetworkSelector />
       </span>
-    )
-  }
+    );
+  };
 
   const wrongNetworkButton = () => {
     return (
@@ -120,29 +131,29 @@ const ConnectButton = () => {
 
         <ConnectModal isOpen={isOpen} onClose={onClose} />
       </div>
-    )
-  }
+    );
+  };
 
   if (supportedNetwork) {
-    return account ? disconnectButton() : connectButton()
+    return account ? disconnectButton() : connectButton();
   }
 
-  return wrongNetworkButton()
-}
+  return wrongNetworkButton();
+};
 
 const getHeaderState = (
-  pendingTxState: PendingTransactionState,
+  pendingTxState: PendingTransactionState
 ): TransactionStateHeaderState => {
   switch (pendingTxState) {
     case PendingTransactionState.failed:
-      return TransactionStateHeaderState.failed
+      return TransactionStateHeaderState.failed;
     case PendingTransactionState.none:
-      return TransactionStateHeaderState.none
+      return TransactionStateHeaderState.none;
     case PendingTransactionState.pending:
-      return TransactionStateHeaderState.pending
+      return TransactionStateHeaderState.pending;
     case PendingTransactionState.success:
-      return TransactionStateHeaderState.success
+      return TransactionStateHeaderState.success;
   }
-}
+};
 
-export default ConnectButton
+export default ConnectButton;

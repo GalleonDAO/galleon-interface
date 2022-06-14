@@ -1,5 +1,9 @@
 import { ARBITRUM, MAINNET, OPTIMISM, POLYGON } from "constants/chains";
-import { BasisYieldEthIndex, DoubloonToken, EthMaxYieldIndex } from "constants/tokens";
+import {
+  BasisYieldEthIndex,
+  DoubloonToken,
+  EthMaxYieldIndex,
+} from "constants/tokens";
 
 const apiSupport = [MAINNET.chainId, POLYGON.chainId];
 

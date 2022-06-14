@@ -1,7 +1,7 @@
-import Set from 'set.js'
-import { SetDetails, StreamingFeeInfo } from 'set.js/dist/types/src/types'
+import Set from "set.js";
+import { SetDetails, StreamingFeeInfo } from "set.js/dist/types/src/types";
 
-import { MAINNET, OPTIMISM, POLYGON } from 'constants/chains'
+import { MAINNET, OPTIMISM, POLYGON } from "constants/chains";
 import {
   basicIssuanceModuleAddress,
   basicIssuanceModuleOptimismAddress,
@@ -35,35 +35,35 @@ import {
   tradeModuleAddress,
   tradeModuleOptimismAddress,
   tradeModulePolygonAddress,
-} from 'constants/ethContractAddresses'
-import { BasisYieldEthIndex } from 'constants/tokens'
+} from "constants/ethContractAddresses";
+import { BasisYieldEthIndex } from "constants/tokens";
 
 export async function getTokenSupply(
   ethersProvider: any,
   productAddresses: string[],
   chainId: number
 ): Promise<SetDetails[]> {
-  const set = getSet(ethersProvider, chainId)
-  let moduleAddresses
+  const set = getSet(ethersProvider, chainId);
+  let moduleAddresses;
   if (chainId === MAINNET.chainId) {
     moduleAddresses = [
       basicIssuanceModuleAddress,
       streamingFeeModuleAddress,
       tradeModuleAddress,
       debtIssuanceModuleAddress,
-    ]
+    ];
   } else {
     moduleAddresses = [
       basicIssuanceModulePolygonAddress,
       streamingFeeModulePolygonAddress,
       tradeModulePolygonAddress,
       debtIssuanceModuleV2PolygonAddress,
-    ]
+    ];
   }
   return await set.setToken.batchFetchSetDetailsAsync(
     productAddresses,
     moduleAddresses
-  )
+  );
 }
 
 export async function getStreamingFees(
@@ -71,8 +71,8 @@ export async function getStreamingFees(
   productAddresses: string[],
   chainId: number
 ): Promise<StreamingFeeInfo[]> {
-  const set = getSet(ethersProvider, chainId)
-  return set.fees.batchFetchStreamingFeeInfoAsync(productAddresses)
+  const set = getSet(ethersProvider, chainId);
+  return set.fees.batchFetchStreamingFeeInfoAsync(productAddresses);
 }
 
 export async function getSetDetails(
@@ -81,8 +81,8 @@ export async function getSetDetails(
   chainId: number,
   isPerp: boolean = false
 ): Promise<SetDetails[]> {
-  const set = getSet(ethersProvider, chainId)
-  let moduleAddresses: string[] = []
+  const set = getSet(ethersProvider, chainId);
+  let moduleAddresses: string[] = [];
   switch (chainId) {
     case OPTIMISM.chainId:
       moduleAddresses = [
@@ -95,16 +95,16 @@ export async function getSetDetails(
         perpV2LeverageModuleOptimismAddress,
         perpV2BasisTradingModuleViewerOptimismAddress,
         perpV2LeverageModuleViewerOptimismAddress,
-      ]
-      break
+      ];
+      break;
     case POLYGON.chainId:
       moduleAddresses = [
         basicIssuanceModulePolygonAddress,
         streamingFeeModulePolygonAddress,
         tradeModulePolygonAddress,
         debtIssuanceModuleV2PolygonAddress,
-      ]
-      break
+      ];
+      break;
     default:
       moduleAddresses = [
         basicIssuanceModuleAddress,
@@ -112,7 +112,7 @@ export async function getSetDetails(
         tradeModuleAddress,
         debtIssuanceModuleAddress,
         debtIssuanceModuleV2Address,
-      ]
+      ];
   }
 
   /**
@@ -121,30 +121,30 @@ export async function getSetDetails(
    */
   if (isPerp) {
     try {
-      const address = BasisYieldEthIndex.optimismAddress || ''
+      const address = BasisYieldEthIndex.optimismAddress || "";
       const arr =
         await set.perpV2BasisTradingViewer.getVirtualAssetsDisplayInfoAsync(
           address,
           ethersProvider.address
-        )
+        );
 
       const arr2 =
         await set.perpV2LeverageViewer.getVirtualAssetsDisplayInfoAsync(
           address,
           ethersProvider.address
-        )
+        );
     } catch (e) {
-      console.log('PERP error', e)
+      console.log("PERP error", e);
     }
   }
   return set.setToken.batchFetchSetDetailsAsync(
     productAddresses,
     moduleAddresses
-  )
+  );
 }
 
 function getSet(ethersProvider: any, chainId: number): Set {
-  let set
+  let set;
   switch (chainId) {
     case OPTIMISM.chainId:
       set = new Set({
@@ -172,8 +172,8 @@ function getSet(ethersProvider: any, chainId: number): Set {
         issuanceExtensionAddress: issuanceExtensionOptimismAddress,
         streamingFeeExtensionAddress: streamingFeeExtensionOptimismAddress,
         tradeExtensionAddress: tradeExtensionOptimismAddress,
-      })
-      break
+      });
+      break;
     case POLYGON.chainId:
       set = new Set({
         ethersProvider: ethersProvider,
@@ -200,8 +200,8 @@ function getSet(ethersProvider: any, chainId: number): Set {
         issuanceExtensionAddress: issuanceExtensionOptimismAddress,
         streamingFeeExtensionAddress: streamingFeeExtensionOptimismAddress,
         tradeExtensionAddress: tradeExtensionOptimismAddress,
-      })
-      break
+      });
+      break;
     default:
       set = new Set({
         ethersProvider: ethersProvider,
@@ -228,7 +228,7 @@ function getSet(ethersProvider: any, chainId: number): Set {
         issuanceExtensionAddress: issuanceExtensionOptimismAddress,
         streamingFeeExtensionAddress: streamingFeeExtensionOptimismAddress,
         tradeExtensionAddress: tradeExtensionOptimismAddress,
-      })
+      });
   }
-  return set
+  return set;
 }

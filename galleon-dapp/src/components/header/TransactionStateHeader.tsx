@@ -1,7 +1,7 @@
-import { colors } from 'styles/colors'
+import { colors } from "styles/colors";
 
-import { CheckCircleIcon, WarningIcon } from '@chakra-ui/icons'
-import { Button, Flex, Spinner, Text } from '@chakra-ui/react'
+import { CheckCircleIcon, WarningIcon } from "@chakra-ui/icons";
+import { Button, Flex, Spinner, Text } from "@chakra-ui/react";
 
 export enum TransactionStateHeaderState {
   none,
@@ -11,10 +11,10 @@ export enum TransactionStateHeaderState {
 }
 
 type TransactionStateHeaderProps = {
-  isDarkMode: boolean
-  onClick: () => void
-  state: TransactionStateHeaderState
-}
+  isDarkMode: boolean;
+  onClick: () => void;
+  state: TransactionStateHeaderState;
+};
 
 const TransactionStateHeader = ({
   isDarkMode,
@@ -35,12 +35,12 @@ const TransactionStateHeader = ({
       <TransactionStateView isDarkMode={isDarkMode} state={state} />
     </Button>
   </Flex>
-)
+);
 
 type TransactionStateViewProps = {
-  isDarkMode: boolean
-  state: TransactionStateHeaderState
-}
+  isDarkMode: boolean;
+  state: TransactionStateHeaderState;
+};
 
 const TransactionStateView = (props: TransactionStateViewProps) => {
   switch (props.state) {
@@ -50,7 +50,7 @@ const TransactionStateView = (props: TransactionStateViewProps) => {
           <WarningIcon w={4} h={4} mr="1" color={colors.themeCopper} />
           <Text color={colors.themeNavy}> Failed</Text>
         </>
-      )
+      );
     case TransactionStateHeaderState.pending:
       return (
         <>
@@ -61,17 +61,17 @@ const TransactionStateView = (props: TransactionStateViewProps) => {
           />
           <Text>1 Pending</Text>
         </>
-      )
+      );
     case TransactionStateHeaderState.success:
       return (
         <>
           <CheckCircleIcon w={4} h={4} mr="1" color={colors.themeChampagne} />
           <Text color={colors.themeNavy}>Success</Text>
         </>
-      )
+      );
     default:
-      return <></>
+      return <></>;
   }
-}
+};
 
-export default TransactionStateHeader
+export default TransactionStateHeader;

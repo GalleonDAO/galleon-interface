@@ -35,7 +35,8 @@ export const useTradePerpExchangeIssuance = (
     tokenAllowance,
   } = usePerpExchangeIssuance();
   const { getBalance } = useBalance();
-  const spendingTokenBalance = getBalance(inputToken.symbol) || BigNumber.from(0);
+  const spendingTokenBalance =
+    getBalance(inputToken.symbol) || BigNumber.from(0);
 
   const [isTransactingPerpEI, setIsTransacting] = useState(false);
 

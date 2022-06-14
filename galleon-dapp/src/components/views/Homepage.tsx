@@ -1,97 +1,97 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState } from "react";
 
-import { Box, Flex, Image, useBreakpointValue } from '@chakra-ui/react'
-import { useEthers } from '@usedapp/core'
-import { Disclosure } from '@headlessui/react'
-import { ChevronDownIcon } from '@heroicons/react/outline'
-import AllocationChart from 'components/dashboard/AllocationChart'
+import { Box, Flex, Image, useBreakpointValue } from "@chakra-ui/react";
+import { useEthers } from "@usedapp/core";
+import { Disclosure } from "@headlessui/react";
+import { ChevronDownIcon } from "@heroicons/react/outline";
+import AllocationChart from "components/dashboard/AllocationChart";
 // import { ChartTypeSelector } from 'components/dashboard/ChartTypeSelector'
-import DownloadCsvView from 'components/dashboard/DownloadCsvView'
-import QuickTrade from 'components/dashboard/QuickTrade'
-import { assembleHistoryItems } from 'components/dashboard/TransactionHistoryItems'
+import DownloadCsvView from "components/dashboard/DownloadCsvView";
+import QuickTrade from "components/dashboard/QuickTrade";
+import { assembleHistoryItems } from "components/dashboard/TransactionHistoryItems";
 import TransactionHistoryTable, {
   TransactionHistoryItem,
-} from 'components/dashboard/TransactionHistoryTable'
-import Page from 'components/Page'
-import PageTitle from 'components/PageTitle'
-import MarketChart, { PriceChartData } from 'components/product/MarketChart'
-import { getPriceChartData } from 'components/product/PriceChartData'
-import SectionTitle from 'components/SectionTitle'
-import { useUserMarketData } from 'hooks/useUserMarketData'
-import { useMarketData } from 'providers/MarketData/MarketDataProvider'
-import { getTransactionHistory } from 'utils/alchemyApi'
-import { exportCsv } from 'utils/exportToCsv'
-import { getFormattedChartPriceChanges } from 'utils/priceChange'
+} from "components/dashboard/TransactionHistoryTable";
+import Page from "components/Page";
+import PageTitle from "components/PageTitle";
+import MarketChart, { PriceChartData } from "components/product/MarketChart";
+import { getPriceChartData } from "components/product/PriceChartData";
+import SectionTitle from "components/SectionTitle";
+import { useUserMarketData } from "hooks/useUserMarketData";
+import { useMarketData } from "providers/MarketData/MarketDataProvider";
+import { getTransactionHistory } from "utils/alchemyApi";
+import { exportCsv } from "utils/exportToCsv";
+import { getFormattedChartPriceChanges } from "utils/priceChange";
 
-import { getPieChartPositions } from './DashboardData'
-import { ARBITRUM, MAINNET, POLYGON, SUPPORTED_CHAINS } from 'constants/chains'
-import { classNames } from 'utils'
-import { logger } from 'index'
-import { KNOWN_LABELS, KNOWN_SERVICES } from '@galleondao/logging-lib'
-import { useNetwork } from 'hooks/useNetwork'
-import { useAccount } from 'hooks/useAccount'
+import { getPieChartPositions } from "./DashboardData";
+import { ARBITRUM, MAINNET, POLYGON, SUPPORTED_CHAINS } from "constants/chains";
+import { classNames } from "utils";
+import { logger } from "index";
+import { KNOWN_LABELS, KNOWN_SERVICES } from "@galleondao/logging-lib";
+import { useNetwork } from "hooks/useNetwork";
+import { useAccount } from "hooks/useAccount";
 
 const Dashboard = () => {
-  const {
-    userBalances,
-    totalBalanceInUSD,
-    totalHourlyPrices,
-    priceChanges,
-  } = useUserMarketData()
-  const { account } = useAccount()
-  const { chainId, changeNetwork } = useNetwork()
+  const { userBalances, totalBalanceInUSD, totalHourlyPrices, priceChanges } =
+    useUserMarketData();
+  const { account } = useAccount();
+  const { chainId, changeNetwork } = useNetwork();
   const isWeb = useBreakpointValue({
     base: false,
     md: true,
     lg: true,
     xl: true,
-  })
-  const [csvDownloadUrl, setCsvDownloadUrl] = useState('')
-  const [historyItems, setHistoryItems] = useState<TransactionHistoryItem[]>([])
-  const [priceChartData, setPriceChartData] = useState<PriceChartData[][]>([])
+  });
+  const [csvDownloadUrl, setCsvDownloadUrl] = useState("");
+  const [historyItems, setHistoryItems] = useState<TransactionHistoryItem[]>(
+    []
+  );
+  const [priceChartData, setPriceChartData] = useState<PriceChartData[][]>([]);
 
-  const csvDownloadRef = useRef<HTMLAnchorElement>(null)
+  const csvDownloadRef = useRef<HTMLAnchorElement>(null);
 
   useEffect(() => {
     // Set only if chart data wasn't set yet e.g. by using chart type selector
     if (totalHourlyPrices.length < 1 || priceChartData.length > 0) {
-      return
+      return;
     }
-    const balanceData = getPriceChartData([{ hourlyPrices: totalHourlyPrices }])
-    setPriceChartData(balanceData)
-  }, [totalHourlyPrices])
+    const balanceData = getPriceChartData([
+      { hourlyPrices: totalHourlyPrices },
+    ]);
+    setPriceChartData(balanceData);
+  }, [totalHourlyPrices]);
 
   useEffect(() => {
-    if (account === null || account === undefined) return
+    if (account === null || account === undefined) return;
     const fetchHistory = async () => {
-      const chainIdNum = Number(chainId) ?? -1
-      const transactions = await getTransactionHistory(account, chainIdNum)
-      const historyItems = assembleHistoryItems(transactions)
-      setHistoryItems(historyItems)
-    }
-    fetchHistory()
-  }, [account, chainId])
+      const chainIdNum = Number(chainId) ?? -1;
+      const transactions = await getTransactionHistory(account, chainIdNum);
+      const historyItems = assembleHistoryItems(transactions);
+      setHistoryItems(historyItems);
+    };
+    fetchHistory();
+  }, [account, chainId]);
 
   useEffect(() => {
-    if (csvDownloadUrl === '') return
-    csvDownloadRef.current?.click()
-    URL.revokeObjectURL(csvDownloadUrl)
-    setCsvDownloadUrl('')
-  }, [csvDownloadUrl])
+    if (csvDownloadUrl === "") return;
+    csvDownloadRef.current?.click();
+    URL.revokeObjectURL(csvDownloadUrl);
+    setCsvDownloadUrl("");
+  }, [csvDownloadUrl]);
 
   const balancesPieChart = userBalances.map((userTokenBalance) => ({
     title: userTokenBalance.symbol,
     balance: userTokenBalance.balance,
     fiat: userTokenBalance.fiat,
-  }))
-  const pieChartPositions = getPieChartPositions(balancesPieChart)
+  }));
+  const pieChartPositions = getPieChartPositions(balancesPieChart);
 
   const onClickDownloadCsv = () => {
-    const csv = exportCsv(historyItems, 'index')
-    const blob = new Blob([csv])
-    const fileDownloadUrl = URL.createObjectURL(blob)
-    setCsvDownloadUrl(fileDownloadUrl)
-  }
+    const csv = exportCsv(historyItems, "index");
+    const blob = new Blob([csv]);
+    const fileDownloadUrl = URL.createObjectURL(blob);
+    setCsvDownloadUrl(fileDownloadUrl);
+  };
 
   const renderCsvDownloadButton =
     historyItems.length > 0 ? (
@@ -100,7 +100,7 @@ const Dashboard = () => {
         downloadUrl={csvDownloadUrl}
         onClickDownload={onClickDownloadCsv}
       />
-    ) : undefined
+    ) : undefined;
 
   return (
     <Page>
@@ -138,11 +138,11 @@ const Dashboard = () => {
                       Change Network
                     </h3>
                     <p className="mt-1 text-md text-theme-navy">
-                      Currently our structured products are available on{' '}
+                      Currently our structured products are available on{" "}
                       <span className="font-semibold">
                         {SUPPORTED_CHAINS.map((x) => x.name)
                           .filter((x) => x !== ARBITRUM.name)
-                          .join(', ')}
+                          .join(", ")}
                       </span>
                     </p>
                     <>
@@ -161,12 +161,12 @@ const Dashboard = () => {
                         mb="8px"
                       >
                         <Image
-                          height={['150', '225']}
-                          borderRadius={'25'}
-                          opacity={'90%'}
-                          src={'/wave.png'}
+                          height={["150", "225"]}
+                          borderRadius={"25"}
+                          opacity={"90%"}
+                          src={"/wave.png"}
                           alt="pie chart placeholder"
-                        />{' '}
+                        />{" "}
                       </Box>
                     </>
                   </div>
@@ -207,8 +207,8 @@ const Dashboard = () => {
                             </span>
                             <ChevronDownIcon
                               className={classNames(
-                                open ? '-rotate-180' : 'rotate-0',
-                                'h-6 w-6 transform ',
+                                open ? "-rotate-180" : "rotate-0",
+                                "h-6 w-6 transform "
                               )}
                               aria-hidden="true"
                             />
@@ -231,7 +231,7 @@ const Dashboard = () => {
         )}
       </>
     </Page>
-  )
-}
+  );
+};
 
-export default Dashboard
+export default Dashboard;

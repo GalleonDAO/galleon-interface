@@ -1,21 +1,21 @@
-import { useCallback, useState } from 'react'
+import { useCallback, useState } from "react";
 
-import { BigNumber } from '@ethersproject/bignumber'
-import { useTransactions } from '@usedapp/core'
+import { BigNumber } from "@ethersproject/bignumber";
+import { useTransactions } from "@usedapp/core";
 
-import { ETH, MATIC, Token } from 'constants/tokens'
-import { useAccount } from 'hooks/useAccount'
-import { useNetwork } from 'hooks/useNetwork'
-import { fromWei } from 'utils'
-import { SwapData } from 'utils/exchangeIssuanceQuotes'
-import { getStoredTransaction } from 'utils/storedTransaction'
-import { getAddressForToken } from 'utils/tokens'
+import { ETH, MATIC, Token } from "constants/tokens";
+import { useAccount } from "hooks/useAccount";
+import { useNetwork } from "hooks/useNetwork";
+import { fromWei } from "utils";
+import { SwapData } from "utils/exchangeIssuanceQuotes";
+import { getStoredTransaction } from "utils/storedTransaction";
+import { getAddressForToken } from "utils/tokens";
 
-import { useBalance } from './useBalance'
+import { useBalance } from "./useBalance";
 import {
   getExchangeIssuanceLeveragedContract,
   useExchangeIssuanceLeveraged,
-} from './useExchangeIssuanceLeveraged'
+} from "./useExchangeIssuanceLeveraged";
 
 export const useTradeLeveragedExchangeIssuance = (
   isIssuance: boolean,
@@ -28,21 +28,21 @@ export const useTradeLeveragedExchangeIssuance = (
   debtCollateralSwapData?: SwapData,
   inputOutputSwapData?: SwapData
 ) => {
-  const { account, provider } = useAccount()
-  const { chainId } = useNetwork()
+  const { account, provider } = useAccount();
+  const { chainId } = useNetwork();
   const {
     issueExactSetFromETH,
     issueExactSetFromERC20,
     redeemExactSetForETH,
     redeemExactSetForERC20,
-  } = useExchangeIssuanceLeveraged()
-  const { getBalance } = useBalance()
-  const { addTransaction } = useTransactions()
+  } = useExchangeIssuanceLeveraged();
+  const { getBalance } = useBalance();
+  const { addTransaction } = useTransactions();
 
   const spendingTokenBalance =
-    getBalance(inputToken.symbol) || BigNumber.from(0)
+    getBalance(inputToken.symbol) || BigNumber.from(0);
 
-  const [isTransactingLevEI, setIsTransacting] = useState(false)
+  const [isTransactingLevEI, setIsTransacting] = useState(false);
 
   const executeLevEITrade = useCallback(async () => {
     if (
@@ -52,21 +52,22 @@ export const useTradeLeveragedExchangeIssuance = (
       debtCollateralSwapData === undefined ||
       inputOutputSwapData === undefined
     )
-      return
+      return;
 
-    const outputTokenAddress = getAddressForToken(outputToken, chainId)
-    const inputTokenAddress = getAddressForToken(inputToken, chainId)
-    if (!outputTokenAddress || !inputTokenAddress) return
+    const outputTokenAddress = getAddressForToken(outputToken, chainId);
+    const inputTokenAddress = getAddressForToken(inputToken, chainId);
+    if (!outputTokenAddress || !inputTokenAddress) return;
 
-    let requiredBalance = fromWei(inputOutputLimit, inputToken.decimals)
-    if (spendingTokenBalance.lt(requiredBalance)) return
+    let requiredBalance = fromWei(inputOutputLimit, inputToken.decimals);
+    if (spendingTokenBalance.lt(requiredBalance)) return;
 
     try {
-      setIsTransacting(true)
+      setIsTransacting(true);
       if (isIssuance) {
-        const amountOfSetToken = tokenAmout
+        const amountOfSetToken = tokenAmout;
         const isSellingNativeChainToken =
-          inputToken.symbol === ETH.symbol || inputToken.symbol === MATIC.symbol
+          inputToken.symbol === ETH.symbol ||
+          inputToken.symbol === MATIC.symbol;
 
         if (isSellingNativeChainToken) {
           const issueTx = await issueExactSetFromETH(
@@ -77,10 +78,10 @@ export const useTradeLeveragedExchangeIssuance = (
             debtCollateralSwapData,
             inputOutputSwapData,
             inputOutputLimit
-          )
+          );
           if (issueTx) {
-            const storedTx = getStoredTransaction(issueTx, chainId)
-            addTransaction(storedTx)
+            const storedTx = getStoredTransaction(issueTx, chainId);
+            addTransaction(storedTx);
           }
         } else {
           const issueTx = await issueExactSetFromERC20(
@@ -92,21 +93,21 @@ export const useTradeLeveragedExchangeIssuance = (
             inputOutputLimit,
             debtCollateralSwapData,
             inputOutputSwapData
-          )
+          );
           if (issueTx) {
-            const storedTx = getStoredTransaction(issueTx, chainId)
-            addTransaction(storedTx)
+            const storedTx = getStoredTransaction(issueTx, chainId);
+            addTransaction(storedTx);
           }
         }
       } else {
         const isRedeemingToNativeChainToken =
           outputToken.symbol === ETH.symbol ||
-          outputToken.symbol === MATIC.symbol
+          outputToken.symbol === MATIC.symbol;
 
         const contract = await getExchangeIssuanceLeveragedContract(
           provider?.getSigner(),
           chainId
-        )
+        );
 
         if (isRedeemingToNativeChainToken) {
           const redeemTx = await redeemExactSetForETH(
@@ -116,10 +117,10 @@ export const useTradeLeveragedExchangeIssuance = (
             inputOutputLimit,
             debtCollateralSwapData,
             inputOutputSwapData
-          )
+          );
           if (redeemTx) {
-            const storedTx = getStoredTransaction(redeemTx, chainId)
-            addTransaction(storedTx)
+            const storedTx = getStoredTransaction(redeemTx, chainId);
+            addTransaction(storedTx);
           }
         } else {
           const redeemTx = await redeemExactSetForERC20(
@@ -130,19 +131,19 @@ export const useTradeLeveragedExchangeIssuance = (
             inputOutputLimit,
             debtCollateralSwapData,
             inputOutputSwapData
-          )
+          );
           if (redeemTx) {
-            const storedTx = getStoredTransaction(redeemTx, chainId)
-            addTransaction(storedTx)
+            const storedTx = getStoredTransaction(redeemTx, chainId);
+            addTransaction(storedTx);
           }
         }
       }
-      setIsTransacting(false)
+      setIsTransacting(false);
     } catch (error) {
-      setIsTransacting(false)
-      console.log('Error sending transaction', error)
+      setIsTransacting(false);
+      console.log("Error sending transaction", error);
     }
-  }, [account, inputOutputLimit])
+  }, [account, inputOutputLimit]);
 
-  return { executeLevEITrade, isTransactingLevEI }
-}
+  return { executeLevEITrade, isTransactingLevEI };
+};

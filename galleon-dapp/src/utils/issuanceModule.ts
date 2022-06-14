@@ -1,4 +1,4 @@
-import { ChainId } from '@usedapp/core'
+import { ChainId } from "@usedapp/core";
 
 import {
   basicIssuanceModuleAddress,
@@ -7,11 +7,11 @@ import {
   debtIssuanceModuleAddress,
   debtIssuanceModuleV2Address,
   debtIssuanceModuleV2PolygonAddress,
-} from 'constants/ethContractAddresses'
+} from "constants/ethContractAddresses";
 
 interface IssuanceModule {
-  address: string
-  isDebtIssuance: boolean
+  address: string;
+  isDebtIssuance: boolean;
 }
 
 function getEthIssuanceModuleAddress(tokenSymbol: string): IssuanceModule {
@@ -23,7 +23,7 @@ function getEthIssuanceModuleAddress(tokenSymbol: string): IssuanceModule {
     // case JPGIndex.symbol:
     //   return { address: debtIssuanceModuleV2Address, isDebtIssuance: true }
     default:
-      return { address: basicIssuanceModuleAddress, isDebtIssuance: false }
+      return { address: basicIssuanceModuleAddress, isDebtIssuance: false };
   }
 }
 
@@ -42,7 +42,7 @@ function getPolygonIssuanceModuleAddress(tokenSymbol: string): IssuanceModule {
       return {
         address: basicIssuanceModulePolygonAddress,
         isDebtIssuance: false,
-      }
+      };
   }
 }
 
@@ -61,17 +61,17 @@ function getOptimismIssuanceModuleAddress(tokenSymbol: string): IssuanceModule {
       return {
         address: basicIssuanceModuleOptimismAddress,
         isDebtIssuance: false,
-      }
+      };
   }
 }
 
 export function getIssuanceModule(
   tokenSymbol: string,
-  chainId: ChainId = ChainId.Mainnet,
+  chainId: ChainId = ChainId.Mainnet
 ): IssuanceModule {
   return chainId === ChainId.Polygon
     ? getPolygonIssuanceModuleAddress(tokenSymbol)
     : chainId === ChainId.Optimism
     ? getOptimismIssuanceModuleAddress(tokenSymbol)
-    : getEthIssuanceModuleAddress(tokenSymbol)
+    : getEthIssuanceModuleAddress(tokenSymbol);
 }
