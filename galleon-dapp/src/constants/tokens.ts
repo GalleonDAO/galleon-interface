@@ -173,7 +173,7 @@ export const BasisYieldEthIndex: Token = {
   symbol: "BYE",
   address: undefined,
   polygonAddress: undefined,
-  optimismAddress: "0xbA6a2Fa321BB06D668c5192Be77428106c5C01E5",
+  optimismAddress: undefined,
   arbitrumAddress: undefined,
   decimals: 18,
   url: "bye",
@@ -182,9 +182,30 @@ export const BasisYieldEthIndex: Token = {
   tokensetsId: "bye",
   tokenContextKey: "bye",
   fees: {
-    streamingFee: "0.5%",
+    streamingFee: "3%",
   },
   theme: "Yield",
+  dashboard: undefined,
+};
+
+export const DummyExchangeIssuanceSet: Token = {
+  name: "Dummy Exchange Issuance Set",
+  symbol: "DUMMY",
+  address: "0xD13bF4acF5d4b2407d785d2528D746fA75CF9778",
+  polygonAddress: undefined,
+  optimismAddress: undefined,
+  arbitrumAddress: undefined,
+  decimals: 18,
+  url: "dummy",
+  image:
+    "https://raw.githubusercontent.com/SetProtocol/uniswap-tokenlist/main/assets/tokens/ckb-set.png",
+  coingeckoId: "dummy",
+  tokensetsId: "dummy",
+  tokenContextKey: undefined,
+  fees: {
+    streamingFee: "3%",
+  },
+  theme: "Thematic",
   dashboard: undefined,
 };
 
@@ -205,6 +226,8 @@ export const arbitrumCurrencyTokens = [ETH, DAI, USDC];
 export const eligibleLeveragedExchangeIssuanceTokens = [EthMaxYieldIndex];
 export const eligiblePerpIssuanceTokens = [BasisYieldEthIndex];
 const indexNames = [EthMaxYieldIndex, BasisYieldEthIndex];
+
+export const portfolios = [];
 
 export const indexNamesMainnet = indexNames.filter(
   (index) => index.address !== undefined

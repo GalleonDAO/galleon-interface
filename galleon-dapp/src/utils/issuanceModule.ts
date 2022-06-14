@@ -7,15 +7,6 @@ import {
   debtIssuanceModuleV2Address,
   debtIssuanceModuleV2PolygonAddress,
 } from "constants/ethContractAddresses";
-import // Bitcoin2xFlexibleLeverageIndex,
-// Ethereum2xFlexibleLeverageIndex,
-// Ethereum2xFLIP,
-// GmiIndex,
-// IEthereumFLIP,
-// IMaticFLIP,
-// JPGIndex,
-// Matic2xFLIP,
-"constants/tokens";
 
 interface IssuanceModule {
   address: string;
@@ -42,10 +33,10 @@ function getPolygonIssuanceModuleAddress(tokenSymbol: string): IssuanceModule {
     // case IMaticFLIP.symbol:
     // case GmiIndex.symbol:
     // case Matic2xFLIP.symbol:
-    // return {
-    //   address: debtIssuanceModuleV2PolygonAddress,
-    //   isDebtIssuance: true,
-    // }
+    //   return {
+    //     address: debtIssuanceModuleV2PolygonAddress,
+    //     isDebtIssuance: true,
+    //   }
     default:
       return {
         address: basicIssuanceModulePolygonAddress,

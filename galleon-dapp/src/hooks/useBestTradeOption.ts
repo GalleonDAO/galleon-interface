@@ -21,6 +21,8 @@ import {
   LeveragedExchangeIssuanceQuote,
 } from "utils/exchangeIssuanceQuotes";
 import { getZeroExTradeData, ZeroExData } from "utils/zeroExUtils";
+import { getNetAssetValue } from "utils/nav";
+import { SetComponent } from "providers/SetComponents/SetComponentsProvider";
 
 type Result<_, E = Error> =
   | {
@@ -73,12 +75,15 @@ export const getSetTokenAmount = (
   sellTokenDecimals: number,
   sellTokenPrice: number,
   buyTokenPrice: number,
-  dexSwapOption: ZeroExData | null
+  dexSwapOption: ZeroExData | null,
+  components?: SetComponent[]
 ): BigNumber => {
   if (!isIssuance) {
     return toWei(sellTokenAmount, sellTokenDecimals);
   }
 
+  let buyTokenPriceOrNav =
+    buyTokenPrice === 0 ? getNetAssetValue(components) : 0;
   let setTokenAmount = BigNumber.from(dexSwapOption?.buyAmount ?? "0");
 
   const priceImpact =
@@ -87,17 +92,27 @@ export const getSetTokenAmount = (
       : 0;
 
   if (!dexSwapOption || priceImpact >= maxPriceImpact) {
+    console.log("DEX SWAP OPTION: ", dexSwapOption);
+    console.log("BUY TOKEN PRICE:", buyTokenPriceOrNav);
+    console.log("COMPONENTS:", components);
+    console.log("NAV:", getNetAssetValue(components));
     // Recalculate the exchange issue/redeem quotes if not enough DEX liquidity
     const sellTokenTotal = parseFloat(sellTokenAmount) * sellTokenPrice;
     const approxOutputAmount =
-      buyTokenPrice === 0 ? 0 : Math.floor(sellTokenTotal / buyTokenPrice);
+      buyTokenPriceOrNav === 0
+        ? 0
+        : Math.floor(sellTokenTotal / buyTokenPriceOrNav);
     setTokenAmount = toWei(approxOutputAmount, sellTokenDecimals);
+    console.log("estimate, ", sellTokenTotal, approxOutputAmount);
   }
 
   return setTokenAmount;
 };
 
-export const useBestTradeOption = () => {
+export const useBestTradeOption = (
+  eiOnly?: boolean,
+  components?: SetComponent[]
+) => {
   const { chainId, library } = useEthers();
 
   const [isFetching, setIsFetching] = useState<boolean>(false);
@@ -114,20 +129,25 @@ export const useBestTradeOption = () => {
   ) => {
     setIsFetching(true);
 
-    /* Check 0x for DEX Swap option*/
-    const zeroExResult = await getZeroExTradeData(
-      // for now we only allow selling
-      true,
-      sellToken,
-      buyToken,
-      // for now we only allow specifing selling amount,
-      // so sell token amount will always be correct
-      sellTokenAmount,
-      chainId || 1
-    );
-    const dexSwapOption = zeroExResult.success ? zeroExResult.value : null;
-    // @ts-ignore
-    const dexSwapError = zeroExResult.success ? null : zeroExResult.error;
+    let dexSwapOption = null;
+    let dexSwapError = Error();
+
+    if (!eiOnly) {
+      /* Check 0x for DEX Swap option*/
+      const zeroExResult = await getZeroExTradeData(
+        // for now we only allow selling
+        true,
+        sellToken,
+        buyToken,
+        // for now we only allow specifing selling amount,
+        // so sell token amount will always be correct
+        sellTokenAmount,
+        chainId || 1
+      );
+      dexSwapOption = zeroExResult.success ? zeroExResult.value : null;
+      // @ts-ignore
+      dexSwapError = zeroExResult.success ? null : zeroExResult.error;
+    }
 
     /* Determine set token amount based on different factors */
     let setTokenAmount = getSetTokenAmount(
@@ -136,8 +156,11 @@ export const useBestTradeOption = () => {
       sellToken.decimals,
       sellTokenPrice,
       buyTokenPrice,
-      dexSwapOption
+      dexSwapOption,
+      components
     );
+
+    console.log("SET TOKEN AMOUNT: ", setTokenAmount);
 
     /* Check for Exchange Issuance option */
     let exchangeIssuanceOption: ExchangeIssuanceQuote | null = null;
