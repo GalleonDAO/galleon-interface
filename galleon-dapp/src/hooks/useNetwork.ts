@@ -1,4 +1,4 @@
-import { useEthers } from "@usedapp/core";
+import { useEthers } from '@usedapp/core'
 
 import {
   ARBITRUM,
@@ -6,28 +6,28 @@ import {
   MAINNET,
   OPTIMISM,
   POLYGON,
-} from "constants/chains";
+} from 'constants/chains'
 
 export const useNetwork = () => {
-  const { library, account } = useEthers();
+  const { library, account, chainId } = useEthers()
 
   /**
    * Changes to Mainnet
    */
   const setMainnet = () => {
     if (library)
-      library.send("wallet_switchEthereumChain", [
+      library.send('wallet_switchEthereumChain', [
         { chainId: MAINNET.chainId0x },
         account,
-      ]);
-  };
+      ])
+  }
 
   /**
    * Changes to CHAIN
    */
   const setOtherNetwork = (CHAIN: ChainData) => {
     if (library)
-      library?.send("wallet_addEthereumChain", [
+      library?.send('wallet_addEthereumChain', [
         {
           chainId: CHAIN.chainId0x,
           chainName: CHAIN.name,
@@ -40,32 +40,33 @@ export const useNetwork = () => {
           blockExplorerUrls: [CHAIN.blockExplorerUrl],
         },
         account,
-      ]);
-  };
+      ])
+  }
 
   const changeNetwork = (chainId: string) => {
-    const chainNumber = parseInt(chainId);
+    const chainNumber = parseInt(chainId)
     switch (chainNumber) {
       case MAINNET.chainId:
-        setMainnet();
-        break;
+        setMainnet()
+        break
       case POLYGON.chainId:
-        setOtherNetwork(POLYGON);
-        break;
+        setOtherNetwork(POLYGON)
+        break
       case OPTIMISM.chainId:
-        setOtherNetwork(OPTIMISM);
-        break;
+        setOtherNetwork(OPTIMISM)
+        break
       case ARBITRUM.chainId:
-        setOtherNetwork(ARBITRUM);
-        break;
+        setOtherNetwork(ARBITRUM)
+        break
       default:
-        break;
+        break
     }
-  };
+  }
 
   return {
+    chainId,
     changeNetwork,
     setMainnet,
     setOtherNetwork,
-  };
-};
+  }
+}

@@ -12,17 +12,17 @@
 // export const btc2xfliSuppyCapAddress =
 //   '0x6c8137f2f552f569cc43bc4642afbe052a12441c'
 export const ExchangeIssuanceZeroExAddress =
-  "0xf42eCDC112365fF79a745B4cf7D4C266bd6E4b25";
+  '0xf42eCDC112365fF79a745B4cf7D4C266bd6E4b25'
 export const ExchangeIssuanceLeveragedMainnetAddress =
-  "0xB7cc88A13586D862B97a677990de14A122b74598";
-export const masterchefAddress = "0xdc5bbb7f25a05259b2bd559936771f8fc0e2c4cb";
-export const dblRewarderAddress = 0x6f2803d036b6dd81fc5574a78ecb9e71e8e95918;
-export const ethmaxyLpAddress = 0x18d53f4953ad14236602da05efafc0df4f5d064d;
-export const ethmaxyPid = 7;
-export const ethmaxyStrategyAddress = 0xb7439f887f0d61a236c8a14c22857684dc5cd50e;
-export const drinkYearlyEmissions = 116800000000000000000000000;
+  '0xB7cc88A13586D862B97a677990de14A122b74598'
+export const masterchefAddress = '0xdc5bbb7f25a05259b2bd559936771f8fc0e2c4cb'
+export const dblRewarderAddress = 0x6f2803d036b6dd81fc5574a78ecb9e71e8e95918
+export const ethmaxyLpAddress = 0x18d53f4953ad14236602da05efafc0df4f5d064d
+export const ethmaxyPid = 7
+export const ethmaxyStrategyAddress = 0xb7439f887f0d61a236c8a14c22857684dc5cd50e
+export const drinkYearlyEmissions = 116800000000000000000000000
 export const ExchangeIssuanceZeroExMainnetAddress =
-  "0xf42eCDC112365fF79a745B4cf7D4C266bd6E4b25";
+  '0xf42eCDC112365fF79a745B4cf7D4C266bd6E4b25'
 
 // Galleon Polygon Contract Addresses
 // export const eth2xFLIPSuppyCapAddress =
@@ -34,91 +34,95 @@ export const ExchangeIssuanceZeroExMainnetAddress =
 // export const iethFLIPSuppyCapAddress =
 //   '0x8173Bd491a27aF4DDe0a4dE48a54Daf6705c75F1'
 export const ExchangeIssuanceZeroExPolygonAddress =
-  "0x0F5C21d4929f6F17119f43b0c51E665f12367A19";
+  '0x0F5C21d4929f6F17119f43b0c51E665f12367A19'
 export const ExchangeIssuanceLeveragedPolygonAddress =
-  "0xE86636f23B502B8746A72A1Ed87d65F096E419Db";
-
+  '0xE86636f23B502B8746A72A1Ed87d65F096E419Db'
+export const ExchangeIssuanceZeroExOptimismAddress =
+  '0x01ecc782531ADCfB8C5a58A2C7FD544Ada946b81'
+export const ExchangeIssuanceZeroExAvalancheAddress =
+  '0xB546672E0743A1225D24bAeA9A9D08e6601bd20f'
 // Uniswap V2 Addresses
 export const uniswapEthDpiLpTokenAddress =
-  "0x4d5ef58aac27d99935e5b6b4a6778ff292059991";
+  '0x4d5ef58aac27d99935e5b6b4a6778ff292059991'
 export const uniswapEthMviLpTokenAddress =
-  "0x4d3C5dB2C68f6859e0Cd05D080979f597DD64bff";
-export const uniswapRouterAddress =
-  "0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D";
-export const zeroExRouterAddress = "0xDef1C0ded9bec7F1a1670819833240f027b25EfF";
+  '0x4d3C5dB2C68f6859e0Cd05D080979f597DD64bff'
+export const uniswapRouterAddress = '0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D'
+export const zeroExRouterAddress = '0xDef1C0ded9bec7F1a1670819833240f027b25EfF'
 
 // Uniswap V3 Addresses
 export const nftPositionManagerAddress =
-  "0xC36442b4a4522E871399CD717aBDD847Ab11FE88";
+  '0xC36442b4a4522E871399CD717aBDD847Ab11FE88'
 export const uniswapV3FactoryAddress =
-  "0x1F98431c8aD98523631AE4a59f267346ea31F984";
+  '0x1F98431c8aD98523631AE4a59f267346ea31F984'
 export const uniswapV3StakerAddress =
-  "0x1f98407aaB862CdDeF78Ed252D6f557aA5b0f00d";
+  '0x1f98407aaB862CdDeF78Ed252D6f557aA5b0f00d'
 
 // Sushiswap Addresses
 export const sushiswapRouterAddress =
-  "0xd9e1cE17f2641f24aE83637ab66a2cca9C378B9F";
+  '0xd9e1cE17f2641f24aE83637ab66a2cca9C378B9F'
 
 // Set JS Contract Addresses
-export const controllerAddress = "0xa4c8d221d8BB851f83aadd0223a8900A6921A349";
+export const controllerAddress = '0xa4c8d221d8BB851f83aadd0223a8900A6921A349'
 export const setTokenCreatorAddress =
-  "0xeF72D3278dC3Eba6Dc2614965308d1435FFd748a";
+  '0xeF72D3278dC3Eba6Dc2614965308d1435FFd748a'
 export const basicIssuanceModuleAddress =
-  "0xd8EF3cACe8b4907117a45B0b125c68560532F94D";
+  '0xd8EF3cACe8b4907117a45B0b125c68560532F94D'
 export const debtIssuanceModuleAddress =
-  "0x39F024d621367C044BacE2bf0Fb15Fb3612eCB92";
+  '0x39F024d621367C044BacE2bf0Fb15Fb3612eCB92'
 export const debtIssuanceModuleV2Address =
-  "0x69a592D2129415a4A1d1b1E309C17051B7F28d57";
+  '0x69a592D2129415a4A1d1b1E309C17051B7F28d57'
 export const streamingFeeModuleAddress =
-  "0x08f866c74205617B6F3903EF481798EcED10cDEC";
-export const tradeModuleAddress = "0x90F765F63E7DC5aE97d6c576BF693FB6AF41C129";
+  '0x08f866c74205617B6F3903EF481798EcED10cDEC'
+export const tradeModuleAddress = '0x90F765F63E7DC5aE97d6c576BF693FB6AF41C129'
 export const protocolViewerAddress =
-  "0x74391125304f1e4ce11bDb8aaAAABcF3A3Ae2f41";
-export const slippageIssuanceModuleAddress = "asdf";
+  '0x74391125304f1e4ce11bDb8aaAAABcF3A3Ae2f41'
+export const slippageIssuanceModuleAddress = 'asdf'
 export const protocolViewerPolygonAddress =
-  "0x8D5CF870354ffFaE0586B639da6D4E4F6C659c69";
+  '0x8D5CF870354ffFaE0586B639da6D4E4F6C659c69'
 export const tradeModulePolygonAddress =
-  "0xd04AabadEd11e92Fefcd92eEdbBC81b184CdAc82";
+  '0xd04AabadEd11e92Fefcd92eEdbBC81b184CdAc82'
 export const streamingFeeModulePolygonAddress =
-  "0x8440f6a2c42118bed0D6E6A89Bf170ffd13e21c0";
+  '0x8440f6a2c42118bed0D6E6A89Bf170ffd13e21c0'
 export const debtIssuanceModuleV2PolygonAddress =
-  "0xf2dC2f456b98Af9A6bEEa072AF152a7b0EaA40C9";
+  '0xf2dC2f456b98Af9A6bEEa072AF152a7b0EaA40C9'
 export const basicIssuanceModulePolygonAddress =
-  "0x38E5462BBE6A72F79606c1A0007468aA4334A92b";
-export const slippageIssuanceModulePolygonAddress = "asdf";
+  '0x38E5462BBE6A72F79606c1A0007468aA4334A92b'
+export const slippageIssuanceModulePolygonAddress = 'asdf'
 export const navIssuanceModuleAddress =
-  "0xaB9a964c6b95fA529CA7F27DAc1E7175821f2334";
-export const masterOracleAddress = "0xA60f9e1641747762aDE7FD5F881b90B691E92B0a";
+  '0xaB9a964c6b95fA529CA7F27DAc1E7175821f2334'
+export const masterOracleAddress = '0xA60f9e1641747762aDE7FD5F881b90B691E92B0a'
 export const governanceModuleAddress =
-  "0x5C87b042494cDcebA44C541fbB3BC8bFF179d500";
+  '0x5C87b042494cDcebA44C541fbB3BC8bFF179d500'
 
 // Optimism Contract Addresses
 export const basicIssuanceModuleOptimismAddress =
-  "0xe1B7e8D3B385A19173ECd7dEAeDD1368f8706263";
+  '0xe1B7e8D3B385A19173ECd7dEAeDD1368f8706263'
 export const debtIssuanceModuleV2OptimismAddress =
-  "0xf2dC2f456b98Af9A6bEEa072AF152a7b0EaA40C9";
+  '0xf2dC2f456b98Af9A6bEEa072AF152a7b0EaA40C9'
 export const streamingFeeModuleOptimismAddress =
-  "0x6a7aE5124677314dc32C5ba3004CbFC9c7Febff0";
+  '0x6a7aE5124677314dc32C5ba3004CbFC9c7Febff0'
 export const tradeModuleOptimismAddress =
-  "0x7215f38011C3e4058Ca3cF7d2b99033016EeFBD8";
+  '0x7215f38011C3e4058Ca3cF7d2b99033016EeFBD8'
 export const protocolViewerOptimismAddress =
-  "0x4E05073560B9377E5561B559c9cADBbe7112e38f";
+  '0x4E05073560B9377E5561B559c9cADBbe7112e38f'
 export const slippageIssuanceModuleOptimismAddress =
-  "0x1db929398958082d2080AA1B501e460503f60467";
+  '0x2B67D4F9407F772374CaE8B010dB36A770C2c3ae'
 export const perpV2BasisTradingModuleOptimismAddress =
-  "0x2C229EE3aD3fdC0e581d51BaA6b6f45CC9A6Ca39";
+  '0x2C229EE3aD3fdC0e581d51BaA6b6f45CC9A6Ca39'
 export const perpV2BasisTradingModuleViewerOptimismAddress =
-  "0x3EBEe70505d799ddc6A92Af32A83925EEc4fA8B6";
+  '0x3EBEe70505d799ddc6A92Af32A83925EEc4fA8B6'
 export const perpV2LeverageModuleOptimismAddress =
-  "0x659641F71525b02bFe7203F3e5113c48E6736540";
+  '0x659641F71525b02bFe7203F3e5113c48E6736540'
 export const perpV2LeverageModuleViewerOptimismAddress =
-  "0xea1bD0ae3Ec45e32a6090eDb445dACFc083A8db6";
+  '0xea1bD0ae3Ec45e32a6090eDb445dACFc083A8db6'
 export const delegatedManagerFactoryOptimismAddress =
-  "0xB0051e20A2eD91AF525A2eDc54AEd6735e7fe892";
+  '0xB0051e20A2eD91AF525A2eDc54AEd6735e7fe892'
 export const issuanceExtensionOptimismAddress =
-  "0x3138293423c06D81Cc9Ae78FbCD3F7DB6323B83a";
+  '0x3138293423c06D81Cc9Ae78FbCD3F7DB6323B83a'
 export const streamingFeeExtensionOptimismAddress =
-  "0x6a7aE5124677314dc32C5ba3004CbFC9c7Febff0";
+  '0x6a7aE5124677314dc32C5ba3004CbFC9c7Febff0'
 export const tradeExtensionOptimismAddress =
-  "0x7215f38011C3e4058Ca3cF7d2b99033016EeFBD8";
-export const perpExchangeIssuanceOptimismAddress = "";
+  '0x7215f38011C3e4058Ca3cF7d2b99033016EeFBD8'
+export const deltaNeutralBasisTradingStrategyExtension =
+  '0x95e24048AB1A9086b2F06107dF7ec5e61961951A'
+export const perpExchangeIssuanceOptimismAddress = ''

@@ -1,110 +1,110 @@
-import { BigNumber, Contract, Signer } from "ethers";
+import { BigNumber, Contract, Signer } from 'ethers'
 
-import { Provider } from "@ethersproject/abstract-provider";
-import { ChainId } from "@usedapp/core";
+import { Provider } from '@ethersproject/abstract-provider'
+import { ChainId } from '@usedapp/core'
 
 import {
   ExchangeIssuanceZeroExMainnetAddress,
   ExchangeIssuanceZeroExPolygonAddress,
   perpExchangeIssuanceOptimismAddress,
-} from "constants/ethContractAddresses";
-import { getERC20Contract } from "utils";
-import { PERP_EI_ABI } from "utils/abi/PerpEI";
+} from 'constants/ethContractAddresses'
+import { getERC20Contract } from 'utils'
+import { PERP_EI_ABI } from 'utils/abi/PerpEI'
 
 export const getPerpIssuanceZeroExContract = async (
-  providerSigner: Signer | Provider | undefined
+  providerSigner: Signer | Provider | undefined,
 ): Promise<Contract> => {
-  const contractAddress = perpExchangeIssuanceOptimismAddress;
+  const contractAddress = perpExchangeIssuanceOptimismAddress
   // TODO: Change ABI
-  return new Contract(contractAddress, PERP_EI_ABI, providerSigner);
-};
+  return new Contract(contractAddress, PERP_EI_ABI, providerSigner)
+}
 
 export const usePerpExchangeIssuance = () => {
   const getUsdcAmountInForFixedSetOffChain = async (
     contract: Contract,
     setToken: string,
-    amountOut: BigNumber
+    amountOut: BigNumber,
   ): Promise<any> => {
     const estimate = await contract.methods
       .getUsdcAmountInForFixedSetOffChain(setToken, amountOut)
-      .call();
+      .call()
 
-    const slippage = 1.005;
+    const slippage = 1.005
     return {
       componentEstimateWithSlippage: estimate.usdcAmountInForComponentSets.map(
-        (x: any) => BigNumber.from(x * slippage).toString()
+        (x: any) => BigNumber.from(x * slippage).toString(),
       ),
       componentEstimateUsdWithSlippage: BigNumber.from(
-        estimate.totalUsdcAmountIn * slippage
+        estimate.totalUsdcAmountIn * slippage,
       ),
-    };
-  };
+    }
+  }
 
   const getUsdcAmountOutForFixedSetOffChain = async (
     contract: Contract,
     setToken: string,
-    amountIn: BigNumber
+    amountIn: BigNumber,
   ): Promise<any> => {
     const estimate = await contract.methods
       .getUsdcAmountOutForFixedSetOffChain(setToken, amountIn)
-      .call();
+      .call()
 
-    const slippage = 1.005;
+    const slippage = 1.005
     return {
       componentEstimateWithSlippage: estimate.usdcAmountInForComponentSets.map(
-        (x: any) => BigNumber.from(x * slippage).toString()
+        (x: any) => BigNumber.from(x * slippage).toString(),
       ),
       componentEstimateUsdWithSlippage: BigNumber.from(
-        estimate.totalUsdcAmountIn * slippage
+        estimate.totalUsdcAmountIn * slippage,
       ),
-    };
-  };
+    }
+  }
 
   const issueExactSetFromUsdc = async (
     contract: Contract,
     setToken: string,
     amountSetToken: BigNumber,
     componentQuotes: BigNumber[],
-    maxUsdcAmountIn: BigNumber
+    maxUsdcAmountIn: BigNumber,
   ): Promise<any> => {
-    console.log("issueExactSetFromETH");
+    console.log('issueExactSetFromETH')
     try {
       const issueSetTx = await contract.issueFixedSetFromUsdc(
         setToken,
         amountSetToken,
         componentQuotes,
         maxUsdcAmountIn,
-        { gasLimit: 15000000 }
-      );
-      return issueSetTx;
+        { gasLimit: 15000000 },
+      )
+      return issueSetTx
     } catch (err) {
-      console.log("error", err);
-      return err;
+      console.log('error', err)
+      return err
     }
-  };
+  }
 
   const redeemExactSetForUsdc = async (
     contract: Contract,
     setToken: string,
     amountSetToken: BigNumber,
     componentQuotes: any[],
-    minUsdcAmountOut: BigNumber
+    minUsdcAmountOut: BigNumber,
   ): Promise<any> => {
-    console.log("redeemExactSetForETH");
+    console.log('redeemExactSetForETH')
     try {
       const redeemSetTx = await contract.redeemFixedSetFromUsdc(
         setToken,
         amountSetToken,
         minUsdcAmountOut,
         componentQuotes,
-        { gasLimit: 15000000 }
-      );
-      return redeemSetTx;
+        { gasLimit: 15000000 },
+      )
+      return redeemSetTx
     } catch (err) {
-      console.log("error", err);
-      return err;
+      console.log('error', err)
+      return err
     }
-  };
+  }
 
   /**
    * Runs all the necessary approval functions required before issuing or redeeming a SetToken.
@@ -118,20 +118,20 @@ export const usePerpExchangeIssuance = () => {
   const approveSetToken = async (
     contract: Contract,
     setToken: string,
-    issuanceModule: string
+    issuanceModule: string,
   ): Promise<any> => {
-    console.log("approveSetToken");
+    console.log('approveSetToken')
     try {
       const approveSetTokenTx = await contract.approveSetToken(
         setToken,
-        issuanceModule
-      );
-      return approveSetTokenTx;
+        issuanceModule,
+      )
+      return approveSetTokenTx
     } catch (err) {
-      console.log("error", err);
-      return err;
+      console.log('error', err)
+      return err
     }
-  };
+  }
 
   /**
    * Runs all the necessary approval functions required for a given ERC20 token.
@@ -145,17 +145,17 @@ export const usePerpExchangeIssuance = () => {
   const approveToken = async (
     contract: Contract,
     token: string,
-    spender: string
+    spender: string,
   ): Promise<any> => {
-    console.log("approveToken");
+    console.log('approveToken')
     try {
-      const approveTokenTx = await contract.approveToken(token, spender);
-      return approveTokenTx;
+      const approveTokenTx = await contract.approveToken(token, spender)
+      return approveTokenTx
     } catch (err) {
-      console.log("error", err);
-      return err;
+      console.log('error', err)
+      return err
     }
-  };
+  }
 
   /**
    * Runs all the necessary approval functions required for a list of ERC20 tokens.
@@ -168,17 +168,17 @@ export const usePerpExchangeIssuance = () => {
   const approveTokens = async (
     contract: Contract,
     tokens: string[],
-    spender: string
+    spender: string,
   ): Promise<any> => {
-    console.log("approveTokens");
+    console.log('approveTokens')
     try {
-      const approveTokensTx = await contract.approveTokens(tokens, spender);
-      return approveTokensTx;
+      const approveTokensTx = await contract.approveTokens(tokens, spender)
+      return approveTokensTx
     } catch (err) {
-      console.log("error", err);
-      return err;
+      console.log('error', err)
+      return err
     }
-  };
+  }
 
   /**
    * Returns the tokenAllowance of a given token for a ExchangeIssuanceZeroEx contract.
@@ -192,24 +192,21 @@ export const usePerpExchangeIssuance = () => {
     account: any,
     library: any,
     chainId: ChainId,
-    tokenAddress: string
+    tokenAddress: string,
   ): Promise<BigNumber> => {
     try {
-      const contractAddress =
-        chainId === ChainId.Polygon
-          ? ExchangeIssuanceZeroExPolygonAddress
-          : ExchangeIssuanceZeroExMainnetAddress;
+      const contractAddress = perpExchangeIssuanceOptimismAddress
       const tokenContract = await getERC20Contract(
         library.getSigner(),
-        tokenAddress
-      );
-      const allowance = await tokenContract.allowance(account, contractAddress);
-      return BigNumber.from(allowance);
+        tokenAddress,
+      )
+      const allowance = await tokenContract.allowance(account, contractAddress)
+      return BigNumber.from(allowance)
     } catch (err) {
-      console.log("error", err);
-      return BigNumber.from(0);
+      console.log('error', err)
+      return BigNumber.from(0)
     }
-  };
+  }
 
   return {
     getUsdcAmountInForFixedSetOffChain,
@@ -220,5 +217,5 @@ export const usePerpExchangeIssuance = () => {
     approveToken,
     approveTokens,
     tokenAllowance,
-  };
-};
+  }
+}

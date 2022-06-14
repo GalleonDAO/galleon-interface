@@ -8,7 +8,7 @@ import {
   DoubloonToken,
   BasisYieldEthIndex,
 } from "constants/tokens";
-import { displayFromWei } from "utils";
+import { displayFromWei, toWei } from "utils";
 
 const chartColors = [
   colors.themeNavy,
@@ -31,130 +31,134 @@ export const QuickTradeData = {
   ],
 };
 
-function getNumber(balance: BigNumber | undefined): number {
-  if (balance === undefined) return -1;
-  return parseInt(balance.toString());
-}
-
 function getPosition(
   title: string,
-  bigNumber: BigNumber | undefined,
-  total: BigNumber,
+  balance: BigNumber | undefined,
+  fiat: number,
+  total: number,
   backgroundColor?: string
 ): Position | null {
   if (
-    bigNumber === undefined ||
-    bigNumber.isZero() ||
-    bigNumber.isNegative() ||
-    total.isZero() ||
-    total.isNegative()
+    balance === undefined ||
+    balance.isZero() ||
+    balance.isNegative() ||
+    // This will filter out some dust in the wallet
+    fiat <= 0.01 ||
+    total <= 0
   ) {
-    return null;
+    return null
   }
 
-  const valueDisplay = displayFromWei(bigNumber, 3) ?? "";
-  const value = getNumber(bigNumber);
-  const percent = `${bigNumber.mul(100).div(total).toString()}%`;
+  const percent = `${((fiat * 100) / total).toFixed(1)}%`
+  const valueDisplay = displayFromWei(balance, 3) ?? ''
 
   return {
     title,
-    backgroundColor: backgroundColor ?? "",
-    color: "",
+    backgroundColor: backgroundColor ?? '',
+    color: '',
     percent,
-    value,
+    value: fiat,
     valueDisplay,
-  };
+  }
 }
 
 function getOthersPosition(
   remainingPositions: Position[],
-  totalBalance: BigNumber
+  totalBalance: number
 ) {
-  let othersPosition: Position | null = null;
+  let othersPosition: Position | null = null
 
   if (remainingPositions.length < 1) {
-    return othersPosition;
+    return othersPosition
   }
 
-  const lastColor = chartColors.slice(-1)[0];
+  const lastColor = chartColors.slice(-1)[0]
   if (remainingPositions.length === 1) {
-    othersPosition = remainingPositions[0];
-    othersPosition.backgroundColor = lastColor;
+    othersPosition = remainingPositions[0]
+    othersPosition.backgroundColor = lastColor
   } else {
-    const initialVal = BigNumber.from(0);
-    const sumOthers = remainingPositions.reduce(
-      (prevValue, pos) => prevValue.add(BigNumber.from(pos.value)),
+    const initialVal = 0
+    const initialBalance = BigNumber.from(0)
+    const balanceOthers = remainingPositions.reduce(
+      (prevValue, pos) => prevValue.add(toWei(pos.valueDisplay ?? '0')),
+      initialBalance
+    )
+    const fiatOthers = remainingPositions.reduce(
+      (prevValue, pos) => prevValue + pos.value,
       initialVal
-    );
+    )
     othersPosition = getPosition(
-      "OTHERS",
-      BigNumber.from(sumOthers),
+      'OTHERS',
+      balanceOthers,
+      fiatOthers,
       totalBalance,
       lastColor
-    );
+    )
   }
 
-  return othersPosition;
+  return othersPosition
 }
 
 // Gets 4 top positions and reduces rest to others
 export function getPieChartPositions(
   balances: {
-    title: string;
-    value: BigNumber | undefined;
+    title: string
+    balance: BigNumber
+    fiat: number
   }[]
 ) {
   // Remove ETH from the pie chart
-  balances = balances.filter((pos) => pos.title !== "ETH");
+  balances = balances.filter((pos) => pos.title !== 'ETH')
 
   if (balances.length < 1) {
-    return [];
+    return []
   }
 
-  const totalBalance: BigNumber = balances
+  const totalBalance: number = balances
     .map((pos) => {
-      return pos.value ?? BigNumber.from("0");
+      return pos.fiat ?? 0
     })
     .reduce((prev, curr) => {
-      return prev.add(curr);
-    });
+      return prev + curr
+    })
 
   // Check balances of different products for user
   const positions = balances.flatMap((tempPosition) => {
     const position = getPosition(
       tempPosition.title,
-      tempPosition.value,
+      tempPosition.balance,
+      tempPosition.fiat,
       totalBalance
-    );
-    if (position === null || tempPosition.value === undefined) {
-      return [];
+    )
+    if (position === null || tempPosition.balance === undefined) {
+      return []
     }
-    return [position];
-  });
+    return [position]
+  })
 
   // Sort by top positions
   const sortedPositions = positions.sort(
     (pos1, pos2) => pos2.value - pos1.value
-  );
+  )
 
   // Take top 4 positions and assign colors
-  const top4Positions = sortedPositions.slice(0, 4);
+  const top4Positions = sortedPositions.slice(0, 4)
   const top4PositionsWithColors = top4Positions.map((position, index) => {
-    let positionWithColor = position;
-    positionWithColor.backgroundColor = chartColors[index];
-    return positionWithColor;
-  });
+    let positionWithColor = position
+    positionWithColor.backgroundColor = chartColors[index]
+    return positionWithColor
+  })
 
-  const remainingPositions = sortedPositions.slice(4);
+  const remainingPositions = sortedPositions.slice(4)
   let othersPosition: Position | null = getOthersPosition(
     remainingPositions,
     totalBalance
-  );
+  )
 
-  const pieChartPositions = [...top4PositionsWithColors];
+  const pieChartPositions = [...top4PositionsWithColors]
   if (othersPosition !== null) {
-    pieChartPositions.push(othersPosition);
+    pieChartPositions.push(othersPosition)
   }
 
-  return pieChartPositions;
+  return pieChartPositions
 }

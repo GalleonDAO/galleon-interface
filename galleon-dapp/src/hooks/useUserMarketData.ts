@@ -1,104 +1,111 @@
-import { BigNumber } from "@ethersproject/bignumber";
+import { BigNumber } from '@ethersproject/bignumber'
 
-import { PriceChartRangeOption } from "components/product/MarketChart";
-import { useBalance } from "hooks/useBalance";
+import { PriceChartRangeOption } from 'components/product/MarketChart'
+import { useBalance } from 'hooks/useBalance'
 import {
   TokenMarketDataValues,
   useMarketData,
-} from "providers/MarketData/MarketDataProvider";
-import { displayFromWei } from "utils";
-import { getPricesChanges } from "utils/priceChange";
+} from 'providers/MarketData/MarketDataProvider'
+import { displayFromWei } from 'utils'
+import { getPricesChanges } from 'utils/priceChange'
 
 interface UserTokenBalance {
-  symbol: string;
-  balance: BigNumber;
-  marketData: TokenMarketDataValues;
+  symbol: string
+  balance: BigNumber
+  fiat: number
+  marketData: TokenMarketDataValues
 }
 
 function getTokenMarketDataValuesOrNull(
   symbol: string,
   marketDataValues: TokenMarketDataValues | undefined,
-  balance: BigNumber | undefined
+  balance: BigNumber | undefined,
 ): UserTokenBalance | undefined {
   if (
     marketDataValues === undefined ||
     marketDataValues.hourlyPrices === undefined
   ) {
-    return undefined;
+    return undefined
   }
 
   if (balance === undefined || balance.isZero() || balance.isNegative()) {
-    balance = BigNumber.from(0);
+    balance = BigNumber.from(0)
   }
 
-  const convertedBalance = displayFromWei(balance);
-  const balanceNum = parseFloat(convertedBalance ?? "0");
+  const convertedBalance = displayFromWei(balance)
+  const balanceNum = parseFloat(convertedBalance ?? '0')
   const hourlyData = marketDataValues.hourlyPrices.map(([date, price]) => [
     date,
     price * balanceNum,
-  ]);
+  ])
+  const hourlyPricesLength = hourlyData ? hourlyData.length - 1 : 0
+  const fiat = hourlyData ? hourlyData[hourlyPricesLength][1] : 0
 
-  return { symbol, balance, marketData: { hourlyPrices: hourlyData } };
+  return { symbol, balance, fiat, marketData: { hourlyPrices: hourlyData } }
 }
 
 function getTotalHourlyPrices(marketData: UserTokenBalance[]) {
   const hourlyPricesOnly = marketData.map(
-    (data) => data.marketData.hourlyPrices ?? []
-  );
-  let totalHourlyPrices: number[][] = [];
+    (data) => data.marketData.hourlyPrices ?? [],
+  )
+  let totalHourlyPrices: number[][] = []
   if (hourlyPricesOnly.length > 0) {
-    totalHourlyPrices = hourlyPricesOnly[0];
-    const length = hourlyPricesOnly[0].length;
+    totalHourlyPrices = hourlyPricesOnly[0]
+    const length = hourlyPricesOnly[0].length
     for (let i = 1; i < hourlyPricesOnly.length; i += 1) {
       for (let k = 0; k < length; k += 1) {
         if (k >= hourlyPricesOnly[i].length) {
-          continue;
+          continue
         }
-        totalHourlyPrices[k][1] += hourlyPricesOnly[i][k][1];
+        totalHourlyPrices[k][1] += hourlyPricesOnly[i][k][1]
       }
     }
   }
-  return totalHourlyPrices;
+  return totalHourlyPrices
 }
 
 export const useUserMarketData = () => {
   const {
-    balances: { ethBalance, ethmaxyBalance, doubloonBalance },
-  } = useBalance();
-  const { eth, ethmaxy, doubloon } = useMarketData();
+    balances: { ethBalance, ethmaxyBalance, doubloonBalance, byeBalance },
+  } = useBalance()
+  const { eth, ethmaxy, bye, doubloon } = useMarketData()
 
   const balances = [
-    { title: "ETH", value: ethBalance },
-    { title: "ETHMAXY", value: ethmaxyBalance },
-    { title: "DBL", value: doubloonBalance },
-  ];
+    { title: 'ETH', value: ethBalance },
+    { title: 'ETHMAXY', value: ethmaxyBalance },
+    { title: 'DBL', value: doubloonBalance },
+    { title: 'BYE', value: byeBalance },
+  ]
 
   const userBalances: UserTokenBalance[] = balances
     .map((pos) => {
       switch (pos.title) {
-        case "ETH":
-          return getTokenMarketDataValuesOrNull(pos.title, eth, pos.value);
-        case "ETHMAXY":
-          return getTokenMarketDataValuesOrNull(pos.title, ethmaxy, pos.value);
-        case "DBL":
-          return getTokenMarketDataValuesOrNull(pos.title, doubloon, pos.value);
+        case 'ETH':
+          return getTokenMarketDataValuesOrNull(pos.title, eth, pos.value)
+        case 'ETHMAXY':
+          return getTokenMarketDataValuesOrNull(pos.title, ethmaxy, pos.value)
+        case 'DBL':
+          return getTokenMarketDataValuesOrNull(pos.title, doubloon, pos.value)
+        case 'BYE':
+          return getTokenMarketDataValuesOrNull(pos.title, bye, pos.value)
+
         default:
-          return undefined;
+          return undefined
       }
     })
     // Remove undefined
-    .filter((tokenData): tokenData is UserTokenBalance => !!tokenData);
+    .filter((tokenData): tokenData is UserTokenBalance => !!tokenData)
 
-  const totalHourlyPrices = getTotalHourlyPrices(userBalances);
+  const totalHourlyPrices = getTotalHourlyPrices(userBalances)
 
-  const hourlyDataInterval = 24;
+  const hourlyDataInterval = 24
   var totalBalanceInUSD =
     totalHourlyPrices
       .slice(-PriceChartRangeOption.DAILY_PRICE_RANGE * hourlyDataInterval)
       ?.slice(-1)[0]
-      ?.slice(-1)[0] ?? 0;
+      ?.slice(-1)[0] ?? 0
 
-  const priceChanges = getPricesChanges(totalHourlyPrices);
+  const priceChanges = getPricesChanges(totalHourlyPrices)
 
-  return { userBalances, totalBalanceInUSD, totalHourlyPrices, priceChanges };
-};
+  return { userBalances, totalBalanceInUSD, totalHourlyPrices, priceChanges }
+}

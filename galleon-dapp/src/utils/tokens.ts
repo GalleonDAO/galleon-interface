@@ -1,32 +1,31 @@
-import { ChainId } from "@usedapp/core";
-
-import { ETH, MATIC, Token } from "constants/tokens";
+import { MAINNET, OPTIMISM, POLYGON } from 'constants/chains'
+import { ETH, MATIC, Token } from 'constants/tokens'
 
 export function getAddressForToken(
   token: Token,
-  chainId: ChainId | undefined
+  chainId: number | undefined
 ): string | undefined {
   switch (chainId) {
-    case ChainId.Mainnet:
-      return token.address;
-    case ChainId.Optimism:
-      return token.optimismAddress;
-    case ChainId.Polygon:
-      return token.polygonAddress;
+    case MAINNET.chainId:
+      return token.address
+    case OPTIMISM.chainId:
+      return token.optimismAddress
+    case POLYGON.chainId:
+      return token.polygonAddress
     default:
-      return undefined;
+      return undefined
   }
 }
 
-export function getNativeToken(chainId: ChainId | undefined): Token | null {
+export function getNativeToken(chainId: number | undefined): Token | null {
   switch (chainId) {
-    case ChainId.Mainnet:
-      return ETH;
-    case ChainId.Optimism:
-      return ETH;
-    case ChainId.Polygon:
-      return MATIC;
+    case MAINNET.chainId:
+      return ETH
+    case OPTIMISM.chainId:
+      return ETH
+    case POLYGON.chainId:
+      return MATIC
     default:
-      return null;
+      return null
   }
 }

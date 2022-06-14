@@ -1,5 +1,5 @@
 import { ARBITRUM, MAINNET, OPTIMISM, POLYGON } from "constants/chains";
-import { DoubloonToken, EthMaxYieldIndex } from "constants/tokens";
+import { BasisYieldEthIndex, DoubloonToken, EthMaxYieldIndex } from "constants/tokens";
 
 const apiSupport = [MAINNET.chainId, POLYGON.chainId];
 
@@ -41,7 +41,7 @@ const mainnetTokens: string[] = [EthMaxYieldIndex.address!];
 
 const polygonTokens: string[] = [];
 
-const optimismTokens: string[] = [];
+const optimismTokens: string[] = [BasisYieldEthIndex.optimismAddress!];
 
 const arbitrumTokens: string[] = [DoubloonToken.arbitrumAddress!];
 

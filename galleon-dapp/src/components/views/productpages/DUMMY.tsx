@@ -8,7 +8,10 @@ import { useSetComponents } from "providers/SetComponents/SetComponentsProvider"
 import { useEffect, useState } from "react";
 import { displayFromWei } from "utils";
 
-const CKB = () => {
+/*
+  Reference from EI Spike 
+*/
+const DUMMY = () => {
   // const { dummyComponents } = useSetComponents();
   const [visited, setVisited] = useState(false);
   useEffect(() => {
@@ -37,4 +40,4 @@ const CKB = () => {
   );
 };
 
-export default CKB;
+export default DUMMY;
