@@ -21,20 +21,12 @@ const TransactionStateHeader = ({
   onClick,
   state,
 }: TransactionStateHeaderProps) => (
-  <Flex>
-    <Button
-      onClick={onClick}
-      background={colors.themeOldlace}
-      borderColor={colors.themeNavy}
-      borderRadius="32"
-      color={colors.themeNavy}
-      fontSize="md"
-      fontWeight="700"
-      padding="6px 16px"
-    >
-      <TransactionStateView isDarkMode={isDarkMode} state={state} />
-    </Button>
-  </Flex>
+  <span
+    onClick={onClick}
+    className="hidden md:inline-flex items-center px-3 py-0.5 rounded-2xl text-base font-medium bg-transparent "
+  >
+    <TransactionStateView isDarkMode={isDarkMode} state={state} />
+  </span>
 );
 
 type TransactionStateViewProps = {
@@ -47,26 +39,42 @@ const TransactionStateView = (props: TransactionStateViewProps) => {
     case TransactionStateHeaderState.failed:
       return (
         <>
-          <WarningIcon w={4} h={4} mr="1" color={colors.themeCopper} />
-          <Text color={colors.themeNavy}> Failed</Text>
+          <svg
+            className="-ml-1 mr-1.5 h-2 w-2 text-theme-oldlace animate animate-pulse"
+            fill="currentColor"
+            viewBox="0 0 8 8"
+          >
+            <circle cx={4} cy={4} r={3} />
+          </svg>
+          <span className="text-theme-oldlace">Transaction Failed</span>
         </>
       );
     case TransactionStateHeaderState.pending:
       return (
         <>
-          <Spinner
-            size="sm"
-            mr="16px"
-            color={props.isDarkMode ? colors.white : colors.themeNavy}
-          />
-          <Text>1 Pending</Text>
+          <svg
+            className="-ml-1 mr-1.5 h-2 w-2 text-theme-oldlace animate animate-pulse"
+            fill="currentColor"
+            viewBox="0 0 8 8"
+          >
+            <circle cx={4} cy={4} r={3} />
+          </svg>
+          <span className="text-theme-oldlace animate-pulse">
+            Transaction Pending
+          </span>
         </>
       );
     case TransactionStateHeaderState.success:
       return (
         <>
-          <CheckCircleIcon w={4} h={4} mr="1" color={colors.themeChampagne} />
-          <Text color={colors.themeNavy}>Success</Text>
+          <svg
+            className="-ml-1 mr-1.5 h-2 w-2 text-theme-oldlace animate animate-pulse"
+            fill="currentColor"
+            viewBox="0 0 8 8"
+          >
+            <circle cx={4} cy={4} r={3} />
+          </svg>
+          <span className="text-theme-oldlace">Transaction Succeeded</span>
         </>
       );
     default:
