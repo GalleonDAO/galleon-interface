@@ -37,7 +37,10 @@ export const ExchangeIssuanceZeroExPolygonAddress =
   "0x0F5C21d4929f6F17119f43b0c51E665f12367A19";
 export const ExchangeIssuanceLeveragedPolygonAddress =
   "0xE86636f23B502B8746A72A1Ed87d65F096E419Db";
-
+export const ExchangeIssuanceZeroExOptimismAddress =
+  "0x01ecc782531ADCfB8C5a58A2C7FD544Ada946b81";
+export const ExchangeIssuanceZeroExAvalancheAddress =
+  "0xB546672E0743A1225D24bAeA9A9D08e6601bd20f";
 // Uniswap V2 Addresses
 export const uniswapEthDpiLpTokenAddress =
   "0x4d5ef58aac27d99935e5b6b4a6778ff292059991";
@@ -46,7 +49,9 @@ export const uniswapEthMviLpTokenAddress =
 export const uniswapRouterAddress =
   "0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D";
 export const zeroExRouterAddress = "0xDef1C0ded9bec7F1a1670819833240f027b25EfF";
-
+export const zeroExRouterOptimism =
+  "0xDEF1ABE32c034e558Cdd535791643C58a13aCC10";
+export const zeroExRouterPolygon = "0xDef1C0ded9bec7F1a1670819833240f027b25EfF";
 // Uniswap V3 Addresses
 export const nftPositionManagerAddress =
   "0xC36442b4a4522E871399CD717aBDD847Ab11FE88";
@@ -104,7 +109,7 @@ export const tradeModuleOptimismAddress =
 export const protocolViewerOptimismAddress =
   "0x4E05073560B9377E5561B559c9cADBbe7112e38f";
 export const slippageIssuanceModuleOptimismAddress =
-  "0x1db929398958082d2080AA1B501e460503f60467";
+  "0x2B67D4F9407F772374CaE8B010dB36A770C2c3ae";
 export const perpV2BasisTradingModuleOptimismAddress =
   "0x2C229EE3aD3fdC0e581d51BaA6b6f45CC9A6Ca39";
 export const perpV2BasisTradingModuleViewerOptimismAddress =
@@ -121,3 +126,6 @@ export const streamingFeeExtensionOptimismAddress =
   "0x6a7aE5124677314dc32C5ba3004CbFC9c7Febff0";
 export const tradeExtensionOptimismAddress =
   "0x7215f38011C3e4058Ca3cF7d2b99033016EeFBD8";
+export const deltaNeutralBasisTradingStrategyExtension =
+  "0x95e24048AB1A9086b2F06107dF7ec5e61961951A";
+export const perpExchangeIssuanceOptimismAddress = "";

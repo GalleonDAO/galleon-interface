@@ -52,7 +52,7 @@ const QuickTradeSelector = (props: {
   }, [chainId]);
 
   useEffect(() => {
-    const tokenBal = getBalance(props.selectedToken);
+    const tokenBal = getBalance(props.selectedToken.symbol);
     setTokenBalance(formattedBalance(props.selectedToken, tokenBal));
   }, [props.selectedToken, getBalance, chainId]);
 
@@ -159,7 +159,7 @@ const QuickTradeSelector = (props: {
         onClick={() => {
           if (tokenBalance) {
             const fullTokenBalance = formatUnits(
-              getBalance(props.selectedToken) ?? "0",
+              getBalance(props.selectedToken.symbol) ?? "0",
               props.selectedToken.decimals
             );
             onChangeInput(fullTokenBalance);

@@ -26,7 +26,7 @@ const ProductStats = ({ stats }: { stats: ProductStat[] }) => {
       flexWrap="wrap"
     >
       <div>
-        <dl className="mt-5 grid grid-cols-2 gap-5 sm:grid-cols-6 bg-transparent">
+        <dl className="mt-5 grid grid-cols-2 gap-5 sm:grid-cols-5 bg-transparent">
           {stats.map((productStat, index) => (
             <div
               key={productStat.title}

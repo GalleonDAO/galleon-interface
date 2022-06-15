@@ -10,8 +10,8 @@ import {
 import { BigNumber } from "@ethersproject/bignumber";
 import { useEthers } from "@usedapp/core";
 
-import { MAINNET, POLYGON } from "constants/chains";
-import { EthMaxYieldIndex, DummyExchangeIssuanceSet } from "constants/tokens";
+import { MAINNET, OPTIMISM, POLYGON } from "constants/chains";
+import { EthMaxYieldIndex, BasisYieldEthIndex } from "constants/tokens";
 import { useMarketData } from "providers/MarketData/MarketDataProvider";
 import { displayFromWei, safeDiv } from "utils";
 import { getSetDetails } from "utils/setjsApi";
@@ -25,10 +25,11 @@ export function useSetComponents() {
 }
 
 const SetComponentsProvider = (props: { children: any }) => {
-  const { selectLatestMarketData, ethmaxy } = useMarketData();
+  const { selectLatestMarketData, ethmaxy, bye } = useMarketData();
   const [ethmaxyComponents, setEthmaxyComponents] = useState<SetComponent[]>(
     []
   );
+  const [byeComponents, setByeComponents] = useState<SetComponent[]>([]);
   // const [dummyComponents, setDummyComponents] = useState<SetComponent[]>([])
 
   const { account, chainId, library } = useEthers();
@@ -114,10 +115,50 @@ const SetComponentsProvider = (props: { children: any }) => {
     }
   }, [chainId, library, tokenList, selectLatestMarketData()]);
 
+  useEffect(() => {
+    if (
+      chainId &&
+      chainId === OPTIMISM.chainId &&
+      account &&
+      library &&
+      tokenList &&
+      bye &&
+      BasisYieldEthIndex.address
+    ) {
+      getSetDetails(library, [EthMaxYieldIndex.address], chainId).then(
+        async (result) => {
+          const [byeSet] = result;
+
+          const byeComponentPrices = await getPositionPrices(byeSet);
+          if (byeComponentPrices != null) {
+            const byePositions = byeSet.positions.map(async (position) => {
+              return await convertPositionToSetComponent(
+                position,
+                tokenList,
+                byeComponentPrices[position.component.toLowerCase()]?.[
+                  VS_CURRENCY
+                ],
+                byeComponentPrices[position.component.toLowerCase()]?.[
+                  `${VS_CURRENCY}_24h_change`
+                ],
+
+                selectLatestMarketData(bye.hourlyPrices)
+              );
+            });
+            Promise.all(byePositions)
+              .then(sortPositionsByPercentOfSet)
+              .then(setByeComponents);
+          }
+        }
+      );
+    }
+  }, [library, tokenList, bye, selectLatestMarketData()]);
+
   return (
     <SetComponentsContext.Provider
       value={{
         ethmaxyComponents: ethmaxyComponents,
+        byeComponents: byeComponents,
         // dummyComponents: dummyComponents,
       }}
     >
@@ -239,6 +280,7 @@ export default SetComponentsProvider;
 
 interface SetComponentsProps {
   ethmaxyComponents?: SetComponent[];
+  byeComponents?: SetComponent[];
   // dummyComponents?: SetComponent[]
 }
 

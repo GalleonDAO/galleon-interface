@@ -1,14 +1,9 @@
 import { BigNumber, Contract, Signer } from "ethers";
 
-import { Provider } from "@ethersproject/abstract-provider";
-import { ChainId } from "@usedapp/core";
+import { Provider, TransactionResponse } from "@ethersproject/providers";
 
-import {
-  ExchangeIssuanceZeroExMainnetAddress,
-  ExchangeIssuanceZeroExPolygonAddress,
-} from "constants/ethContractAddresses";
-import { getERC20Contract } from "utils";
 import { EI_ZEROEX_ABI } from "utils/abi/EIZeroEx";
+import { get0xExchangeIssuanceContract } from "utils/contracts";
 
 interface RequiredComponentsResponse {
   components: string[];
@@ -23,12 +18,9 @@ interface RequiredComponentsResponse {
  */
 export const getExchangeIssuanceZeroExContract = async (
   providerSigner: Signer | Provider | undefined,
-  chainId: ChainId
+  chainId: number
 ): Promise<Contract> => {
-  const contractAddress =
-    chainId === ChainId.Polygon
-      ? ExchangeIssuanceZeroExPolygonAddress
-      : ExchangeIssuanceZeroExMainnetAddress;
+  const contractAddress = get0xExchangeIssuanceContract(chainId);
   return new Contract(contractAddress, EI_ZEROEX_ABI, providerSigner);
 };
 
@@ -126,26 +118,21 @@ export const useExchangeIssuanceZeroEx = () => {
     isDebtIssuance: boolean,
     maxInput: BigNumber,
     gasLimit: BigNumber
-  ): Promise<any> => {
+  ): Promise<TransactionResponse | null> => {
     console.log("issueExactSetFromETH");
     try {
-      //TODO: Estimate better _maxInput.
-      //For now hardcode addtional 0.50% so it doesn't revert
-      //Previously 0.25% was tried and was not enough
-      //Ex. https://etherscan.io/tx/0x23d28156d8564dd775013241b27745a43e0923fe2e00c784349fff404fc043ac
-      const higherMax = BigNumber.from(maxInput).mul(10050).div(10000);
       const issueSetTx = await contract.issueExactSetFromETH(
         setToken,
         amountSetToken,
         componentQuotes,
         issuanceModule,
         isDebtIssuance,
-        { value: higherMax, gasLimit }
+        { value: maxInput, gasLimit }
       );
       return issueSetTx;
     } catch (err) {
       console.log("error", err);
-      return err;
+      return null;
     }
   };
 
@@ -173,7 +160,7 @@ export const useExchangeIssuanceZeroEx = () => {
     issuanceModule: string,
     isDebtIssuance: boolean,
     gasLimit: BigNumber
-  ): Promise<any> => {
+  ): Promise<TransactionResponse | null> => {
     console.log("redeemExactSetForETH");
     try {
       const redeemSetTx = await contract.redeemExactSetForETH(
@@ -188,7 +175,7 @@ export const useExchangeIssuanceZeroEx = () => {
       return redeemSetTx;
     } catch (err) {
       console.log("error", err);
-      return err;
+      return null;
     }
   };
 
@@ -251,18 +238,14 @@ export const useExchangeIssuanceZeroEx = () => {
     issuanceModule: string,
     isDebtIssuance: boolean,
     gasLimit: BigNumber
-  ): Promise<any> => {
+  ): Promise<TransactionResponse | null> => {
     console.log("issueExactSetFromToken");
     try {
-      // TODO: calculate more accurate _maxAmountInputToken so it doesn't revert
-      const higherMax = BigNumber.from(maxAmountInputToken)
-        .mul(10050)
-        .div(10000); // Extra 0.50%
       const issueSetTx = await contract.issueExactSetFromToken(
         setToken,
         inputToken,
         amountSetToken,
-        higherMax, // TODO: Replace this with the proper _maxAmountInputToken
+        maxAmountInputToken,
         componentQuotes,
         issuanceModule,
         isDebtIssuance,
@@ -273,7 +256,7 @@ export const useExchangeIssuanceZeroEx = () => {
       return issueSetTx;
     } catch (err) {
       console.log("error", err);
-      return err;
+      return null;
     }
   };
 
@@ -303,12 +286,11 @@ export const useExchangeIssuanceZeroEx = () => {
     issuanceModule: string,
     isDebtIssuance: boolean,
     gasLimit: BigNumber
-  ): Promise<any> => {
+  ): Promise<TransactionResponse | null> => {
     console.log("redeemExactSetForToken");
     try {
-      // TODO: calculate a slightly higher _maxAmountInputToken so it doesn't revert
+      // Calculate a slightly higher _maxAmountInputToken so it doesn't revert
       const higherMax = BigNumber.from(amountSetToken).mul(BigNumber.from(2));
-
       const redeemSetTx = await contract.redeemExactSetForToken(
         setToken,
         outputToken,
@@ -326,7 +308,7 @@ export const useExchangeIssuanceZeroEx = () => {
       return redeemSetTx;
     } catch (err) {
       console.log("error", err);
-      return err;
+      return null;
     }
   };
 
@@ -438,37 +420,6 @@ export const useExchangeIssuanceZeroEx = () => {
     }
   };
 
-  /**
-   * Returns the tokenAllowance of a given token for a ExchangeIssuanceZeroEx contract.
-   * @param account                Address of the account
-   * @param library                library from logged in user
-   * @param tokenAddress           Address of the token
-   *
-   * @return tokenAllowance        Token allowance of the account
-   */
-  const tokenAllowance = async (
-    account: any,
-    library: any,
-    chainId: ChainId,
-    tokenAddress: string
-  ): Promise<BigNumber> => {
-    try {
-      const contractAddress =
-        chainId === ChainId.Polygon
-          ? ExchangeIssuanceZeroExPolygonAddress
-          : ExchangeIssuanceZeroExMainnetAddress;
-      const tokenContract = await getERC20Contract(
-        library.getSigner(),
-        tokenAddress
-      );
-      const allowance = await tokenContract.allowance(account, contractAddress);
-      return BigNumber.from(allowance);
-    } catch (err) {
-      console.log("error", err);
-      return BigNumber.from(0);
-    }
-  };
-
   return {
     getRequiredIssuanceComponents,
     getRequiredRedemptionComponents,
@@ -479,6 +430,5 @@ export const useExchangeIssuanceZeroEx = () => {
     approveSetToken,
     approveToken,
     approveTokens,
-    tokenAllowance,
   };
 };

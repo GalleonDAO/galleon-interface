@@ -1,8 +1,6 @@
 import { useEffect, useState } from "react";
 
-import { ChainId } from "@usedapp/core";
-
-import { OPTIMISM, POLYGON } from "constants/chains";
+import { MAINNET, OPTIMISM, POLYGON } from "constants/chains";
 import {
   ETH,
   indexNamesMainnet,
@@ -16,7 +14,7 @@ import { fetchCoingeckoTokenPrice } from "utils/coingeckoApi";
 import { getAddressForToken, getNativeToken } from "utils/tokens";
 
 export const useTradeTokenLists = (
-  chainId: ChainId | undefined,
+  chainId: number | undefined,
   singleToken?: Token
 ) => {
   const nativeToken = getNativeToken(chainId) ?? ETH;
@@ -26,6 +24,7 @@ export const useTradeTokenLists = (
   const [buyToken, setBuyToken] = useState<Token>(tokenList[0]);
   const [buyTokenList, setBuyTokenList] = useState<Token[]>(tokenList);
   const [buyTokenPrice, setBuyTokenPrice] = useState<number>(0);
+  const [nativeTokenPrice, setNativeTokenPrice] = useState<number>(0);
   const [sellToken, setSellToken] = useState<Token>(nativeToken);
   const [sellTokenList, setSellTokenList] = useState<Token[]>(
     getCurrencyTokensByChain(chainId)
@@ -36,6 +35,7 @@ export const useTradeTokenLists = (
    * Switches sell token lists between mainnet and polygon
    */
   useEffect(() => {
+    if (chainId === undefined) return;
     const newSellTokenList = getCurrencyTokensByChain(chainId);
     const newBuyTokenList = getTokenListByChain(chainId, singleToken);
     setSellTokenList(newSellTokenList);
@@ -46,18 +46,24 @@ export const useTradeTokenLists = (
   }, [chainId]);
 
   useEffect(() => {
+    if (chainId === undefined) return;
     const fetchBuyTokenPrice = async () => {
       const buyTokenPrice = await getTokenPrice(buyToken, chainId);
+      const nativeTokenPrice = await getTokenPrice(nativeToken, chainId);
       setBuyTokenPrice(buyTokenPrice);
+      setNativeTokenPrice(nativeTokenPrice);
     };
 
     fetchBuyTokenPrice();
   }, [buyToken, chainId]);
 
   useEffect(() => {
+    if (chainId === undefined) return;
     const fetchSellTokenPrice = async () => {
       const sellTokenPrice = await getTokenPrice(sellToken, chainId);
+      const nativeTokenPrice = await getTokenPrice(nativeToken, chainId);
       setSellTokenPrice(sellTokenPrice);
+      setNativeTokenPrice(nativeTokenPrice);
     };
 
     fetchSellTokenPrice();
@@ -106,6 +112,7 @@ export const useTradeTokenLists = (
     buyToken,
     buyTokenList,
     buyTokenPrice,
+    nativeTokenPrice,
     sellToken,
     sellTokenList,
     sellTokenPrice,
@@ -120,9 +127,9 @@ export const useTradeTokenLists = (
  * @returns Token[] list of tokens
  */
 const getCurrencyTokensByChain = (
-  chainId: ChainId | undefined = ChainId.Mainnet
+  chainId: number | undefined = MAINNET.chainId
 ) => {
-  if (chainId === ChainId.Polygon) return polygonCurrencyTokens;
+  if (chainId === POLYGON.chainId) return polygonCurrencyTokens;
   return mainnetCurrencyTokens;
 };
 
@@ -131,7 +138,7 @@ const getCurrencyTokensByChain = (
  * @returns Token[] list of tokens
  */
 const getTokenListByChain = (
-  chainId: ChainId | undefined = ChainId.Mainnet,
+  chainId: number | undefined = MAINNET.chainId,
   singleToken: Token | undefined
 ) => {
   if (singleToken) return [singleToken];
@@ -146,7 +153,7 @@ const getTokenListByChain = (
  */
 const getTokenPrice = async (
   token: Token,
-  chainId: ChainId | undefined
+  chainId: number | undefined
 ): Promise<number> => {
   const tokenAddress = getAddressForToken(token, chainId);
   if (!tokenAddress || !chainId) return 0;

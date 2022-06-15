@@ -8,12 +8,25 @@ import NetworkSelector from "./NetworkSelector";
 import { useState } from "react";
 import { logger } from "index";
 import { KNOWN_SERVICES, KNOWN_LABELS } from "@galleondao/logging-lib";
+import { useNetwork } from "hooks/useNetwork";
+import {
+  PendingTransactionState,
+  useWaitForTransaction,
+} from "hooks/useWaitForTransaction";
+import { isSupportedNetwork } from "utils";
+import { getBlockExplorerUrl } from "utils/blockExplorer";
+import TransactionStateHeader, {
+  TransactionStateHeaderState,
+} from "./TransactionStateHeader";
 
 const ConnectButton = () => {
-  const { account, deactivate } = useEthers();
+  const { account, chainId, deactivate } = useEthers();
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const [address, setAddress] = useState("");
+  const { changeNetwork } = useNetwork();
   let ens = useLookupAddress();
+  const { pendingTxHash, pendingTxState } = useWaitForTransaction();
+  const txStateHeaderState = getHeaderState(pendingTxState);
+  const supportedNetwork = isSupportedNetwork(chainId ?? -1);
 
   const handleConnectWallet = () => {
     onOpen();
@@ -24,31 +37,16 @@ const ConnectButton = () => {
     onClose();
   };
 
-  const sendWalletConnectionEvent = () => {
-    if (account !== address) {
-      setAddress(account);
-
-      logger.logCounter({
-        serviceName: KNOWN_SERVICES.GALLEON_DAPP,
-        environment: process.env.NODE_ENV,
-        label: KNOWN_LABELS.WALLET_CONNECT,
-        metadata: {
-          address: account,
-          referrer: document.referrer === "" ? "direct" : document.referrer,
-        },
-      });
-
-      console.log("Successful Wallet Connection", {
-        user: {
-          name: account,
-        },
-      });
-    }
+  const onClickTransactionState = () => {
+    if (!pendingTxHash || pendingTxState === PendingTransactionState.none)
+      return;
+    const explorerUrl = getBlockExplorerUrl(pendingTxHash, chainId);
+    const newWindow = window.open(explorerUrl, "_blank");
+    newWindow?.focus();
   };
 
-  const handleAccount = () => {
-    sendWalletConnectionEvent();
-    return formatAccountName();
+  const onWrongNetworkButtonClicked = () => {
+    changeNetwork("1");
   };
 
   const formatAccountName = () => {
@@ -80,16 +78,24 @@ const ConnectButton = () => {
   const disconnectButton = () => {
     return (
       <span>
-        <span className="hidden md:inline-flex items-center px-3 py-0.5 rounded-2xl text-base font-medium bg-transparent ">
-          <svg
-            className="-ml-1 mr-1.5 h-2 w-2 text-theme-oldlace animate animate-pulse"
-            fill="currentColor"
-            viewBox="0 0 8 8"
-          >
-            <circle cx={4} cy={4} r={3} />
-          </svg>
-          <span className="text-theme-oldlace">{handleAccount()}</span>
-        </span>
+        {pendingTxState === PendingTransactionState.none ? (
+          <span className="hidden md:inline-flex items-center px-3 py-0.5 rounded-2xl text-base font-medium bg-transparent ">
+            <svg
+              className="-ml-1 mr-1.5 h-2 w-2 text-theme-oldlace animate animate-pulse"
+              fill="currentColor"
+              viewBox="0 0 8 8"
+            >
+              <circle cx={4} cy={4} r={3} />
+            </svg>
+            <span className="text-theme-oldlace">{formatAccountName()}</span>
+          </span>
+        ) : (
+          <TransactionStateHeader
+            isDarkMode={false}
+            onClick={onClickTransactionState}
+            state={txStateHeaderState}
+          />
+        )}
 
         <button
           onClick={handleDisconnect}
@@ -102,6 +108,41 @@ const ConnectButton = () => {
     );
   };
 
-  return account ? disconnectButton() : connectButton();
+  const wrongNetworkButton = () => {
+    return (
+      <div>
+        <button
+          onClick={onWrongNetworkButtonClicked}
+          className="ml-4 inline-block bg-theme-oldlace shadow-sm shadow-theme-black text-theme-navy  py-1.5 px-4 border-2 border-theme-champagne rounded-2xl text-base font-medium  hover:bg-theme-champagne"
+        >
+          Wrong Network
+        </button>
+
+        <ConnectModal isOpen={isOpen} onClose={onClose} />
+      </div>
+    );
+  };
+
+  if (supportedNetwork) {
+    return account ? disconnectButton() : connectButton();
+  }
+
+  return wrongNetworkButton();
 };
+
+const getHeaderState = (
+  pendingTxState: PendingTransactionState
+): TransactionStateHeaderState => {
+  switch (pendingTxState) {
+    case PendingTransactionState.failed:
+      return TransactionStateHeaderState.failed;
+    case PendingTransactionState.none:
+      return TransactionStateHeaderState.none;
+    case PendingTransactionState.pending:
+      return TransactionStateHeaderState.pending;
+    case PendingTransactionState.success:
+      return TransactionStateHeaderState.success;
+  }
+};
+
 export default ConnectButton;
