@@ -24,14 +24,12 @@ const CoinbaseButton = () => {
         // host: 'https://*.galleon.community',
         appId: process.env.REACT_APP_COINBASE_APP_ID,
         onReady: () => {
-          console.log("ready");
           setIsReady(true);
         },
         onSuccess: () => {
-          console.log("success");
           toast({
-            title: "Success",
-            description: "Coinbase Pay Process Complete",
+            title: "Success!",
+            description: "Your purchased assets will arrive shortly.",
             variant: "info",
             duration: 5000,
             isClosable: true,
@@ -59,8 +57,6 @@ const CoinbaseButton = () => {
   }, [account]);
 
   const handleClick = () => {
-    // @ts-ignore
-    console.log("Open CB On Ramp: ", cb);
     cb.open();
   };
 
