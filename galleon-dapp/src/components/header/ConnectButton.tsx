@@ -1,49 +1,49 @@
-import { colors } from 'styles/colors'
+import { colors } from "styles/colors";
 
-import { Button, Flex, Text, useDisclosure } from '@chakra-ui/react'
-import { useEthers, useLookupAddress } from '@usedapp/core'
-import { useToast } from '@chakra-ui/react'
+import { Button, Flex, Text, useDisclosure } from "@chakra-ui/react";
+import { useEthers, useLookupAddress } from "@usedapp/core";
+import { useToast } from "@chakra-ui/react";
 
-import ConnectModal from './ConnectModal'
-import NetworkSelector from './NetworkSelector'
-import { useEffect, useState } from 'react'
-import { logger } from 'index'
-import { KNOWN_SERVICES, KNOWN_LABELS } from '@galleondao/logging-lib'
-import { useNetwork } from 'hooks/useNetwork'
+import ConnectModal from "./ConnectModal";
+import NetworkSelector from "./NetworkSelector";
+import { useEffect, useState } from "react";
+import { logger } from "index";
+import { KNOWN_SERVICES, KNOWN_LABELS } from "@galleondao/logging-lib";
+import { useNetwork } from "hooks/useNetwork";
 import {
   PendingTransactionState,
   useWaitForTransaction,
-} from 'hooks/useWaitForTransaction'
-import { isSupportedNetwork } from 'utils'
-import { getBlockExplorerUrl } from 'utils/blockExplorer'
+} from "hooks/useWaitForTransaction";
+import { isSupportedNetwork } from "utils";
+import { getBlockExplorerUrl } from "utils/blockExplorer";
 import TransactionStateHeader, {
   TransactionStateHeaderState,
-} from './TransactionStateHeader'
+} from "./TransactionStateHeader";
 
 const ConnectButton = () => {
-  const { account, chainId, deactivate } = useEthers()
-  const { isOpen, onOpen, onClose } = useDisclosure()
-  const [address, setAddress] = useState('')
-  const id = 'login-toast'
-  let ens = useLookupAddress()
-  const toast = useToast()
-  const { changeNetwork } = useNetwork()
-  const { pendingTxHash, pendingTxState } = useWaitForTransaction()
-  const txStateHeaderState = getHeaderState(pendingTxState)
-  const supportedNetwork = isSupportedNetwork(chainId ?? -1)
+  const { account, chainId, deactivate } = useEthers();
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const [address, setAddress] = useState("");
+  const id = "login-toast";
+  let ens = useLookupAddress();
+  const toast = useToast();
+  const { changeNetwork } = useNetwork();
+  const { pendingTxHash, pendingTxState } = useWaitForTransaction();
+  const txStateHeaderState = getHeaderState(pendingTxState);
+  const supportedNetwork = isSupportedNetwork(chainId ?? -1);
 
   const handleConnectWallet = () => {
-    onOpen()
-  }
+    onOpen();
+  };
 
   const handleDisconnect = () => {
-    deactivate()
-    onClose()
-  }
+    deactivate();
+    onClose();
+  };
 
   const sendWalletConnectionEvent = () => {
     if (account !== address) {
-      setAddress(account)
+      setAddress(account);
 
       logger.logCounter({
         serviceName: KNOWN_SERVICES.GALLEON_DAPP,
@@ -51,60 +51,60 @@ const ConnectButton = () => {
         label: KNOWN_LABELS.WALLET_CONNECT,
         metadata: {
           address: account,
-          referrer: document.referrer === '' ? 'direct' : document.referrer,
+          referrer: document.referrer === "" ? "direct" : document.referrer,
         },
-      })
+      });
 
-      console.log('Successful Wallet Connection', {
+      console.log("Successful Wallet Connection", {
         user: {
           name: account,
         },
-      })
+      });
     }
-  }
+  };
 
   useEffect(() => {
     if (!toast.isActive(id) && account) {
       toast({
         id,
-        title: 'Connected',
+        title: "Connected",
         description: account,
-        variant: 'info',
+        variant: "info",
         duration: 3000,
         isClosable: true,
         containerStyle: {
-          borderRadius: '1rem',
-          border: '2px solid #040728',
-          backgroundColor: ' #FEF3E2',
-          color: '#040728',
+          borderRadius: "1rem",
+          border: "2px solid #040728",
+          backgroundColor: " #FEF3E2",
+          color: "#040728",
         },
-      })
-      sendWalletConnectionEvent()
+      });
+      sendWalletConnectionEvent();
     }
-  }, [account])
+  }, [account]);
 
   const onClickTransactionState = () => {
     if (!pendingTxHash || pendingTxState === PendingTransactionState.none)
-      return
-    const explorerUrl = getBlockExplorerUrl(pendingTxHash, chainId)
-    const newWindow = window.open(explorerUrl, '_blank')
-    newWindow?.focus()
-  }
+      return;
+    const explorerUrl = getBlockExplorerUrl(pendingTxHash, chainId);
+    const newWindow = window.open(explorerUrl, "_blank");
+    newWindow?.focus();
+  };
 
   const onWrongNetworkButtonClicked = () => {
-    changeNetwork('1')
-  }
+    changeNetwork("1");
+  };
 
   const formatAccountName = () => {
-    if (ens) return `${ens}`
+    if (ens) return `${ens}`;
     return (
       account &&
       `${account.slice(0, 6)}...${account.slice(
         account.length - 4,
-        account.length,
+        account.length
       )}`
-    )
-  }
+    );
+  };
 
   const connectButton = () => {
     return (
@@ -118,8 +118,8 @@ const ConnectButton = () => {
 
         <ConnectModal isOpen={isOpen} onClose={onClose} />
       </div>
-    )
-  }
+    );
+  };
 
   const disconnectButton = () => {
     return (
@@ -151,8 +151,8 @@ const ConnectButton = () => {
         </button>
         <NetworkSelector />
       </span>
-    )
-  }
+    );
+  };
 
   const wrongNetworkButton = () => {
     return (
@@ -166,29 +166,29 @@ const ConnectButton = () => {
 
         <ConnectModal isOpen={isOpen} onClose={onClose} />
       </div>
-    )
-  }
+    );
+  };
 
   if (supportedNetwork) {
-    return account ? disconnectButton() : connectButton()
+    return account ? disconnectButton() : connectButton();
   }
 
-  return wrongNetworkButton()
-}
+  return wrongNetworkButton();
+};
 
 const getHeaderState = (
-  pendingTxState: PendingTransactionState,
+  pendingTxState: PendingTransactionState
 ): TransactionStateHeaderState => {
   switch (pendingTxState) {
     case PendingTransactionState.failed:
-      return TransactionStateHeaderState.failed
+      return TransactionStateHeaderState.failed;
     case PendingTransactionState.none:
-      return TransactionStateHeaderState.none
+      return TransactionStateHeaderState.none;
     case PendingTransactionState.pending:
-      return TransactionStateHeaderState.pending
+      return TransactionStateHeaderState.pending;
     case PendingTransactionState.success:
-      return TransactionStateHeaderState.success
+      return TransactionStateHeaderState.success;
   }
-}
+};
 
-export default ConnectButton
+export default ConnectButton;

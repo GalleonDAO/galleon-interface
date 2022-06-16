@@ -2375,6 +2375,11 @@
     exec-sh "^0.3.2"
     minimist "^1.2.0"
 
+"@coinbase/cbpay-js@^1.0.1":
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/@coinbase/cbpay-js/-/cbpay-js-1.0.1.tgz#694b3a14d912c02dd170bb19aa918b683a384f72"
+  integrity sha512-6cbBES1XSmhtmYaBHhYK/oTOWrA9A0Dje1uMauVC4hKrJ95BF/j0reYsipLKC5ApoVE/8fYXGFfKfK0rZnbIQA==
+
 "@coinbase/wallet-sdk@^3.0.4", "@coinbase/wallet-sdk@^3.1.0":
   version "3.2.0"
   resolved "https://registry.yarnpkg.com/@coinbase/wallet-sdk/-/wallet-sdk-3.2.0.tgz#cceda6c2ed213b663c5cbb35fcf65a57c24323f0"
