@@ -20,7 +20,7 @@ export function getAddressForToken(
   }
 }
 
-export function getNativeToken(chainId: ChainId | undefined): Token | null {
+export function getNativeToken(chainId: number | undefined): Token | null {
   switch (chainId) {
     case ChainId.Mainnet:
       return ETH

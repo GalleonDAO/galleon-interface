@@ -12,6 +12,7 @@ import { getPricesChanges } from "utils/priceChange";
 interface UserTokenBalance {
   symbol: string;
   balance: BigNumber;
+  fiat: number;
   marketData: TokenMarketDataValues;
 }
 
@@ -37,8 +38,10 @@ function getTokenMarketDataValuesOrNull(
     date,
     price * balanceNum,
   ]);
+  const hourlyPricesLength = hourlyData ? hourlyData.length - 1 : 0;
+  const fiat = hourlyData ? hourlyData[hourlyPricesLength][1] : 0;
 
-  return { symbol, balance, marketData: { hourlyPrices: hourlyData } };
+  return { symbol, balance, fiat, marketData: { hourlyPrices: hourlyData } };
 }
 
 function getTotalHourlyPrices(marketData: UserTokenBalance[]) {
@@ -63,14 +66,15 @@ function getTotalHourlyPrices(marketData: UserTokenBalance[]) {
 
 export const useUserMarketData = () => {
   const {
-    balances: { ethBalance, ethmaxyBalance, doubloonBalance },
+    balances: { ethBalance, ethmaxyBalance, doubloonBalance, byeBalance },
   } = useBalance();
-  const { eth, ethmaxy, doubloon } = useMarketData();
+  const { eth, ethmaxy, bye, doubloon } = useMarketData();
 
   const balances = [
     { title: "ETH", value: ethBalance },
     { title: "ETHMAXY", value: ethmaxyBalance },
     { title: "DBL", value: doubloonBalance },
+    { title: "BYE", value: byeBalance },
   ];
 
   const userBalances: UserTokenBalance[] = balances
@@ -82,6 +86,9 @@ export const useUserMarketData = () => {
           return getTokenMarketDataValuesOrNull(pos.title, ethmaxy, pos.value);
         case "DBL":
           return getTokenMarketDataValuesOrNull(pos.title, doubloon, pos.value);
+        case "BYE":
+          return getTokenMarketDataValuesOrNull(pos.title, bye, pos.value);
+
         default:
           return undefined;
       }

@@ -29,36 +29,19 @@ import { classNames } from "utils";
 import { logger } from "index";
 import { KNOWN_LABELS, KNOWN_SERVICES } from "@galleondao/logging-lib";
 import { useNetwork } from "hooks/useNetwork";
+import { useAccount } from "hooks/useAccount";
 
 const Dashboard = () => {
-  const { ethmaxy } = useMarketData();
-  const { changeNetwork } = useNetwork();
   const { userBalances, totalBalanceInUSD, totalHourlyPrices, priceChanges } =
     useUserMarketData();
-  const { account, chainId } = useEthers();
+  const { account } = useAccount();
+  const { chainId, changeNetwork } = useNetwork();
   const isWeb = useBreakpointValue({
     base: false,
     md: true,
     lg: true,
     xl: true,
   });
-
-  const [visited, setVisited] = useState(false);
-  useEffect(() => {
-    if (!visited) {
-      logger.logCounter({
-        serviceName: KNOWN_SERVICES.GALLEON_DAPP,
-        environment: process.env.NODE_ENV,
-        label: KNOWN_LABELS.VISIT,
-        metadata: {
-          referrer: document.referrer === "" ? "direct" : document.referrer,
-          path: window.location.pathname,
-        },
-      });
-      setVisited(true);
-    }
-  }, []);
-
   const [csvDownloadUrl, setCsvDownloadUrl] = useState("");
   const [historyItems, setHistoryItems] = useState<TransactionHistoryItem[]>(
     []
@@ -98,57 +81,10 @@ const Dashboard = () => {
 
   const balancesPieChart = userBalances.map((userTokenBalance) => ({
     title: userTokenBalance.symbol,
-    value: userTokenBalance.balance,
+    balance: userTokenBalance.balance,
+    fiat: userTokenBalance.fiat,
   }));
   const pieChartPositions = getPieChartPositions(balancesPieChart);
-
-  // const top4Positions = pieChartPositions
-  //   .filter((pos) => pos.title !== 'OTHERS')
-  //   .flatMap((pos) => pos.title)
-  //   .slice(0, 4)
-
-  // const allocationsChartData: TokenMarketDataValues[] = top4Positions
-  //   .map((positionTitle) => {
-  //     switch (positionTitle) {
-  //       case 'DPI':
-  //         return dpi
-  //       case 'MVI':
-  //         return mvi
-  //       case 'DATA':
-  //         return data
-  //       case 'BED':
-  //         return bed
-  //       case 'GMI':
-  //         return gmi
-  //       case 'ETH2x-FLI':
-  //         return ethfli
-  //       case 'ETH2x-FLI-P':
-  //         return ethflip
-  //       case 'BTC2x-FLI':
-  //         return btcfli
-  //       default:
-  //         return undefined
-  //     }
-  //   })
-  //   // Remove undefined
-  //   .filter((tokenData): tokenData is TokenMarketDataValues => !!tokenData)
-
-  // const onChangeChartType = (type: number) => {
-  //   switch (type) {
-  //     case 0: {
-  //       const balanceData = getPriceChartData([
-  //         { hourlyPrices: totalHourlyPrices },
-  //       ])
-  //       setPriceChartData(balanceData)
-  //       break
-  //     }
-  //     case 1: {
-  //       const allocationsData = getPriceChartData(allocationsChartData)
-  //       setPriceChartData(allocationsData)
-  //       break
-  //     }
-  //   }
-  // }
 
   const onClickDownloadCsv = () => {
     const csv = exportCsv(historyItems, "index");
@@ -166,10 +102,6 @@ const Dashboard = () => {
       />
     ) : undefined;
 
-  // const formattedPrice = `$${totalBalanceInUSD.toFixed(2).toString()}`
-  // const prices = [formattedPrice]
-  // const priceChangesFormatted = getFormattedChartPriceChanges(priceChanges)
-
   return (
     <Page>
       <>
@@ -185,7 +117,7 @@ const Dashboard = () => {
           </div>
           <div className="col-span-1 bg-theme-oldlace border-2 border-theme-navy rounded-2xl shadow-md shadow-theme-black divide-y divide-theme-navy">
             <div className="w-full flex items-center justify-between p-6 space-x-6 ">
-              {chainId === MAINNET.chainId ? (
+              {SUPPORTED_CHAINS.map((x) => x.chainId).includes(chainId) ? (
                 <Flex direction="column" grow={1} flexBasis="0">
                   <QuickTrade>
                     <div className=" px-2 pb-4 border-b border-theme-navy sm:px-4">
@@ -301,17 +233,5 @@ const Dashboard = () => {
     </Page>
   );
 };
-
-// <MarketChart
-//   marketData={priceChartData}
-//   prices={prices}
-//   priceChanges={priceChangesFormatted}
-//   options={{
-//     width,
-//     height: chartHeight,
-//     hideYAxis: false,
-//   }}
-//   customSelector={<ChartTypeSelector onChange={onChangeChartType} />}
-// />
 
 export default Dashboard;

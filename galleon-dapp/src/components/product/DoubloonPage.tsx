@@ -194,31 +194,30 @@ const DoubloonPage = (props: {
                     </p>
                   </div>
                   {chainId !== ARBITRUM.chainId ? (
-                    <div>
+                    <>
                       <button
                         onClick={() =>
                           changeNetwork(ARBITRUM.chainId.toString())
                         }
-                        className="md:w-full  justify-center text-center block bg-theme-sky shadow-sm shadow-theme-black text-white  py-1.5 px-4 border-2 border-theme-sky rounded-2xl text-base font-medium  hover:bg-opacity-75 m-auto"
+                        className="m-auto justify-center text-center block mt-4 bg-theme-sky shadow-sm shadow-theme-black text-white  py-1.5 px-4 border-2 border-theme-sky rounded-2xl text-base font-medium  hover:bg-opacity-75"
                       >
                         Switch to Arbitrum
                       </button>
 
                       <Box
-                        className="justify-center text-center m-auto "
+                        className="justify-center text-center mx-auto border-2 border-theme-navy rounded-md shadow-md"
                         mt="40px"
                         mb="8px"
                       >
                         <Image
-                          height={["225", "225"]}
+                          height={["150", "225"]}
                           borderRadius={"25"}
-                          opacity={"100%"}
-                          className="m-auto"
-                          src={logo}
+                          opacity={"90%"}
+                          src={"/wave.png"}
                           alt="pie chart placeholder"
                         />{" "}
                       </Box>
-                    </div>
+                    </>
                   ) : (
                     <SwapWidget
                       provider={library}

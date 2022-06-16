@@ -24,9 +24,9 @@ const Header = () => {
               <span className="text-lg  text-theme-oldlace hover:text-theme-champagne">
                 <Link to="/products">Flagship Products</Link>
               </span>
-              <span className="text-lg  text-theme-oldlace hover:text-theme-champagne">
+              {/* <span className="text-lg  text-theme-oldlace hover:text-theme-champagne">
                 <Link to="/portfolios">Portfolios</Link>
-              </span>
+              </span> */}
               <span className="text-lg  text-theme-oldlace hover:text-theme-champagne">
                 <Link to="/dbl">$DBL</Link>
               </span>
@@ -52,12 +52,12 @@ const Header = () => {
           >
             Flagship Products
           </a>
-          <a
+          {/* <a
             className="text-base  text-theme-oldlace hover:text-theme-champagne"
             href="/portfolios"
           >
             Portfolios
-          </a>
+          </a> */}
           <a
             className="text-base  text-theme-oldlace hover:text-theme-champagne"
             href="/dbl"

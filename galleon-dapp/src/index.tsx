@@ -38,6 +38,7 @@ import Indices, { DoubloonToken, Token } from "constants/tokens";
 import DUMMY from "components/views/productpages/DUMMY";
 import Lab from "components/views/Portfolios";
 import Portfolios from "components/views/Portfolios";
+import BYE from "components/views/productpages/BYE";
 
 export const logger = initLogger(process.env.REACT_APP_APIM_SUBSCRIPTION_KEY);
 
@@ -79,22 +80,6 @@ document.addEventListener("click", (event) => {
       environment: process.env.NODE_ENV,
       label: KNOWN_LABELS.DOWNLOAD_CSV,
       metadata: {},
-    });
-  }
-
-  const PRODUCTS = [
-    ...Indices.map((x) => x.symbol),
-    ...Indices.map((x) => x.name),
-  ];
-  if (PRODUCTS.includes(eventName) && isParagraph) {
-    // @ts-ignore
-    console.log(event.target.nodeName);
-    console.dir(eventName);
-    logger.logCounter({
-      serviceName: KNOWN_SERVICES.GALLEON_DAPP,
-      environment: process.env.NODE_ENV,
-      label: KNOWN_LABELS.PRODUCT_SELECT,
-      metadata: { product: eventName },
     });
   }
 });
@@ -163,7 +148,7 @@ ReactDOM.render(
             <Route path="products" element={<Products />} />
             <Route path="portfolios" element={<Portfolios />} />
             <Route path="ethmaxy" element={<ETHMAXY />} />
-            {/* <Route path="dummy" element={<DUMMY />} /> */}
+            <Route path="bye" element={<BYE />} />
             <Route path="dbl" element={<DBL />} />
           </Route>
         </Routes>

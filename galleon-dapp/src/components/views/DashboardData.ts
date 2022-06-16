@@ -3,8 +3,12 @@ import { colors } from "styles/colors";
 import { BigNumber } from "@ethersproject/bignumber";
 
 import { Position } from "components/dashboard/AllocationChart";
-import { EthMaxYieldIndex, DoubloonToken } from "constants/tokens";
-import { displayFromWei } from "utils";
+import {
+  EthMaxYieldIndex,
+  DoubloonToken,
+  BasisYieldEthIndex,
+} from "constants/tokens";
+import { displayFromWei, toWei } from "utils";
 
 const chartColors = [
   colors.themeNavy,
@@ -23,47 +27,44 @@ export const QuickTradeData = {
   tokenList2: [
     { symbol: "ETHMAXY", icon: EthMaxYieldIndex.image },
     { symbol: "DBL", icon: DoubloonToken.image },
+    { symbol: "BYE", icon: BasisYieldEthIndex.image },
   ],
 };
 
-function getNumber(balance: BigNumber | undefined): number {
-  if (balance === undefined) return -1;
-  return parseInt(balance.toString());
-}
-
 function getPosition(
   title: string,
-  bigNumber: BigNumber | undefined,
-  total: BigNumber,
+  balance: BigNumber | undefined,
+  fiat: number,
+  total: number,
   backgroundColor?: string
 ): Position | null {
   if (
-    bigNumber === undefined ||
-    bigNumber.isZero() ||
-    bigNumber.isNegative() ||
-    total.isZero() ||
-    total.isNegative()
+    balance === undefined ||
+    balance.isZero() ||
+    balance.isNegative() ||
+    // This will filter out some dust in the wallet
+    fiat <= 0.01 ||
+    total <= 0
   ) {
     return null;
   }
 
-  const valueDisplay = displayFromWei(bigNumber, 3) ?? "";
-  const value = getNumber(bigNumber);
-  const percent = `${bigNumber.mul(100).div(total).toString()}%`;
+  const percent = `${((fiat * 100) / total).toFixed(1)}%`;
+  const valueDisplay = displayFromWei(balance, 3) ?? "";
 
   return {
     title,
     backgroundColor: backgroundColor ?? "",
     color: "",
     percent,
-    value,
+    value: fiat,
     valueDisplay,
   };
 }
 
 function getOthersPosition(
   remainingPositions: Position[],
-  totalBalance: BigNumber
+  totalBalance: number
 ) {
   let othersPosition: Position | null = null;
 
@@ -76,14 +77,20 @@ function getOthersPosition(
     othersPosition = remainingPositions[0];
     othersPosition.backgroundColor = lastColor;
   } else {
-    const initialVal = BigNumber.from(0);
-    const sumOthers = remainingPositions.reduce(
-      (prevValue, pos) => prevValue.add(BigNumber.from(pos.value)),
+    const initialVal = 0;
+    const initialBalance = BigNumber.from(0);
+    const balanceOthers = remainingPositions.reduce(
+      (prevValue, pos) => prevValue.add(toWei(pos.valueDisplay ?? "0")),
+      initialBalance
+    );
+    const fiatOthers = remainingPositions.reduce(
+      (prevValue, pos) => prevValue + pos.value,
       initialVal
     );
     othersPosition = getPosition(
       "OTHERS",
-      BigNumber.from(sumOthers),
+      balanceOthers,
+      fiatOthers,
       totalBalance,
       lastColor
     );
@@ -96,7 +103,8 @@ function getOthersPosition(
 export function getPieChartPositions(
   balances: {
     title: string;
-    value: BigNumber | undefined;
+    balance: BigNumber;
+    fiat: number;
   }[]
 ) {
   // Remove ETH from the pie chart
@@ -106,22 +114,23 @@ export function getPieChartPositions(
     return [];
   }
 
-  const totalBalance: BigNumber = balances
+  const totalBalance: number = balances
     .map((pos) => {
-      return pos.value ?? BigNumber.from("0");
+      return pos.fiat ?? 0;
     })
     .reduce((prev, curr) => {
-      return prev.add(curr);
+      return prev + curr;
     });
 
   // Check balances of different products for user
   const positions = balances.flatMap((tempPosition) => {
     const position = getPosition(
       tempPosition.title,
-      tempPosition.value,
+      tempPosition.balance,
+      tempPosition.fiat,
       totalBalance
     );
-    if (position === null || tempPosition.value === undefined) {
+    if (position === null || tempPosition.balance === undefined) {
       return [];
     }
     return [position];
