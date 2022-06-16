@@ -197,7 +197,7 @@ export const BasisYieldEthIndex: Token = {
   tokenContextKey: "bye",
   fees: {
     streamingFee: "0%",
-    performanceFee: "20%",
+    performanceFee: "10%",
   },
   theme: "Yield",
   dashboard: undefined,
