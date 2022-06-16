@@ -1,7 +1,7 @@
 import { BigNumber } from "ethers";
 
-import { ChainId } from "@usedapp/core";
-
+import { POLYGON } from "constants/chains";
+import { extractPoolFees } from "utils/UniswapPath";
 import { get0xQuote } from "utils/zeroExUtils";
 
 import {
@@ -16,7 +16,7 @@ import {
 export const getSwapDataCollateralDebt = async (
   leveragedTokenData: LeveragedTokenData,
   includedSources: string,
-  chainId: ChainId = ChainId.Polygon
+  chainId: number = POLYGON.chainId
 ) => {
   let result = await getSwapData(
     {
@@ -38,7 +38,7 @@ export const getSwapDataCollateralDebt = async (
 export const getSwapDataDebtCollateral = async (
   leveragedTokenData: LeveragedTokenData,
   includedSources: string,
-  chainId: ChainId = ChainId.Polygon
+  chainId: number = POLYGON.chainId
 ) => {
   let result = await getSwapData(
     {
@@ -87,8 +87,14 @@ function getEchangeFrom0xKey(key: string | undefined): Exchange | null {
   }
 }
 
-function swapDataFrom0xQuote(zeroExQuote: any): SwapData | null {
-  if (zeroExQuote.orders.length < 1) return null;
+export function swapDataFrom0xQuote(zeroExQuote: any): SwapData | null {
+  if (
+    zeroExQuote === undefined ||
+    zeroExQuote === null ||
+    zeroExQuote.orders === undefined ||
+    zeroExQuote.orders.length < 1
+  )
+    return null;
 
   const order = zeroExQuote.orders[0];
   const fillData = order.fillData;
@@ -100,11 +106,16 @@ function swapDataFrom0xQuote(zeroExQuote: any): SwapData | null {
     return swapDataFromCurve(order);
   }
 
+  let fees: number[] = [];
+  if (exchange === Exchange.UniV3) {
+    fees = fillData.uniswapPath ? extractPoolFees(fillData.uniswapPath) : [500];
+  }
+
   // Currently this works for Sushi, needs to be checked with additional exchanges
   return {
     exchange,
     path: fillData.tokenAddressPath,
-    fees: [],
+    fees,
     pool: "0x0000000000000000000000000000000000000000",
   };
 }

@@ -45,7 +45,7 @@ async function balanceOf(
   token: Token,
   chainId: number,
   account: string,
-  library: providers.Web3Provider | undefined
+  library: providers.JsonRpcProvider | undefined
 ): Promise<BigNumber> {
   try {
     const tokenAddress = getAddressForToken(token, chainId);
@@ -83,7 +83,7 @@ export const useBalance = () => {
 
   useEffect(() => {
     if (!account || !chainId) return;
-    const web3Provider = provider as providers.Web3Provider;
+    const web3Provider = provider as providers.JsonRpcProvider;
     const fetchAllBalances = async () => {
       const ethmaxyBalance = await balanceOf(
         EthMaxYieldIndex,
