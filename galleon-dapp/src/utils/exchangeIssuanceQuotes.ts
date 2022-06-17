@@ -37,7 +37,7 @@ import { getAddressForToken } from "utils/tokens";
 import { get0xQuote } from "utils/zeroExUtils";
 
 // Slippage hard coded to .5% (will be increased if there are revert issues)
-export const slippagePercentage = 0.5;
+export const slippagePercentage = 1;
 
 export enum Exchange {
   None,
