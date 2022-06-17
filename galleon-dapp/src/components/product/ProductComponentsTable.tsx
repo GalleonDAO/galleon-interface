@@ -16,6 +16,7 @@ import {
   Tr,
 } from "@chakra-ui/react";
 import { useEthers } from "@usedapp/core";
+import { useNetwork } from "providers/Network/NetworkProvider";
 
 import { Position } from "components/dashboard/AllocationChart";
 import { ARBITRUM, MAINNET, OPTIMISM, POLYGON } from "constants/chains";
@@ -65,7 +66,11 @@ const ProductComponentsTable = (props: {
   tokenData: Token;
   isLeveragedToken?: boolean;
 }) => {
-  const { account, chainId } = useEthers();
+  const {
+    state: { network },
+  } = useNetwork();
+  const chainId = network.chainId;
+  const { account } = useEthers();
 
   const [amountToDisplay, setAmountToDisplay] = useState<number>(5);
   const showAllComponents = () =>

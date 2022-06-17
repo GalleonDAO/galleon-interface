@@ -11,7 +11,7 @@ import { createContext, useCallback, useContext, useState } from "react";
 
 interface NetworkProps {
   state?: {
-    currentNetwork?: ChainData;
+    network?: ChainData;
   };
   actions?: {
     changeNetwork?: (chainId: number) => void;
@@ -26,10 +26,10 @@ export function useNetwork() {
 
 const NetworkProvider = ({ children }) => {
   const { library, account, chainId } = useEthers();
-  const [currentNetwork, setCurrentNetwork] = useState(
+  const [network, setNetwork] = useState(
     SUPPORTED_CHAINS.find((x) => x.chainId === chainId) ?? MAINNET
   );
-  console.log(`current network initialised with value ${currentNetwork}`);
+
   /**
    * Changes to Mainnet
    */
@@ -40,7 +40,7 @@ const NetworkProvider = ({ children }) => {
           { chainId: MAINNET.chainId0x },
           account,
         ])
-        .then(() => setCurrentNetwork(MAINNET));
+        .then(() => setNetwork(MAINNET));
   }, [library, account]);
 
   /**
@@ -64,9 +64,9 @@ const NetworkProvider = ({ children }) => {
             },
             account,
           ])
-          .then(() => setCurrentNetwork(CHAIN));
+          .then(() => setNetwork(CHAIN));
     },
-    [setCurrentNetwork, account, library]
+    [setNetwork, account, library]
   );
 
   const changeNetwork = useCallback(
@@ -92,7 +92,7 @@ const NetworkProvider = ({ children }) => {
   );
 
   const value: NetworkProps = {
-    state: { currentNetwork },
+    state: { network },
     actions: { changeNetwork },
   };
 

@@ -24,6 +24,7 @@ import ProductComponentsTable from "./ProductComponentsTable";
 import ProductHeader from "./ProductHeader";
 import ProductPageSectionHeader from "./ProductPageSectionHeader";
 import ProductStats, { ProductStat } from "./ProductStats";
+import { useNetwork } from "providers/Network/NetworkProvider";
 
 function getStatsForToken(
   tokenData: Token,
@@ -82,7 +83,11 @@ const ProductPage = (props: {
   const isMobile = useBreakpointValue({ base: true, lg: false });
   const { marketData, tokenData } = props;
 
-  const { chainId, library } = useEthers();
+  const {
+    state: { network },
+  } = useNetwork();
+  const chainId = network.chainId;
+  const { library } = useEthers();
   const { selectLatestMarketData } = useMarketData();
 
   const [currentTokenSupply, setCurrentTokenSupply] = useState(0);
@@ -164,7 +169,6 @@ const ProductPage = (props: {
                     {props.children}
                   </QuickTrade>
                 </Flex>
-                )
               </div>
             </div>
           </div>

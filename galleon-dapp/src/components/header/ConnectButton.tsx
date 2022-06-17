@@ -4,7 +4,7 @@ import { useToast } from "@chakra-ui/react";
 
 import ConnectModal from "./ConnectModal";
 import NetworkSelector from "./NetworkSelector";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { logger } from "index";
 import { KNOWN_SERVICES, KNOWN_LABELS } from "@galleondao/logging-lib";
 import { useNetwork } from "providers/Network/NetworkProvider";
@@ -19,15 +19,17 @@ import TransactionStateHeader, {
 } from "./TransactionStateHeader";
 
 const ConnectButton = () => {
-  const { account, chainId, deactivate } = useEthers();
+  const { account, deactivate } = useEthers();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [address, setAddress] = useState("");
   const id = "login-toast";
   let ens = useLookupAddress();
   const toast = useToast();
   const {
+    state: { network },
     actions: { changeNetwork },
   } = useNetwork();
+  const chainId = network.chainId;
   const { pendingTxHash, pendingTxState } = useWaitForTransaction();
   const txStateHeaderState = getHeaderState(pendingTxState);
   const supportedNetwork = isSupportedNetwork(chainId ?? -1);
@@ -41,7 +43,7 @@ const ConnectButton = () => {
     onClose();
   };
 
-  const sendWalletConnectionEvent = () => {
+  const sendWalletConnectionEvent = useCallback(() => {
     if (account !== address) {
       setAddress(account);
 
@@ -61,7 +63,7 @@ const ConnectButton = () => {
         },
       });
     }
-  };
+  }, [account, address]);
 
   useEffect(() => {
     if (!toast.isActive(id) && account) {
@@ -81,7 +83,7 @@ const ConnectButton = () => {
       });
       sendWalletConnectionEvent();
     }
-  }, [account]);
+  }, [account, sendWalletConnectionEvent, toast]);
 
   const onClickTransactionState = () => {
     if (!pendingTxHash || pendingTxState === PendingTransactionState.none)

@@ -1,5 +1,6 @@
 import { Outlet } from "react-router-dom";
-import { useEthers, useNotifications } from "@usedapp/core";
+import { useNotifications } from "@usedapp/core";
+import { useNetwork } from "providers/Network/NetworkProvider";
 import Header from "components/Header";
 import { useToast } from "@chakra-ui/react";
 import { useEffect } from "react";
@@ -7,7 +8,10 @@ import { SUPPORTED_CHAINS } from "constants/chains";
 
 const App = () => {
   const { notifications } = useNotifications();
-  const { chainId } = useEthers();
+  const {
+    state: { network },
+  } = useNetwork();
+  const chainId = network.chainId;
   const toast = useToast();
   useEffect(() => {
     if (notifications.length === 0) return;

@@ -56,9 +56,9 @@ async function balanceOf(
 export const useBalance = () => {
   const { account, provider } = useAccount();
   const {
-    state: { currentNetwork },
+    state: { network },
   } = useNetwork();
-  const chainId = currentNetwork.chainId
+  const chainId = network.chainId
   const ethBalance = useEtherBalance(account);
 
   const [ethmaxyBalance, setEthmaxyBalance] = useState<Balance>(

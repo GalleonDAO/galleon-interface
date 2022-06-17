@@ -1,11 +1,11 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 import { BigNumber } from "set.js";
 import { colors } from "styles/colors";
 
-import { Box, Flex, Image, Input, Select, Text } from "@chakra-ui/react";
+import { Box, Flex, Image, Input, Text } from "@chakra-ui/react";
 import { formatUnits } from "@ethersproject/units";
-import { useEthers } from "@usedapp/core";
+import { useNetwork } from "providers/Network/NetworkProvider";
 
 import { Token } from "constants/tokens";
 import { useBalance } from "hooks/useBalance";
@@ -31,7 +31,10 @@ const QuickTradeSelector = (props: {
   onChangeInput: (token: Token, input: string) => void;
   onSelectedToken: (symbol: string) => void;
 }) => {
-  const { chainId } = useEthers();
+  const {
+    state: { network },
+  } = useNetwork();
+  const chainId = network.chainId;
   const { getBalance } = useBalance();
 
   const [inputString, setInputString] = useState<string>(
@@ -48,41 +51,49 @@ const QuickTradeSelector = (props: {
   }, [props.selectedTokenAmount]);
 
   useEffect(() => {
-    onChangeInput("");
-  }, [chainId]);
-
-  useEffect(() => {
     const tokenBal = getBalance(props.selectedToken.symbol);
     setTokenBalance(formattedBalance(props.selectedToken, tokenBal));
   }, [props.selectedToken, getBalance, chainId]);
 
   const { config, selectedToken } = props;
   const borderColor = colors.themeNavy;
-  const borderRadius = 16;
 
   const height = "64px";
   const wideWidths = ["250px", "180px"];
   const narrowWidths = ["250px"];
   const widths = config.isNarrowVersion ? narrowWidths : wideWidths;
 
-  const onChangeInput = (amount: string) => {
-    if (!amount) {
-      setInputString("");
-      props.onChangeInput(props.selectedToken, "");
-    }
+  const onChangeInput = useCallback(
+    (amount: string) => {
+      if (!amount) {
+        setInputString("");
+        props.onChangeInput(props.selectedToken, "");
+      }
 
-    if (
-      props.onChangeInput === undefined ||
-      config.isInputDisabled ||
-      config.isSelectorDisabled ||
-      config.isReadOnly ||
-      !isValidTokenInput(amount, selectedToken.decimals)
-    )
-      return;
+      if (
+        props.onChangeInput === undefined ||
+        config.isInputDisabled ||
+        config.isSelectorDisabled ||
+        config.isReadOnly ||
+        !isValidTokenInput(amount, selectedToken.decimals)
+      )
+        return;
 
-    setInputString(amount);
-    props.onChangeInput(props.selectedToken, amount);
-  };
+      setInputString(amount);
+      props.onChangeInput(props.selectedToken, amount);
+    },
+    [
+      config.isInputDisabled,
+      config.isReadOnly,
+      config.isSelectorDisabled,
+      props,
+      selectedToken.decimals,
+    ]
+  );
+
+  useEffect(() => {
+    onChangeInput("");
+  }, [onChangeInput]);
 
   return (
     <Flex direction="column">

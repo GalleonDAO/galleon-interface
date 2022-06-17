@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { initOnRamp } from "@coinbase/cbpay-js";
 import { useEthers } from "@usedapp/core";
 import coinbase from "assets/coinbase-logo.png";
@@ -8,7 +8,7 @@ const CoinbaseButton = () => {
   const [isReady, setIsReady] = useState(false);
   const toast = useToast();
   const [cb, setCb] = useState(null);
-  const { account } = useEthers();
+  const { account } = useEthers(); //TODO: check if this is handling state correctly
   useEffect(() => {
     setCb(
       initOnRamp({

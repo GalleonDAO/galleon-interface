@@ -120,9 +120,9 @@ export const getSetTokenAmount = (
 export const useBestTradeOption = () => {
   const { provider } = useAccount();
   const {
-    state: { currentNetwork },
+    state: { network },
   } = useNetwork();
-  const chainId = currentNetwork.chainId;
+  const chainId = network.chainId;
   const { getBalance } = useBalance();
 
   const [isFetching, setIsFetching] = useState<boolean>(false);

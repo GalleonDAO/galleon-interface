@@ -81,9 +81,11 @@ const DoubloonPage = (props: {
   const isMobile = useBreakpointValue({ base: true, lg: false });
   const { marketData, tokenData } = props;
   const {
+    state: { network },
     actions: { changeNetwork },
   } = useNetwork();
-  const { chainId, library } = useEthers();
+  const chainId = network.chainId;
+  const { library } = useEthers();
   const { selectLatestMarketData } = useMarketData();
   const [currentTokenSupply, setCurrentTokenSupply] = useState(0);
 

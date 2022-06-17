@@ -12,45 +12,28 @@ import {
   useDisclosure,
 } from "@chakra-ui/react";
 import { BigNumber } from "@ethersproject/bignumber";
-import { ChainId, useEthers } from "@usedapp/core";
+import { useEthers } from "@usedapp/core";
+import { useNetwork } from "providers/Network/NetworkProvider";
 
 import ConnectModal from "components/header/ConnectModal";
-import {
-  ExchangeIssuanceLeveragedMainnetAddress,
-  ExchangeIssuanceLeveragedPolygonAddress,
-  ExchangeIssuanceZeroExAddress,
-  perpExchangeIssuanceOptimismAddress,
-  zeroExRouterAddress,
-} from "constants/ethContractAddresses";
-import { ETH, EthMaxYieldIndex, Token } from "constants/tokens";
+import { perpExchangeIssuanceOptimismAddress } from "constants/ethContractAddresses";
+import { Token } from "constants/tokens";
 import { useApproval } from "hooks/useApproval";
 import { useBalance } from "hooks/useBalance";
 import { useBestTradeOption } from "hooks/useBestTradeOption";
-import { useTrade } from "hooks/useTrade";
-import { useTradeExchangeIssuance } from "hooks/useTradeExchangeIssuance";
-import { useTradeLeveragedExchangeIssuance } from "hooks/useTradeLeveragedExchangeIssuance";
 import { useTradeTokenLists } from "hooks/useTradeTokenLists";
 import { isSupportedNetwork, isValidTokenInput, toWei } from "utils";
 
 import { MAINNET, OPTIMISM, POLYGON } from "constants/chains";
-import {
-  ExchangeIssuanceZeroExMainnetAddress,
-  ExchangeIssuanceZeroExPolygonAddress,
-} from "constants/ethContractAddresses";
 import {
   indexNamesMainnet,
   indexNamesOptimism,
   indexNamesPolygon,
 } from "constants/tokens";
 
-import { maxPriceImpact } from "hooks/useBestTradeOption";
-
 import {
   getHasInsufficientFunds,
-  getTradeInfoData0x,
-  getTradeInfoDataFromEI,
   formattedFiat,
-  getFormattedOuputTokenAmount,
   getFormattedPriceImpact,
 } from "./QuickTradeFormatter";
 import QuickTradeSelector from "./QuickTradeSelector";
@@ -81,7 +64,11 @@ const QuickTrade = (props: {
     onOpen: onOpenSelectOutputToken,
     onClose: onCloseSelectOutputToken,
   } = useDisclosure();
-  const { account, chainId } = useEthers();
+  const { account } = useEthers();
+  const {
+    state: { network },
+  } = useNetwork();
+  const chainId = network.chainId;
 
   const supportedNetwork = isSupportedNetwork(chainId ?? -1);
 

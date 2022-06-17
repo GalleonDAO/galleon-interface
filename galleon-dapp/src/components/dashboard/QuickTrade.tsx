@@ -75,10 +75,10 @@ const QuickTrade = (props: {
 }) => {
   const { account } = useAccount();
   const {
-    state: { currentNetwork },
+    state: { network },
     actions: { changeNetwork },
   } = useNetwork();
-  const chainId = currentNetwork.chainId;
+  const chainId = network.chainId;
   const { isOpen, onOpen, onClose } = useDisclosure();
   const {
     isOpen: isSelectInputTokenOpen,

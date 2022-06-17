@@ -50,9 +50,9 @@ export const useApproval = (
 ) => {
   const { account, provider } = useAccount();
   const {
-    state: { currentNetwork },
+    state: { network },
   } = useNetwork();
-  const chainId = currentNetwork.chainId;
+  const chainId = network.chainId;
   const { addTransaction } = useTransactions();
 
   const tokenAddress = token && getAddressForToken(token, chainId);

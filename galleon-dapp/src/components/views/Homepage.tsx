@@ -30,10 +30,10 @@ const Dashboard = () => {
     useUserMarketData();
   const { account } = useAccount();
   const {
-    state: { currentNetwork },
+    state: { network },
     actions: { changeNetwork },
   } = useNetwork();
-  const chainId = currentNetwork.chainId;
+  const chainId = network.chainId;
   const isWeb = useBreakpointValue({
     base: false,
     md: true,

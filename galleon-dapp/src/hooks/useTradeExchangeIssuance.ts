@@ -27,9 +27,9 @@ export const useTradeExchangeIssuance = (
 ) => {
   const { account, provider } = useAccount();
   const {
-    state: { currentNetwork },
+    state: { network },
   } = useNetwork();
-  const chainId = currentNetwork.chainId;
+  const chainId = network.chainId;
   const {
     issueExactSetFromETH,
     issueExactSetFromToken,

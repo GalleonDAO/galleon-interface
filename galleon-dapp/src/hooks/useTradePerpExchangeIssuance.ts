@@ -3,10 +3,8 @@ import { useCallback, useState } from "react";
 import { BigNumber } from "@ethersproject/bignumber";
 import { useEthers } from "@usedapp/core";
 
-import { POLYGON } from "constants/chains";
-import { ETH, MATIC, Token, USDC } from "constants/tokens";
+import { Token, USDC } from "constants/tokens";
 import { fromWei } from "utils";
-import { SwapData } from "utils/exchangeIssuanceQuotes";
 
 import { useBalance } from "./useBalance";
 
@@ -23,7 +21,7 @@ export const useTradePerpExchangeIssuance = (
   componentQuotes: any[],
   minInputOutputAmount: BigNumber
 ) => {
-  const { account, chainId, library } = useEthers();
+  const { account, library } = useEthers();
   const {
     getUsdcAmountInForFixedSetOffChain,
     getUsdcAmountOutForFixedSetOffChain,

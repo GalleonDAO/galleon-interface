@@ -16,6 +16,7 @@ import { useMarketData } from "providers/MarketData/MarketDataProvider";
 import { displayFromWei, safeDiv } from "utils";
 import { getSetDetails } from "utils/setjsApi";
 import { getTokenList, TokenData as Token } from "utils/tokenlists";
+import { useNetwork } from "providers/Network/NetworkProvider";
 
 const ASSET_PLATFORM = "ethereum";
 const VS_CURRENCY = "usd";
@@ -32,7 +33,12 @@ const SetComponentsProvider = (props: { children: any }) => {
   const [byeComponents, setByeComponents] = useState<SetComponent[]>([]);
   // const [dummyComponents, setDummyComponents] = useState<SetComponent[]>([])
 
-  const { account, chainId, library } = useEthers();
+  const {
+    state: { network },
+  } = useNetwork();
+  const chainId = network.chainId;
+  const { account, library } = useEthers();
+
   const tokenList = getTokenList(chainId);
 
   useEffect(() => {
