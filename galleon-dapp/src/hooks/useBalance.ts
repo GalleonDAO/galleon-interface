@@ -2,12 +2,8 @@ import { useCallback, useEffect, useState } from "react";
 
 import { BigNumber, Contract, providers } from "ethers";
 
-import { useEtherBalance, useTokenBalance } from "@usedapp/core";
+import { useEtherBalance } from "@usedapp/core";
 
-import {
-  uniswapEthDpiLpTokenAddress,
-  uniswapEthMviLpTokenAddress,
-} from "constants/ethContractAddresses";
 import {
   BasisYieldEthIndex,
   DAI,
@@ -21,9 +17,8 @@ import {
   WETH,
 } from "constants/tokens";
 import { useAccount } from "hooks/useAccount";
-import { useNetwork } from "hooks/useNetwork";
+import { useNetwork } from "providers/Network/NetworkProvider";
 import { ERC20_ABI } from "utils/abi/ERC20";
-import { useStakingUnclaimedRewards } from "utils/stakingRewards";
 import { getAddressForToken } from "utils/tokens";
 
 type Balance = BigNumber;
@@ -60,7 +55,10 @@ async function balanceOf(
 
 export const useBalance = () => {
   const { account, provider } = useAccount();
-  const { chainId } = useNetwork();
+  const {
+    state: { currentNetwork },
+  } = useNetwork();
+  const chainId = currentNetwork.chainId
   const ethBalance = useEtherBalance(account);
 
   const [ethmaxyBalance, setEthmaxyBalance] = useState<Balance>(
@@ -137,7 +135,7 @@ export const useBalance = () => {
     };
 
     fetchAllBalances();
-  }, [account, chainId]);
+  }, [account, chainId, provider]);
 
   const getBalance = useCallback(
     (tokenSymbol: string): BigNumber | undefined => {

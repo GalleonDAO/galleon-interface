@@ -1,11 +1,8 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 import { Box, Flex, Image, useBreakpointValue } from "@chakra-ui/react";
 import { useEthers } from "@usedapp/core";
 
-import { SpeakerphoneIcon, XIcon } from "@heroicons/react/outline";
-
-import QuickTrade from "components/dashboard/QuickTrade";
 import Page from "components/Page";
 import { getPriceChartData } from "components/product/PriceChartData";
 import { DoubloonToken, Token } from "constants/tokens";
@@ -13,13 +10,10 @@ import {
   TokenMarketDataValues,
   useMarketData,
 } from "providers/MarketData/MarketDataProvider";
-import { SetComponent } from "providers/SetComponents/SetComponentsProvider";
-import { displayFromWei } from "utils";
 import {
   getFormattedChartPriceChanges,
   getPricesChanges,
 } from "utils/priceChange";
-import { getTokenSupply } from "utils/setjsApi";
 import xtokenLogo from "assets/xtoken.png";
 import MarketChart, { PriceChartRangeOption } from "./MarketChart";
 import ProductComponentsTable from "./ProductComponentsTable";
@@ -30,10 +24,9 @@ import { SwapWidget, Theme } from "@uniswap/widgets/dist/index.js";
 import "@uniswap/widgets/dist/fonts.css";
 import { getTokenList } from "utils/tokenlists";
 import { colors } from "styles/colors";
-import theme from "theme";
-import { useNetwork } from "hooks/useNetwork";
+import { useNetwork } from "providers/Network/NetworkProvider";
+
 import { ARBITRUM } from "constants/chains";
-import logo from "assets/brand/Products-Icon.png";
 
 const jsonRpcEndpoint =
   "https://mainnet.infura.io/v3/" + process.env.REACT_APP_INFURA_KEY ?? "";
@@ -87,7 +80,9 @@ const DoubloonPage = (props: {
 }) => {
   const isMobile = useBreakpointValue({ base: true, lg: false });
   const { marketData, tokenData } = props;
-  const { changeNetwork } = useNetwork();
+  const {
+    actions: { changeNetwork },
+  } = useNetwork();
   const { chainId, library } = useEthers();
   const { selectLatestMarketData } = useMarketData();
   const [currentTokenSupply, setCurrentTokenSupply] = useState(0);
@@ -196,9 +191,7 @@ const DoubloonPage = (props: {
                   {chainId !== ARBITRUM.chainId ? (
                     <>
                       <button
-                        onClick={() =>
-                          changeNetwork(ARBITRUM.chainId.toString())
-                        }
+                        onClick={() => changeNetwork(ARBITRUM.chainId)}
                         className="m-auto justify-center text-center block mt-4 bg-theme-sky shadow-sm shadow-theme-black text-white  py-1.5 px-4 border-2 border-theme-sky rounded-2xl text-base font-medium  hover:bg-opacity-75"
                       >
                         Switch to Arbitrum

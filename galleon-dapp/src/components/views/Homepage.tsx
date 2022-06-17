@@ -1,7 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 
 import { Box, Flex, Image, useBreakpointValue } from "@chakra-ui/react";
-import { useEthers } from "@usedapp/core";
 import { Disclosure } from "@headlessui/react";
 import { ChevronDownIcon } from "@heroicons/react/outline";
 import AllocationChart from "components/dashboard/AllocationChart";
@@ -14,28 +13,27 @@ import TransactionHistoryTable, {
 } from "components/dashboard/TransactionHistoryTable";
 import Page from "components/Page";
 import PageTitle from "components/PageTitle";
-import MarketChart, { PriceChartData } from "components/product/MarketChart";
+import { PriceChartData } from "components/product/MarketChart";
 import { getPriceChartData } from "components/product/PriceChartData";
-import SectionTitle from "components/SectionTitle";
 import { useUserMarketData } from "hooks/useUserMarketData";
-import { useMarketData } from "providers/MarketData/MarketDataProvider";
 import { getTransactionHistory } from "utils/alchemyApi";
 import { exportCsv } from "utils/exportToCsv";
-import { getFormattedChartPriceChanges } from "utils/priceChange";
 
 import { getPieChartPositions } from "./DashboardData";
 import { ARBITRUM, MAINNET, POLYGON, SUPPORTED_CHAINS } from "constants/chains";
 import { classNames } from "utils";
-import { logger } from "index";
-import { KNOWN_LABELS, KNOWN_SERVICES } from "@galleondao/logging-lib";
-import { useNetwork } from "hooks/useNetwork";
+import { useNetwork } from "providers/Network/NetworkProvider";
 import { useAccount } from "hooks/useAccount";
 
 const Dashboard = () => {
   const { userBalances, totalBalanceInUSD, totalHourlyPrices, priceChanges } =
     useUserMarketData();
   const { account } = useAccount();
-  const { chainId, changeNetwork } = useNetwork();
+  const {
+    state: { currentNetwork },
+    actions: { changeNetwork },
+  } = useNetwork();
+  const chainId = currentNetwork.chainId;
   const isWeb = useBreakpointValue({
     base: false,
     md: true,
@@ -147,9 +145,7 @@ const Dashboard = () => {
                     </p>
                     <>
                       <button
-                        onClick={() =>
-                          changeNetwork(MAINNET.chainId.toString())
-                        }
+                        onClick={() => changeNetwork(MAINNET.chainId)}
                         className="m-auto justify-center text-center block mt-4 bg-theme-sky shadow-sm shadow-theme-black text-white  py-1.5 px-4 border-2 border-theme-sky rounded-2xl text-base font-medium  hover:bg-opacity-75"
                       >
                         Switch to Ethereum

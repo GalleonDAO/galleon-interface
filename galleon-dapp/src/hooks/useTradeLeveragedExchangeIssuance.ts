@@ -5,7 +5,7 @@ import { useTransactions } from "@usedapp/core";
 
 import { ETH, MATIC, Token } from "constants/tokens";
 import { useAccount } from "hooks/useAccount";
-import { useNetwork } from "hooks/useNetwork";
+import { useNetwork } from "providers/Network/NetworkProvider";
 import { fromWei } from "utils";
 import { SwapData } from "utils/exchangeIssuanceQuotes";
 import { getStoredTransaction } from "utils/storedTransaction";
@@ -29,7 +29,10 @@ export const useTradeLeveragedExchangeIssuance = (
   inputOutputSwapData?: SwapData
 ) => {
   const { account, provider } = useAccount();
-  const { chainId } = useNetwork();
+  const {
+    state: { currentNetwork },
+  } = useNetwork();
+  const chainId = currentNetwork.chainId;
   const {
     issueExactSetFromETH,
     issueExactSetFromERC20,

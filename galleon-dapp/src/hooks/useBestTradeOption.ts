@@ -13,7 +13,7 @@ import {
 } from "constants/tokens";
 import { useAccount } from "hooks/useAccount";
 import { useBalance } from "hooks/useBalance";
-import { useNetwork } from "hooks/useNetwork";
+import { useNetwork } from "providers/Network/NetworkProvider";
 import { toWei } from "utils";
 import {
   ExchangeIssuanceQuote,
@@ -119,7 +119,10 @@ export const getSetTokenAmount = (
 
 export const useBestTradeOption = () => {
   const { provider } = useAccount();
-  const { chainId } = useNetwork();
+  const {
+    state: { currentNetwork },
+  } = useNetwork();
+  const chainId = currentNetwork.chainId;
   const { getBalance } = useBalance();
 
   const [isFetching, setIsFetching] = useState<boolean>(false);

@@ -1,29 +1,19 @@
 import { useEffect, useState } from "react";
-import useDebouncedEffect from "use-debounced-effect";
 import { colors } from "styles/colors";
 
-import { InfoOutlineIcon, UpDownIcon } from "@chakra-ui/icons";
+import { UpDownIcon } from "@chakra-ui/icons";
 import {
   Box,
   Button,
   Flex,
   IconButton,
-  Spacer,
   Text,
-  Tooltip,
   useDisclosure,
 } from "@chakra-ui/react";
 import { BigNumber } from "@ethersproject/bignumber";
-import { ChainId, useEthers } from "@usedapp/core";
 
 import ConnectModal from "components/header/ConnectModal";
-import {
-  ExchangeIssuanceLeveragedMainnetAddress,
-  ExchangeIssuanceLeveragedPolygonAddress,
-  ExchangeIssuanceZeroExAddress,
-  zeroExRouterAddress,
-} from "constants/ethContractAddresses";
-import { ETH, EthMaxYieldIndex, Token } from "constants/tokens";
+import { indexNamesArbitrum, Token } from "constants/tokens";
 import { useApproval } from "hooks/useApproval";
 import { useBalance } from "hooks/useBalance";
 import { useBestTradeOption } from "hooks/useBestTradeOption";
@@ -33,11 +23,13 @@ import { useTradeLeveragedExchangeIssuance } from "hooks/useTradeLeveragedExchan
 import { useTradeTokenLists } from "hooks/useTradeTokenLists";
 import { isSupportedNetwork, isValidTokenInput, toWei } from "utils";
 
-import { MAINNET, OPTIMISM, POLYGON } from "constants/chains";
 import {
-  ExchangeIssuanceZeroExMainnetAddress,
-  ExchangeIssuanceZeroExPolygonAddress,
-} from "constants/ethContractAddresses";
+  ARBITRUM,
+  ChainData,
+  MAINNET,
+  OPTIMISM,
+  POLYGON,
+} from "constants/chains";
 import {
   indexNamesMainnet,
   indexNamesOptimism,
@@ -59,16 +51,13 @@ import TradeInfo, { TradeInfoItem } from "./TradeInfo";
 import { getSelectTokenListItems, SelectTokenModal } from "./SelectTokenModal";
 import { SetComponent } from "providers/SetComponents/SetComponentsProvider";
 import { useAccount } from "hooks/useAccount";
-import { useNetwork } from "hooks/useNetwork";
+import { useNetwork } from "providers/Network/NetworkProvider";
 import {
   get0xExchangeIssuanceContract,
   get0xRouterContract,
   getLeveragedExchangeIssuanceContract,
 } from "utils/contracts";
-import {
-  getFullCostsInUsd,
-  getLeveragedExchangeIssuanceQuotes,
-} from "utils/exchangeIssuanceQuotes";
+import { getFullCostsInUsd } from "utils/exchangeIssuanceQuotes";
 import { debounce } from "lodash";
 
 enum QuickTradeBestOption {
@@ -85,7 +74,11 @@ const QuickTrade = (props: {
   children: any;
 }) => {
   const { account } = useAccount();
-  const { chainId } = useNetwork();
+  const {
+    state: { currentNetwork },
+    actions: { changeNetwork },
+  } = useNetwork();
+  const chainId = currentNetwork.chainId;
   const { isOpen, onOpen, onClose } = useDisclosure();
   const {
     isOpen: isSelectInputTokenOpen,
@@ -393,7 +386,29 @@ const QuickTrade = (props: {
       return (
         indexNamesOptimism.filter((t) => t.symbol === token.symbol).length === 0
       );
+    if (token && chainId === ARBITRUM.chainId)
+      return (
+        indexNamesArbitrum.filter((t) => t.symbol === token.symbol).length === 0
+      );
     return false;
+  };
+
+  const getSupportedNetworks = (token: Token | undefined): ChainData[] => {
+    const validNetworks = [];
+
+    if (indexNamesMainnet.filter((t) => t.symbol === token.symbol).length !== 0)
+      validNetworks.push(MAINNET);
+    if (indexNamesPolygon.filter((t) => t.symbol === token.symbol).length !== 0)
+      validNetworks.push(POLYGON);
+    if (
+      indexNamesOptimism.filter((t) => t.symbol === token.symbol).length !== 0
+    )
+      validNetworks.push(OPTIMISM);
+    if (
+      indexNamesArbitrum.filter((t) => t.symbol === token.symbol).length !== 0
+    )
+      validNetworks.push(ARBITRUM);
+    return validNetworks;
   };
 
   /**
@@ -405,23 +420,6 @@ const QuickTrade = (props: {
 
     if (!account) {
       return "Connect Wallet";
-    }
-
-    if (isNotTradable(props.singleToken)) {
-      let chainName = "This Network";
-      switch (chainId) {
-        case MAINNET.chainId:
-          chainName = "Mainnet";
-          break;
-        case POLYGON.chainId:
-          chainName = "Polygon";
-          break;
-        case OPTIMISM.chainId:
-          chainName = "Optimism";
-          break;
-      }
-
-      return `Not Available on ${chainName}`;
     }
 
     if (sellTokenAmount === "0") {
@@ -494,6 +492,11 @@ const QuickTrade = (props: {
     }
   };
 
+  const onChangeNetworkButton = (network: ChainData) => {
+    changeNetwork(network.chainId);
+    return;
+  };
+
   const getButtonDisabledState = () => {
     if (!supportedNetwork) return true;
     if (!account) return false;
@@ -529,6 +532,38 @@ const QuickTrade = (props: {
     buyTokenList,
     outputTokenBalances
   );
+
+  const getInteractionButton = () => {
+    if (isNotTradable(props.singleToken)) {
+      let supportedNetworks = getSupportedNetworks(props.singleToken);
+      return (
+        <div>
+          {supportedNetworks.map((network) => {
+            return (
+              <Flex key={network.name} direction="column" my="20px">
+                <ChangeNetworkButton
+                  label={`Switch to ${network.name} Network`}
+                  background={colors.themeBlue}
+                  destinationNetwork={network}
+                  onClick={() => onChangeNetworkButton(network)}
+                />
+              </Flex>
+            );
+          })}
+        </div>
+      );
+    } else {
+      return (
+        <TradeButton
+          label={buttonLabel}
+          background={colors.themeChampagne}
+          isDisabled={isButtonDisabled}
+          isLoading={isLoading}
+          onClick={onClickTradeButton}
+        />
+      );
+    }
+  };
 
   return (
     <Flex direction="column" py="20px" px={["16px", paddingX]} height={"100%"}>
@@ -590,13 +625,7 @@ const QuickTrade = (props: {
           </Text>
         )}
 
-        <TradeButton
-          label={buttonLabel}
-          background={colors.themeChampagne}
-          isDisabled={isButtonDisabled}
-          isLoading={isLoading}
-          onClick={onClickTradeButton}
-        />
+        {getInteractionButton()}
       </Flex>
       <ConnectModal isOpen={isOpen} onClose={onClose} />
       <SelectTokenModal
@@ -640,6 +669,32 @@ const TradeButton = (props: TradeButtonProps) => (
     fontSize="24px"
     fontWeight="400"
     isLoading={props.isLoading}
+    height="54px"
+    w="100%"
+    onClick={props.onClick}
+  >
+    {props.label}
+  </Button>
+);
+
+type ChangeNetworkButtonProps = {
+  label: string;
+  background: string;
+  destinationNetwork: ChainData;
+  onClick: () => void;
+};
+
+const ChangeNetworkButton = (props: ChangeNetworkButtonProps) => (
+  <Button
+    background={colors.themeNavy}
+    border="2px"
+    borderRadius="1rem"
+    borderColor={colors.themeNavy}
+    color={colors.themeWhite}
+    disabled={false}
+    fontSize="24px"
+    fontWeight="400"
+    isLoading={false}
     height="54px"
     w="100%"
     onClick={props.onClick}

@@ -12,7 +12,7 @@ const App = () => {
   useEffect(() => {
     if (notifications.length === 0) return;
 
-    let explorer = SUPPORTED_CHAINS.find((x) => x.chainId == chainId);
+    let explorer = SUPPORTED_CHAINS.find((x) => x.chainId === chainId);
     notifications.forEach((notification) => {
       if ("transaction" in notification) {
         toast({
@@ -43,7 +43,7 @@ const App = () => {
         });
       }
     });
-  }, [notifications]);
+  }, [notifications, chainId, toast]);
 
   return (
     <>

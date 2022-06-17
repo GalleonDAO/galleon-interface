@@ -6,7 +6,7 @@ import { useTransactions } from "@usedapp/core";
 import { MAINNET } from "constants/chains";
 import { ETH, MATIC, Token } from "constants/tokens";
 import { useAccount } from "hooks/useAccount";
-import { useNetwork } from "hooks/useNetwork";
+import { useNetwork } from "providers/Network/NetworkProvider";
 import { fromWei } from "utils";
 import { ExchangeIssuanceQuote } from "utils/exchangeIssuanceQuotes";
 import { getIssuanceModule } from "utils/issuanceModule";
@@ -26,7 +26,10 @@ export const useTradeExchangeIssuance = (
   quoteData?: ExchangeIssuanceQuote | null
 ) => {
   const { account, provider } = useAccount();
-  const { chainId } = useNetwork();
+  const {
+    state: { currentNetwork },
+  } = useNetwork();
+  const chainId = currentNetwork.chainId;
   const {
     issueExactSetFromETH,
     issueExactSetFromToken,

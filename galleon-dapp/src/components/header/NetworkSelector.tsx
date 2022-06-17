@@ -1,35 +1,30 @@
-import { Fragment, useState } from "react";
+import { Fragment } from "react";
 import { Listbox, Transition } from "@headlessui/react";
 import { CheckIcon, SelectorIcon } from "@heroicons/react/solid";
 
-import { useEthers } from "@usedapp/core";
-
-import { MAINNET, SUPPORTED_CHAINS } from "constants/chains";
-import { useNetwork } from "hooks/useNetwork";
+import { ChainData, SUPPORTED_CHAINS } from "constants/chains";
+import { useNetwork } from "providers/Network/NetworkProvider";
 import { classNames } from "utils";
 
 const NetworkSelector = () => {
-  const { chainId } = useEthers();
-  const { changeNetwork } = useNetwork();
+  const {
+    state: { currentNetwork },
+    actions: { changeNetwork },
+  } = useNetwork();
 
-  const [selected, setSelected] = useState(
-    SUPPORTED_CHAINS.find((x) => x.chainId == chainId) ?? MAINNET
-  );
-
-  const setNetwork = (network) => {
+  const setNetwork = (network: ChainData) => {
     changeNetwork(network.chainId);
-    setSelected(network);
   };
 
   return (
     <div className="inline-flex ml-4">
-      <Listbox value={selected} onChange={setNetwork}>
+      <Listbox value={currentNetwork} onChange={setNetwork}>
         {({ open }) => (
           <>
             <div className="mt-1 relative">
               <Listbox.Button className="theme-sky relative w-full border-2 border-theme-oldlace cursor-pointer  bg-theme-oldlace rounded-2xl pl-3 pr-10 py-1.5 text-left shadow-sm shadow-theme-black focus:outline-none focus:ring-1 focus:ring-theme-oldlace focus:border-theme-oldlace font-medium ">
                 <span className="block truncat  text-theme-navy">
-                  {selected.name}
+                  {currentNetwork.name}
                 </span>
                 <span className="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
                   <SelectorIcon

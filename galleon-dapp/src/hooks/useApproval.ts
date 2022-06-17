@@ -8,7 +8,7 @@ import { useTokenAllowance, useTransactions } from "@usedapp/core";
 
 import { Token } from "constants/tokens";
 import { useAccount } from "hooks/useAccount";
-import { useNetwork } from "hooks/useNetwork";
+import { useNetwork } from "providers/Network/NetworkProvider";
 import { ERC20_ABI } from "utils/abi/ERC20";
 import { getStoredTransaction } from "utils/storedTransaction";
 import { getAddressForToken } from "utils/tokens";
@@ -49,7 +49,10 @@ export const useApproval = (
   amount: BigNumber = constants.MaxUint256
 ) => {
   const { account, provider } = useAccount();
-  const { chainId } = useNetwork();
+  const {
+    state: { currentNetwork },
+  } = useNetwork();
+  const chainId = currentNetwork.chainId;
   const { addTransaction } = useTransactions();
 
   const tokenAddress = token && getAddressForToken(token, chainId);
@@ -81,15 +84,7 @@ export const useApproval = (
       setIsApproving(false);
       console.error("Error approving token", tokenAddress, e);
     }
-  }, [
-    account,
-    amount,
-    provider,
-    setIsApproved,
-    setIsApproving,
-    spenderAddress,
-    tokenAddress,
-  ]);
+  }, [account, addTransaction, amount, chainId, provider, spenderAddress, tokenAddress]);
 
   useEffect(() => {
     setIsApproved(approvalState === ApprovalState.Approved);

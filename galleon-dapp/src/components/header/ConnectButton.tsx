@@ -1,6 +1,4 @@
-import { colors } from "styles/colors";
-
-import { Button, Flex, Text, useDisclosure } from "@chakra-ui/react";
+import { useDisclosure } from "@chakra-ui/react";
 import { useEthers, useLookupAddress } from "@usedapp/core";
 import { useToast } from "@chakra-ui/react";
 
@@ -9,7 +7,7 @@ import NetworkSelector from "./NetworkSelector";
 import { useEffect, useState } from "react";
 import { logger } from "index";
 import { KNOWN_SERVICES, KNOWN_LABELS } from "@galleondao/logging-lib";
-import { useNetwork } from "hooks/useNetwork";
+import { useNetwork } from "providers/Network/NetworkProvider";
 import {
   PendingTransactionState,
   useWaitForTransaction,
@@ -27,7 +25,9 @@ const ConnectButton = () => {
   const id = "login-toast";
   let ens = useLookupAddress();
   const toast = useToast();
-  const { changeNetwork } = useNetwork();
+  const {
+    actions: { changeNetwork },
+  } = useNetwork();
   const { pendingTxHash, pendingTxState } = useWaitForTransaction();
   const txStateHeaderState = getHeaderState(pendingTxState);
   const supportedNetwork = isSupportedNetwork(chainId ?? -1);
@@ -92,7 +92,7 @@ const ConnectButton = () => {
   };
 
   const onWrongNetworkButtonClicked = () => {
-    changeNetwork("1");
+    changeNetwork(1);
   };
 
   const formatAccountName = () => {

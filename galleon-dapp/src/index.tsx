@@ -16,7 +16,6 @@ import { GTMProvider } from "@elgorditosalsero/react-gtm-hook";
 import { Config, DAppProvider } from "@usedapp/core";
 
 import Dashboard from "components/views/Homepage";
-import LiquidityMining from "components/views/LiquidityMining";
 
 import ETHMAXY from "components/views/productpages/ETHMAXY";
 import DBL from "components/views/productpages/DBL";
@@ -28,17 +27,13 @@ import {
   POLYGON,
   SUPPORTED_CHAINS,
 } from "constants/chains";
-import LiquidityMiningProvider from "providers/LiquidityMining/LiquidityMiningProvider";
 import { MarketDataProvider } from "providers/MarketData/MarketDataProvider";
 import SetComponentsProvider from "providers/SetComponents/SetComponentsProvider";
 import "./index.css";
 import { initLogger } from "utils/logger";
-import indexNames from "constants/tokens";
-import Indices, { DoubloonToken, Token } from "constants/tokens";
-import DUMMY from "components/views/productpages/DUMMY";
-import Lab from "components/views/Portfolios";
 import Portfolios from "components/views/Portfolios";
 import BYE from "components/views/productpages/BYE";
+import NetworkProvider from "providers/Network/NetworkProvider";
 
 export const logger = initLogger(process.env.REACT_APP_APIM_SUBSCRIPTION_KEY);
 
@@ -124,13 +119,15 @@ const Providers = (props: { children: any }) => {
   return (
     <ChakraProvider theme={theme}>
       <DAppProvider config={config}>
-        <MarketDataProvider>
-          {/* <LiquidityMiningProvider> */}
-          <SetComponentsProvider>
-            <GTMProvider state={gtmParams}>{props.children}</GTMProvider>
-          </SetComponentsProvider>
-          {/* </LiquidityMiningProvider> */}
-        </MarketDataProvider>
+        <NetworkProvider>
+          <MarketDataProvider>
+            {/* <LiquidityMiningProvider> */}
+            <SetComponentsProvider>
+              <GTMProvider state={gtmParams}>{props.children}</GTMProvider>
+            </SetComponentsProvider>
+            {/* </LiquidityMiningProvider> */}
+          </MarketDataProvider>
+        </NetworkProvider>
       </DAppProvider>
     </ChakraProvider>
   );
