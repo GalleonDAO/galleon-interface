@@ -71,6 +71,9 @@ import {
 } from "utils/exchangeIssuanceQuotes";
 import { debounce } from "lodash";
 
+// Slippage hard coded to .5%
+export const slippagePercentage = 1;
+
 enum QuickTradeBestOption {
   zeroEx,
   exchangeIssuance,
@@ -343,7 +346,8 @@ const QuickTrade = (props: {
       buyToken,
       // buyTokenAmount,
       buyTokenPrice,
-      isBuying
+      isBuying,
+      slippagePercentage
     );
   };
 

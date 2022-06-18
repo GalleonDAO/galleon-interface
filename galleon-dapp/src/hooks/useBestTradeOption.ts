@@ -8,6 +8,7 @@ import {
   ETH,
   EthMaxYieldIndex,
   DoubloonToken,
+  // JPGIndex,
   STETH,
   Token,
 } from "constants/tokens";
@@ -55,6 +56,13 @@ export function isEligibleTradePairZeroEx(
   )
     return false;
 
+  // if (
+  //   inputToken.symbol === JPGIndex.symbol ||
+  //   outputToken.symbol === JPGIndex.symbol
+  // )
+  // temporarily - disabled JPG for EI0x
+  return false;
+
   return true;
 }
 
@@ -73,14 +81,14 @@ export const isEligibleTradePair = (
     outputToken.symbol === EthMaxYieldIndex.symbol;
 
   if (tokenEligible && isEthmaxy && isIssuance) {
-    // Only ETH or stETH is allowed as input for ethmaxy issuance at the moment
+    // Only ETH or stETH is allowed as input for ETHMAXY issuance at the moment
     return (
       inputToken.symbol === ETH.symbol || inputToken.symbol === STETH.symbol
     );
   }
 
   if (tokenEligible && isEthmaxy && !isIssuance) {
-    // Only ETH is allowed as output for ethmaxy redeeming at the moment
+    // Only ETH is allowed as output for ETHMAXY redeeming at the moment
     return outputToken.symbol === ETH.symbol;
   }
 
@@ -132,7 +140,8 @@ export const useBestTradeOption = () => {
     buyToken: Token,
     // buyTokenAmount: string,
     buyTokenPrice: number,
-    isIssuance: boolean
+    isIssuance: boolean,
+    slippagePercentage: number
   ) => {
     setIsFetching(true);
 
@@ -182,6 +191,7 @@ export const useBestTradeOption = () => {
             sellToken,
             buyToken,
             isIssuance,
+            slippagePercentage,
             chainId,
             provider
           );
@@ -204,6 +214,7 @@ export const useBestTradeOption = () => {
             sellToken,
             isIssuance,
             spendingTokenBalance,
+            slippagePercentage,
             chainId,
             provider
           );

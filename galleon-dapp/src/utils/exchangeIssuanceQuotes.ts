@@ -1,4 +1,6 @@
-import { BigNumber, providers } from "ethers";
+import { BigNumber } from "ethers";
+
+import { JsonRpcProvider } from "@ethersproject/providers";
 
 import { POLYGON } from "constants/chains";
 import {
@@ -35,9 +37,6 @@ import {
 } from "utils/swapData";
 import { getAddressForToken } from "utils/tokens";
 import { get0xQuote } from "utils/zeroExUtils";
-
-// Slippage hard coded to .5% (will be increased if there are revert issues)
-export const slippagePercentage = 1;
 
 export enum Exchange {
   None,
@@ -116,7 +115,7 @@ export async function getRequiredComponents(
   setTokenSymbol: string,
   setTokenAmount: BigNumber,
   chainId: number | undefined,
-  provider: providers.JsonRpcProvider | undefined
+  provider: JsonRpcProvider | undefined
 ) {
   const issuanceModule = getIssuanceModule(setTokenSymbol, chainId);
 
@@ -145,16 +144,16 @@ export async function getRequiredComponents(
 }
 
 /**
- * Returns exchange issuance quotes (incl. 0x trade data) or null
+ * Returns exchange issuance quotes (incl. 0x trade data) or null.
  *
  * @param buyToken            The token to buy
  * @param setTokenAmount      The amount of set token that should be acquired/sold
  * @param sellToken           The token to sell
+ * @param slippagePercentage  The slippage percentage to use (default .5%)
  * @param chainId             ID for current chain
- * @param library             Web3Provider instance
+ * @param provider            A JsonRpcProvider instance
  *
- * @return tradeData           Array of 0x trade data for the individual positions
- * @return inputTokenAmount    Needed input token amount for trade
+ * @return An ExchangeIssuanceQuote including trade data.
  */
 export const getExchangeIssuanceQuotes = async (
   buyToken: Token,
@@ -162,8 +161,9 @@ export const getExchangeIssuanceQuotes = async (
   sellToken: Token,
   isIssuance: boolean,
   inputTokenBalance: BigNumber,
+  slippagePercentage: number = 0.5,
   chainId: number = 1,
-  provider: providers.JsonRpcProvider | undefined
+  provider: JsonRpcProvider | undefined
 ): Promise<ExchangeIssuanceQuote | null> => {
   const buyTokenAddress = getAddressForToken(buyToken, chainId);
   const sellTokenAddress = getAddressForToken(sellToken, chainId);
@@ -186,8 +186,8 @@ export const getExchangeIssuanceQuotes = async (
   let inputOutputTokenAmount = BigNumber.from(0);
   // 0xAPI expects percentage as value between 0-1 e.g. 5% -> 0.05
   // const isJPG = setTokenSymbol === JPGIndex.symbol
+  // const slippage = isJPG ? 0.08 : slippagePercentage / 100
   const slippage = slippagePercentage / 100;
-
   const buyTokenIsEth = buyToken.symbol === "ETH";
   const sellTokenIsEth = sellToken.symbol === "ETH";
   const buyTokenAddressOrWeth = buyTokenIsEth ? wethAddress : buyTokenAddress;
@@ -299,7 +299,7 @@ async function getLevTokenData(
   setTokenAmount: BigNumber,
   isIssuance: boolean,
   chainId: number,
-  signer: providers.JsonRpcProvider | undefined
+  signer: JsonRpcProvider | undefined
 ): Promise<LeveragedTokenData> {
   const contract = await getExchangeIssuanceLeveragedContract(signer, chainId);
   const setTokenAddress = getAddressForToken(setToken, chainId);
@@ -383,7 +383,8 @@ export async function getSwapDataAndPaymentTokenAmount(
   ) {
     const result = await getSwapData(
       isIssuance ? issuanceParams : redeemingParams,
-      chainId
+      chainId,
+      0.5
     );
     if (result) {
       const { swapData, zeroExQuote } = result;
@@ -423,14 +424,18 @@ export function getSlippageAdjustedTokenAmount(
     .div(toWei(100 + slippagePercentage, tokenDecimals));
 }
 
+/**
+ * @param slippagePercentage  The slippage percentage to use (default .5%)
+ */
 export const getLeveragedExchangeIssuanceQuotes = async (
   setToken: Token,
   setTokenAmount: BigNumber,
   inputToken: Token,
   outputToken: Token,
   isIssuance: boolean,
+  slippagePercentage: number = 1,
   chainId: number = 1,
-  provider: providers.JsonRpcProvider | undefined
+  provider: JsonRpcProvider | undefined
 ): Promise<LeveragedExchangeIssuanceQuote | null> => {
   const setTokenSymbol = setToken.symbol;
   const isEthmaxy = setTokenSymbol === "ETHMAXY";
@@ -448,11 +453,13 @@ export const getLeveragedExchangeIssuanceQuotes = async (
     ? await getSwapDataDebtCollateral(
         leveragedTokenData,
         includedSources,
+        slippagePercentage,
         chainId
       )
     : await getSwapDataCollateralDebt(
         leveragedTokenData,
         includedSources,
+        slippagePercentage,
         chainId
       );
 
