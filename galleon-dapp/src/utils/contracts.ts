@@ -8,6 +8,7 @@ import {
   zeroExRouterOptimism,
   zeroExRouterAddress,
   zeroExRouterPolygon,
+  perpExchangeIssuanceOptimismAddress,
 } from "constants/ethContractAddresses";
 
 export function get0xExchangeIssuanceContract(chainId: number = 1): string {
@@ -29,4 +30,9 @@ export function getLeveragedExchangeIssuanceContract(
   if (chainId === POLYGON.chainId)
     return ExchangeIssuanceLeveragedPolygonAddress;
   return ExchangeIssuanceLeveragedMainnetAddress;
+}
+
+export function getPerpExchanceIssuanceContract(chainId: number = 10): string {
+  if (chainId === OPTIMISM.chainId) return perpExchangeIssuanceOptimismAddress;
+  return perpExchangeIssuanceOptimismAddress;
 }

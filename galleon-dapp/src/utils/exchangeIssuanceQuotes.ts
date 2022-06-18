@@ -161,7 +161,7 @@ export const getExchangeIssuanceQuotes = async (
   sellToken: Token,
   isIssuance: boolean,
   inputTokenBalance: BigNumber,
-  slippagePercentage: number = 0.5,
+  slippagePercentage: number = 1,
   chainId: number = 1,
   provider: JsonRpcProvider | undefined
 ): Promise<ExchangeIssuanceQuote | null> => {
@@ -384,7 +384,7 @@ export async function getSwapDataAndPaymentTokenAmount(
     const result = await getSwapData(
       isIssuance ? issuanceParams : redeemingParams,
       chainId,
-      0.5
+      1
     );
     if (result) {
       const { swapData, zeroExQuote } = result;
