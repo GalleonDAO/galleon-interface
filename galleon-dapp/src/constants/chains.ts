@@ -1,5 +1,14 @@
+//Gives a type safe way to match chains on name
+export enum ChainName {
+  MAINNET = "Ethereum",
+  POLYGON = "Polygon",
+  OPTIMISM = "Optimism",
+  ARBITRUM = "Arbitrum",
+}
+
 export type ChainData = {
   name: string;
+  alias?: string; //TODO:Change this to ChainName and resolve string errors
   chainId: number;
   chainId0x: string;
   rpcUrl: string;
@@ -14,7 +23,8 @@ export type ChainData = {
 };
 
 export const MAINNET: ChainData = {
-  name: "Ethereum",
+  name: ChainName.MAINNET,
+  alias: "Mainnet",
   chainId: 1,
   chainId0x: "0x1",
   rpcUrl: "https://mainnet.eth.aragon.network/",
@@ -29,7 +39,7 @@ export const MAINNET: ChainData = {
 };
 
 export const POLYGON: ChainData = {
-  name: "Polygon",
+  name: ChainName.POLYGON,
   chainId: 137,
   chainId0x: "0x89",
   rpcUrl: "https://rpc-mainnet.maticvigil.com/",
@@ -44,7 +54,7 @@ export const POLYGON: ChainData = {
 };
 
 export const OPTIMISM: ChainData = {
-  name: "Optimism",
+  name: ChainName.OPTIMISM,
   chainId: 10,
   chainId0x: "0xA",
   rpcUrl: "https://mainnet.optimism.io/",
@@ -59,7 +69,7 @@ export const OPTIMISM: ChainData = {
 };
 
 export const ARBITRUM: ChainData = {
-  name: "Arbitrum",
+  name: ChainName.ARBITRUM,
   chainId: 42161,
   chainId0x: "0xA4B1",
   rpcUrl: "https://arb1.arbitrum.io/rpc",
@@ -71,6 +81,26 @@ export const ARBITRUM: ChainData = {
     symbol: "ETH",
     decimals: 18,
   },
+};
+
+/**
+ * Offers a type safe way to access chain objects by name
+ * @returns {ChainData} When supported chain is found
+ * @returns {undefined} When no supported chain available
+ */
+export const getChain = (chainName: ChainName): ChainData | undefined => {
+  switch (chainName) {
+    case ChainName.MAINNET:
+      return MAINNET;
+    case ChainName.POLYGON:
+      return POLYGON;
+    case ChainName.OPTIMISM:
+      return OPTIMISM;
+    case ChainName.ARBITRUM:
+      return ARBITRUM;
+    default:
+      return undefined;
+  }
 };
 
 export const SUPPORTED_CHAINS = [MAINNET, ARBITRUM, OPTIMISM];
