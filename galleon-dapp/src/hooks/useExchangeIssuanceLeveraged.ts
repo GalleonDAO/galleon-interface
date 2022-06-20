@@ -39,12 +39,14 @@ export const getLeveragedTokenData = async (
   isIssuance: boolean
 ): Promise<any> => {
   try {
+    console.info("1", contract, setToken, setAmount, isIssuance);
     return await contract.getLeveragedTokenData(
       setToken,
       setAmount,
       isIssuance
     );
   } catch (err) {
+    console.info(contract, setToken, setAmount, isIssuance);
     console.error("Error getting leveraged token data", err);
   }
 };

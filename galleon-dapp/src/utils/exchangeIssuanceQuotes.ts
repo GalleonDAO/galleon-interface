@@ -1,4 +1,4 @@
-import { BigNumber, ethers, providers } from "ethers";
+import { BigNumber, providers } from "ethers";
 
 import { POLYGON } from "constants/chains";
 import {
@@ -10,7 +10,6 @@ import {
 import {
   ETH,
   EthMaxYieldIndex,
-  // JPGIndex,
   MATIC,
   STETH,
   Token,
@@ -27,6 +26,7 @@ import {
 } from "hooks/useExchangeIssuanceZeroEx";
 import { displayFromWei, toWei } from "utils";
 import { getExchangeIssuanceGasEstimate } from "utils/exchangeIssuanceGasEstimate";
+import { GasStation } from "utils/gasStation";
 import { getIssuanceModule } from "utils/issuanceModule";
 import {
   getSwapData,
@@ -35,7 +35,6 @@ import {
 } from "utils/swapData";
 import { getAddressForToken } from "utils/tokens";
 import { get0xQuote } from "utils/zeroExUtils";
-import { ChainId } from "@usedapp/core";
 
 // Slippage hard coded to .5% (will be increased if there are revert issues)
 export const slippagePercentage = 1;
@@ -44,7 +43,6 @@ export enum Exchange {
   None,
   Quickswap,
   Sushiswap,
-  UniV2,
   UniV3,
   Curve,
 }
@@ -91,8 +89,6 @@ function get0xEchangeKey(exchange: Exchange): string {
       return "SushiSwap";
     case Exchange.UniV3:
       return "Uniswap_V3";
-    case Exchange.UniV2:
-      return "Uniswap_V2";
     default:
       return "";
   }
@@ -120,7 +116,7 @@ export async function getRequiredComponents(
   setTokenSymbol: string,
   setTokenAmount: BigNumber,
   chainId: number | undefined,
-  provider: providers.Web3Provider | undefined
+  provider: providers.JsonRpcProvider | undefined
 ) {
   const issuanceModule = getIssuanceModule(setTokenSymbol, chainId);
 
@@ -165,8 +161,9 @@ export const getExchangeIssuanceQuotes = async (
   setTokenAmount: BigNumber,
   sellToken: Token,
   isIssuance: boolean,
+  inputTokenBalance: BigNumber,
   chainId: number = 1,
-  provider: providers.Web3Provider | undefined
+  provider: providers.JsonRpcProvider | undefined
 ): Promise<ExchangeIssuanceQuote | null> => {
   const buyTokenAddress = getAddressForToken(buyToken, chainId);
   const sellTokenAddress = getAddressForToken(sellToken, chainId);
@@ -258,11 +255,12 @@ export const getExchangeIssuanceQuotes = async (
     isIssuance
   );
 
-  const gasPrice = (await provider?.getGasPrice()) ?? BigNumber.from(1800000);
+  let gasPrice = BigNumber.from(0);
+  if (provider !== undefined) {
+    const gasStation = new GasStation(provider);
+    gasPrice = await gasStation.getGasPrice();
+  }
 
-  // TODO: get balance and check if inputAmount exceeds balance
-  // TODO: only fetch gasEstimate if inputAmount <= balance
-  // TODO: otherwise skip, to still return a quote
   const gasEstimate = await getExchangeIssuanceGasEstimate(
     provider,
     chainId,
@@ -271,6 +269,7 @@ export const getExchangeIssuanceQuotes = async (
     buyToken,
     setTokenAmount,
     inputOutputTokenAmount,
+    inputTokenBalance,
     positionQuotes
   );
 
@@ -284,12 +283,12 @@ export const getExchangeIssuanceQuotes = async (
 };
 
 // Returns a comma separated string of sources to be included for 0x API calls
-export function getIncludedSources(isIcEth: boolean): string {
+export function getIncludedSources(isEthmaxy: boolean): string {
   const curve = get0xEchangeKey(Exchange.Curve);
   const quickswap = get0xEchangeKey(Exchange.Quickswap);
   const sushi = get0xEchangeKey(Exchange.Sushiswap);
   const uniswap = get0xEchangeKey(Exchange.UniV3);
-  let includedSources: string = isIcEth
+  let includedSources: string = isEthmaxy
     ? [curve].toString()
     : [quickswap, sushi, uniswap].toString();
   return includedSources;
@@ -300,7 +299,7 @@ async function getLevTokenData(
   setTokenAmount: BigNumber,
   isIssuance: boolean,
   chainId: number,
-  signer: providers.Web3Provider | undefined
+  signer: providers.JsonRpcProvider | undefined
 ): Promise<LeveragedTokenData> {
   const contract = await getExchangeIssuanceLeveragedContract(signer, chainId);
   const setTokenAddress = getAddressForToken(setToken, chainId);
@@ -431,11 +430,11 @@ export const getLeveragedExchangeIssuanceQuotes = async (
   outputToken: Token,
   isIssuance: boolean,
   chainId: number = 1,
-  provider: providers.Web3Provider | undefined
+  provider: providers.JsonRpcProvider | undefined
 ): Promise<LeveragedExchangeIssuanceQuote | null> => {
   const setTokenSymbol = setToken.symbol;
-  const isIcEth = setTokenSymbol === "icETH";
-  const includedSources = getIncludedSources(isIcEth);
+  const isEthmaxy = setTokenSymbol === "ETHMAXY";
+  const includedSources = getIncludedSources(isEthmaxy);
 
   const leveragedTokenData = await getLevTokenData(
     setToken,
@@ -462,7 +461,7 @@ export const getLeveragedExchangeIssuanceQuotes = async (
   let { swapDataDebtCollateral, collateralObtainedOrSold } =
     debtCollateralResult;
 
-  if (isIcEth) {
+  if (isEthmaxy) {
     // just using the static versions
     swapDataDebtCollateral = isIssuance
       ? debtCollateralSwapData[setTokenSymbol]
@@ -499,7 +498,7 @@ export const getLeveragedExchangeIssuanceQuotes = async (
   const inputOuputTokenDecimals = isIssuance
     ? inputToken.decimals
     : outputToken.decimals;
-  const slip = !isIssuance && isIcEth ? 5 : slippagePercentage;
+  const slip = !isIssuance && isEthmaxy ? 5 : slippagePercentage;
   // Need to add some slippage similar to EI quote - as there were failed tx
   paymentTokenAmount = getSlippageAdjustedTokenAmount(
     paymentTokenAmount,
@@ -508,7 +507,11 @@ export const getLeveragedExchangeIssuanceQuotes = async (
     isIssuance
   );
 
-  const gasPrice = (await provider?.getGasPrice()) ?? BigNumber.from(0);
+  let gasPrice = BigNumber.from(0);
+  if (provider !== undefined) {
+    const gasStation = new GasStation(provider);
+    gasPrice = await gasStation.getGasPrice();
+  }
 
   return {
     swapDataDebtCollateral,
@@ -516,26 +519,5 @@ export const getLeveragedExchangeIssuanceQuotes = async (
     inputTokenAmount: paymentTokenAmount,
     setTokenAmount,
     gasPrice,
-  };
-};
-
-export interface PerpData {
-  componentQuotes: BigNumber[];
-  totalAmount: BigNumber;
-}
-
-export const getPerpExchangeIssuanceQuotes = async (
-  setToken: Token,
-  setTokenAmount: BigNumber,
-  paymentToken: Token,
-  isIssuance: boolean,
-  chainId: ChainId = ChainId.Optimism,
-  provider: ethers.providers.Web3Provider | undefined
-): Promise<PerpData | null> => {
-  const tokenSymbol = setToken.symbol;
-
-  return {
-    componentQuotes: null,
-    totalAmount: null,
   };
 };

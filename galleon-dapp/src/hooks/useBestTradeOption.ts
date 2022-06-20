@@ -1,18 +1,19 @@
-// @ts-nocheck
 import { useState } from "react";
 
 import { BigNumber } from "@ethersproject/bignumber";
-import { useEthers } from "@usedapp/core";
 
 import { MAINNET } from "constants/chains";
 import {
   eligibleLeveragedExchangeIssuanceTokens,
   ETH,
   EthMaxYieldIndex,
-  // JPGIndex,
+  DoubloonToken,
   STETH,
   Token,
 } from "constants/tokens";
+import { useAccount } from "hooks/useAccount";
+import { useBalance } from "hooks/useBalance";
+import { useNetwork } from "hooks/useNetwork";
 import { toWei } from "utils";
 import {
   ExchangeIssuanceQuote,
@@ -21,8 +22,6 @@ import {
   LeveragedExchangeIssuanceQuote,
 } from "utils/exchangeIssuanceQuotes";
 import { getZeroExTradeData, ZeroExData } from "utils/zeroExUtils";
-import { getNetAssetValue } from "utils/nav";
-import { SetComponent } from "providers/SetComponents/SetComponentsProvider";
 
 type Result<_, E = Error> =
   | {
@@ -40,8 +39,27 @@ export const maxPriceImpact = 5;
 const isEligibleLeveragedToken = (token: Token) =>
   eligibleLeveragedExchangeIssuanceTokens.includes(token);
 
+export function isEligibleTradePairZeroEx(
+  inputToken: Token,
+  outputToken: Token
+): boolean {
+  if (
+    inputToken.symbol === EthMaxYieldIndex.symbol ||
+    outputToken.symbol === EthMaxYieldIndex.symbol
+  )
+    return false;
+
+  if (
+    inputToken.symbol === DoubloonToken.symbol ||
+    outputToken.symbol === DoubloonToken.symbol
+  )
+    return false;
+
+  return true;
+}
+
 /* Determines if the token pair is eligible for Leveraged Exchange Issuance */
-const isEligibleTradePair = (
+export const isEligibleTradePair = (
   inputToken: Token,
   outputToken: Token,
   isIssuance: boolean
@@ -50,19 +68,19 @@ const isEligibleTradePair = (
     ? isEligibleLeveragedToken(outputToken)
     : isEligibleLeveragedToken(inputToken);
 
-  const isEthMaxy =
+  const isEthmaxy =
     inputToken.symbol === EthMaxYieldIndex.symbol ||
     outputToken.symbol === EthMaxYieldIndex.symbol;
 
-  if (tokenEligible && isEthMaxy && isIssuance) {
-    // Only ETH or stETH is allowed as input for ETHMAXY issuance at the moment
+  if (tokenEligible && isEthmaxy && isIssuance) {
+    // Only ETH or stETH is allowed as input for ethmaxy issuance at the moment
     return (
       inputToken.symbol === ETH.symbol || inputToken.symbol === STETH.symbol
     );
   }
 
-  if (tokenEligible && isEthMaxy && !isIssuance) {
-    // Only ETH is allowed as output for ETHMAXY redeeming at the moment
+  if (tokenEligible && isEthmaxy && !isIssuance) {
+    // Only ETH is allowed as output for ethmaxy redeeming at the moment
     return outputToken.symbol === ETH.symbol;
   }
 
@@ -75,15 +93,12 @@ export const getSetTokenAmount = (
   sellTokenDecimals: number,
   sellTokenPrice: number,
   buyTokenPrice: number,
-  dexSwapOption: ZeroExData | null,
-  components?: SetComponent[]
+  dexSwapOption: ZeroExData | null
 ): BigNumber => {
   if (!isIssuance) {
     return toWei(sellTokenAmount, sellTokenDecimals);
   }
 
-  let buyTokenPriceOrNav =
-    buyTokenPrice === 0 ? getNetAssetValue(components) : 0;
   let setTokenAmount = BigNumber.from(dexSwapOption?.buyAmount ?? "0");
 
   const priceImpact =
@@ -92,28 +107,20 @@ export const getSetTokenAmount = (
       : 0;
 
   if (!dexSwapOption || priceImpact >= maxPriceImpact) {
-    console.log("DEX SWAP OPTION: ", dexSwapOption);
-    console.log("BUY TOKEN PRICE:", buyTokenPriceOrNav);
-    console.log("COMPONENTS:", components);
-    console.log("NAV:", getNetAssetValue(components));
     // Recalculate the exchange issue/redeem quotes if not enough DEX liquidity
     const sellTokenTotal = parseFloat(sellTokenAmount) * sellTokenPrice;
     const approxOutputAmount =
-      buyTokenPriceOrNav === 0
-        ? 0
-        : Math.floor(sellTokenTotal / buyTokenPriceOrNav);
+      buyTokenPrice === 0 ? 0 : Math.floor(sellTokenTotal / buyTokenPrice);
     setTokenAmount = toWei(approxOutputAmount, sellTokenDecimals);
-    console.log("estimate, ", sellTokenTotal, approxOutputAmount);
   }
 
   return setTokenAmount;
 };
 
-export const useBestTradeOption = (
-  eiOnly?: boolean,
-  components?: SetComponent[]
-) => {
-  const { chainId, library } = useEthers();
+export const useBestTradeOption = () => {
+  const { provider } = useAccount();
+  const { chainId } = useNetwork();
+  const { getBalance } = useBalance();
 
   const [isFetching, setIsFetching] = useState<boolean>(false);
   const [result, setResult] = useState<Result<ZeroExData, Error> | null>(null);
@@ -129,25 +136,20 @@ export const useBestTradeOption = (
   ) => {
     setIsFetching(true);
 
-    let dexSwapOption = null;
-    let dexSwapError = Error();
-
-    if (!eiOnly) {
-      /* Check 0x for DEX Swap option*/
-      const zeroExResult = await getZeroExTradeData(
-        // for now we only allow selling
-        true,
-        sellToken,
-        buyToken,
-        // for now we only allow specifing selling amount,
-        // so sell token amount will always be correct
-        sellTokenAmount,
-        chainId || 1
-      );
-      dexSwapOption = zeroExResult.success ? zeroExResult.value : null;
-      // @ts-ignore
-      dexSwapError = zeroExResult.success ? null : zeroExResult.error;
-    }
+    /* Check 0x for DEX Swap option*/
+    const zeroExResult = await getZeroExTradeData(
+      // for now we only allow selling
+      true,
+      sellToken,
+      buyToken,
+      // for now we only allow specifing selling amount,
+      // so sell token amount will always be correct
+      sellTokenAmount,
+      chainId || 1
+    );
+    const dexSwapOption = zeroExResult.success ? zeroExResult.value : null;
+    // @ts-ignore
+    const dexSwapError = zeroExResult.success ? null : zeroExResult.error;
 
     /* Determine set token amount based on different factors */
     let setTokenAmount = getSetTokenAmount(
@@ -156,11 +158,8 @@ export const useBestTradeOption = (
       sellToken.decimals,
       sellTokenPrice,
       buyTokenPrice,
-      dexSwapOption,
-      components
+      dexSwapOption
     );
-
-    console.log("SET TOKEN AMOUNT: ", setTokenAmount);
 
     /* Check for Exchange Issuance option */
     let exchangeIssuanceOption: ExchangeIssuanceQuote | null = null;
@@ -181,32 +180,32 @@ export const useBestTradeOption = (
             setToken,
             setTokenAmount,
             sellToken,
+            buyToken,
             isIssuance,
             chainId,
-            library
+            provider
           );
       } catch (e) {
         console.warn("error when generating leveraged ei option", e);
       }
     } else {
-      const isEthMaxy =
-        sellToken.symbol === EthMaxYieldIndex.symbol ||
-        buyToken.symbol === EthMaxYieldIndex.symbol;
-      // const isJpg =
-      //   sellToken.symbol === JPGIndex.symbol ||
-      //   buyToken.symbol === JPGIndex.symbol
-      // For now only run on mainnet and if not ETHMAXY
-      // ETHMAXY token pair (with non ETH token) could not be eligible and land here
-      // temporarily - disabled JPG for EI
-      if (chainId === MAINNET.chainId && !isEthMaxy)
+      // For now only allow trade on mainnet, some tokens are disabled
+      const isEligibleTradePair = isEligibleTradePairZeroEx(
+        sellToken,
+        buyToken
+      );
+      if (chainId === MAINNET.chainId && isEligibleTradePair)
         try {
+          const spendingTokenBalance: BigNumber =
+            getBalance(sellToken.symbol) || BigNumber.from(0);
           exchangeIssuanceOption = await getExchangeIssuanceQuotes(
             buyToken,
             setTokenAmount,
             sellToken,
             isIssuance,
+            spendingTokenBalance,
             chainId,
-            library
+            provider
           );
         } catch (e) {
           console.warn("error when generating zeroexei option", e);
