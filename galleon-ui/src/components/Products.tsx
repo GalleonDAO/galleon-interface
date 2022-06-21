@@ -44,7 +44,7 @@ const Products = () => {
           {products.map((product) => (
             <li
               key={product.title}
-              className="relative shadow-xl shadow-theme-champagne border-2 rounded-2xl p-8 border-theme-navy"
+              className="relative shadow-md shadow-theme-champagne border-2 rounded-2xl p-8 border-theme-navy"
             >
               <a href={product.link} target={"_blank"} rel="noreferrer">
                 <div className="group block w-50 h-50 justify-center">
