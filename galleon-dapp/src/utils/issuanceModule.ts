@@ -3,6 +3,7 @@ import { ChainId } from "@usedapp/core";
 import {
   basicIssuanceModuleAddress,
   basicIssuanceModulePolygonAddress,
+  basicIssuanceModuleOptimismAddress,
   debtIssuanceModuleAddress,
   debtIssuanceModuleV2Address,
   debtIssuanceModuleV2PolygonAddress,
@@ -45,11 +46,32 @@ function getPolygonIssuanceModuleAddress(tokenSymbol: string): IssuanceModule {
   }
 }
 
+function getOptimismIssuanceModuleAddress(tokenSymbol: string): IssuanceModule {
+  switch (tokenSymbol) {
+    // case Ethereum2xFLIP.symbol:
+    // case IEthereumFLIP.symbol:
+    // case IMaticFLIP.symbol:
+    // case GmiIndex.symbol:
+    // case Matic2xFLIP.symbol:
+    //   return {
+    //     address: debtIssuanceModuleV2PolygonAddress,
+    //     isDebtIssuance: true,
+    //   }
+    default:
+      return {
+        address: basicIssuanceModuleOptimismAddress,
+        isDebtIssuance: false,
+      };
+  }
+}
+
 export function getIssuanceModule(
   tokenSymbol: string,
   chainId: ChainId = ChainId.Mainnet
 ): IssuanceModule {
   return chainId === ChainId.Polygon
     ? getPolygonIssuanceModuleAddress(tokenSymbol)
+    : chainId === ChainId.Optimism
+    ? getOptimismIssuanceModuleAddress(tokenSymbol)
     : getEthIssuanceModuleAddress(tokenSymbol);
 }

@@ -9,7 +9,7 @@ import {
 } from "constants/chains";
 
 export const useNetwork = () => {
-  const { library, account } = useEthers();
+  const { library, account, chainId } = useEthers();
 
   /**
    * Changes to Mainnet
@@ -64,6 +64,7 @@ export const useNetwork = () => {
   };
 
   return {
+    chainId,
     changeNetwork,
     setMainnet,
     setOtherNetwork,

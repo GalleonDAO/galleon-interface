@@ -1,34 +1,30 @@
 import { useCallback, useEffect, useState } from "react";
 
-import { BigNumber, ethers } from "ethers";
+import { BigNumber, Contract, providers } from "ethers";
+
+import { useEtherBalance, useTokenBalance } from "@usedapp/core";
 
 import {
-  ChainId,
-  useEtherBalance,
-  useEthers,
-  useTokenBalance,
-} from "@usedapp/core";
-
-import // dpi2020StakingRewardsAddress,
-// dpi2021StakingRewardsAddress,
-// gmiStakingRewardsAddress,
-// mviStakingRewardsAddress,
-// uniswapEthDpiLpTokenAddress,
-// uniswapEthMviLpTokenAddress,
-"constants/ethContractAddresses";
+  uniswapEthDpiLpTokenAddress,
+  uniswapEthMviLpTokenAddress,
+} from "constants/ethContractAddresses";
 import {
-  EthMaxYieldIndex,
-  DoubloonToken,
+  BasisYieldEthIndex,
   DAI,
+  DoubloonToken,
   ETH,
+  EthMaxYieldIndex,
   MATIC,
+  STETH,
   Token,
   USDC,
   WETH,
 } from "constants/tokens";
-import { getChainAddress } from "utils";
+import { useAccount } from "hooks/useAccount";
+import { useNetwork } from "hooks/useNetwork";
 import { ERC20_ABI } from "utils/abi/ERC20";
 import { useStakingUnclaimedRewards } from "utils/stakingRewards";
+import { getAddressForToken } from "utils/tokens";
 
 type Balance = BigNumber;
 
@@ -38,190 +34,170 @@ export interface Balances {
   maticBalance?: BigNumber;
   usdcBalance?: BigNumber;
   wethBalance?: BigNumber;
-  dataBalance?: BigNumber;
-  gmiBalance?: BigNumber;
-  dpiBalance?: BigNumber;
-  mviBalance?: BigNumber;
-  bedBalance?: BigNumber;
-  btc2xFLIPBalance?: BigNumber;
-  iBtcFLIPBalance?: BigNumber;
+  stethBalance?: BigNumber;
   ethmaxyBalance?: BigNumber;
-  iEthFLIPbalance?: BigNumber;
-  iMaticFLIPbalance?: BigNumber;
-  ethFliBalance?: BigNumber;
-  btcFliBalance?: BigNumber;
-  ethFliPBalance?: BigNumber;
   doubloonBalance?: BigNumber;
-  matic2xFLIPbalance?: BigNumber;
-  stakedGmi2022Balance?: BigNumber;
-  stakedUniswapEthDpi2020LpBalance?: BigNumber;
-  stakedUniswapEthDpi2021LpBalance?: BigNumber;
-  stakedUniswapEthMvi2021LpBalance?: BigNumber;
-  uniswapEthDpiLpBalance?: BigNumber;
-  uniswapEthMviLpBalance?: BigNumber;
-  unclaimedGmi2022Balance?: BigNumber;
-  unclaimedUniswapEthMvi2021LpBalance?: BigNumber;
-  unclaimedUniswapEthDpi2020LpBalance?: BigNumber;
-  unclaimedUniswapEthDpi2021LpBalance?: BigNumber;
+  byeBalance?: BigNumber;
 }
 
 /* Returns balance of ERC20 token */
 async function balanceOf(
   token: Token,
-  chainId: ChainId,
+  chainId: number,
   account: string,
-  library: ethers.providers.JsonRpcProvider | undefined
+  library: providers.JsonRpcProvider | undefined
 ): Promise<BigNumber> {
-  const tokenAddress = getChainAddress(token, chainId);
-  if (!tokenAddress) return BigNumber.from(0);
-  const erc20 = new ethers.Contract(tokenAddress, ERC20_ABI, library);
-  const balance = await erc20.balanceOf(account);
-  return balance;
+  try {
+    const tokenAddress = getAddressForToken(token, chainId);
+    if (!tokenAddress) return BigNumber.from(0);
+    const erc20 = new Contract(tokenAddress, ERC20_ABI, library);
+    const balance = await erc20.balanceOf(account);
+    return balance;
+  } catch (error) {
+    console.log("balance fetch issue: ", error);
+  }
 }
 
 export const useBalance = () => {
-  const { account, chainId, library } = useEthers();
+  const { account, provider } = useAccount();
+  const { chainId } = useNetwork();
   const ethBalance = useEtherBalance(account);
-
-  const [daiBalance, setDaiBalance] = useState<Balance>(BigNumber.from(0));
-  const [maticBalance, setMaticBalance] = useState<Balance>(BigNumber.from(0));
 
   const [ethmaxyBalance, setEthmaxyBalance] = useState<Balance>(
     BigNumber.from(0)
   );
-
   const [doubloonBalance, setDoubloonBalance] = useState<Balance>(
     BigNumber.from(0)
   );
+  const [byeBalance, setByeBalance] = useState<Balance>(BigNumber.from(0));
+  const [maticBalance, setMaticBalance] = useState<Balance>(BigNumber.from(0));
+
+  const [daiBalance, setDaiBalance] = useState<Balance>(BigNumber.from(0));
 
   const [usdcBalance, setUsdcBalance] = useState<Balance>(BigNumber.from(0));
   const [wethBalance, setWethBalance] = useState<Balance>(BigNumber.from(0));
 
-  // // LP Tokens
-  // const uniswapEthDpiLpBalance = useTokenBalance(
-  //   uniswapEthDpiLpTokenAddress,
-  //   account,
-  // )
-  // const uniswapEthMviLpBalance = useTokenBalance(
-  //   uniswapEthMviLpTokenAddress,
-  //   account,
-  // )
+  const [stETHBalance, setstETHBalance] = useState<Balance>(BigNumber.from(0));
 
-  // // DPI LM Program (Oct. 7th, 2020 - Dec. 6th, 2020)
-  // const stakedUniswapEthDpi2020LpBalance = useTokenBalance(
-  //   dpi2020StakingRewardsAddress,
-  //   account,
-  // )
-  // const unclaimedUniswapEthDpi2020LpBalance = useStakingUnclaimedRewards(
-  //   dpi2020StakingRewardsAddress,
-  //   account,
-  // )
-  // // DPI LM Program ( July 13th, 2021 - August 12th, 2021)
-  // const stakedUniswapEthDpi2021LpBalance = useTokenBalance(
-  //   dpi2021StakingRewardsAddress,
-  //   account,
-  // )
-  // const unclaimedUniswapEthDpi2021LpBalance = useStakingUnclaimedRewards(
-  //   dpi2021StakingRewardsAddress,
-  //   account,
-  // )
-  // // MVI LM Program (August 20th, 2021 - September 19th, 2021)
-  // const stakedUniswapEthMvi2021LpBalance = useTokenBalance(
-  //   mviStakingRewardsAddress,
-  //   account,
-  // )
-  // const unclaimedUniswapEthMvi2021LpBalance = useStakingUnclaimedRewards(
-  //   mviStakingRewardsAddress,
-  //   account,
-  // )
-  // // GMI LM Program (Jan. 10th, 2022 - Mar. 10th, 2022)
-  // const stakedGmi2022Balance = useTokenBalance(
-  //   gmiStakingRewardsAddress,
-  //   account,
-  // )
-  // const unclaimedGmi2022Balance = useStakingUnclaimedRewards(
-  //   gmiStakingRewardsAddress,
-  //   account,
-  // )
+  // LP Tokens
 
   useEffect(() => {
     if (!account || !chainId) return;
-
+    const web3Provider = provider as providers.JsonRpcProvider;
     const fetchAllBalances = async () => {
-      const daiBalance = await balanceOf(DAI, chainId, account, library);
-      const maticBalance = await balanceOf(MATIC, chainId, account, library);
-
       const ethmaxyBalance = await balanceOf(
         EthMaxYieldIndex,
         chainId,
         account,
-        library
+        web3Provider
       );
       const doubloonBalance = await balanceOf(
         DoubloonToken,
         chainId,
         account,
-        library
+        web3Provider
       );
-      const usdcBalance = await balanceOf(USDC, chainId, account, library);
-      const wethBalance = await balanceOf(WETH, chainId, account, library);
+      const byeBalance = await balanceOf(
+        BasisYieldEthIndex,
+        chainId,
+        account,
+        web3Provider
+      );
+
+      const daiBalance = await balanceOf(DAI, chainId, account, web3Provider);
+
+      const maticBalance = await balanceOf(
+        MATIC,
+        chainId,
+        account,
+        web3Provider
+      );
+
+      const usdcBalance = await balanceOf(USDC, chainId, account, web3Provider);
+      const wethBalance = await balanceOf(WETH, chainId, account, web3Provider);
+
+      const stETHBalance = await balanceOf(
+        STETH,
+        chainId,
+        account,
+        web3Provider
+      );
 
       setDaiBalance(daiBalance);
-      setDaiBalance(maticBalance);
       setEthmaxyBalance(ethmaxyBalance);
       setDoubloonBalance(doubloonBalance);
+      setByeBalance(byeBalance);
+
+      setMaticBalance(maticBalance);
+
       setUsdcBalance(usdcBalance);
       setWethBalance(wethBalance);
+
+      setstETHBalance(stETHBalance);
     };
 
     fetchAllBalances();
   }, [account, chainId]);
 
   const getBalance = useCallback(
-    (token: Token): BigNumber | undefined => {
-      switch (token.symbol) {
-        case DAI.symbol:
-          return daiBalance;
-        case ETH.symbol:
-          return ethBalance;
+    (tokenSymbol: string): BigNumber | undefined => {
+      switch (tokenSymbol) {
         case EthMaxYieldIndex.symbol:
           return ethmaxyBalance;
         case DoubloonToken.symbol:
           return doubloonBalance;
+        case BasisYieldEthIndex.symbol:
+          return byeBalance;
+        case DAI.symbol:
+          return daiBalance;
+
+        case ETH.symbol:
+          return ethBalance;
+
         case MATIC.symbol:
           return maticBalance;
+
         case USDC.symbol:
           return usdcBalance;
         case WETH.symbol:
           return wethBalance;
+
+        case STETH.symbol:
+          return stETHBalance;
         default:
           return undefined;
       }
     },
     [
       daiBalance,
-
-      ethBalance,
-
       ethmaxyBalance,
-
       doubloonBalance,
+      byeBalance,
+      ethBalance,
 
       maticBalance,
 
       usdcBalance,
       wethBalance,
+
+      stETHBalance,
     ]
   );
 
   const balances = {
     daiBalance,
+
     ethBalance,
-    ethmaxyBalance,
-    doubloonBalance,
+
     maticBalance,
+
     usdcBalance,
     wethBalance,
+
+    stETHBalance,
+    ethmaxyBalance,
+    doubloonBalance,
+    byeBalance,
   };
 
   return { balances, getBalance };

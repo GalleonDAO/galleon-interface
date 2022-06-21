@@ -1,7 +1,6 @@
-// import solunavaxLogo from 'assets/solunavax.png'
 import ethmaxyLogo from "assets/ethmaxy.png";
 import doubloonLogo from "assets/brand/dbl.png";
-import solunavaxLogo from "assets/solunavax.png";
+import byeLogo from "assets/bye.png";
 import { TokenContextKeys } from "providers/MarketData/MarketDataProvider";
 
 export interface Token {
@@ -18,10 +17,16 @@ export interface Token {
   tokensetsId: string;
   tokenContextKey?: TokenContextKeys;
   fees:
-    | { streamingFee: string; mintFee?: string; redeemFee?: string }
+    | {
+        streamingFee: string;
+        mintFee?: string;
+        redeemFee?: string;
+        performanceFee?: string;
+      }
     | undefined;
   theme: string | undefined;
   dashboard: string | undefined;
+  isDangerous: boolean;
 }
 
 export const STETH: Token = {
@@ -40,6 +45,7 @@ export const STETH: Token = {
   fees: undefined,
   theme: undefined,
   dashboard: undefined,
+  isDangerous: false,
 };
 
 export const DAI: Token = {
@@ -58,6 +64,7 @@ export const DAI: Token = {
   fees: undefined,
   theme: undefined,
   dashboard: undefined,
+  isDangerous: false,
 };
 
 export const USDC: Token = {
@@ -76,6 +83,7 @@ export const USDC: Token = {
   fees: undefined,
   theme: undefined,
   dashboard: undefined,
+  isDangerous: false,
 };
 
 export const ETH: Token = {
@@ -94,6 +102,7 @@ export const ETH: Token = {
   fees: undefined,
   theme: undefined,
   dashboard: undefined,
+  isDangerous: false,
 };
 
 export const WETH: Token = {
@@ -112,6 +121,7 @@ export const WETH: Token = {
   fees: undefined,
   theme: undefined,
   dashboard: undefined,
+  isDangerous: false,
 };
 
 export const MATIC: Token = {
@@ -130,6 +140,7 @@ export const MATIC: Token = {
   fees: undefined,
   theme: undefined,
   dashboard: undefined,
+  isDangerous: false,
 };
 
 export const DoubloonToken: Token = {
@@ -147,6 +158,7 @@ export const DoubloonToken: Token = {
   fees: undefined,
   theme: "Governance",
   dashboard: undefined,
+  isDangerous: false,
 };
 
 export const EthMaxYieldIndex: Token = {
@@ -167,6 +179,29 @@ export const EthMaxYieldIndex: Token = {
   },
   theme: "Yield",
   dashboard: "https://dune.xyz/galleondao/ETHMAXY-KPIs",
+  isDangerous: false,
+};
+
+export const BasisYieldEthIndex: Token = {
+  name: "Basis Yield ETH Index",
+  symbol: "BYE",
+  address: undefined,
+  polygonAddress: undefined,
+  optimismAddress: "0x927Eb0dBC5c3FD172Fdfa72D563f71612eCB6122",
+  arbitrumAddress: undefined,
+  decimals: 18,
+  url: "bye",
+  image: byeLogo,
+  coingeckoId: "basis-yield-eth-index",
+  tokensetsId: "bye",
+  tokenContextKey: "bye",
+  fees: {
+    streamingFee: "0%",
+    performanceFee: "10%",
+  },
+  theme: "Yield",
+  dashboard: undefined,
+  isDangerous: false,
 };
 
 export const DummyExchangeIssuanceSet: Token = {
@@ -188,31 +223,13 @@ export const DummyExchangeIssuanceSet: Token = {
   },
   theme: "Thematic",
   dashboard: undefined,
+  isDangerous: false,
 };
-
-// export const SolunavaxIndex: Token = {
-//   name: "SOLUNAVAX Index",
-//   symbol: "SOLUNAVAX",
-//   address: undefined,
-//   polygonAddress: undefined,
-//   optimismAddress: "0xbA6a2Fa321BB06D668c5192Be77428106c5C01E5",
-//   arbitrumAddress: undefined,
-//   decimals: 18,
-//   url: "solunavax",
-//   image: solunavaxLogo,
-//   coingeckoId: "solunavax-index",
-//   tokensetsId: "solunavax",
-//   tokenContextKey: "solunavax",
-//   fees: {
-//     streamingFee: "0.5%",
-//   },
-//   theme: "Layer 1",
-//   dashboard: undefined,
-// };
 
 export const productTokensBySymbol = {
   DBL: DoubloonToken,
   ETHMAXY: EthMaxYieldIndex,
+  BYE: BasisYieldEthIndex,
 };
 
 export const mainnetCurrencyTokens = [ETH, DAI, USDC, STETH];
@@ -224,8 +241,8 @@ export const optimismCurrencyTokens = [ETH, DAI, USDC];
 export const arbitrumCurrencyTokens = [ETH, DAI, USDC];
 
 export const eligibleLeveragedExchangeIssuanceTokens = [EthMaxYieldIndex];
-
-const indexNames = [EthMaxYieldIndex];
+export const eligiblePerpIssuanceTokens = [BasisYieldEthIndex];
+const indexNames = [EthMaxYieldIndex, BasisYieldEthIndex];
 
 export const portfolios = [];
 

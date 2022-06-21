@@ -13,12 +13,14 @@ export function getAddressForToken(
       return token.optimismAddress;
     case ChainId.Polygon:
       return token.polygonAddress;
+    case ChainId.Arbitrum:
+      return token.arbitrumAddress;
     default:
       return undefined;
   }
 }
 
-export function getNativeToken(chainId: ChainId | undefined): Token | null {
+export function getNativeToken(chainId: number | undefined): Token | null {
   switch (chainId) {
     case ChainId.Mainnet:
       return ETH;
@@ -26,6 +28,8 @@ export function getNativeToken(chainId: ChainId | undefined): Token | null {
       return ETH;
     case ChainId.Polygon:
       return MATIC;
+    case ChainId.Arbitrum:
+      return ETH;
     default:
       return null;
   }

@@ -1474,18 +1474,12 @@ select {
   width: auto;
 }
 
-.w-min {
-  width: -webkit-min-content;
-  width: min-content;
-}
-
 .min-w-0 {
   min-width: 0px;
 }
 
-.min-w-min {
-  min-width: -webkit-min-content;
-  min-width: min-content;
+.min-w-\[40\%\] {
+  min-width: 40%;
 }
 
 .max-w-md {
@@ -1760,11 +1754,6 @@ select {
 .bg-theme-white {
   --tw-bg-opacity: 1;
   background-color: rgb(255 255 255 / var(--tw-bg-opacity));
-}
-
-.bg-theme-copper {
-  --tw-bg-opacity: 1;
-  background-color: rgb(220 127 90 / var(--tw-bg-opacity));
 }
 
 .bg-opacity-100 {
@@ -2427,11 +2416,6 @@ select {
 .focus\:ring-theme-navy:focus {
   --tw-ring-opacity: 1;
   --tw-ring-color: rgb(4 7 40 / var(--tw-ring-opacity));
-}
-
-.focus\:ring-theme-oldlace:focus {
-  --tw-ring-opacity: 1;
-  --tw-ring-color: rgb(254 243 226 / var(--tw-ring-opacity));
 }
 
 .focus\:ring-offset-2:focus {

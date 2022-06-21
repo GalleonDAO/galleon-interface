@@ -42,17 +42,16 @@ const products = [
       "https://github.com/GalleonDAO/galleon-tokenlist/blob/main/logos/ethmaxy.png?raw=true",
     link: links.dapp + "/ethmaxy",
     dashboard: "https://dune.com/galleondao/ETHMAXY-KPIs",
-    active: true,
   },
-  // {
-  //   title: 'Basis Yield ETH Index',
-  //   description:
-  //     'BYE utilises Perpetual Protocol on Optimism to create a delta neutral position of ETH, offering a high yield based on funding rate',
-  //   source:
-  //     'https://github.com/GalleonDAO/galleon-tokenlist/blob/main/logos/BYE.png?raw=true',
-  //   link: links.dapp + '/bye',
-  //   active: true,
-  // },
+  {
+    title: "Basis Yield ETH Index",
+    description:
+      "BYE is an ERC20 composable structured product that executes a high yield, cash-and-carry delta-neutral strategy.",
+    source:
+      "https://github.com/GalleonDAO/galleon-tokenlist/blob/main/logos/BYE.png?raw=true",
+    link: links.dapp + "/bye",
+    dashboard: null,
+  },
   // More files...
 ];
 
@@ -92,19 +91,23 @@ const Products = () => {
                 <a
                   href={product.link}
                   target={"_blank"}
-                  className="inline-flex py-2 px-4 rounded-2xl border-2 shadow border-theme-navy hover:border-theme-navy hover:text-theme-navy  bg-theme-navy hover:bg-theme-oldlace text-theme-oldlace focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-theme-navy text-sm md:text-xl focus:ring-offset-theme-black "
+                  className="inline-flex min-w-[40%] justify-center text-center py-2 px-4 rounded-2xl border-2 shadow border-theme-navy hover:border-theme-navy hover:text-theme-navy  bg-theme-navy hover:bg-theme-oldlace text-theme-oldlace focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-theme-navy text-sm md:text-xl focus:ring-offset-theme-black "
                   rel="noreferrer"
                 >
                   Buy
                 </a>
-                <a
-                  href={product.dashboard}
-                  target={"_blank"}
-                  className="inline-flex py-2 px-4 ml-2 rounded-2xl border-2 shadow border-theme-navy hover:border-black hover:text-theme-navy  bg-theme-copper hover:bg-theme-oldlace text-black focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-theme-navy text-sm md:text-xl focus:ring-offset-theme-black "
-                  rel="noreferrer"
-                >
-                  Analytics
-                </a>
+                {product.dashboard ? (
+                  <a
+                    href={product.dashboard}
+                    target={"_blank"}
+                    className="inline-flex min-w-[40%] justify-center text-center py-2 px-4 ml-2 rounded-2xl border-2 shadow border-theme-navy hover:border-black hover:text-theme-navy   hover:bg-theme-oldlace text-black focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-theme-navy text-sm md:text-xl focus:ring-offset-theme-black "
+                    rel="noreferrer"
+                  >
+                    Analytics
+                  </a>
+                ) : (
+                  <></>
+                )}
               </div>
             </li>
           ))}

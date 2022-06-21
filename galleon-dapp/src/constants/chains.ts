@@ -1,5 +1,6 @@
 export type ChainData = {
   name: string;
+  alias?: string;
   chainId: number;
   chainId0x: string;
   rpcUrl: string;
@@ -15,6 +16,7 @@ export type ChainData = {
 
 export const MAINNET: ChainData = {
   name: "Ethereum",
+  alias: "Mainnet",
   chainId: 1,
   chainId0x: "0x1",
   rpcUrl: "https://mainnet.eth.aragon.network/",
@@ -73,4 +75,4 @@ export const ARBITRUM: ChainData = {
   },
 };
 
-export const SUPPORTED_CHAINS = [MAINNET, ARBITRUM];
+export const SUPPORTED_CHAINS = [MAINNET, ARBITRUM, OPTIMISM];

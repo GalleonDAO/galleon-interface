@@ -1,5 +1,6 @@
 import logo from "assets/brand/Vector-Logo-1.png";
 import { Link } from "react-router-dom";
+import CoinbaseButton from "./CoinbaseButton";
 import ConnectButton from "./header/ConnectButton";
 
 const Header = () => {
@@ -23,11 +24,14 @@ const Header = () => {
               <span className="text-lg  text-theme-oldlace hover:text-theme-champagne">
                 <Link to="/products">Flagship Products</Link>
               </span>
-              <span className="text-lg  text-theme-oldlace hover:text-theme-champagne">
+              {/* <span className="text-lg  text-theme-oldlace hover:text-theme-champagne">
                 <Link to="/portfolios">Portfolios</Link>
-              </span>
+              </span> */}
               <span className="text-lg  text-theme-oldlace hover:text-theme-champagne">
                 <Link to="/dbl">$DBL</Link>
+              </span>
+              <span className="text-lg text-theme-oldlace hover:text-theme-champagne">
+                <CoinbaseButton></CoinbaseButton>
               </span>
             </div>
           </div>
@@ -48,18 +52,19 @@ const Header = () => {
           >
             Flagship Products
           </a>
-          <a
+          {/* <a
             className="text-base  text-theme-oldlace hover:text-theme-champagne"
             href="/portfolios"
           >
             Portfolios
-          </a>
+          </a> */}
           <a
             className="text-base  text-theme-oldlace hover:text-theme-champagne"
             href="/dbl"
           >
             $DBL
           </a>
+          <CoinbaseButton></CoinbaseButton>
         </div>
       </nav>
     </header>
