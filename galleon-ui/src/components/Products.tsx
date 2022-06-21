@@ -1,36 +1,3 @@
-import Navigation from "components/Navigation";
-import { Fragment } from "react";
-import { Popover, Transition, Disclosure } from "@headlessui/react";
-import {
-  CloudUploadIcon,
-  CogIcon,
-  LockClosedIcon,
-  MenuIcon,
-  RefreshIcon,
-  ServerIcon,
-  ShieldCheckIcon,
-  XIcon,
-} from "@heroicons/react/outline";
-import { ChevronRightIcon, ExternalLinkIcon } from "@heroicons/react/solid";
-import crewBackground from "assets/brand/crew-bg.png";
-import { ChevronDownIcon } from "@heroicons/react/outline";
-import ResourcesIcon from "assets/brand/Resources-Icon.png";
-import CommunityIcon from "assets/brand/Community-Icon.png";
-import AboutIcon from "assets/brand/About-Icon.png";
-import ApplicationIcon from "assets/brand/Application-Icon.png";
-import GovernanceIcon from "assets/brand/Governance-Icon.png";
-import ProductsIcon from "assets/brand/Products-Icon.png";
-import TreasuryIcon from "assets/brand/Treasury-Icon.png";
-import GalleonLogo from "assets/brand/Union-Logo-Light.png";
-
-import ResourcesIconDark from "assets/brand/Resources-Icon-Dark.png";
-import CommunityIconDark from "assets/brand/Community-Icon-Dark.png";
-import AboutIconDark from "assets/brand/About-Icon-Dark.png";
-import ApplicationIconDark from "assets/brand/Application-Icon-Dark.png";
-import GovernanceIconDark from "assets/brand/Governance-Icon-Dark.png";
-import ProductsIconDark from "assets/brand/Products-Icon-Dark.png";
-import TreasuryIconDark from "assets/brand/Treasury-Icon-Dark.png";
-import { classNames } from "utils";
 import links from "constants/externalLinks";
 
 const products = [
@@ -42,6 +9,8 @@ const products = [
       "https://github.com/GalleonDAO/galleon-tokenlist/blob/main/logos/ethmaxy.png?raw=true",
     link: links.dapp + "/ethmaxy",
     dashboard: "https://dune.com/galleondao/ETHMAXY-KPIs",
+    documentation:
+      "https://www.notion.so/galleon/The-ETH-Max-Yield-Index-2793239a6b314f3a83112d01df86d679",
   },
   {
     title: "Basis Yield ETH Index",
@@ -51,6 +20,8 @@ const products = [
       "https://github.com/GalleonDAO/galleon-tokenlist/blob/main/logos/BYE.png?raw=true",
     link: links.dapp + "/bye",
     dashboard: null,
+    documentation:
+      "https://www.notion.so/galleon/Basis-Yield-ETH-Index-7e384ce4e21d4ea19898c19ccc36af61",
   },
   // More files...
 ];
@@ -68,12 +39,15 @@ const Products = () => {
         </p>
         <ul
           role="list"
-          className="grid grid-cols-2 gap-x-4 gap-y-8 sm:grid-cols-3 sm:gap-x-6 lg:grid-cols-4 xl:gap-x-8"
+          className="grid grid-cols-3 gap-x-4 gap-y-8 sm:grid-cols-3 sm:gap-x-6 lg:grid-cols-3 xl:gap-x-8"
         >
           {products.map((product) => (
-            <li key={product.title} className="relative">
+            <li
+              key={product.title}
+              className="relative shadow-xl shadow-theme-champagne border-2 rounded-2xl p-8 border-theme-navy"
+            >
               <a href={product.link} target={"_blank"} rel="noreferrer">
-                <div className="group block w-full aspect-w-4 aspect-h-4">
+                <div className="group block w-50 h-50 justify-center">
                   <img
                     src={product.source}
                     alt="product logo"
@@ -84,14 +58,24 @@ const Products = () => {
               <p className="mt-6 block text-xl font-bold font-morion text-center text-theme-navy truncate pointer-events-none">
                 {product.title}
               </p>
-              <p className="block text-md font-lg text-center  text-theme-navy pointer-events-none">
+              <p className="block text-md font-lg text-center text-theme-navy pointer-events-none">
                 {product.description}
               </p>
+              <div className="pt-4 justify-evenly text-center">
+                <a
+                  href={product.documentation}
+                  target={"_blank"}
+                  className="inline-flex min-w-[40%] justify-center text-center py-2 px-4 rounded-2xl border-2 shadow border-theme-navy hover:border-theme-navy hover:text-theme-navy  bg-theme-navy hover:bg-theme-oldlace text-theme-oldlace focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-theme-navy text-sm md:text-xl focus:ring-offset-theme-black "
+                  rel="noreferrer"
+                >
+                  Documentation
+                </a>
+              </div>
               <div className="pt-2 justify-evenly text-center">
                 <a
                   href={product.link}
                   target={"_blank"}
-                  className="inline-flex min-w-[40%] justify-center text-center py-2 px-4 rounded-2xl border-2 shadow border-theme-navy hover:border-theme-navy hover:text-theme-navy  bg-theme-navy hover:bg-theme-oldlace text-theme-oldlace focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-theme-navy text-sm md:text-xl focus:ring-offset-theme-black "
+                  className="inline-flex min-w-[40%] justify-center text-center py-2 px-4 ml-2 rounded-2xl border-2 shadow border-theme-navy hover:border-black hover:text-theme-navy   hover:bg-theme-oldlace text-black focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-theme-navy text-sm md:text-xl focus:ring-offset-theme-black "
                   rel="noreferrer"
                 >
                   Buy
