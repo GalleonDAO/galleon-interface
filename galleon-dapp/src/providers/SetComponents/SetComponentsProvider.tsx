@@ -266,7 +266,7 @@ async function getPositionPrices(
   );
   const componentAddresses = setDetails.positions.map((p) => p.component);
   return fetch(
-    `https://pro-api.coingecko.com/api/v3/simple/token_price/${assetPlatform}?vs_currencies=${VS_CURRENCY}&contract_addresses=${componentAddresses}&include_24hr_change=true`,
+    `https://api.coingecko.com/api/v3/simple/token_price/${assetPlatform}?vs_currencies=${VS_CURRENCY}&contract_addresses=${componentAddresses}&include_24hr_change=true`,
     { headers: requestHeaders }
   )
     .then((response) => response.json())
