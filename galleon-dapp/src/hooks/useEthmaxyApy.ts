@@ -93,7 +93,7 @@ export const useEthmaxyApy = (): { apy: BigNumber } => {
 
   /* apy = (levRatio - 1) * (stETH yield [1] - ethBorrowRate [2]) + stETH yield - 0.9 % */
   const apyNumber =
-    (leverageRatioNum - 1) * (stEthAprNum - borrowRateNum) + stEthAprNum 
+    (leverageRatioNum - 1) * (stEthAprNum - borrowRateNum) + stEthAprNum;
   // - 1.95 to show net instead of gross APY
   const apy = toWei(apyNumber);
   return { apy };
