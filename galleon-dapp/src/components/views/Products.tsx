@@ -19,7 +19,7 @@ export interface ProductsTableProduct extends Token {
     "1W"?: number;
     "1M"?: number;
     "3M"?: number;
-    // '1Y'?: number
+    '1Y'?: number
   };
 }
 
@@ -31,10 +31,10 @@ export const PriceChangeIntervals: [
   ["1W", 7],
   ["1M", 30],
   ["3M", 90],
-  // ['1Y', 365],
+  ['1Y', 365],
 ];
 
-type PriceChangesProps = {
+export type PriceChangesProps = {
   daysOfComparison: number;
   hourlyPrices?: number[][];
   prices?: number[][];
