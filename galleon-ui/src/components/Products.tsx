@@ -46,7 +46,7 @@ const products = [
   {
     title: "Basis Yield ETH Index",
     description:
-      "BYE is a composable, perpetual basis trading strategy that returns a price-neutral, levered high yield index.",
+      "BYE is an ERC20 composable structured product that executes a high yield, cash-and-carry delta-neutral strategy.",
     source:
       "https://github.com/GalleonDAO/galleon-tokenlist/blob/main/logos/BYE.png?raw=true",
     link: links.dapp + "/bye",
