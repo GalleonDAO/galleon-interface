@@ -23,7 +23,12 @@ import {
   ExchangeIssuanceZeroExAddress,
   zeroExRouterAddress,
 } from "constants/ethContractAddresses";
-import { ETH, EthMaxYieldIndex, Token } from "constants/tokens";
+import {
+  ETH,
+  EthMaxYieldIndex,
+  indexNamesArbitrum,
+  Token,
+} from "constants/tokens";
 import { useApproval } from "hooks/useApproval";
 import { useBalance } from "hooks/useBalance";
 import { useBestTradeOption } from "hooks/useBestTradeOption";
@@ -33,7 +38,13 @@ import { useTradeLeveragedExchangeIssuance } from "hooks/useTradeLeveragedExchan
 import { useTradeTokenLists } from "hooks/useTradeTokenLists";
 import { isSupportedNetwork, isValidTokenInput, toWei } from "utils";
 
-import { ChainData, MAINNET, OPTIMISM, POLYGON } from "constants/chains";
+import {
+  ARBITRUM,
+  ChainData,
+  MAINNET,
+  OPTIMISM,
+  POLYGON,
+} from "constants/chains";
 import {
   ExchangeIssuanceZeroExMainnetAddress,
   ExchangeIssuanceZeroExPolygonAddress,
@@ -393,6 +404,10 @@ const QuickTrade = (props: {
       return (
         indexNamesOptimism.filter((t) => t.symbol === token.symbol).length === 0
       );
+    if (token && chainId === ARBITRUM.chainId)
+      return (
+        indexNamesArbitrum.filter((t) => t.symbol === token.symbol).length === 0
+      );
     return false;
   };
 
@@ -411,6 +426,10 @@ const QuickTrade = (props: {
         indexNamesOptimism.filter((t) => t.symbol === token.symbol).length !== 0
       )
         supportedNetworks.push(OPTIMISM);
+      if (
+        indexNamesArbitrum.filter((t) => t.symbol === token.symbol).length !== 0
+      )
+        supportedNetworks.push(ARBITRUM);
     }
     return supportedNetworks;
   };
