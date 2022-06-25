@@ -164,7 +164,6 @@ const ProductPage = (props: {
                     {props.children}
                   </QuickTrade>
                 </Flex>
-                )
               </div>
             </div>
           </div>

@@ -23,6 +23,14 @@ import {
   LeveragedExchangeIssuanceQuote,
 } from "utils/exchangeIssuanceQuotes";
 import { getZeroExTradeData, ZeroExData } from "utils/zeroExUtils";
+import { getNetAssetValue } from "utils/nav";
+import { SetComponent } from "providers/SetComponents/SetComponentsProvider";
+import {
+  KNOWN_SERVICES,
+  KNOWN_LABELS,
+  LOG_SEVERITY,
+} from "@galleondao/logging-lib";
+import { logger } from "index";
 
 type Result<_, E = Error> =
   | {
@@ -119,7 +127,7 @@ export const getSetTokenAmount = (
 };
 
 export const useBestTradeOption = () => {
-  const { provider } = useAccount();
+  const { account, provider } = useAccount();
   const { chainId } = useNetwork();
   const { getBalance } = useBalance();
   const { KNOWN_LABELS, captureDurationAsync, logTimer } = useLogging();
