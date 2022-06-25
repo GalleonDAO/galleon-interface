@@ -14,6 +14,7 @@ import {
 import { useAccount } from "hooks/useAccount";
 import { useBalance } from "hooks/useBalance";
 import { useNetwork } from "hooks/useNetwork";
+import { useLogging } from "hooks/useLogging";
 import { toWei } from "utils";
 import {
   ExchangeIssuanceQuote,
@@ -22,9 +23,6 @@ import {
   LeveragedExchangeIssuanceQuote,
 } from "utils/exchangeIssuanceQuotes";
 import { getZeroExTradeData, ZeroExData } from "utils/zeroExUtils";
-import { captureDurationAsync } from "../utils/logger";
-import { logger } from "../index";
-import { KNOWN_SERVICES, KNOWN_LABELS } from "@galleondao/logging-lib";
 
 type Result<_, E = Error> =
   | {
@@ -124,6 +122,7 @@ export const useBestTradeOption = () => {
   const { provider } = useAccount();
   const { chainId } = useNetwork();
   const { getBalance } = useBalance();
+  const { KNOWN_LABELS, captureDurationAsync, logTimer } = useLogging();
 
   const [isFetching, setIsFetching] = useState<boolean>(false);
   const [result, setResult] = useState<Result<ZeroExData, Error> | null>(null);
@@ -242,12 +241,7 @@ export const useBestTradeOption = () => {
       setIsFetching(false);
     });
 
-    logger.logTimer({
-      serviceName: KNOWN_SERVICES.GALLEON_DAPP,
-      environment: process.env.NODE_ENV,
-      label: KNOWN_LABELS.QUOTE_TIMER,
-      duration: duration,
-    });
+    logTimer(KNOWN_LABELS.QUOTE_TIMER, duration);
   };
 
   return {
