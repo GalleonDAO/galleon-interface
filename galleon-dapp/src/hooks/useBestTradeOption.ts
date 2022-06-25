@@ -22,6 +22,14 @@ import {
   LeveragedExchangeIssuanceQuote,
 } from "utils/exchangeIssuanceQuotes";
 import { getZeroExTradeData, ZeroExData } from "utils/zeroExUtils";
+import { getNetAssetValue } from "utils/nav";
+import { SetComponent } from "providers/SetComponents/SetComponentsProvider";
+import {
+  KNOWN_SERVICES,
+  KNOWN_LABELS,
+  LOG_SEVERITY,
+} from "@galleondao/logging-lib";
+import { logger } from "index";
 
 type Result<_, E = Error> =
   | {
@@ -118,7 +126,7 @@ export const getSetTokenAmount = (
 };
 
 export const useBestTradeOption = () => {
-  const { provider } = useAccount();
+  const { account, provider } = useAccount();
   const { chainId } = useNetwork();
   const { getBalance } = useBalance();
 
@@ -236,6 +244,34 @@ export const useBestTradeOption = () => {
           };
     setResult(result);
     setIsFetching(false);
+
+    if (result.success) {
+      logger.logCounter({
+        serviceName: KNOWN_SERVICES.GALLEON_DAPP,
+        environment: process.env.NODE_ENV,
+        label: KNOWN_LABELS.QUOTE_GENERATED,
+        metadata: {
+          sellToken: sellToken.symbol,
+          sellTokenAmount: sellTokenAmount.toString(),
+          buyToken: buyToken.symbol,
+          isIssuance: isIssuance.toString(),
+          address: account ? account : "none",
+        },
+      });
+      if (!result.success) {
+        logger.logMessage({
+          serviceName: KNOWN_SERVICES.GALLEON_DAPP,
+          environment: process.env.NODE_ENV,
+          timestamp: new Date().toISOString(),
+          severity: LOG_SEVERITY.ERROR,
+          functionName: "fetchAndCompareOptions",
+          // @ts-ignore
+          exception: JSON.stringify(result.error),
+          message: `quote generation failed for sellToken: ${sellToken}, sellTokenAmount: ${sellTokenAmount}, buyToken: ${buyToken}, isIssuance: ${isIssuance}`,
+          correlationId: undefined,
+        });
+      }
+    }
   };
 
   return {
