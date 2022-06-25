@@ -22,6 +22,9 @@ import {
   LeveragedExchangeIssuanceQuote,
 } from "utils/exchangeIssuanceQuotes";
 import { getZeroExTradeData, ZeroExData } from "utils/zeroExUtils";
+import { captureDurationAsync } from "../utils/logger";
+import { logger } from "../index";
+import { KNOWN_SERVICES, KNOWN_LABELS } from "@galleondao/logging-lib";
 
 type Result<_, E = Error> =
   | {
@@ -134,108 +137,117 @@ export const useBestTradeOption = () => {
     buyTokenPrice: number,
     isIssuance: boolean
   ) => {
-    setIsFetching(true);
+    const { duration } = await captureDurationAsync(async () => {
+      setIsFetching(true);
 
-    /* Check 0x for DEX Swap option*/
-    const zeroExResult = await getZeroExTradeData(
-      // for now we only allow selling
-      true,
-      sellToken,
-      buyToken,
-      // for now we only allow specifing selling amount,
-      // so sell token amount will always be correct
-      sellTokenAmount,
-      chainId || 1
-    );
-    const dexSwapOption = zeroExResult.success ? zeroExResult.value : null;
-    // @ts-ignore
-    const dexSwapError = zeroExResult.success ? null : zeroExResult.error;
-
-    /* Determine set token amount based on different factors */
-    let setTokenAmount = getSetTokenAmount(
-      isIssuance,
-      sellTokenAmount,
-      sellToken.decimals,
-      sellTokenPrice,
-      buyTokenPrice,
-      dexSwapOption
-    );
-
-    /* Check for Exchange Issuance option */
-    let exchangeIssuanceOption: ExchangeIssuanceQuote | null = null;
-    let leveragedExchangeIssuanceOption: LeveragedExchangeIssuanceQuote | null =
-      null;
-
-    const tokenEligibleForLeveragedEI = isEligibleTradePair(
-      sellToken,
-      buyToken,
-      isIssuance
-    );
-    if (tokenEligibleForLeveragedEI) {
-      const setToken = isIssuance ? buyToken : sellToken;
-
-      try {
-        leveragedExchangeIssuanceOption =
-          await getLeveragedExchangeIssuanceQuotes(
-            setToken,
-            setTokenAmount,
-            sellToken,
-            buyToken,
-            isIssuance,
-            chainId,
-            provider
-          );
-      } catch (e) {
-        console.warn("error when generating leveraged ei option", e);
-      }
-    } else {
-      // For now only allow trade on mainnet, some tokens are disabled
-      const isEligibleTradePair = isEligibleTradePairZeroEx(
+      /* Check 0x for DEX Swap option*/
+      const zeroExResult = await getZeroExTradeData(
+        // for now we only allow selling
+        true,
         sellToken,
-        buyToken
+        buyToken,
+        // for now we only allow specifing selling amount,
+        // so sell token amount will always be correct
+        sellTokenAmount,
+        chainId || 1
       );
-      if (chainId === MAINNET.chainId && isEligibleTradePair)
+      const dexSwapOption = zeroExResult.success ? zeroExResult.value : null;
+      // @ts-ignore
+      const dexSwapError = zeroExResult.success ? null : zeroExResult.error;
+
+      /* Determine set token amount based on different factors */
+      let setTokenAmount = getSetTokenAmount(
+        isIssuance,
+        sellTokenAmount,
+        sellToken.decimals,
+        sellTokenPrice,
+        buyTokenPrice,
+        dexSwapOption
+      );
+
+      /* Check for Exchange Issuance option */
+      let exchangeIssuanceOption: ExchangeIssuanceQuote | null = null;
+      let leveragedExchangeIssuanceOption: LeveragedExchangeIssuanceQuote | null =
+        null;
+
+      const tokenEligibleForLeveragedEI = isEligibleTradePair(
+        sellToken,
+        buyToken,
+        isIssuance
+      );
+      if (tokenEligibleForLeveragedEI) {
+        const setToken = isIssuance ? buyToken : sellToken;
+
         try {
-          const spendingTokenBalance: BigNumber =
-            getBalance(sellToken.symbol) || BigNumber.from(0);
-          exchangeIssuanceOption = await getExchangeIssuanceQuotes(
-            buyToken,
-            setTokenAmount,
-            sellToken,
-            isIssuance,
-            spendingTokenBalance,
-            chainId,
-            provider
-          );
+          leveragedExchangeIssuanceOption =
+            await getLeveragedExchangeIssuanceQuotes(
+              setToken,
+              setTokenAmount,
+              sellToken,
+              buyToken,
+              isIssuance,
+              chainId,
+              provider
+            );
         } catch (e) {
-          console.warn("error when generating zeroexei option", e);
+          console.warn("error when generating leveraged ei option", e);
         }
-    }
+      } else {
+        // For now only allow trade on mainnet, some tokens are disabled
+        const isEligibleTradePair = isEligibleTradePairZeroEx(
+          sellToken,
+          buyToken
+        );
+        if (chainId === MAINNET.chainId && isEligibleTradePair)
+          try {
+            const spendingTokenBalance: BigNumber =
+              getBalance(sellToken.symbol) || BigNumber.from(0);
+            exchangeIssuanceOption = await getExchangeIssuanceQuotes(
+              buyToken,
+              setTokenAmount,
+              sellToken,
+              isIssuance,
+              spendingTokenBalance,
+              chainId,
+              provider
+            );
+          } catch (e) {
+            console.warn("error when generating zeroexei option", e);
+          }
+      }
 
-    console.log(
-      "exchangeIssuanceOption",
-      exchangeIssuanceOption,
-      exchangeIssuanceOption?.inputTokenAmount.toString()
-    );
-    console.log(
-      "levExchangeIssuanceOption",
-      leveragedExchangeIssuanceOption,
-      leveragedExchangeIssuanceOption?.inputTokenAmount.toString()
-    );
+      console.log(
+        "exchangeIssuanceOption",
+        exchangeIssuanceOption,
+        exchangeIssuanceOption?.inputTokenAmount.toString()
+      );
+      console.log(
+        "levExchangeIssuanceOption",
+        leveragedExchangeIssuanceOption,
+        leveragedExchangeIssuanceOption?.inputTokenAmount.toString()
+      );
 
-    const result: Result<ZeroExData, Error> =
-      dexSwapError &&
-      !exchangeIssuanceOption &&
-      !leveragedExchangeIssuanceOption
-        ? { success: false, error: dexSwapError }
-        : {
-            success: true,
-            dexData: dexSwapOption,
-            exchangeIssuanceData: exchangeIssuanceOption,
-            leveragedExchangeIssuanceData: leveragedExchangeIssuanceOption,
-          };
-    setResult(result);
-    setIsFetching(false);
+      const result: Result<ZeroExData, Error> =
+        dexSwapError &&
+        !exchangeIssuanceOption &&
+        !leveragedExchangeIssuanceOption
+          ? { success: false, error: dexSwapError }
+          : {
+              success: true,
+              dexData: dexSwapOption,
+              exchangeIssuanceData: exchangeIssuanceOption,
+              leveragedExchangeIssuanceData: leveragedExchangeIssuanceOption,
+            };
+      setResult(result);
+      setIsFetching(false);
+    });
+
+    logger.logTimer({
+      serviceName: KNOWN_SERVICES.GALLEON_DAPP,
+      environment: process.env.NODE_ENV,
+      label: KNOWN_LABELS.QUOTE_TIMER,
+      duration: duration,
+    });
   };
 
   return {
