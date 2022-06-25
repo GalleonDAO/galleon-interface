@@ -2,7 +2,7 @@ import links from "constants/externalLinks";
 
 const products = [
   {
-    title: "ETH Maxy Yield Index",
+    title: "ETH Max Yield Index",
     description:
       "ETHMAXY is the best leveraged $ETH liquid staking strategy in DeFi today, all within one tradable ERC20 token.",
     source:
