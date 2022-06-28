@@ -20,23 +20,24 @@ import { useBalance } from 'hooks/useBalance'
 import { useNetwork } from 'hooks/useNetwork'
 import { toWei } from 'utils'
 
-import { useLogging } from "hooks/useLogging";
+import { useLogging } from 'hooks/useLogging'
 
 import {
   ExchangeIssuanceQuote,
+  getExchangeIssuancePerpQuotes,
   getExchangeIssuanceQuotes,
   getLeveragedExchangeIssuanceQuotes,
   LeveragedExchangeIssuanceQuote,
-} from "utils/exchangeIssuanceQuotes";
-import { getZeroExTradeData, ZeroExData } from "utils/zeroExUtils";
-import { getNetAssetValue } from "utils/nav";
-import { SetComponent } from "providers/SetComponents/SetComponentsProvider";
+} from 'utils/exchangeIssuanceQuotes'
+import { getZeroExTradeData, ZeroExData } from 'utils/zeroExUtils'
+import { getNetAssetValue } from 'utils/nav'
+import { SetComponent } from 'providers/SetComponents/SetComponentsProvider'
 import {
   KNOWN_SERVICES,
   KNOWN_LABELS,
   LOG_SEVERITY,
-} from "@galleondao/logging-lib";
-import { logger } from "index";
+} from '@galleondao/logging-lib'
+import { logger } from 'index'
 
 type Result<_, E = Error> =
   | {
@@ -44,6 +45,7 @@ type Result<_, E = Error> =
       dexData: ZeroExData | null
       exchangeIssuanceData: ExchangeIssuanceQuote | null | undefined
       leveragedExchangeIssuanceData: LeveragedExchangeIssuanceQuote | null
+      perpExchangeIssuanceData: any | null
     }
   | { success: false; error: E }
 
@@ -144,10 +146,10 @@ export const getSetTokenAmount = (
 }
 
 export const useBestTradeOption = () => {
-  const { account, provider } = useAccount();
-  const { chainId } = useNetwork();
-  const { getBalance } = useBalance();
-  const { KNOWN_LABELS, captureDurationAsync, logTimer } = useLogging();
+  const { account, provider } = useAccount()
+  const { chainId } = useNetwork()
+  const { getBalance } = useBalance()
+  const { KNOWN_LABELS, captureDurationAsync, logTimer } = useLogging()
 
   const [isFetching, setIsFetching] = useState<boolean>(false)
   const [result, setResult] = useState<Result<ZeroExData, Error> | null>(null)
@@ -163,34 +165,34 @@ export const useBestTradeOption = () => {
     slippagePercentage: number,
   ) => {
     const { duration } = await captureDurationAsync(async () => {
-      setIsFetching(true);
+      setIsFetching(true)
 
-    // Perp only flow
-    if (
-      chainId === OPTIMISM.chainId &&
-      sellToken == USDC &&
-      buyToken === BasisYieldEthIndex
-    ) {
-      // let perpExchangeIssuanceOption: PerpExchangeIssuanceQuote | null = null
-      // const setToken = isIssuance ? buyToken : sellToken
+      // Perp only flow
+      let perpExchangeIssuanceOption: any | null = null
+      if (
+        chainId === OPTIMISM.chainId &&
+        ((sellToken == USDC && buyToken === BasisYieldEthIndex) ||
+          (sellToken == BasisYieldEthIndex && buyToken === USDC))
+      ) {
+        const setToken = isIssuance ? buyToken : sellToken
+        const spendingTokenBalance: BigNumber =
+          getBalance(sellToken.symbol) || BigNumber.from(0)
+        try {
+          perpExchangeIssuanceOption = await getExchangeIssuancePerpQuotes(
+            buyToken,
+            toWei(sellTokenAmount, sellToken.decimals),
+            sellToken,
+            isIssuance,
+            spendingTokenBalance,
+            slippagePercentage,
+            chainId,
+            provider,
+          )
+        } catch (e) {
+          console.warn('error when generating leveraged ei option', e)
+        }
+      }
 
-      // try {
-      //   perpExchangeIssuanceOption = await getPerpExchangeIssuanceQuotes(
-      //     setToken,
-      //     toWei(sellTokenAmount, sellToken.decimals),
-      //     sellToken,
-      //     buyToken,
-      //     isIssuance,
-      //     slippagePercentage,
-      //     chainId,
-      //     provider,
-      //   )
-      // } catch (e) {
-      //   console.warn('error when generating leveraged ei option', e)
-      // }
-    }
-
-      
       /* Check 0x for DEX Swap option*/
       const zeroExResult = await getZeroExTradeData(
         // for now we only allow selling
@@ -200,11 +202,11 @@ export const useBestTradeOption = () => {
         // for now we only allow specifing selling amount,
         // so sell token amount will always be correct
         sellTokenAmount,
-        chainId || 1
-      );
-      const dexSwapOption = zeroExResult.success ? zeroExResult.value : null;
+        chainId || 1,
+      )
+      const dexSwapOption = zeroExResult.success ? zeroExResult.value : null
       // @ts-ignore
-      const dexSwapError = zeroExResult.success ? null : zeroExResult.error;
+      const dexSwapError = zeroExResult.success ? null : zeroExResult.error
 
       /* Determine set token amount based on different factors */
       let setTokenAmount = getSetTokenAmount(
@@ -213,85 +215,89 @@ export const useBestTradeOption = () => {
         sellToken.decimals,
         sellTokenPrice,
         buyTokenPrice,
-        dexSwapOption
-      );
+        dexSwapOption,
+      )
 
       /* Check for Exchange Issuance option */
-      let exchangeIssuanceOption: ExchangeIssuanceQuote | null = null;
-      let leveragedExchangeIssuanceOption: LeveragedExchangeIssuanceQuote | null =
-        null;
+      let exchangeIssuanceOption: ExchangeIssuanceQuote | null = null
+      let leveragedExchangeIssuanceOption: LeveragedExchangeIssuanceQuote | null = null
 
-       const tokenEligibleForLeveragedEI = isEligibleTradePair(
-      sellToken,
-      buyToken,
-      isIssuance,
-    )
-    if (tokenEligibleForLeveragedEI) {
-      const setToken = isIssuance ? buyToken : sellToken
+      const tokenEligibleForLeveragedEI = isEligibleTradePair(
+        sellToken,
+        buyToken,
+        isIssuance,
+      )
+      if (tokenEligibleForLeveragedEI) {
+        const setToken = isIssuance ? buyToken : sellToken
 
-      try {
-        leveragedExchangeIssuanceOption = await getLeveragedExchangeIssuanceQuotes(
-          setToken,
-          setTokenAmount,
-          sellToken,
-          buyToken,
-          isIssuance,
-          slippagePercentage,
-          chainId,
-          provider,
-        )
-      } catch (e) {
-        console.warn('error when generating leveraged ei option', e)
-      }
-    } else {
-      const isEligibleTradePair = isEligibleTradePairZeroEx(sellToken, buyToken)
-      if (isEligibleTradePair)
         try {
-          const spendingTokenBalance: BigNumber =
-            getBalance(sellToken.symbol) || BigNumber.from(0)
-          exchangeIssuanceOption = await getExchangeIssuanceQuotes(
-            buyToken,
+          leveragedExchangeIssuanceOption = await getLeveragedExchangeIssuanceQuotes(
+            setToken,
             setTokenAmount,
             sellToken,
+            buyToken,
             isIssuance,
-            spendingTokenBalance,
             slippagePercentage,
             chainId,
             provider,
           )
         } catch (e) {
-          console.warn('error when generating zeroexei option', e)
+          console.warn('error when generating leveraged ei option', e)
+        }
+      } else {
+        const isEligibleTradePair = isEligibleTradePairZeroEx(
+          sellToken,
+          buyToken,
+        )
+        if (isEligibleTradePair)
+          try {
+            const spendingTokenBalance: BigNumber =
+              getBalance(sellToken.symbol) || BigNumber.from(0)
+            exchangeIssuanceOption = await getExchangeIssuanceQuotes(
+              buyToken,
+              setTokenAmount,
+              sellToken,
+              isIssuance,
+              spendingTokenBalance,
+              slippagePercentage,
+              chainId,
+              provider,
+            )
+          } catch (e) {
+            console.warn('error when generating zeroexei option', e)
           }
       }
 
       console.log(
-        "exchangeIssuanceOption",
+        'exchangeIssuanceOption',
         exchangeIssuanceOption,
-        exchangeIssuanceOption?.inputTokenAmount.toString()
-      );
+        exchangeIssuanceOption?.inputTokenAmount.toString(),
+      )
       console.log(
-        "levExchangeIssuanceOption",
+        'levExchangeIssuanceOption',
         leveragedExchangeIssuanceOption,
-        leveragedExchangeIssuanceOption?.inputTokenAmount.toString()
-      );
+        leveragedExchangeIssuanceOption?.inputTokenAmount.toString(),
+      )
 
       const result: Result<ZeroExData, Error> =
         dexSwapError &&
         !exchangeIssuanceOption &&
-        !leveragedExchangeIssuanceOption
+        !leveragedExchangeIssuanceOption &&
+        !perpExchangeIssuanceOption
           ? { success: false, error: dexSwapError }
           : {
               success: true,
               dexData: dexSwapOption,
               exchangeIssuanceData: exchangeIssuanceOption,
               leveragedExchangeIssuanceData: leveragedExchangeIssuanceOption,
-            };
-      setResult(result);
-      setIsFetching(false);
-    });
+              perpExchangeIssuanceData: perpExchangeIssuanceOption,
+            }
+      setResult(result)
+      setIsFetching(false)
+    })
 
-    logTimer(KNOWN_LABELS.QUOTE_TIMER, duration);
-  };
+    logTimer(KNOWN_LABELS.QUOTE_TIMER, duration)
+  }
 
   return {
     bestOptionResult: result,

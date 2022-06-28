@@ -10,6 +10,11 @@ interface RequiredComponentsResponse {
   positions: BigNumber[]
 }
 
+interface RequiredPerpComponentsResponse {
+  componentsEstimate: BigNumber[]
+  totalEstimate: BigNumber
+}
+
 /**
  * returns instance of ExchangeIssuancePerp Contract
  * @param providerSigner  web3 provider or signer
@@ -33,20 +38,23 @@ export const getExchangeIssuancePerpContract = async (
  * @return componenets           Array of component addresses
  * @return positions             Array of component positions
  */
-export const getRequiredIssuanceComponents = async (
+export const getRequiredIssuanceComponentsPerp = async (
   contract: Contract,
   setToken: string,
   amountSetToken: BigNumber,
-): Promise<RequiredComponentsResponse> => {
+): Promise<RequiredPerpComponentsResponse> => {
   try {
     const issueQuoteTx = await contract.getUsdcAmountInForFixedSetOffChain(
       setToken,
       amountSetToken,
     )
-    return issueQuoteTx
+    return {
+      componentsEstimate: issueQuoteTx.usdcAmountInForComponentSets,
+      totalEstimate: issueQuoteTx.totalUsdcAmountIn,
+    }
   } catch (err) {
     console.log('Error getting required issuance components/positions', err)
-    return { components: [], positions: [] }
+    return { componentsEstimate: [], totalEstimate: BigNumber.from(0) }
   }
 }
 
@@ -59,21 +67,24 @@ export const getRequiredIssuanceComponents = async (
  * @return componenets           Array of component addresses
  * @return positions             Array of component positions
  */
-export const getRequiredRedemptionComponents = async (
+export const getRequiredRedemptionComponentsPerp = async (
   contract: Contract,
   setToken: string,
   amountSetToken: BigNumber,
-): Promise<RequiredComponentsResponse> => {
+): Promise<RequiredPerpComponentsResponse> => {
   console.log('getRequiredRedemptionComponents')
   try {
     const redeemQuoteTx = await contract.getUsdcAmountOutForFixedSetOffChain(
       setToken,
       amountSetToken,
     )
-    return redeemQuoteTx
+    return {
+      componentsEstimate: redeemQuoteTx.usdcAmountOutForComponentSets,
+      totalEstimate: redeemQuoteTx.totalUsdcAmountOut,
+    }
   } catch (err) {
     console.log('error', err)
-    return { components: [], positions: [] }
+    return { componentsEstimate: [], totalEstimate: BigNumber.from(0) }
   }
 }
 
@@ -240,8 +251,8 @@ export const useExchangeIssuancePerp = () => {
   }
 
   return {
-    getRequiredIssuanceComponents,
-    getRequiredRedemptionComponents,
+    getRequiredIssuanceComponentsPerp,
+    getRequiredRedemptionComponentsPerp,
     issueFixedSetFromUsdc,
     redeemFixedSetForUsdc,
     approveSetToken,

@@ -1,42 +1,48 @@
-import { BigNumber } from "ethers";
+import { BigNumber } from 'ethers'
 
-import { JsonRpcProvider } from "@ethersproject/providers";
+import { JsonRpcProvider } from '@ethersproject/providers'
 
-import { POLYGON } from "constants/chains";
+import { POLYGON } from 'constants/chains'
 import {
   collateralDebtSwapData,
   debtCollateralSwapData,
   inputSwapData,
   outputSwapData,
-} from "constants/exchangeIssuanceLeveragedData";
+} from 'constants/exchangeIssuanceLeveragedData'
 import {
   ETH,
   EthMaxYieldIndex,
   MATIC,
   STETH,
   Token,
+  USDC,
   WETH,
-} from "constants/tokens";
+} from 'constants/tokens'
 import {
   getExchangeIssuanceLeveragedContract,
   getLeveragedTokenData,
-} from "hooks/useExchangeIssuanceLeveraged";
+} from 'hooks/useExchangeIssuanceLeveraged'
 import {
   getExchangeIssuanceZeroExContract,
   getRequiredIssuanceComponents,
   getRequiredRedemptionComponents,
-} from "hooks/useExchangeIssuanceZeroEx";
-import { displayFromWei, toWei } from "utils";
-import { getExchangeIssuanceGasEstimate } from "utils/exchangeIssuanceGasEstimate";
-import { GasStation } from "utils/gasStation";
-import { getIssuanceModule } from "utils/issuanceModule";
+} from 'hooks/useExchangeIssuanceZeroEx'
+import { displayFromWei, toWei } from 'utils'
+import { getExchangeIssuanceGasEstimate } from 'utils/exchangeIssuanceGasEstimate'
+import { GasStation } from 'utils/gasStation'
+import { getIssuanceModule } from 'utils/issuanceModule'
 import {
   getSwapData,
   getSwapDataCollateralDebt,
   getSwapDataDebtCollateral,
-} from "utils/swapData";
-import { getAddressForToken } from "utils/tokens";
-import { get0xQuote } from "utils/zeroExUtils";
+} from 'utils/swapData'
+import { getAddressForToken } from 'utils/tokens'
+import { get0xQuote } from 'utils/zeroExUtils'
+import {
+  getExchangeIssuancePerpContract,
+  getRequiredIssuanceComponentsPerp,
+  getRequiredRedemptionComponentsPerp,
+} from 'hooks/useExchangeIssuancePerp'
 
 export enum Exchange {
   None,
@@ -47,49 +53,49 @@ export enum Exchange {
 }
 
 export interface ExchangeIssuanceQuote {
-  tradeData: string[];
-  inputTokenAmount: BigNumber;
-  setTokenAmount: BigNumber;
-  gas: BigNumber;
-  gasPrice: BigNumber;
+  tradeData: string[]
+  inputTokenAmount: BigNumber
+  setTokenAmount: BigNumber
+  gas: BigNumber
+  gasPrice: BigNumber
 }
 
 export interface LeveragedExchangeIssuanceQuote {
-  swapDataDebtCollateral: SwapData;
-  swapDataPaymentToken: SwapData;
-  inputTokenAmount: BigNumber;
-  setTokenAmount: BigNumber;
-  gasPrice: BigNumber;
+  swapDataDebtCollateral: SwapData
+  swapDataPaymentToken: SwapData
+  inputTokenAmount: BigNumber
+  setTokenAmount: BigNumber
+  gasPrice: BigNumber
 }
 
 export interface LeveragedTokenData {
-  collateralAToken: string;
-  collateralToken: string;
-  debtToken: string;
-  collateralAmount: BigNumber;
-  debtAmount: BigNumber;
+  collateralAToken: string
+  collateralToken: string
+  debtToken: string
+  collateralAmount: BigNumber
+  debtAmount: BigNumber
 }
 
 export interface SwapData {
-  exchange: Exchange;
-  path: string[];
-  fees: number[];
-  pool: string;
+  exchange: Exchange
+  path: string[]
+  fees: number[]
+  pool: string
 }
 
 // 0x keys https://github.com/0xProject/protocol/blob/4f32f3174f25858644eae4c3de59c3a6717a757c/packages/asset-swapper/src/utils/market_operation_utils/types.ts#L38
-function get0xEchangeKey(exchange: Exchange): string {
+function get0xExchangeKey(exchange: Exchange): string {
   switch (exchange) {
     case Exchange.Curve:
-      return "Curve";
+      return 'Curve'
     case Exchange.Quickswap:
-      return "QuickSwap";
+      return 'QuickSwap'
     case Exchange.Sushiswap:
-      return "SushiSwap";
+      return 'SushiSwap'
     case Exchange.UniV3:
-      return "Uniswap_V3";
+      return 'Uniswap_V3'
     default:
-      return "";
+      return ''
   }
 }
 
@@ -98,15 +104,15 @@ export function getFullCostsInUsd(
   gas: BigNumber,
   inputTokenDecimals: number,
   inputTokenPrice: number,
-  nativeTokenPrice: number
+  nativeTokenPrice: number,
 ): number | null {
-  if (quote === null || quote === undefined) return null;
-  const g = displayFromWei(gas)?.toString() ?? "0";
+  if (quote === null || quote === undefined) return null
+  const g = displayFromWei(gas)?.toString() ?? '0'
   const q =
-    displayFromWei(quote, undefined, inputTokenDecimals)?.toString() ?? "0";
-  const quotePrice = parseFloat(q) * inputTokenPrice;
-  const gasPrice = parseFloat(g) * nativeTokenPrice;
-  return quotePrice + gasPrice;
+    displayFromWei(quote, undefined, inputTokenDecimals)?.toString() ?? '0'
+  const quotePrice = parseFloat(q) * inputTokenPrice
+  const gasPrice = parseFloat(g) * nativeTokenPrice
+  return quotePrice + gasPrice
 }
 
 export async function getRequiredComponents(
@@ -115,32 +121,145 @@ export async function getRequiredComponents(
   setTokenSymbol: string,
   setTokenAmount: BigNumber,
   chainId: number | undefined,
-  provider: JsonRpcProvider | undefined
+  provider: JsonRpcProvider | undefined,
 ) {
-  const issuanceModule = getIssuanceModule(setTokenSymbol, chainId);
+  const issuanceModule = getIssuanceModule(setTokenSymbol, chainId)
 
   const contract = await getExchangeIssuanceZeroExContract(
     provider,
-    chainId ?? 1
-  );
+    chainId ?? 1,
+  )
 
   const { components, positions } = isIssuance
     ? await getRequiredIssuanceComponents(
         contract,
         issuanceModule.address,
         issuanceModule.isDebtIssuance,
-        setToken ?? "",
-        setTokenAmount
+        setToken ?? '',
+        setTokenAmount,
       )
     : await getRequiredRedemptionComponents(
         contract,
         issuanceModule.address,
         issuanceModule.isDebtIssuance,
-        setToken ?? "",
-        setTokenAmount
-      );
+        setToken ?? '',
+        setTokenAmount,
+      )
 
-  return { components, positions };
+  return { components, positions }
+}
+
+/**
+ * Returns exchange issuance quotes (incl. 0x trade data) or null.
+ *
+ * @param buyToken            The token to buy
+ * @param setTokenAmount      The amount of set token that should be acquired/sold
+ * @param sellToken           The token to sell
+ * @param slippagePercentage  The slippage percentage to use (default .5%)
+ * @param chainId             ID for current chain
+ * @param provider            A JsonRpcProvider instance
+ *
+ * @return An ExchangeIssuanceQuote including trade data.
+ */
+export const getExchangeIssuancePerpQuotes = async (
+  buyToken: Token,
+  setTokenAmount: BigNumber,
+  sellToken: Token,
+  isIssuance: boolean,
+  inputTokenBalance: BigNumber,
+  slippagePercentage: number = 1,
+  chainId: number = 1,
+  provider: JsonRpcProvider | undefined,
+): Promise<ExchangeIssuanceQuote | null> => {
+  const buyTokenAddress = getAddressForToken(buyToken, chainId)
+  const sellTokenAddress = getAddressForToken(sellToken, chainId)
+  const usdcAddress = getAddressForToken(USDC, chainId)
+
+  const setTokenAddress = isIssuance ? buyTokenAddress : sellTokenAddress
+  const setTokenSymbol = isIssuance ? buyToken.symbol : sellToken.symbol
+
+  const contract = await getExchangeIssuancePerpContract(provider, chainId)
+  const { componentsEstimate, totalEstimate } = isIssuance
+    ? await getRequiredIssuanceComponentsPerp(
+        contract,
+        setTokenAddress,
+        setTokenAmount,
+      )
+    : await getRequiredRedemptionComponentsPerp(
+        contract,
+        setTokenAddress,
+        setTokenAmount,
+      )
+
+  const componentsWithSlippageEstimate = componentsEstimate.map(
+    (x: BigNumber) =>
+      x
+        .mul(slippagePercentage / 100 + 1)
+        .mask(0)
+        .toString(),
+  )
+
+  const totalWithSlippageEstimate = totalEstimate.mul(
+    slippagePercentage / 100 + 1,
+  )
+
+  const slippage = slippagePercentage / 100
+  const buyTokenIsUsdc = buyToken.symbol === 'USDC'
+  const sellTokenIsUsdc = sellToken.symbol === 'USDC'
+  const buyTokenAddressOrUsdc = buyTokenIsUsdc ? usdcAddress : buyTokenAddress
+  const sellTokenAddressOrUsdc = sellTokenIsUsdc ? usdcAddress : sellTokenAddress
+
+  const quotePromises: Promise<any>[] = []
+
+  const results = await Promise.all(quotePromises)
+  if (results.length < 1) return null
+
+  positionQuotes = results.map((result) => result.data)
+  inputOutputTokenAmount = results
+    .map((result) =>
+      BigNumber.from(isIssuance ? result.sellAmount : result.buyAmount),
+    )
+    .reduce((prevValue, currValue) => {
+      return currValue.add(prevValue)
+    })
+
+  // Christn: I assume that this is the correct math to make sure we have enough weth to cover the slippage
+  // based on the fact that the slippagePercentage is limited between 0.0 and 1.0 on the 0xApi
+  const inputOuputTokenDecimals = isIssuance
+    ? sellToken.decimals
+    : buyToken.decimals
+  inputOutputTokenAmount = getSlippageAdjustedTokenAmount(
+    inputOutputTokenAmount,
+    inputOuputTokenDecimals,
+    slippagePercentage,
+    isIssuance,
+  )
+
+  let gasPrice = BigNumber.from(0)
+  if (provider !== undefined) {
+    const gasStation = new GasStation(provider)
+    gasPrice = await gasStation.getGasPrice()
+  }
+
+  const gasEstimate = await getExchangeIssuanceGasEstimate(
+    provider,
+    chainId,
+    isIssuance,
+    sellToken,
+    buyToken,
+    setTokenAmount,
+    inputOutputTokenAmount,
+    inputTokenBalance,
+    positionQuotes,
+  )
+
+  return {
+    tradeData: positionQuotes,
+    inputTokenAmount: inputOutputTokenAmount,
+    setTokenAmount,
+    gas: gasEstimate,
+    gasPrice,
+  }
 }
 
 /**
@@ -163,14 +282,14 @@ export const getExchangeIssuanceQuotes = async (
   inputTokenBalance: BigNumber,
   slippagePercentage: number = 1,
   chainId: number = 1,
-  provider: JsonRpcProvider | undefined
+  provider: JsonRpcProvider | undefined,
 ): Promise<ExchangeIssuanceQuote | null> => {
-  const buyTokenAddress = getAddressForToken(buyToken, chainId);
-  const sellTokenAddress = getAddressForToken(sellToken, chainId);
-  const wethAddress = getAddressForToken(WETH, chainId);
+  const buyTokenAddress = getAddressForToken(buyToken, chainId)
+  const sellTokenAddress = getAddressForToken(sellToken, chainId)
+  const wethAddress = getAddressForToken(WETH, chainId)
 
-  const setTokenAddress = isIssuance ? buyTokenAddress : sellTokenAddress;
-  const setTokenSymbol = isIssuance ? buyToken.symbol : sellToken.symbol;
+  const setTokenAddress = isIssuance ? buyTokenAddress : sellTokenAddress
+  const setTokenSymbol = isIssuance ? buyToken.symbol : sellToken.symbol
 
   const { components, positions } = await getRequiredComponents(
     isIssuance,
@@ -178,35 +297,33 @@ export const getExchangeIssuanceQuotes = async (
     setTokenSymbol,
     setTokenAmount,
     chainId,
-    provider
-  );
+    provider,
+  )
 
-  let positionQuotes: string[] = [];
+  let positionQuotes: string[] = []
   // Input for issuing / output for redeeming
-  let inputOutputTokenAmount = BigNumber.from(0);
+  let inputOutputTokenAmount = BigNumber.from(0)
   // 0xAPI expects percentage as value between 0-1 e.g. 5% -> 0.05
   // const isJPG = setTokenSymbol === JPGIndex.symbol
   // const slippage = isJPG ? 0.08 : slippagePercentage / 100
-  const slippage = slippagePercentage / 100;
-  const buyTokenIsEth = buyToken.symbol === "ETH";
-  const sellTokenIsEth = sellToken.symbol === "ETH";
-  const buyTokenAddressOrWeth = buyTokenIsEth ? wethAddress : buyTokenAddress;
-  const sellTokenAddressOrWeth = sellTokenIsEth
-    ? wethAddress
-    : sellTokenAddress;
+  const slippage = slippagePercentage / 100
+  const buyTokenIsEth = buyToken.symbol === 'ETH'
+  const sellTokenIsEth = sellToken.symbol === 'ETH'
+  const buyTokenAddressOrWeth = buyTokenIsEth ? wethAddress : buyTokenAddress
+  const sellTokenAddressOrWeth = sellTokenIsEth ? wethAddress : sellTokenAddress
 
-  const quotePromises: Promise<any>[] = [];
+  const quotePromises: Promise<any>[] = []
   components.forEach((component, index) => {
-    const sellAmount = positions[index];
-    const buyAmount = positions[index];
+    const sellAmount = positions[index]
+    const buyAmount = positions[index]
 
-    const buyToken = isIssuance ? component : buyTokenAddressOrWeth;
-    const sellToken = isIssuance ? sellTokenAddressOrWeth : component;
+    const buyToken = isIssuance ? component : buyTokenAddressOrWeth
+    const sellToken = isIssuance ? sellTokenAddressOrWeth : component
 
     if (buyToken === sellToken) {
       inputOutputTokenAmount = isIssuance
         ? inputOutputTokenAmount.add(buyAmount)
-        : inputOutputTokenAmount.add(sellAmount);
+        : inputOutputTokenAmount.add(sellAmount)
     } else {
       const quotePromise = isIssuance
         ? get0xQuote(
@@ -216,7 +333,7 @@ export const getExchangeIssuanceQuotes = async (
               buyAmount: buyAmount.toString(),
               slippagePercentage: slippage,
             },
-            chainId ?? 1
+            chainId ?? 1,
           )
         : get0xQuote(
             {
@@ -225,40 +342,40 @@ export const getExchangeIssuanceQuotes = async (
               sellAmount: sellAmount.toString(),
               slippagePercentage: slippage,
             },
-            chainId ?? 1
-          );
-      quotePromises.push(quotePromise);
+            chainId ?? 1,
+          )
+      quotePromises.push(quotePromise)
     }
-  });
+  })
 
-  const results = await Promise.all(quotePromises);
-  if (results.length < 1) return null;
+  const results = await Promise.all(quotePromises)
+  if (results.length < 1) return null
 
-  positionQuotes = results.map((result) => result.data);
+  positionQuotes = results.map((result) => result.data)
   inputOutputTokenAmount = results
     .map((result) =>
-      BigNumber.from(isIssuance ? result.sellAmount : result.buyAmount)
+      BigNumber.from(isIssuance ? result.sellAmount : result.buyAmount),
     )
     .reduce((prevValue, currValue) => {
-      return currValue.add(prevValue);
-    });
+      return currValue.add(prevValue)
+    })
 
   // Christn: I assume that this is the correct math to make sure we have enough weth to cover the slippage
   // based on the fact that the slippagePercentage is limited between 0.0 and 1.0 on the 0xApi
   const inputOuputTokenDecimals = isIssuance
     ? sellToken.decimals
-    : buyToken.decimals;
+    : buyToken.decimals
   inputOutputTokenAmount = getSlippageAdjustedTokenAmount(
     inputOutputTokenAmount,
     inputOuputTokenDecimals,
     slippagePercentage,
-    isIssuance
-  );
+    isIssuance,
+  )
 
-  let gasPrice = BigNumber.from(0);
+  let gasPrice = BigNumber.from(0)
   if (provider !== undefined) {
-    const gasStation = new GasStation(provider);
-    gasPrice = await gasStation.getGasPrice();
+    const gasStation = new GasStation(provider)
+    gasPrice = await gasStation.getGasPrice()
   }
 
   const gasEstimate = await getExchangeIssuanceGasEstimate(
@@ -270,8 +387,8 @@ export const getExchangeIssuanceQuotes = async (
     setTokenAmount,
     inputOutputTokenAmount,
     inputTokenBalance,
-    positionQuotes
-  );
+    positionQuotes,
+  )
 
   return {
     tradeData: positionQuotes,
@@ -279,19 +396,19 @@ export const getExchangeIssuanceQuotes = async (
     setTokenAmount,
     gas: gasEstimate,
     gasPrice,
-  };
-};
+  }
+}
 
 // Returns a comma separated string of sources to be included for 0x API calls
 export function getIncludedSources(isEthmaxy: boolean): string {
-  const curve = get0xEchangeKey(Exchange.Curve);
-  const quickswap = get0xEchangeKey(Exchange.Quickswap);
-  const sushi = get0xEchangeKey(Exchange.Sushiswap);
-  const uniswap = get0xEchangeKey(Exchange.UniV3);
+  const curve = get0xExchangeKey(Exchange.Curve)
+  const quickswap = get0xExchangeKey(Exchange.Quickswap)
+  const sushi = get0xExchangeKey(Exchange.Sushiswap)
+  const uniswap = get0xExchangeKey(Exchange.UniV3)
   let includedSources: string = isEthmaxy
     ? [curve].toString()
-    : [quickswap, sushi, uniswap].toString();
-  return includedSources;
+    : [quickswap, sushi, uniswap].toString()
+  return includedSources
 }
 
 async function getLevTokenData(
@@ -299,40 +416,40 @@ async function getLevTokenData(
   setTokenAmount: BigNumber,
   isIssuance: boolean,
   chainId: number,
-  signer: JsonRpcProvider | undefined
+  signer: JsonRpcProvider | undefined,
 ): Promise<LeveragedTokenData> {
-  const contract = await getExchangeIssuanceLeveragedContract(signer, chainId);
-  const setTokenAddress = getAddressForToken(setToken, chainId);
+  const contract = await getExchangeIssuanceLeveragedContract(signer, chainId)
+  const setTokenAddress = getAddressForToken(setToken, chainId)
   return await getLeveragedTokenData(
     contract,
-    setTokenAddress ?? "",
+    setTokenAddress ?? '',
     setTokenAmount,
-    isIssuance
-  );
+    isIssuance,
+  )
 }
 
 export function getLevEIPaymentTokenAddress(
   paymentToken: Token,
   isIssuance: boolean,
-  chainId: number
+  chainId: number,
 ): string {
   if (paymentToken.symbol === ETH.symbol) {
-    return "ETH";
+    return 'ETH'
   }
 
   if (paymentToken.symbol === EthMaxYieldIndex.symbol && !isIssuance) {
     // TODO: should this always be the collateralToken?
     // paymentTokenAddress = leveragedTokenData.collateralToken
-    return STETH.address!;
+    return STETH.address!
   }
 
   if (chainId === POLYGON.chainId && paymentToken.symbol === MATIC.symbol) {
-    const WMATIC_ADDRESS = "0x0d500B1d8E8eF31E21C99d1Db9A6444d3ADf1270";
-    return WMATIC_ADDRESS;
+    const WMATIC_ADDRESS = '0x0d500B1d8E8eF31E21C99d1Db9A6444d3ADf1270'
+    return WMATIC_ADDRESS
   }
 
-  const paymentTokenAddress = getAddressForToken(paymentToken, chainId);
-  return paymentTokenAddress ?? "";
+  const paymentTokenAddress = getAddressForToken(paymentToken, chainId)
+  return paymentTokenAddress ?? ''
 }
 
 export async function getSwapDataAndPaymentTokenAmount(
@@ -343,38 +460,36 @@ export async function getSwapDataAndPaymentTokenAmount(
   paymentTokenAddress: string,
   includedSources: string,
   isIssuance: boolean,
-  chainId: number
+  chainId: number,
 ): Promise<{
-  swapDataPaymentToken: SwapData;
-  paymentTokenAmount: BigNumber;
+  swapDataPaymentToken: SwapData
+  paymentTokenAmount: BigNumber
 }> {
-  const setTokenSymbol = setToken.symbol;
+  const setTokenSymbol = setToken.symbol
   // By default the input/output swap data can be empty (as it will be ignored)
   let swapDataPaymentToken: SwapData = {
     exchange: Exchange.None,
     path: [],
     fees: [],
-    pool: "0x0000000000000000000000000000000000000000",
-  };
+    pool: '0x0000000000000000000000000000000000000000',
+  }
 
   const issuanceParams = {
     buyToken: collateralToken,
     buyAmount: collateralShortfall.toString(),
     sellToken: paymentTokenAddress,
     includedSources,
-  };
+  }
 
   const redeemingParams = {
     buyToken: paymentTokenAddress,
     sellAmount: leftoverCollateral.toString(),
     sellToken: collateralToken,
     includedSources,
-  };
+  }
 
   // Default if collateral token should be equal to payment token
-  let paymentTokenAmount = isIssuance
-    ? collateralShortfall
-    : leftoverCollateral;
+  let paymentTokenAmount = isIssuance ? collateralShortfall : leftoverCollateral
 
   // Only fetch input/output swap data if collateral token is not the same as payment token
   if (
@@ -384,44 +499,44 @@ export async function getSwapDataAndPaymentTokenAmount(
     const result = await getSwapData(
       isIssuance ? issuanceParams : redeemingParams,
       chainId,
-      1
-    );
+      1,
+    )
     if (result) {
-      const { swapData, zeroExQuote } = result;
-      swapDataPaymentToken = swapData;
+      const { swapData, zeroExQuote } = result
+      swapDataPaymentToken = swapData
       paymentTokenAmount = isIssuance
         ? BigNumber.from(zeroExQuote.sellAmount)
-        : BigNumber.from(zeroExQuote.buyAmount);
+        : BigNumber.from(zeroExQuote.buyAmount)
     }
   }
 
   if (setTokenSymbol === EthMaxYieldIndex.symbol) {
     const outputTokenSymbol =
-      paymentTokenAddress === STETH.address ? STETH.symbol : ETH.symbol;
+      paymentTokenAddress === STETH.address ? STETH.symbol : ETH.symbol
     // just use the static versions here
     swapDataPaymentToken = isIssuance
       ? inputSwapData[setTokenSymbol][outputTokenSymbol]
-      : outputSwapData[setTokenSymbol][ETH.symbol];
+      : outputSwapData[setTokenSymbol][ETH.symbol]
   }
 
-  return { swapDataPaymentToken, paymentTokenAmount };
+  return { swapDataPaymentToken, paymentTokenAmount }
 }
 
 export function getSlippageAdjustedTokenAmount(
   tokenAmount: BigNumber,
   tokenDecimals: number,
   slippagePercentage: number,
-  isIssuance: boolean
+  isIssuance: boolean,
 ): BigNumber {
   if (isIssuance) {
     return tokenAmount
       .mul(toWei(100, tokenDecimals))
-      .div(toWei(100 - slippagePercentage, tokenDecimals));
+      .div(toWei(100 - slippagePercentage, tokenDecimals))
   }
 
   return tokenAmount
     .mul(toWei(100, tokenDecimals))
-    .div(toWei(100 + slippagePercentage, tokenDecimals));
+    .div(toWei(100 + slippagePercentage, tokenDecimals))
 }
 
 /**
@@ -435,89 +550,93 @@ export const getLeveragedExchangeIssuanceQuotes = async (
   isIssuance: boolean,
   slippagePercentage: number = 1,
   chainId: number = 1,
-  provider: JsonRpcProvider | undefined
+  provider: JsonRpcProvider | undefined,
 ): Promise<LeveragedExchangeIssuanceQuote | null> => {
-  const setTokenSymbol = setToken.symbol;
-  const isEthmaxy = setTokenSymbol === "ETHMAXY";
-  const includedSources = getIncludedSources(isEthmaxy);
+  const setTokenSymbol = setToken.symbol
+  const isEthmaxy = setTokenSymbol === 'ETHMAXY'
+  const includedSources = getIncludedSources(isEthmaxy)
 
   const leveragedTokenData = await getLevTokenData(
     setToken,
     setTokenAmount,
     isIssuance,
     chainId,
-    provider
-  );
+    provider,
+  )
 
   let debtCollateralResult = isIssuance
     ? await getSwapDataDebtCollateral(
         leveragedTokenData,
         includedSources,
         slippagePercentage,
-        chainId
+        chainId,
       )
     : await getSwapDataCollateralDebt(
         leveragedTokenData,
         includedSources,
         slippagePercentage,
-        chainId
-      );
+        chainId,
+      )
 
-  if (!debtCollateralResult) return null;
+  if (!debtCollateralResult) return null
 
-  let { swapDataDebtCollateral, collateralObtainedOrSold } =
-    debtCollateralResult;
+  let {
+    swapDataDebtCollateral,
+    collateralObtainedOrSold,
+  } = debtCollateralResult
 
   if (isEthmaxy) {
     // just using the static versions
     swapDataDebtCollateral = isIssuance
       ? debtCollateralSwapData[setTokenSymbol]
-      : collateralDebtSwapData[setTokenSymbol];
+      : collateralDebtSwapData[setTokenSymbol]
   }
 
   // Relevant when issuing
   const collateralShortfall = leveragedTokenData.collateralAmount.sub(
-    collateralObtainedOrSold
-  );
+    collateralObtainedOrSold,
+  )
   // Relevant when redeeming
   const leftoverCollateral = leveragedTokenData.collateralAmount.sub(
-    collateralObtainedOrSold
-  );
+    collateralObtainedOrSold,
+  )
 
   let inputOutputTokenAddress = getLevEIPaymentTokenAddress(
     isIssuance ? inputToken : outputToken,
     isIssuance,
-    chainId
-  );
+    chainId,
+  )
 
-  let { swapDataPaymentToken, paymentTokenAmount } =
-    await getSwapDataAndPaymentTokenAmount(
-      setToken,
-      leveragedTokenData.collateralToken,
-      collateralShortfall,
-      leftoverCollateral,
-      inputOutputTokenAddress,
-      includedSources,
-      isIssuance,
-      chainId
-    );
+  let {
+    swapDataPaymentToken,
+    paymentTokenAmount,
+  } = await getSwapDataAndPaymentTokenAmount(
+    setToken,
+    leveragedTokenData.collateralToken,
+    collateralShortfall,
+    leftoverCollateral,
+    inputOutputTokenAddress,
+    includedSources,
+    isIssuance,
+    chainId,
+  )
 
   const inputOuputTokenDecimals = isIssuance
     ? inputToken.decimals
-    : outputToken.decimals;
-  const slip = !isIssuance && isEthmaxy ? 5 : slippagePercentage;
+    : outputToken.decimals
+  const slip = !isIssuance && isEthmaxy ? 5 : slippagePercentage
   // Need to add some slippage similar to EI quote - as there were failed tx
   paymentTokenAmount = getSlippageAdjustedTokenAmount(
     paymentTokenAmount,
     inputOuputTokenDecimals,
     slip,
-    isIssuance
-  );
+    isIssuance,
+  )
 
-  let gasPrice = BigNumber.from(0);
+  let gasPrice = BigNumber.from(0)
   if (provider !== undefined) {
-    const gasStation = new GasStation(provider);
-    gasPrice = await gasStation.getGasPrice();
+    const gasStation = new GasStation(provider)
+    gasPrice = await gasStation.getGasPrice()
   }
 
   return {
@@ -526,5 +645,5 @@ export const getLeveragedExchangeIssuanceQuotes = async (
     inputTokenAmount: paymentTokenAmount,
     setTokenAmount,
     gasPrice,
-  };
-};
+  }
+}

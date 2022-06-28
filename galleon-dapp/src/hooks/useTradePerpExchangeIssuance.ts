@@ -23,7 +23,7 @@ export const useTradePerpExchangeIssuance = (
   isIssuance: boolean,
   inputToken: Token,
   outputToken: Token,
-  quoteData?: ExchangeIssuanceQuote | null,
+  quoteData?: any | null,
 ) => {
   const { account, provider } = useAccount()
   const { chainId } = useNetwork()
@@ -39,9 +39,9 @@ export const useTradePerpExchangeIssuance = (
   const spendingTokenBalance =
     getBalance(inputToken.symbol) || BigNumber.from(0)
 
-  const [isTransactingEI, setIsTransacting] = useState(false)
+  const [isTransactingPerpEI, setIsTransacting] = useState(false)
 
-  const executeEITrade = useCallback(async () => {
+  const executePerpEITrade = useCallback(async () => {
     if (!account || !quoteData || !setTokenAmount) return
 
     const outputTokenAddress = getAddressForToken(outputToken, chainId)
@@ -102,5 +102,5 @@ export const useTradePerpExchangeIssuance = (
     }
   }, [account, quoteData])
 
-  return { executeEITrade, isTransactingEI }
+  return { executePerpEITrade, isTransactingPerpEI }
 }
