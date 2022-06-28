@@ -19,6 +19,9 @@ import { getTokenList, TokenData as Token } from "utils/tokenlists";
 
 const ASSET_PLATFORM = "ethereum";
 const VS_CURRENCY = "usd";
+const key = `&x_cg_pro_api_key=${
+  process.env.REACT_APP_COINGECKO_PRO_API_KEY ?? ""
+}`;
 
 export function useSetComponents() {
   return { ...useContext(SetComponentsContext) };
@@ -259,15 +262,9 @@ async function getPositionPrices(
   setDetails: SetDetails,
   assetPlatform: string = ASSET_PLATFORM
 ): Promise<CoinGeckoCoinPrices> {
-  const requestHeaders: HeadersInit = new Headers();
-  requestHeaders.set(
-    "X-Cg-Pro-Api-Key",
-    process.env.REACT_APP_COINGECKO_PRO_API_KEY ?? ""
-  );
   const componentAddresses = setDetails.positions.map((p) => p.component);
   return fetch(
-    `https://pro-api.coingecko.com/api/v3/simple/token_price/${assetPlatform}?vs_currencies=${VS_CURRENCY}&contract_addresses=${componentAddresses}&include_24hr_change=true`,
-    { headers: requestHeaders }
+    `https://pro-api.coingecko.com/api/v3/simple/token_price/${assetPlatform}?vs_currencies=${VS_CURRENCY}&contract_addresses=${componentAddresses}&include_24hr_change=true${key}`
   )
     .then((response) => response.json())
     .catch((e) => {

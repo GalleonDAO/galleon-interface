@@ -23,7 +23,12 @@ import {
   ExchangeIssuanceZeroExAddress,
   zeroExRouterAddress,
 } from "constants/ethContractAddresses";
-import { ETH, EthMaxYieldIndex, Token } from "constants/tokens";
+import {
+  ETH,
+  EthMaxYieldIndex,
+  indexNamesArbitrum,
+  Token,
+} from "constants/tokens";
 import { useApproval } from "hooks/useApproval";
 import { useBalance } from "hooks/useBalance";
 import { useBestTradeOption } from "hooks/useBestTradeOption";
@@ -33,7 +38,13 @@ import { useTradeLeveragedExchangeIssuance } from "hooks/useTradeLeveragedExchan
 import { useTradeTokenLists } from "hooks/useTradeTokenLists";
 import { isSupportedNetwork, isValidTokenInput, toWei } from "utils";
 
-import { MAINNET, OPTIMISM, POLYGON } from "constants/chains";
+import {
+  ARBITRUM,
+  ChainData,
+  MAINNET,
+  OPTIMISM,
+  POLYGON,
+} from "constants/chains";
 import {
   ExchangeIssuanceZeroExMainnetAddress,
   ExchangeIssuanceZeroExPolygonAddress,
@@ -397,7 +408,34 @@ const QuickTrade = (props: {
       return (
         indexNamesOptimism.filter((t) => t.symbol === token.symbol).length === 0
       );
+    if (token && chainId === ARBITRUM.chainId)
+      return (
+        indexNamesArbitrum.filter((t) => t.symbol === token.symbol).length === 0
+      );
     return false;
+  };
+
+  const getSupportedNetworks = (token: Token | undefined): ChainData[] => {
+    const supportedNetworks = [];
+    if (token) {
+      if (
+        indexNamesMainnet.filter((t) => t.symbol === token.symbol).length !== 0
+      )
+        supportedNetworks.push(MAINNET);
+      if (
+        indexNamesPolygon.filter((t) => t.symbol === token.symbol).length !== 0
+      )
+        supportedNetworks.push(POLYGON);
+      if (
+        indexNamesOptimism.filter((t) => t.symbol === token.symbol).length !== 0
+      )
+        supportedNetworks.push(OPTIMISM);
+      if (
+        indexNamesArbitrum.filter((t) => t.symbol === token.symbol).length !== 0
+      )
+        supportedNetworks.push(ARBITRUM);
+    }
+    return supportedNetworks;
   };
 
   /**
@@ -412,20 +450,23 @@ const QuickTrade = (props: {
     }
 
     if (isNotTradable(props.singleToken)) {
-      let chainName = "This Network";
-      switch (chainId) {
-        case MAINNET.chainId:
-          chainName = "Mainnet";
-          break;
-        case POLYGON.chainId:
-          chainName = "Polygon";
-          break;
-        case OPTIMISM.chainId:
-          chainName = "Optimism";
-          break;
-      }
+      const supportedNetworks = getSupportedNetworks(props.singleToken);
+      switch (supportedNetworks.length) {
+        case 0:
+          return "Currently Unavailable";
+        case 1:
+          return `Only available on ${
+            supportedNetworks[0].alias
+              ? supportedNetworks[0].alias
+              : supportedNetworks[0].name
+          }`;
 
-      return `Not Available on ${chainName}`;
+        //More than one supported network
+        default:
+          return `Available on: ${supportedNetworks.map((net) => {
+            return `${net.alias ? net.alias : net.name}`;
+          })}`;
+      }
     }
 
     if (sellTokenAmount === "0") {
