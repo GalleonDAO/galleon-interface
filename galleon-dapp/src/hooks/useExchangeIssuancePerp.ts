@@ -69,7 +69,7 @@ export const getRequiredIssuanceComponentsPerp = async (
     // 0.000000010090946869
     console.log(
       "getUsdcAmountInForFixedSetOffChain estimate display value: ",
-      displayFromWei(issueQuoteTx, 2, 18)
+      displayFromWei(issueQuoteTx, 2, 6)
     );
 
     return {

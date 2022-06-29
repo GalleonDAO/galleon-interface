@@ -28,6 +28,7 @@ import {
   getExchangeIssuanceQuotes,
   getLeveragedExchangeIssuanceQuotes,
   LeveragedExchangeIssuanceQuote,
+  PerpExchangeIssuanceQuote,
 } from "utils/exchangeIssuanceQuotes";
 import { getZeroExTradeData, ZeroExData } from "utils/zeroExUtils";
 import { getNetAssetValue } from "utils/nav";
@@ -164,7 +165,7 @@ export const useBestTradeOption = () => {
       setIsFetching(true);
 
       // Perp only flow
-      let perpExchangeIssuanceOption: any | null = null;
+      let perpExchangeIssuanceOption: PerpExchangeIssuanceQuote | null = null;
 
       const spendingTokenBalance: BigNumber =
         (isIssuance ? getBalance(USDC.symbol) : getBalance(setToken.symbol)) ||
@@ -183,7 +184,7 @@ export const useBestTradeOption = () => {
 
         console.log("PERP", perpExchangeIssuanceOption);
       } catch (e) {
-        console.warn("error when generating leveraged ei option", e);
+        console.warn("error when generating perp ei option", e);
         setPerpData({
           success: false,
           data: null,

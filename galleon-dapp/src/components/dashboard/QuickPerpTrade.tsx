@@ -434,8 +434,9 @@ const QuickPerpTrade = (props: {
           <span className="inline-flex ml-2.5 text-md font-semibold">
             {displayFromWei(
               perpIssuanceResult?.data
-                ? perpIssuanceResult.data
+                ? perpIssuanceResult.data.estimate
                 : BigNumber.from(0),
+              6,
               6
             )}
           </span>
