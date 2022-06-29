@@ -1,18 +1,18 @@
-import { BigNumber, Contract, Signer } from 'ethers'
+import { BigNumber, Contract, Signer } from "ethers";
 
-import { Provider, TransactionResponse } from '@ethersproject/providers'
+import { Provider, TransactionResponse } from "@ethersproject/providers";
 
-import { PERP_EI_ABI } from 'utils/abi/PerpEI'
-import { getPerpExchanceIssuanceContract } from 'utils/contracts'
-import { displayFromGwei, displayFromWei } from 'utils'
+import { PERP_EI_ABI } from "utils/abi/PerpEI";
+import { getPerpExchanceIssuanceContract } from "utils/contracts";
+import { displayFromGwei, displayFromWei, toWei } from "utils";
 
 interface RequiredComponentsResponse {
-  components: string[]
-  positions: BigNumber[]
+  components: string[];
+  positions: BigNumber[];
 }
 
 interface RequiredPerpComponentsResponse {
-  estimate: BigNumber
+  estimate: BigNumber;
 }
 
 /**
@@ -23,11 +23,11 @@ interface RequiredPerpComponentsResponse {
  */
 export const getExchangeIssuancePerpContract = async (
   providerSigner: Signer | Provider | undefined,
-  chainId: number,
+  chainId: number
 ): Promise<Contract> => {
-  const contractAddress = getPerpExchanceIssuanceContract(chainId)
-  return new Contract(contractAddress, PERP_EI_ABI, providerSigner)
-}
+  const contractAddress = getPerpExchanceIssuanceContract(chainId);
+  return new Contract(contractAddress, PERP_EI_ABI, providerSigner);
+};
 
 /**
  * Returns transaction to get component & position quotes for token issuance
@@ -41,36 +41,45 @@ export const getExchangeIssuancePerpContract = async (
 export const getRequiredIssuanceComponentsPerp = async (
   contract: Contract,
   setToken: string,
-  amountSetToken: BigNumber,
+  amountSetToken: BigNumber
 ): Promise<RequiredPerpComponentsResponse> => {
+  console.log("set amount to issue: ", amountSetToken.toString());
 
-  console.log(amountSetToken);
-  
   // 100 BYE
-  console.log(displayFromWei(amountSetToken))
-  
-  try {
-    const issueQuoteTx = await contract.callStatic.getUsdcAmountInForFixedSetOffChain(
-      // 0x927Eb0dBC5c3FD172Fdfa72D563f71612eCB6122 
-      setToken,
-      // BigNumber.from(100)
-      amountSetToken,
-    )
+  console.log(
+    "set amount display value: ",
+    displayFromWei(amountSetToken, 2, 18)
+  );
 
-     // 10093733022
-    console.log('issueQuoteTx', issueQuoteTx.toString())
+  try {
+    const issueQuoteTx =
+      await contract.callStatic.getUsdcAmountInForFixedSetOffChain(
+        // 0x927Eb0dBC5c3FD172Fdfa72D563f71612eCB6122
+        setToken,
+        // BigNumber.from(100)
+        amountSetToken
+      );
+
+    // 10093733022
+    console.log(
+      "getUsdcAmountInForFixedSetOffChain estimate: ",
+      issueQuoteTx.toString()
+    );
 
     // 0.000000010090946869
-    console.log(displayFromWei(issueQuoteTx))
+    console.log(
+      "getUsdcAmountInForFixedSetOffChain estimate display value: ",
+      displayFromWei(issueQuoteTx, 2, 18)
+    );
 
     return {
       estimate: issueQuoteTx,
-    }
+    };
   } catch (err) {
-    console.log('Error getting required issuance components/positions', err)
-    return { estimate: BigNumber.from(0) }
+    console.log("Error getting required issuance components/positions", err);
+    return { estimate: BigNumber.from(0) };
   }
-}
+};
 
 /**
  * Returns transaction to get component & position quotes for token redemption
@@ -84,22 +93,23 @@ export const getRequiredIssuanceComponentsPerp = async (
 export const getRequiredRedemptionComponentsPerp = async (
   contract: Contract,
   setToken: string,
-  amountSetToken: BigNumber,
+  amountSetToken: BigNumber
 ): Promise<RequiredPerpComponentsResponse> => {
-  console.log('getRequiredRedemptionComponents')
+  console.log("getRequiredRedemptionComponents");
   try {
-    const redeemQuoteTx = await contract.callStatic.getUsdcAmountOutForFixedSetOffChain(
-      setToken,
-      amountSetToken,
-    )
+    const redeemQuoteTx =
+      await contract.callStatic.getUsdcAmountOutForFixedSetOffChain(
+        setToken,
+        amountSetToken
+      );
     return {
       estimate: redeemQuoteTx,
-    }
+    };
   } catch (err) {
-    console.log('error', err)
-    return { estimate: BigNumber.from(0) }
+    console.log("error", err);
+    return { estimate: BigNumber.from(0) };
   }
-}
+};
 
 /**
  * Get the 0x Trade Data for
@@ -125,9 +135,9 @@ export const useExchangeIssuancePerp = () => {
     amountSetToken: BigNumber,
     maxAmountInputToken: BigNumber,
     componentQuotes: any[],
-    gasLimit: BigNumber,
+    gasLimit: BigNumber
   ): Promise<TransactionResponse | null> => {
-    console.log('issueFixedSetFromUsdc')
+    console.log("issueFixedSetFromUsdc");
     try {
       const issueSetTx = await contract.issueFixedSetFromUsdc(
         setToken,
@@ -137,14 +147,14 @@ export const useExchangeIssuancePerp = () => {
         componentQuotes,
         {
           gasLimit,
-        },
-      )
-      return issueSetTx
+        }
+      );
+      return issueSetTx;
     } catch (err) {
-      console.log('error', err)
-      return null
+      console.log("error", err);
+      return null;
     }
-  }
+  };
 
   /**
    * Returns transaction for the following:
@@ -166,12 +176,12 @@ export const useExchangeIssuancePerp = () => {
     amountSetToken: BigNumber,
     minOutputReceive: BigNumber,
     componentQuotes: any[],
-    gasLimit: BigNumber,
+    gasLimit: BigNumber
   ): Promise<TransactionResponse | null> => {
-    console.log('redeemFixedSetForUsdc')
+    console.log("redeemFixedSetForUsdc");
     try {
       // Calculate a slightly higher _maxAmountInputToken so it doesn't revert
-      const higherMax = BigNumber.from(amountSetToken).mul(BigNumber.from(2))
+      const higherMax = BigNumber.from(amountSetToken).mul(BigNumber.from(2));
       const redeemSetTx = await contract.redeemFixedSetForUsdc(
         setToken,
         outputToken,
@@ -182,14 +192,14 @@ export const useExchangeIssuancePerp = () => {
           gasLimit,
           maxFeePerGas: 100000000000,
           maxPriorityFeePerGas: 2000000000,
-        },
-      )
-      return redeemSetTx
+        }
+      );
+      return redeemSetTx;
     } catch (err) {
-      console.log('error', err)
-      return null
+      console.log("error", err);
+      return null;
     }
-  }
+  };
 
   /**
    * Runs all the necessary approval functions required before issuing or redeeming a SetToken.
@@ -202,20 +212,20 @@ export const useExchangeIssuancePerp = () => {
   const approveSetToken = async (
     contract: Contract,
     setToken: string,
-    issuanceModule: string,
+    issuanceModule: string
   ): Promise<any> => {
-    console.log('approveSetToken')
+    console.log("approveSetToken");
     try {
       const approveSetTokenTx = await contract.approveSetToken(
         setToken,
-        issuanceModule,
-      )
-      return approveSetTokenTx
+        issuanceModule
+      );
+      return approveSetTokenTx;
     } catch (err) {
-      console.log('error', err)
-      return err
+      console.log("error", err);
+      return err;
     }
-  }
+  };
 
   /**
    * Runs all the necessary approval functions required for a given ERC20 token.
@@ -229,17 +239,17 @@ export const useExchangeIssuancePerp = () => {
   const approveToken = async (
     contract: Contract,
     token: string,
-    spender: string,
+    spender: string
   ): Promise<any> => {
-    console.log('approveToken')
+    console.log("approveToken");
     try {
-      const approveTokenTx = await contract.approveToken(token, spender)
-      return approveTokenTx
+      const approveTokenTx = await contract.approveToken(token, spender);
+      return approveTokenTx;
     } catch (err) {
-      console.log('error', err)
-      return err
+      console.log("error", err);
+      return err;
     }
-  }
+  };
 
   /**
    * Runs all the necessary approval functions required for a list of ERC20 tokens.
@@ -251,17 +261,17 @@ export const useExchangeIssuancePerp = () => {
   const approveTokens = async (
     contract: Contract,
     tokens: string[],
-    spender: string,
+    spender: string
   ): Promise<any> => {
-    console.log('approveTokens')
+    console.log("approveTokens");
     try {
-      const approveTokensTx = await contract.approveTokens(tokens, spender)
-      return approveTokensTx
+      const approveTokensTx = await contract.approveTokens(tokens, spender);
+      return approveTokensTx;
     } catch (err) {
-      console.log('error', err)
-      return err
+      console.log("error", err);
+      return err;
     }
-  }
+  };
 
   return {
     getRequiredIssuanceComponentsPerp,
@@ -271,5 +281,5 @@ export const useExchangeIssuancePerp = () => {
     approveSetToken,
     approveToken,
     approveTokens,
-  }
-}
+  };
+};
