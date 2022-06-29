@@ -80,7 +80,7 @@ export function isEligibleTradePairZeroEx(
   //   outputToken.symbol === JPGIndex.symbol
   // )
   // temporarily - disabled JPG for EI0x
-  return false
+  // return false
 
   return true
 }
@@ -184,9 +184,18 @@ export const useBestTradeOption = () => {
         console.log('PERP', perpExchangeIssuanceOption)
       } catch (e) {
         console.warn('error when generating leveraged ei option', e)
+        setPerpData({
+          success: false,
+          data: null,
+        })
+        setIsFetching(false)
       }
 
-      setPerpData(perpExchangeIssuanceOption)
+      const result = {
+        success: true,
+        data: perpExchangeIssuanceOption,
+      }
+      setPerpData(result)
       setIsFetching(false)
     })
 

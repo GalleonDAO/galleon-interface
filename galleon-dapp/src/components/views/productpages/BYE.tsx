@@ -46,6 +46,17 @@ const BYE = () => {
           The highest source of delta-neutral yield available in DeFi using
           Perpetual Protocol V2.
         </p>
+        <button
+          onClick={() => {
+            setPerpIssuance(!perpIssuance)
+          }}
+          type="button"
+          className={
+            'bg-theme-pan-champagne relative inline-flex items-center px-4 mt-2 py-2 rounded-2xl border border-theme-navy  text-sm  text-theme-navy hover:bg-white focus:z-10 '
+          }
+        >
+          {perpIssuance ? 'Toggle DEX Swap' : 'Toggle Flash Issuance'}
+        </button>
       </div>
     </ProductPage>
   )

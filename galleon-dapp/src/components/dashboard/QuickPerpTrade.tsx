@@ -121,21 +121,18 @@ const QuickPerpTrade = (props: {
 
   const { getBalance } = useBalance()
 
-  const [bestOption, setBestOption] = useState<QuickTradeBestOption | null>(
-    null,
-  )
   const [usdcAmountFormatted, setUsdcAmountFormatted] = useState('0.0')
   const [setTokenAmount, setSetTokenAmount] = useState('0')
   const [tradeInfoData, setTradeInfoData] = useState<TradeInfoItem[]>([])
 
   const {
-    bestOptionResult,
     isFetchingTradeData,
     fetchPerpOption,
+    perpIssuanceResult,
   } = useBestTradeOption()
 
   const hasFetchingError =
-    bestOptionResult && !bestOptionResult.success && !isFetchingTradeData
+    !isFetchingTradeData && perpIssuanceResult && !perpIssuanceResult?.success
 
   const spenderAddressPerpEI = getPerpExchanceIssuanceContract(chainId)
 
@@ -188,34 +185,13 @@ const QuickPerpTrade = (props: {
     // buy token amount here
     const setTokenInWei = toWei(setTokenAmount, props.singleToken.decimals)
     if (setTokenInWei.isZero() || setTokenInWei.isNegative()) return
-    fetchPerpOption(props.singleToken, setTokenAmount, isIssuance, slippagePercentage)
-  }
 
-  const getIsApproved = () => {
-    switch (bestOption) {
-      case QuickTradeBestOption.perpExchangeIssuance:
-        return isApprovedForEIPerp
-      default:
-        return isApprovedForEIPerp
-    }
-  }
-
-  const getIsApproving = () => {
-    switch (bestOption) {
-      case QuickTradeBestOption.perpExchangeIssuance:
-        return isApprovedForEIPerp
-      default:
-        return isApprovedForEIPerp
-    }
-  }
-
-  const getOnApprove = () => {
-    switch (bestOption) {
-      case QuickTradeBestOption.perpExchangeIssuance:
-        return onApproveForEIPerp()
-      default:
-        return onApproveForEIPerp()
-    }
+    fetchPerpOption(
+      props.singleToken,
+      setTokenAmount,
+      isIssuance,
+      slippagePercentage,
+    )
   }
 
   const isNotTradable = (token: Token | undefined) => {
@@ -307,11 +283,11 @@ const QuickPerpTrade = (props: {
     const isNativeToken =
       props.singleToken.symbol === 'ETH' || props.singleToken.symbol === 'MATIC'
 
-    if (!isNativeToken && getIsApproving()) {
+    if (!isNativeToken && isApprovingForEIPerp) {
       return 'Approving...'
     }
 
-    if (!isNativeToken && !getIsApproved()) {
+    if (!isNativeToken && !isApprovedForEIPerp) {
       return 'Approve Tokens'
     }
 
@@ -320,10 +296,14 @@ const QuickPerpTrade = (props: {
     return 'Trade'
   }
 
-  const onChangeSellTokenAmount = debounce((token: Token, input: string) => {
-    if (!isValidTokenInput(input, token.decimals)) return
-    setSetTokenAmount(input || '0')
-  }, 1000)
+  const onChangeSellTokenAmount = debounce(
+    (token: Token, input: string) => {
+      if (!isValidTokenInput(input, token.decimals)) return
+      setSetTokenAmount(input || '0')
+    },
+    1000,
+    { trailing: true },
+  )
 
   const onClickTradeButton = async () => {
     if (!account) {
@@ -341,18 +321,12 @@ const QuickPerpTrade = (props: {
 
     const isNativeToken =
       props.singleToken.symbol === 'ETH' || props.singleToken.symbol === 'MATIC'
-    if (!getIsApproved() && !isNativeToken) {
-      await getOnApprove()
+    if (!isApprovedForEIPerp && !isNativeToken) {
+      await onApproveForEIPerp()
       return
     }
 
-    switch (bestOption) {
-      case QuickTradeBestOption.perpExchangeIssuance:
-        await executePerpEITrade()
-        break
-      default:
-      // Nothing
-    }
+    await executePerpEITrade()
   }
 
   const getButtonDisabledState = () => {
@@ -369,7 +343,7 @@ const QuickPerpTrade = (props: {
 
   const buttonLabel = getTradeButtonLabel()
   const isButtonDisabled = getButtonDisabledState()
-  const isLoading = getIsApproving() || isFetchingTradeData
+  const isLoading = isApprovingForEIPerp || isFetchingTradeData
 
   const isNarrow = props.isNarrowVersion ?? false
   const paddingX = isNarrow ? '16px' : '40px'
@@ -383,8 +357,39 @@ const QuickPerpTrade = (props: {
     <Flex direction="column" py="20px" px={['16px', paddingX]} height={'100%'}>
       <>{props.children}</>
       <Flex direction="column" my="20px">
+        <span className="relative z-0 mb-2 inline-flex shadow-sm rounded-md">
+          <button
+            onClick={() => {
+              setIsIssuance(true)
+            }}
+            type="button"
+            className={
+              (isIssuance
+                ? 'bg-theme-champagne font-semibold '
+                : 'bg-theme-pan-champagne ') +
+              ' relative inline-flex items-center px-4 py-2 rounded-l-2xl border border-theme-navy  text-sm  text-theme-navy hover:bg-white focus:z-10 '
+            }
+          >
+            Flash Issue
+          </button>
+
+          <button
+            onClick={() => {
+              setIsIssuance(false)
+            }}
+            type="button"
+            className={
+              (!isIssuance
+                ? 'bg-theme-champagne font-semibold '
+                : 'bg-theme-pan-champagne ') +
+              ' -ml-px relative inline-flex items-center px-4 py-2 rounded-r-2xl border border-theme-navy text-sm  text-theme-navy hover:bg-white focus:z-10 focus:outline-none focus:ring-1 '
+            }
+          >
+            Flash Redeem
+          </button>
+        </span>
         <QuickTradeSelector
-          title="From"
+          title={isIssuance ? 'Issue' : 'Redeem'}
           config={{
             isInputDisabled: isNotTradable(props.singleToken),
             isNarrowVersion: isNarrow,
@@ -400,7 +405,7 @@ const QuickPerpTrade = (props: {
         {hasFetchingError && (
           <Text align="center" color={colors.themeNavy} p="16px">
             {/* @ts-ignore */}
-            {bestOptionResult.error.message}
+            {'Error fetching trade data'}
           </Text>
         )}
 

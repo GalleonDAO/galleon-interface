@@ -44,6 +44,8 @@ export const getRequiredIssuanceComponentsPerp = async (
   amountSetToken: BigNumber,
 ): Promise<RequiredPerpComponentsResponse> => {
 
+  console.log(amountSetToken);
+  
   // 100 BYE
   console.log(displayFromWei(amountSetToken))
   
