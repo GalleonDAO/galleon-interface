@@ -8,6 +8,7 @@ import {
   Button,
   Flex,
   IconButton,
+  Image,
   Spacer,
   Text,
   Tooltip,
@@ -37,7 +38,12 @@ import { useTrade } from "hooks/useTrade";
 import { useTradeExchangeIssuance } from "hooks/useTradeExchangeIssuance";
 import { useTradeLeveragedExchangeIssuance } from "hooks/useTradeLeveragedExchangeIssuance";
 import { useTradeTokenLists } from "hooks/useTradeTokenLists";
-import { isSupportedNetwork, isValidTokenInput, toWei } from "utils";
+import {
+  displayFromWei,
+  isSupportedNetwork,
+  isValidTokenInput,
+  toWei,
+} from "utils";
 
 import {
   ARBITRUM,
@@ -105,8 +111,7 @@ const QuickPerpTrade = (props: {
   const { chainId } = useNetwork();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [isIssuance, setIsIssuance] = useState(true);
-  const [perpExchangeIssuanceData, setPerpExchangeIssuanceData] =
-    useState(null);
+
   const {
     isOpen: isSelectInputTokenOpen,
     onOpen: onOpenSelectInputToken,
@@ -124,7 +129,6 @@ const QuickPerpTrade = (props: {
 
   const [usdcAmountFormatted, setUsdcAmountFormatted] = useState("0.0");
   const [setTokenAmount, setSetTokenAmount] = useState("0");
-  const [tradeInfoData, setTradeInfoData] = useState<TradeInfoItem[]>([]);
 
   const { isFetchingTradeData, fetchPerpOption, perpIssuanceResult } =
     useBestTradeOption();
@@ -166,7 +170,7 @@ const QuickPerpTrade = (props: {
       isIssuance,
       props.singleToken,
       USDC,
-      perpExchangeIssuanceData
+      perpIssuanceResult?.data
     );
 
   const hasInsufficientFunds = getHasInsufficientFunds(
@@ -174,10 +178,6 @@ const QuickPerpTrade = (props: {
     sellTokenAmountInWei,
     getBalance(props.singleToken.symbol)
   );
-
-  useEffect(() => {
-    setTradeInfoData([]);
-  }, [chainId]);
 
   useEffect(() => {
     fetchOptions();
@@ -364,7 +364,8 @@ const QuickPerpTrade = (props: {
       <Flex
         direction="column"
         className="border-l rounded-t-2xl border-theme-navy "
-        my="20px"
+        mt="20px"
+        pb="20px"
       >
         <span className="relative z-0 mb-2 inline-flex shadow-sm rounded-md">
           <button
@@ -398,6 +399,11 @@ const QuickPerpTrade = (props: {
           </button>
         </span>
         <div className="ml-4">
+          <Box pr="0px" mb={"8px"}>
+            <span className="inline-flex text-sm">
+              USDC Balance: {displayFromWei(usdcTokenBalance, 6)}
+            </span>
+          </Box>
           <QuickTradeSelector
             title={isIssuance ? "Issue" : "Redeem"}
             config={{
@@ -412,7 +418,29 @@ const QuickPerpTrade = (props: {
         </div>
       </Flex>
       <Flex direction="column">
-        {tradeInfoData.length > 0 && <TradeInfo data={tradeInfoData} />}
+        <Box className="border-l border-theme-navy" pr="0px" mb={"16px"}>
+          <span className="block ml-4 text-md pb-2">
+            {isIssuance
+              ? "Estimated USDC required for issuance (inc. slippage)"
+              : "Estimated USDC output for redemption (inc. slippage)"}
+          </span>
+          <Image
+            className="inline-flex mr-2 ml-4"
+            src={USDC.image}
+            alt={`${USDC.symbol} logo`}
+            w="40px"
+          />
+
+          <span className="inline-flex ml-2.5 text-md font-semibold">
+            {displayFromWei(
+              perpIssuanceResult?.data
+                ? perpIssuanceResult.data
+                : BigNumber.from(0),
+              6
+            )}
+          </span>
+        </Box>
+
         {hasFetchingError && (
           <Text align="center" color={colors.themeNavy} p="16px">
             {/* @ts-ignore */}
