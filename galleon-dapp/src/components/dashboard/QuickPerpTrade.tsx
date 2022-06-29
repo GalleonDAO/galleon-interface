@@ -160,9 +160,9 @@ const QuickPerpTrade = (props: {
     isApproving: isApprovingForEIPerp,
     onApprove: onApproveForEIPerp,
   } = useApproval(
-    props.singleToken,
+    isIssuance ? USDC : props.singleToken,
     spenderAddressPerpEI,
-    sellTokenAmountInWei
+    isIssuance ? perpIssuanceResult?.data.estimate : sellTokenAmountInWei
   );
 
   const { executePerpEITrade, isTransactingPerpEI } =
@@ -173,15 +173,22 @@ const QuickPerpTrade = (props: {
       perpIssuanceResult?.data
     );
 
-  const hasInsufficientFunds = getHasInsufficientFunds(
-    true,
-    sellTokenAmountInWei,
-    getBalance(props.singleToken.symbol)
-  );
+  const setTokenBalance =
+    getBalance(props.singleToken.symbol) ?? BigNumber.from(0);
 
+  const usdcTokenBalance = getBalance(USDC.symbol) ?? BigNumber.from(0);
+
+  const hasInsufficientFunds = getHasInsufficientFunds(
+    false,
+    isIssuance
+      ? perpIssuanceResult?.data?.estimate ?? BigNumber.from(0)
+      : sellTokenAmountInWei,
+    isIssuance ? usdcTokenBalance : setTokenBalance
+  );
+  //
   useEffect(() => {
     fetchOptions();
-  }, [props.singleToken, setTokenAmount]);
+  }, [props.singleToken, setTokenAmount, isIssuance]);
 
   const fetchOptions = () => {
     // Right now we only allow setting the sell amount, so no need to check
@@ -352,11 +359,6 @@ const QuickPerpTrade = (props: {
 
   const isNarrow = props.isNarrowVersion ?? false;
   const paddingX = isNarrow ? "16px" : "40px";
-
-  const setTokenBalance =
-    getBalance(props.singleToken.symbol) ?? BigNumber.from(0);
-
-  const usdcTokenBalance = getBalance(USDC.symbol) ?? BigNumber.from(0);
 
   return (
     <Flex direction="column" py="20px" px={["16px", paddingX]} height={"100%"}>

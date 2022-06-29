@@ -131,20 +131,16 @@ export const useExchangeIssuancePerp = () => {
   const issueFixedSetFromUsdc = async (
     contract: Contract,
     setToken: string,
-    inputToken: string,
     amountSetToken: BigNumber,
     maxAmountInputToken: BigNumber,
-    componentQuotes: any[],
     gasLimit: BigNumber
   ): Promise<TransactionResponse | null> => {
     console.log("issueFixedSetFromUsdc");
     try {
       const issueSetTx = await contract.issueFixedSetFromUsdc(
         setToken,
-        inputToken,
         amountSetToken,
         maxAmountInputToken,
-        componentQuotes,
         {
           gasLimit,
         }
@@ -172,26 +168,18 @@ export const useExchangeIssuancePerp = () => {
   const redeemFixedSetForUsdc = async (
     contract: Contract,
     setToken: string,
-    outputToken: string,
     amountSetToken: BigNumber,
     minOutputReceive: BigNumber,
-    componentQuotes: any[],
     gasLimit: BigNumber
   ): Promise<TransactionResponse | null> => {
     console.log("redeemFixedSetForUsdc");
     try {
-      // Calculate a slightly higher _maxAmountInputToken so it doesn't revert
-      const higherMax = BigNumber.from(amountSetToken).mul(BigNumber.from(2));
       const redeemSetTx = await contract.redeemFixedSetForUsdc(
         setToken,
-        outputToken,
-        higherMax, // TODO: Replace this with the proper setAmount
+        amountSetToken,
         minOutputReceive,
-        componentQuotes,
         {
           gasLimit,
-          maxFeePerGas: 100000000000,
-          maxPriorityFeePerGas: 2000000000,
         }
       );
       return redeemSetTx;

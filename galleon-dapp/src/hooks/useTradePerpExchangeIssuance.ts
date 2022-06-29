@@ -8,7 +8,10 @@ import { ETH, MATIC, Token } from "constants/tokens";
 import { useAccount } from "hooks/useAccount";
 import { useNetwork } from "hooks/useNetwork";
 import { fromWei } from "utils";
-import { ExchangeIssuanceQuote } from "utils/exchangeIssuanceQuotes";
+import {
+  ExchangeIssuanceQuote,
+  PerpExchangeIssuanceQuote,
+} from "utils/exchangeIssuanceQuotes";
 import { getIssuanceModule } from "utils/issuanceModule";
 import { getStoredTransaction } from "utils/storedTransaction";
 import { getAddressForToken } from "utils/tokens";
@@ -21,9 +24,9 @@ import {
 
 export const useTradePerpExchangeIssuance = (
   isIssuance: boolean,
-  inputToken: Token,
-  outputToken: Token,
-  quoteData?: any | null
+  setToken: Token,
+  usdcToken: Token,
+  quoteData?: PerpExchangeIssuanceQuote
 ) => {
   const { account, provider } = useAccount();
   const { chainId } = useNetwork();
@@ -33,24 +36,18 @@ export const useTradePerpExchangeIssuance = (
   const { addTransaction } = useTransactions();
 
   const setTokenAmount = quoteData?.setTokenAmount;
-  const setTokenSymbol = isIssuance ? outputToken.symbol : inputToken.symbol;
   const spendingTokenBalance =
-    getBalance(inputToken.symbol) || BigNumber.from(0);
+    getBalance(isIssuance ? usdcToken.symbol : setToken.symbol) ||
+    BigNumber.from(0);
 
   const [isTransactingPerpEI, setIsTransacting] = useState(false);
 
   const executePerpEITrade = useCallback(async () => {
     if (!account || !quoteData || !setTokenAmount) return;
 
-    const outputTokenAddress = getAddressForToken(outputToken, chainId);
-    const inputTokenAddress = getAddressForToken(inputToken, chainId);
-    if (!outputTokenAddress || !inputTokenAddress) return;
-
-    let requiredBalance = fromWei(
-      quoteData.inputTokenAmount,
-      inputToken.decimals
-    );
-    if (spendingTokenBalance.lt(requiredBalance)) return;
+    const usdcTokenAddress = getAddressForToken(usdcToken, chainId);
+    const setTokenAddress = getAddressForToken(setToken, chainId);
+    if (!usdcTokenAddress || !setTokenAddress) return;
 
     try {
       setIsTransacting(true);
@@ -61,14 +58,16 @@ export const useTradePerpExchangeIssuance = (
       );
 
       if (isIssuance) {
-        const maxAmountInputToken = quoteData.inputTokenAmount;
+        let requiredBalance = fromWei(quoteData.estimate, usdcToken.decimals);
+
+        if (spendingTokenBalance.lt(requiredBalance)) return;
+
+        const maxAmountInputToken = quoteData.estimate;
         const issueTx = await issueFixedSetFromUsdc(
           contract,
-          outputTokenAddress,
-          inputTokenAddress,
+          setTokenAddress,
           setTokenAmount,
           maxAmountInputToken,
-          quoteData.tradeData,
           quoteData.gas
         );
         if (issueTx) {
@@ -76,15 +75,17 @@ export const useTradePerpExchangeIssuance = (
           addTransaction(storedTx);
         }
       } else {
-        const minOutputReceive = quoteData.inputTokenAmount;
+        let requiredBalance = fromWei(setTokenAmount, setToken.decimals);
+
+        if (spendingTokenBalance.lt(requiredBalance)) return;
+
+        const minOutputReceive = quoteData.estimate;
 
         const redeemTx = await redeemFixedSetForUsdc(
           contract,
-          inputTokenAddress,
-          outputTokenAddress,
+          setTokenAddress,
           setTokenAmount,
           minOutputReceive,
-          quoteData.tradeData,
           quoteData.gas
         );
         if (redeemTx) {

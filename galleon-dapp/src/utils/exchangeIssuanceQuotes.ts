@@ -203,14 +203,10 @@ export const getExchangeIssuancePerpQuotes = async (
         setTokenAmount
       );
   console.log("componentsEstimate", displayFromWei(estimate, 6, 6));
-  // console.log('totalEstimate', totalEstimate)
-  // const componentsWithSlippageEstimate = componentsEstimate.map(
-  //   (x: BigNumber) => x.mul(slippagePercentage / 100 + 1).mask(0),
-  // )
 
   const totalWithSlippageEstimate = !isIssuance
-    ? estimate.mul(toWei(100, 6)).div(toWei(100 + slippagePercentage, 6))
-    : estimate.mul(toWei(100, 6)).div(toWei(100 - slippagePercentage, 6));
+    ? estimate.mul(toWei(100, 6)).div(toWei(100 + 1, 6))
+    : estimate.mul(toWei(100, 6)).div(toWei(100 - 1, 6));
 
   console.log(
     "totalWithSlippageEstimate",
@@ -241,11 +237,11 @@ export const getExchangeIssuancePerpQuotes = async (
     gasEstimate = isIssuance
       ? await contract.estimateGas.issueFixedSetFromUsdc(...args, {
           from: account ?? "",
-          gasLimit: 15000000,
+          gasLimit: gasPrice,
         })
-      : await contract.estimateGas.redeemFixedSetFromUsdc(...args, {
+      : await contract.estimateGas.redeemFixedSetForUsdc(...args, {
           from: account ?? "",
-          gasLimit: 15000000,
+          gasLimit: gasPrice,
         });
   } catch (error) {
     console.log("could not estimate gas", error);
