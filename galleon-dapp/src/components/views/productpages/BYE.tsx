@@ -1,18 +1,19 @@
-import { KNOWN_LABELS, KNOWN_SERVICES } from "@galleondao/logging-lib";
-import ProductPage from "components/product/ProductPage";
-import { BasisYieldEthIndex } from "constants/tokens";
-import { logger } from "index";
-import { useMarketData } from "providers/MarketData/MarketDataProvider";
-import { useSetComponents } from "providers/SetComponents/SetComponentsProvider";
-import { useEffect, useState } from "react";
-import { displayFromWei } from "utils";
+import { KNOWN_LABELS, KNOWN_SERVICES } from '@galleondao/logging-lib'
+import ProductPage from 'components/product/ProductPage'
+import { BasisYieldEthIndex } from 'constants/tokens'
+import { logger } from 'index'
+import { useMarketData } from 'providers/MarketData/MarketDataProvider'
+import { useSetComponents } from 'providers/SetComponents/SetComponentsProvider'
+import { useEffect, useState } from 'react'
+import { displayFromWei } from 'utils'
 
 const BYE = () => {
-  const { bye } = useMarketData();
-  const { byeComponents } = useSetComponents();
+  const { bye } = useMarketData()
+  const { byeComponents } = useSetComponents()
   // const formattedApy = displayFromWei(apy, 2) ?? undefined
 
-  const [visited, setVisited] = useState(false);
+  const [perpIssuance, setPerpIssuance] = useState(true)
+  const [visited, setVisited] = useState(false)
   useEffect(() => {
     if (!visited) {
       logger.logCounter({
@@ -20,13 +21,13 @@ const BYE = () => {
         environment: process.env.NODE_ENV,
         label: KNOWN_LABELS.VISIT,
         metadata: {
-          referrer: document.referrer === "" ? "direct" : document.referrer,
+          referrer: document.referrer === '' ? 'direct' : document.referrer,
           path: window.location.pathname,
         },
-      });
-      setVisited(true);
+      })
+      setVisited(true)
     }
-  }, []);
+  }, [])
 
   return (
     <ProductPage
@@ -34,6 +35,7 @@ const BYE = () => {
       marketData={bye || {}}
       components={byeComponents || []}
       isLeveragedToken={false}
+      perpIssuance={perpIssuance}
       hasDashboard={false}
     >
       <div className=" px-2 pb-4 border-b border-theme-navy sm:px-4">
@@ -46,7 +48,7 @@ const BYE = () => {
         </p>
       </div>
     </ProductPage>
-  );
-};
+  )
+}
 
-export default BYE;
+export default BYE

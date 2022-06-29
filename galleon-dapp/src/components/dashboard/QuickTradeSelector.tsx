@@ -26,10 +26,10 @@ const QuickTradeSelector = (props: {
   selectedToken: Token;
   selectedTokenAmount?: string;
   priceImpact?: { priceImpact: string; colorCoding: string };
-  formattedFiat: string;
-  tokenList: Token[];
-  onChangeInput: (token: Token, input: string) => void;
-  onSelectedToken: (symbol: string) => void;
+  formattedFiat?: string;
+  tokenList?: Token[];
+  onChangeInput?: (token: Token, input: string) => void;
+  onSelectedToken?: (symbol: string) => void;
 }) => {
   const { chainId } = useEthers();
   const { getBalance } = useBalance();

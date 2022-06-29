@@ -43,6 +43,10 @@ import {
   getRequiredIssuanceComponentsPerp,
   getRequiredRedemptionComponentsPerp,
 } from 'hooks/useExchangeIssuancePerp'
+import {
+  isEligiblePerpToken,
+  isEligibleTradePair,
+} from 'hooks/useBestTradeOption'
 
 export enum Exchange {
   None,
@@ -74,6 +78,14 @@ export interface LeveragedTokenData {
   debtToken: string
   collateralAmount: BigNumber
   debtAmount: BigNumber
+}
+
+export interface PerpExchangeIssuanceQuote {
+  // componentEstimates: BigNumber[]
+  estimate: BigNumber
+  setTokenAmount: BigNumber
+  gas: BigNumber
+  gasPrice: BigNumber
 }
 
 export interface SwapData {
@@ -162,100 +174,71 @@ export async function getRequiredComponents(
  * @return An ExchangeIssuanceQuote including trade data.
  */
 export const getExchangeIssuancePerpQuotes = async (
-  buyToken: Token,
+  setToken: Token,
   setTokenAmount: BigNumber,
-  sellToken: Token,
+  usdcToken: Token,
   isIssuance: boolean,
   inputTokenBalance: BigNumber,
   slippagePercentage: number = 1,
   chainId: number = 1,
   provider: JsonRpcProvider | undefined,
-): Promise<ExchangeIssuanceQuote | null> => {
-  const buyTokenAddress = getAddressForToken(buyToken, chainId)
-  const sellTokenAddress = getAddressForToken(sellToken, chainId)
-  const usdcAddress = getAddressForToken(USDC, chainId)
+): Promise<PerpExchangeIssuanceQuote | null> => {
+  const setAddress = getAddressForToken(setToken, chainId)
+  const usdcAddress = getAddressForToken(usdcToken, chainId)
 
-  const setTokenAddress = isIssuance ? buyTokenAddress : sellTokenAddress
-  const setTokenSymbol = isIssuance ? buyToken.symbol : sellToken.symbol
+  console.log('ELIGIBLE', isEligiblePerpToken(setToken))
+  if (!isEligiblePerpToken(setToken)) return null
 
-  const contract = await getExchangeIssuancePerpContract(provider, chainId)
-  const { componentsEstimate, totalEstimate } = isIssuance
+  const contract = await getExchangeIssuancePerpContract(
+    provider?.getSigner(),
+    chainId,
+  )
+  console.log('contract', contract)
+  const { estimate } = isIssuance
     ? await getRequiredIssuanceComponentsPerp(
         contract,
-        setTokenAddress,
+        setAddress,
         setTokenAmount,
       )
     : await getRequiredRedemptionComponentsPerp(
         contract,
-        setTokenAddress,
+        setAddress,
         setTokenAmount,
       )
+  console.log('componentsEstimate', displayFromWei(estimate))
+  // console.log('totalEstimate', totalEstimate)
+  // const componentsWithSlippageEstimate = componentsEstimate.map(
+  //   (x: BigNumber) => x.mul(slippagePercentage / 100 + 1).mask(0),
+  // )
 
-  const componentsWithSlippageEstimate = componentsEstimate.map(
-    (x: BigNumber) =>
-      x
-        .mul(slippagePercentage / 100 + 1)
-        .mask(0)
-        .toString(),
-  )
+  const totalWithSlippageEstimate = estimate.mul(slippagePercentage / 100 + 1)
 
-  const totalWithSlippageEstimate = totalEstimate.mul(
-    slippagePercentage / 100 + 1,
-  )
+  // hardcoded to optimism limit
+  let gasPrice = BigNumber.from(15000000)
 
-  const slippage = slippagePercentage / 100
-  const buyTokenIsUsdc = buyToken.symbol === 'USDC'
-  const sellTokenIsUsdc = sellToken.symbol === 'USDC'
-  const buyTokenAddressOrUsdc = buyTokenIsUsdc ? usdcAddress : buyTokenAddress
-  const sellTokenAddressOrUsdc = sellTokenIsUsdc ? usdcAddress : sellTokenAddress
+  // if (provider !== undefined) {
+  //   const gasStation = new GasStation(provider)
+  //   gasPrice = await gasStation.getGasPrice()
+  // }
 
-  const quotePromises: Promise<any>[] = []
-
-  const results = await Promise.all(quotePromises)
-  if (results.length < 1) return null
-
-  positionQuotes = results.map((result) => result.data)
-  inputOutputTokenAmount = results
-    .map((result) =>
-      BigNumber.from(isIssuance ? result.sellAmount : result.buyAmount),
-    )
-    .reduce((prevValue, currValue) => {
-      return currValue.add(prevValue)
-    })
-
-  // Christn: I assume that this is the correct math to make sure we have enough weth to cover the slippage
-  // based on the fact that the slippagePercentage is limited between 0.0 and 1.0 on the 0xApi
-  const inputOuputTokenDecimals = isIssuance
-    ? sellToken.decimals
-    : buyToken.decimals
-  inputOutputTokenAmount = getSlippageAdjustedTokenAmount(
-    inputOutputTokenAmount,
-    inputOuputTokenDecimals,
-    slippagePercentage,
-    isIssuance,
-  )
-
-  let gasPrice = BigNumber.from(0)
-  if (provider !== undefined) {
-    const gasStation = new GasStation(provider)
-    gasPrice = await gasStation.getGasPrice()
-  }
-
-  const gasEstimate = await getExchangeIssuanceGasEstimate(
-    provider,
-    chainId,
-    isIssuance,
-    sellToken,
-    buyToken,
+  const args = [
+    setAddress,
     setTokenAmount,
-    inputOutputTokenAmount,
-    inputTokenBalance,
-    positionQuotes,
-  )
+    // componentsWithSlippageEstimate.map((x) => x.toString()),
+    totalWithSlippageEstimate.toString(),
+  ]
+
+  const gasEstimate = isIssuance
+    ? await contract.estimateGas.issueFixedSetFromUsdc(...args, {
+        gasPrice: gasPrice,
+      })
+    : await contract.estimateGas.redeemFixedSetFromUsdc(...args, {
+        gasPrice: gasPrice,
+      })
 
   return {
-    tradeData: positionQuotes,
-    inputTokenAmount: inputOutputTokenAmount,
+    // componentEstimates: componentsWithSlippageEstimate,
+    estimate: estimate,
     setTokenAmount,
     gas: gasEstimate,
     gasPrice,

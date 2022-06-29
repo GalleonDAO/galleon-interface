@@ -75,24 +75,20 @@ import {
   get0xExchangeIssuanceContract,
   get0xRouterContract,
   getLeveragedExchangeIssuanceContract,
-  getPerpExchanceIssuanceContract,
 } from 'utils/contracts'
 import {
   getFullCostsInUsd,
   getLeveragedExchangeIssuanceQuotes,
 } from 'utils/exchangeIssuanceQuotes'
 import { debounce } from 'lodash'
-import { useTradePerpExchangeIssuance } from 'hooks/useTradePerpExchangeIssuance'
-
-// Slippage hard coded to .5%
-export const slippagePercentage = 1
 
 enum QuickTradeBestOption {
   zeroEx,
   exchangeIssuance,
   leveragedExchangeIssuance,
-  perpExchangeIssuance,
 }
+
+const slippagePercentage = 1
 
 const QuickTrade = (props: {
   isNarrowVersion?: boolean
@@ -151,7 +147,6 @@ const QuickTrade = (props: {
   const routerAddress = get0xRouterContract(chainId)
   const spenderAddress0x = get0xExchangeIssuanceContract(chainId)
   const spenderAddressLevEIL = getLeveragedExchangeIssuanceContract(chainId)
-  const spenderAddressPerpEI = getPerpExchanceIssuanceContract(chainId)
 
   const sellTokenAmountInWei = toWei(sellTokenAmount, sellToken.decimals)
 
@@ -190,12 +185,6 @@ const QuickTrade = (props: {
     onApprove: onApproveForEIZX,
   } = useApproval(sellToken, spenderAddress0x, sellTokenAmountInWei)
 
-  const {
-    isApproved: isApprovedForEIPerp,
-    isApproving: isApprovingForEIPerp,
-    onApprove: onApproveForEIPerp,
-  } = useApproval(sellToken, spenderAddressPerpEI, sellTokenAmountInWei)
-
   const { executeTrade, isTransacting } = useTrade(
     sellToken,
     bestOptionResult?.success ? bestOptionResult.dexData : null,
@@ -230,18 +219,6 @@ const QuickTrade = (props: {
     bestOptionResult?.success
       ? bestOptionResult?.leveragedExchangeIssuanceData?.swapDataPaymentToken
       : undefined,
-  )
-
-  const {
-    executePerpEITrade,
-    isTransactingPerpEI,
-  } = useTradePerpExchangeIssuance(
-    isBuying,
-    sellToken,
-    buyToken,
-    bestOptionResult?.success
-      ? bestOptionResult.perpExchangeIssuanceData
-      : null,
   )
 
   const hasInsufficientFunds = getHasInsufficientFunds(
@@ -287,14 +264,6 @@ const QuickTrade = (props: {
       sellTokenPrice,
       nativeTokenPrice,
     )
-    const fullCostsPerpEI = getFullCostsInUsd(
-      bestOptionResult.exchangeIssuanceData?.inputTokenAmount,
-      gasEI,
-      sellToken.decimals,
-      sellTokenPrice,
-      nativeTokenPrice,
-    )
-
     const fullCostsLevEI = getFullCostsInUsd(
       bestOptionResult.leveragedExchangeIssuanceData?.inputTokenAmount,
       gasLevEI,
@@ -312,21 +281,15 @@ const QuickTrade = (props: {
       fullCosts0x,
       fullCostsEI,
       fullCostsLevEI,
-      fullCostsPerpEI,
       priceImpactDex,
     )
     const bestOptionIs0x = bestOption === QuickTradeBestOption.zeroEx
     const bestOptionIsLevEI =
       bestOption === QuickTradeBestOption.leveragedExchangeIssuance
-    const bestOptionIsPerpEI =
-      bestOption === QuickTradeBestOption.perpExchangeIssuance
 
     const tradeDataEI = bestOptionIsLevEI
       ? bestOptionResult.leveragedExchangeIssuanceData
-      : bestOptionIsPerpEI
-      ? bestOptionResult.perpExchangeIssuanceData
       : bestOptionResult.exchangeIssuanceData
-
     const tradeDataGasPriceEI = bestOptionIsLevEI ? gasPriceLevEI : gasPriceEI
     const tradeDataSetAmountEI = bestOptionIsLevEI
       ? bestOptionResult.leveragedExchangeIssuanceData?.setTokenAmount ??
@@ -381,7 +344,7 @@ const QuickTrade = (props: {
   }, [buyToken, sellToken, sellTokenAmount])
 
   // Does user need protecting from productive assets?
-  // const [requiresProtection, setRequiresProtection] = useState(false)
+  const [requiresProtection, setRequiresProtection] = useState(false)
 
   const fetchOptions = () => {
     // Right now we only allow setting the sell amount, so no need to check
@@ -406,8 +369,6 @@ const QuickTrade = (props: {
         return isApprovedForEIZX
       case QuickTradeBestOption.leveragedExchangeIssuance:
         return isApprovedForEIL
-      case QuickTradeBestOption.perpExchangeIssuance:
-        return isApprovedForEIPerp
       default:
         return isApprovedForSwap
     }
@@ -419,8 +380,6 @@ const QuickTrade = (props: {
         return isApprovingForEIZX
       case QuickTradeBestOption.leveragedExchangeIssuance:
         return isApprovingForEIL
-      case QuickTradeBestOption.perpExchangeIssuance:
-        return isApprovedForEIPerp
       default:
         return isApprovingForSwap
     }
@@ -432,8 +391,6 @@ const QuickTrade = (props: {
         return onApproveForEIZX()
       case QuickTradeBestOption.leveragedExchangeIssuance:
         return onApproveForEIL()
-      case QuickTradeBestOption.perpExchangeIssuance:
-        return onApproveForEIPerp()
       default:
         return onApproveForSwap()
     }
@@ -741,7 +698,6 @@ export function getBestTradeOption(
   fullCosts0x: number | null,
   fullCostsEI: number | null,
   fullCostsLevEI: number | null,
-  fullCostsPerpEI: number | null,
   priceImpactDex: number,
 ): QuickTradeBestOption {
   if (fullCostsEI === null && fullCostsLevEI === null) {
@@ -755,11 +711,11 @@ export function getBestTradeOption(
   if (fullCostsEI) {
     quotes.push([QuickTradeBestOption.exchangeIssuance, fullCostsEI])
   }
-  if (fullCostsEI) {
-    quotes.push([QuickTradeBestOption.exchangeIssuance, fullCostsEI])
-  }
-  if (fullCostsPerpEI) {
-    quotes.push([QuickTradeBestOption.exchangeIssuance, fullCostsPerpEI])
+  if (fullCostsLevEI) {
+    quotes.push([
+      QuickTradeBestOption.leveragedExchangeIssuance,
+      fullCostsLevEI,
+    ])
   }
   const cheapestQuotes = quotes.sort((q1, q2) => q1[1] - q2[1])
 

@@ -4,6 +4,7 @@ import { Provider, TransactionResponse } from '@ethersproject/providers'
 
 import { PERP_EI_ABI } from 'utils/abi/PerpEI'
 import { getPerpExchanceIssuanceContract } from 'utils/contracts'
+import { displayFromGwei, displayFromWei } from 'utils'
 
 interface RequiredComponentsResponse {
   components: string[]
@@ -11,8 +12,7 @@ interface RequiredComponentsResponse {
 }
 
 interface RequiredPerpComponentsResponse {
-  componentsEstimate: BigNumber[]
-  totalEstimate: BigNumber
+  estimate: BigNumber
 }
 
 /**
@@ -43,18 +43,30 @@ export const getRequiredIssuanceComponentsPerp = async (
   setToken: string,
   amountSetToken: BigNumber,
 ): Promise<RequiredPerpComponentsResponse> => {
+
+  // 100 BYE
+  console.log(displayFromWei(amountSetToken))
+  
   try {
-    const issueQuoteTx = await contract.getUsdcAmountInForFixedSetOffChain(
+    const issueQuoteTx = await contract.callStatic.getUsdcAmountInForFixedSetOffChain(
+      // 0x927Eb0dBC5c3FD172Fdfa72D563f71612eCB6122 
       setToken,
+      // BigNumber.from(100)
       amountSetToken,
     )
+
+     // 10093733022
+    console.log('issueQuoteTx', issueQuoteTx.toString())
+
+    // 0.000000010090946869
+    console.log(displayFromWei(issueQuoteTx))
+
     return {
-      componentsEstimate: issueQuoteTx.usdcAmountInForComponentSets,
-      totalEstimate: issueQuoteTx.totalUsdcAmountIn,
+      estimate: issueQuoteTx,
     }
   } catch (err) {
     console.log('Error getting required issuance components/positions', err)
-    return { componentsEstimate: [], totalEstimate: BigNumber.from(0) }
+    return { estimate: BigNumber.from(0) }
   }
 }
 
@@ -74,17 +86,16 @@ export const getRequiredRedemptionComponentsPerp = async (
 ): Promise<RequiredPerpComponentsResponse> => {
   console.log('getRequiredRedemptionComponents')
   try {
-    const redeemQuoteTx = await contract.getUsdcAmountOutForFixedSetOffChain(
+    const redeemQuoteTx = await contract.callStatic.getUsdcAmountOutForFixedSetOffChain(
       setToken,
       amountSetToken,
     )
     return {
-      componentsEstimate: redeemQuoteTx.usdcAmountOutForComponentSets,
-      totalEstimate: redeemQuoteTx.totalUsdcAmountOut,
+      estimate: redeemQuoteTx,
     }
   } catch (err) {
     console.log('error', err)
-    return { componentsEstimate: [], totalEstimate: BigNumber.from(0) }
+    return { estimate: BigNumber.from(0) }
   }
 }
 

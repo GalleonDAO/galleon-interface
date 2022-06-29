@@ -45,7 +45,6 @@ type Result<_, E = Error> =
       dexData: ZeroExData | null
       exchangeIssuanceData: ExchangeIssuanceQuote | null | undefined
       leveragedExchangeIssuanceData: LeveragedExchangeIssuanceQuote | null
-      perpExchangeIssuanceData: any | null
     }
   | { success: false; error: E }
 
@@ -56,8 +55,8 @@ export const maxPriceImpact = 5
 const isEligibleLeveragedToken = (token: Token) =>
   eligibleLeveragedExchangeIssuanceTokens.includes(token)
 
-/* Determines if the token is eligible for Leveraged Exchange Issuance */
-const isEligiblePerpToken = (token: Token) =>
+/* Determines if the token is eligible for Perp Exchange Issuance */
+export const isEligiblePerpToken = (token: Token) =>
   eligiblePerpIssuanceTokens.includes(token)
 
 export function isEligibleTradePairZeroEx(
@@ -153,6 +152,46 @@ export const useBestTradeOption = () => {
 
   const [isFetching, setIsFetching] = useState<boolean>(false)
   const [result, setResult] = useState<Result<ZeroExData, Error> | null>(null)
+  const [perpData, setPerpData] = useState<any>(null)
+
+  const fetchPerpOption = async (
+    setToken: Token,
+    setTokenAmount: string,
+    isIssuance: boolean,
+    slippagePercentage: number,
+  ) => {
+    const { duration } = await captureDurationAsync(async () => {
+      setIsFetching(true)
+
+      // Perp only flow
+      let perpExchangeIssuanceOption: any | null = null
+
+      const spendingTokenBalance: BigNumber =
+        (isIssuance ? getBalance(USDC.symbol) : getBalance(setToken.symbol)) ||
+        BigNumber.from(0)
+      try {
+        perpExchangeIssuanceOption = await getExchangeIssuancePerpQuotes(
+          setToken,
+          toWei(setTokenAmount, setToken.decimals),
+          USDC,
+          isIssuance,
+          spendingTokenBalance,
+          slippagePercentage,
+          chainId,
+          provider,
+        )
+
+        console.log('PERP', perpExchangeIssuanceOption)
+      } catch (e) {
+        console.warn('error when generating leveraged ei option', e)
+      }
+
+      setPerpData(perpExchangeIssuanceOption)
+      setIsFetching(false)
+    })
+
+    logTimer(KNOWN_LABELS.QUOTE_TIMER, duration)
+  }
 
   const fetchAndCompareOptions = async (
     sellToken: Token,
@@ -166,32 +205,6 @@ export const useBestTradeOption = () => {
   ) => {
     const { duration } = await captureDurationAsync(async () => {
       setIsFetching(true)
-
-      // Perp only flow
-      let perpExchangeIssuanceOption: any | null = null
-      if (
-        chainId === OPTIMISM.chainId &&
-        ((sellToken == USDC && buyToken === BasisYieldEthIndex) ||
-          (sellToken == BasisYieldEthIndex && buyToken === USDC))
-      ) {
-        const setToken = isIssuance ? buyToken : sellToken
-        const spendingTokenBalance: BigNumber =
-          getBalance(sellToken.symbol) || BigNumber.from(0)
-        try {
-          perpExchangeIssuanceOption = await getExchangeIssuancePerpQuotes(
-            buyToken,
-            toWei(sellTokenAmount, sellToken.decimals),
-            sellToken,
-            isIssuance,
-            spendingTokenBalance,
-            slippagePercentage,
-            chainId,
-            provider,
-          )
-        } catch (e) {
-          console.warn('error when generating leveraged ei option', e)
-        }
-      }
 
       /* Check 0x for DEX Swap option*/
       const zeroExResult = await getZeroExTradeData(
@@ -282,15 +295,13 @@ export const useBestTradeOption = () => {
       const result: Result<ZeroExData, Error> =
         dexSwapError &&
         !exchangeIssuanceOption &&
-        !leveragedExchangeIssuanceOption &&
-        !perpExchangeIssuanceOption
+        !leveragedExchangeIssuanceOption
           ? { success: false, error: dexSwapError }
           : {
               success: true,
               dexData: dexSwapOption,
               exchangeIssuanceData: exchangeIssuanceOption,
               leveragedExchangeIssuanceData: leveragedExchangeIssuanceOption,
-              perpExchangeIssuanceData: perpExchangeIssuanceOption,
             }
       setResult(result)
       setIsFetching(false)
@@ -300,8 +311,10 @@ export const useBestTradeOption = () => {
   }
 
   return {
+    perpIssuanceResult: perpData,
     bestOptionResult: result,
     isFetchingTradeData: isFetching,
     fetchAndCompareOptions,
+    fetchPerpOption,
   }
 }
