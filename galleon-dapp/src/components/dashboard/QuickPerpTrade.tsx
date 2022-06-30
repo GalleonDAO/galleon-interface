@@ -12,11 +12,7 @@ import {
 import { BigNumber } from "@ethersproject/bignumber";
 
 import ConnectModal from "components/header/ConnectModal";
-import {
-  indexNamesArbitrum,
-  Token,
-  USDC,
-} from "constants/tokens";
+import { indexNamesArbitrum, Token, USDC } from "constants/tokens";
 import { useApproval } from "hooks/useApproval";
 import { useBalance } from "hooks/useBalance";
 import { useBestTradeOption } from "hooks/useBestTradeOption";
@@ -41,17 +37,12 @@ import {
   indexNamesPolygon,
 } from "constants/tokens";
 
-
-import {
-  getHasInsufficientFunds,
-} from "./QuickTradeFormatter";
+import { getHasInsufficientFunds } from "./QuickTradeFormatter";
 import QuickTradeSelector from "./QuickTradeSelector";
 import { SetComponent } from "providers/SetComponents/SetComponentsProvider";
 import { useAccount } from "hooks/useAccount";
 import { useNetwork } from "hooks/useNetwork";
-import {
-  getPerpExchanceIssuanceContract,
-} from "utils/contracts";
+import { getPerpExchanceIssuanceContract } from "utils/contracts";
 import { debounce } from "lodash";
 import { useTradePerpExchangeIssuance } from "hooks/useTradePerpExchangeIssuance";
 
@@ -130,7 +121,6 @@ const QuickPerpTrade = (props: {
   }, [props.singleToken, setTokenAmount, isIssuance, isApprovedForEIPerp]);
 
   const fetchOptions = () => {
-
     const setTokenInWei = toWei(setTokenAmount, props.singleToken.decimals);
     if (setTokenInWei.isZero() || setTokenInWei.isNegative()) return;
 

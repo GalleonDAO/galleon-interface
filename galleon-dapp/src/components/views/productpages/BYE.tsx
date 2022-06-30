@@ -1,19 +1,19 @@
-import { KNOWN_LABELS, KNOWN_SERVICES } from '@galleondao/logging-lib'
-import ProductPage from 'components/product/ProductPage'
-import { BasisYieldEthIndex } from 'constants/tokens'
-import { logger } from 'index'
-import { useMarketData } from 'providers/MarketData/MarketDataProvider'
-import { useSetComponents } from 'providers/SetComponents/SetComponentsProvider'
-import { useEffect, useState } from 'react'
-import { displayFromWei } from 'utils'
+import { KNOWN_LABELS, KNOWN_SERVICES } from "@galleondao/logging-lib";
+import ProductPage from "components/product/ProductPage";
+import { BasisYieldEthIndex } from "constants/tokens";
+import { logger } from "index";
+import { useMarketData } from "providers/MarketData/MarketDataProvider";
+import { useSetComponents } from "providers/SetComponents/SetComponentsProvider";
+import { useEffect, useState } from "react";
+import { displayFromWei } from "utils";
 
 const BYE = () => {
-  const { bye } = useMarketData()
-  const { byeComponents } = useSetComponents()
+  const { bye } = useMarketData();
+  const { byeComponents } = useSetComponents();
   // const formattedApy = displayFromWei(apy, 2) ?? undefined
 
-  const [perpIssuance, setPerpIssuance] = useState(false)
-  const [visited, setVisited] = useState(false)
+  const [perpIssuance, setPerpIssuance] = useState(false);
+  const [visited, setVisited] = useState(false);
   useEffect(() => {
     if (!visited) {
       logger.logCounter({
@@ -21,13 +21,13 @@ const BYE = () => {
         environment: process.env.NODE_ENV,
         label: KNOWN_LABELS.VISIT,
         metadata: {
-          referrer: document.referrer === '' ? 'direct' : document.referrer,
+          referrer: document.referrer === "" ? "direct" : document.referrer,
           path: window.location.pathname,
         },
-      })
-      setVisited(true)
+      });
+      setVisited(true);
     }
-  }, [])
+  }, []);
 
   return (
     <ProductPage
@@ -48,22 +48,22 @@ const BYE = () => {
         </p>
       </div>
       <p className="mt-0.5 text-sm block text-theme-navy  float-right  ">
-        {' '}
-        {!perpIssuance ? 'Large Buyer?' : ''}{' '}
+        {" "}
+        {!perpIssuance ? "Large Buyer?" : ""}{" "}
         <button
           onClick={() => {
-            setPerpIssuance(!perpIssuance)
+            setPerpIssuance(!perpIssuance);
           }}
           type="button"
           className={
-            'bg-theme-pan-champagne relative  items-center  py-0.5 px-2 ml-1 mt-2  rounded-2xl border border-theme-navy  text-sm  text-theme-navy hover:bg-white focus:z-10 '
+            "bg-theme-pan-champagne relative  items-center  py-0.5 px-2 ml-1 mt-2  rounded-2xl border border-theme-navy  text-sm  text-theme-navy hover:bg-white focus:z-10 "
           }
         >
-          {perpIssuance ? 'Toggle DEX Swap' : 'Toggle Flash Issuance'}
+          {perpIssuance ? "Toggle DEX Swap" : "Toggle Flash Issuance"}
         </button>
       </p>
     </ProductPage>
-  )
-}
+  );
+};
 
-export default BYE
+export default BYE;

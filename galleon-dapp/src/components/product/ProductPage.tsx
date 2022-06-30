@@ -90,8 +90,8 @@ const ProductPage = (props: {
   const [currentTokenSupply, setCurrentTokenSupply] = useState(0);
 
   useEffect(() => {
-    console.log('components', props.components);
-    
+    console.log("components", props.components);
+
     const tokenAddress = tokenData.address;
 
     if (

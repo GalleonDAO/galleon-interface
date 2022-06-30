@@ -148,7 +148,9 @@ const QuickTradeSelector = (props: {
               />
             </Box>
           )}
-          <Text className="font-morion font-semibold" ml="8px">{props.selectedToken.symbol}</Text>
+          <Text className="font-morion font-semibold" ml="8px">
+            {props.selectedToken.symbol}
+          </Text>
         </Flex>
       </Flex>
       <Text
