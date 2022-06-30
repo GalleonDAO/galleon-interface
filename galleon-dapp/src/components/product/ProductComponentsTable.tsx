@@ -173,7 +173,7 @@ const ComponentRow = (props: { component: SetComponent }) => {
   const absPercentChange = numeral(Math.abs(percentChange)).format("0.00");
   const percentChangeIsPositive = percentChange >= 0;
   const percentChangeTextColor = percentChangeIsPositive
-    ? colors.themeBlue
+    ? colors.themePanBlue
     : colors.themeCopper;
   const percentChangeSign = percentChangeIsPositive ? "+" : "-";
 

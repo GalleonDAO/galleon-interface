@@ -1,4 +1,6 @@
-import { BigNumber, providers } from "ethers";
+import { BigNumber } from "ethers";
+
+import { JsonRpcProvider } from "@ethersproject/providers";
 
 import { POLYGON } from "constants/chains";
 import {
@@ -13,6 +15,7 @@ import {
   MATIC,
   STETH,
   Token,
+  USDC,
   WETH,
 } from "constants/tokens";
 import {
@@ -35,9 +38,15 @@ import {
 } from "utils/swapData";
 import { getAddressForToken } from "utils/tokens";
 import { get0xQuote } from "utils/zeroExUtils";
-
-// Slippage hard coded to .5% (will be increased if there are revert issues)
-export const slippagePercentage = 1;
+import {
+  getExchangeIssuancePerpContract,
+  getRequiredIssuanceComponentsPerp,
+  getRequiredRedemptionComponentsPerp,
+} from "hooks/useExchangeIssuancePerp";
+import {
+  isEligiblePerpToken,
+  isEligibleTradePair,
+} from "hooks/useBestTradeOption";
 
 export enum Exchange {
   None,
@@ -71,6 +80,14 @@ export interface LeveragedTokenData {
   debtAmount: BigNumber;
 }
 
+export interface PerpExchangeIssuanceQuote {
+  // componentEstimates: BigNumber[]
+  estimate: BigNumber;
+  setTokenAmount: BigNumber;
+  gas: BigNumber;
+  gasPrice: BigNumber;
+}
+
 export interface SwapData {
   exchange: Exchange;
   path: string[];
@@ -79,7 +96,7 @@ export interface SwapData {
 }
 
 // 0x keys https://github.com/0xProject/protocol/blob/4f32f3174f25858644eae4c3de59c3a6717a757c/packages/asset-swapper/src/utils/market_operation_utils/types.ts#L38
-function get0xEchangeKey(exchange: Exchange): string {
+function get0xExchangeKey(exchange: Exchange): string {
   switch (exchange) {
     case Exchange.Curve:
       return "Curve";
@@ -116,7 +133,7 @@ export async function getRequiredComponents(
   setTokenSymbol: string,
   setTokenAmount: BigNumber,
   chainId: number | undefined,
-  provider: providers.JsonRpcProvider | undefined
+  provider: JsonRpcProvider | undefined
 ) {
   const issuanceModule = getIssuanceModule(setTokenSymbol, chainId);
 
@@ -145,16 +162,113 @@ export async function getRequiredComponents(
 }
 
 /**
- * Returns exchange issuance quotes (incl. 0x trade data) or null
+ * Returns exchange issuance quotes (incl. 0x trade data) or null.
  *
  * @param buyToken            The token to buy
  * @param setTokenAmount      The amount of set token that should be acquired/sold
  * @param sellToken           The token to sell
+ * @param slippagePercentage  The slippage percentage to use (default .5%)
  * @param chainId             ID for current chain
- * @param library             Web3Provider instance
+ * @param provider            A JsonRpcProvider instance
  *
- * @return tradeData           Array of 0x trade data for the individual positions
- * @return inputTokenAmount    Needed input token amount for trade
+ * @return An ExchangeIssuanceQuote including trade data.
+ */
+export const getExchangeIssuancePerpQuotes = async (
+  setToken: Token,
+  setTokenAmount: BigNumber,
+  usdcToken: Token,
+  isIssuance: boolean,
+  inputTokenBalance: BigNumber,
+  slippagePercentage: number = 1,
+  chainId: number = 1,
+  provider: JsonRpcProvider | undefined
+): Promise<PerpExchangeIssuanceQuote | null> => {
+  const setAddress = getAddressForToken(setToken, chainId);
+  const usdcAddress = getAddressForToken(usdcToken, chainId);
+
+  console.log("ELIGIBLE", isEligiblePerpToken(setToken));
+  if (!isEligiblePerpToken(setToken)) return null;
+
+  const contract = await getExchangeIssuancePerpContract(provider, chainId);
+  console.log("contract", contract);
+  const { estimate } = isIssuance
+    ? await getRequiredIssuanceComponentsPerp(
+        contract,
+        setAddress,
+        setTokenAmount
+      )
+    : await getRequiredRedemptionComponentsPerp(
+        contract,
+        setAddress,
+        setTokenAmount
+      );
+  console.log("componentsEstimate", displayFromWei(estimate, 6, 6));
+
+  const totalWithSlippageEstimate = !isIssuance
+    ? estimate.mul(toWei(100, 6)).div(toWei(100 + slippagePercentage, 6))
+    : estimate.mul(toWei(100, 6)).div(toWei(100 - slippagePercentage, 6));
+
+  console.log(
+    "totalWithSlippageEstimate",
+    displayFromWei(totalWithSlippageEstimate, 6, 6)
+  );
+
+  // hardcoded to optimism limit
+  let gasPrice = BigNumber.from(15000000);
+
+  // if (provider !== undefined) {
+  //   const gasStation = new GasStation(provider)
+  //   gasPrice = await gasStation.getGasPrice()
+  // }
+
+  const args = [
+    setAddress,
+    setTokenAmount.toString(),
+    totalWithSlippageEstimate.toString(),
+  ];
+
+  const account = await provider?.getSigner()?.getAddress();
+
+  console.log(account, ...args);
+
+  let gasEstimate = null;
+
+  try {
+    gasEstimate = isIssuance
+      ? await contract.estimateGas.issueFixedSetFromUsdc(...args, {
+          from: account ?? "",
+          gasLimit: gasPrice,
+        })
+      : await contract.estimateGas.redeemFixedSetForUsdc(...args, {
+          from: account ?? "",
+          gasLimit: gasPrice,
+        });
+  } catch (error) {
+    console.log("could not estimate gas", error);
+  }
+
+  console.log("gasEstimate", gasEstimate);
+
+  return {
+    // componentEstimates: componentsWithSlippageEstimate,
+    estimate: totalWithSlippageEstimate,
+    setTokenAmount,
+    gas: gasEstimate,
+    gasPrice,
+  };
+};
+
+/**
+ * Returns exchange issuance quotes (incl. 0x trade data) or null.
+ *
+ * @param buyToken            The token to buy
+ * @param setTokenAmount      The amount of set token that should be acquired/sold
+ * @param sellToken           The token to sell
+ * @param slippagePercentage  The slippage percentage to use (default .5%)
+ * @param chainId             ID for current chain
+ * @param provider            A JsonRpcProvider instance
+ *
+ * @return An ExchangeIssuanceQuote including trade data.
  */
 export const getExchangeIssuanceQuotes = async (
   buyToken: Token,
@@ -162,8 +276,9 @@ export const getExchangeIssuanceQuotes = async (
   sellToken: Token,
   isIssuance: boolean,
   inputTokenBalance: BigNumber,
+  slippagePercentage: number = 1,
   chainId: number = 1,
-  provider: providers.JsonRpcProvider | undefined
+  provider: JsonRpcProvider | undefined
 ): Promise<ExchangeIssuanceQuote | null> => {
   const buyTokenAddress = getAddressForToken(buyToken, chainId);
   const sellTokenAddress = getAddressForToken(sellToken, chainId);
@@ -186,8 +301,8 @@ export const getExchangeIssuanceQuotes = async (
   let inputOutputTokenAmount = BigNumber.from(0);
   // 0xAPI expects percentage as value between 0-1 e.g. 5% -> 0.05
   // const isJPG = setTokenSymbol === JPGIndex.symbol
+  // const slippage = isJPG ? 0.08 : slippagePercentage / 100
   const slippage = slippagePercentage / 100;
-
   const buyTokenIsEth = buyToken.symbol === "ETH";
   const sellTokenIsEth = sellToken.symbol === "ETH";
   const buyTokenAddressOrWeth = buyTokenIsEth ? wethAddress : buyTokenAddress;
@@ -284,10 +399,10 @@ export const getExchangeIssuanceQuotes = async (
 
 // Returns a comma separated string of sources to be included for 0x API calls
 export function getIncludedSources(isEthmaxy: boolean): string {
-  const curve = get0xEchangeKey(Exchange.Curve);
-  const quickswap = get0xEchangeKey(Exchange.Quickswap);
-  const sushi = get0xEchangeKey(Exchange.Sushiswap);
-  const uniswap = get0xEchangeKey(Exchange.UniV3);
+  const curve = get0xExchangeKey(Exchange.Curve);
+  const quickswap = get0xExchangeKey(Exchange.Quickswap);
+  const sushi = get0xExchangeKey(Exchange.Sushiswap);
+  const uniswap = get0xExchangeKey(Exchange.UniV3);
   let includedSources: string = isEthmaxy
     ? [curve].toString()
     : [quickswap, sushi, uniswap].toString();
@@ -299,7 +414,7 @@ async function getLevTokenData(
   setTokenAmount: BigNumber,
   isIssuance: boolean,
   chainId: number,
-  signer: providers.JsonRpcProvider | undefined
+  signer: JsonRpcProvider | undefined
 ): Promise<LeveragedTokenData> {
   const contract = await getExchangeIssuanceLeveragedContract(signer, chainId);
   const setTokenAddress = getAddressForToken(setToken, chainId);
@@ -383,7 +498,8 @@ export async function getSwapDataAndPaymentTokenAmount(
   ) {
     const result = await getSwapData(
       isIssuance ? issuanceParams : redeemingParams,
-      chainId
+      chainId,
+      1
     );
     if (result) {
       const { swapData, zeroExQuote } = result;
@@ -423,14 +539,18 @@ export function getSlippageAdjustedTokenAmount(
     .div(toWei(100 + slippagePercentage, tokenDecimals));
 }
 
+/**
+ * @param slippagePercentage  The slippage percentage to use (default .5%)
+ */
 export const getLeveragedExchangeIssuanceQuotes = async (
   setToken: Token,
   setTokenAmount: BigNumber,
   inputToken: Token,
   outputToken: Token,
   isIssuance: boolean,
+  slippagePercentage: number = 1,
   chainId: number = 1,
-  provider: providers.JsonRpcProvider | undefined
+  provider: JsonRpcProvider | undefined
 ): Promise<LeveragedExchangeIssuanceQuote | null> => {
   const setTokenSymbol = setToken.symbol;
   const isEthmaxy = setTokenSymbol === "ETHMAXY";
@@ -448,11 +568,13 @@ export const getLeveragedExchangeIssuanceQuotes = async (
     ? await getSwapDataDebtCollateral(
         leveragedTokenData,
         includedSources,
+        slippagePercentage,
         chainId
       )
     : await getSwapDataCollateralDebt(
         leveragedTokenData,
         includedSources,
+        slippagePercentage,
         chainId
       );
 

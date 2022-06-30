@@ -25,6 +25,7 @@ import { useNetwork } from "hooks/useNetwork";
 import { ERC20_ABI } from "utils/abi/ERC20";
 import { useStakingUnclaimedRewards } from "utils/stakingRewards";
 import { getAddressForToken } from "utils/tokens";
+import { useWaitForTransaction } from "./useWaitForTransaction";
 
 type Balance = BigNumber;
 
@@ -60,6 +61,7 @@ async function balanceOf(
 
 export const useBalance = () => {
   const { account, provider } = useAccount();
+  const { pendingTxState } = useWaitForTransaction();
   const { chainId } = useNetwork();
   const ethBalance = useEtherBalance(account);
 
@@ -137,7 +139,7 @@ export const useBalance = () => {
     };
 
     fetchAllBalances();
-  }, [account, chainId]);
+  }, [account, chainId, pendingTxState]);
 
   const getBalance = useCallback(
     (tokenSymbol: string): BigNumber | undefined => {

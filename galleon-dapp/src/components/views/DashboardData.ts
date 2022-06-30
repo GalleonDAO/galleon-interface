@@ -13,7 +13,7 @@ import { displayFromWei, toWei } from "utils";
 const chartColors = [
   colors.themeNavy,
   colors.themeChampagne,
-  colors.themeBlue,
+  colors.themePanBlue,
   colors.themeOldlace,
   colors.themeBlack,
 ];

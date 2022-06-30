@@ -1,94 +1,105 @@
 import { useCallback, useState } from "react";
 
 import { BigNumber } from "@ethersproject/bignumber";
-import { useEthers } from "@usedapp/core";
+import { useTransactions } from "@usedapp/core";
 
-import { POLYGON } from "constants/chains";
-import { ETH, MATIC, Token, USDC } from "constants/tokens";
+import { MAINNET, OPTIMISM } from "constants/chains";
+import { ETH, MATIC, Token } from "constants/tokens";
+import { useAccount } from "hooks/useAccount";
+import { useNetwork } from "hooks/useNetwork";
 import { fromWei } from "utils";
-import { SwapData } from "utils/exchangeIssuanceQuotes";
+import {
+  ExchangeIssuanceQuote,
+  PerpExchangeIssuanceQuote,
+} from "utils/exchangeIssuanceQuotes";
+import { getIssuanceModule } from "utils/issuanceModule";
+import { getStoredTransaction } from "utils/storedTransaction";
+import { getAddressForToken } from "utils/tokens";
 
 import { useBalance } from "./useBalance";
-
 import {
-  usePerpExchangeIssuance,
-  getPerpIssuanceZeroExContract,
+  getExchangeIssuancePerpContract,
+  useExchangeIssuancePerp,
 } from "./useExchangeIssuancePerp";
 
 export const useTradePerpExchangeIssuance = (
   isIssuance: boolean,
-  inputToken: Token,
-  outputToken: Token,
-  tokenAmount: BigNumber,
-  componentQuotes: any[],
-  minInputOutputAmount: BigNumber
+  setToken: Token,
+  usdcToken: Token,
+  quoteData?: PerpExchangeIssuanceQuote
 ) => {
-  const { account, chainId, library } = useEthers();
-  const {
-    getUsdcAmountInForFixedSetOffChain,
-    getUsdcAmountOutForFixedSetOffChain,
-    issueExactSetFromUsdc,
-    redeemExactSetForUsdc,
-    approveSetToken,
-    approveToken,
-    approveTokens,
-    tokenAllowance,
-  } = usePerpExchangeIssuance();
+  const { account, provider } = useAccount();
+  const { chainId } = useNetwork();
+  const { issueFixedSetFromUsdc, redeemFixedSetForUsdc } =
+    useExchangeIssuancePerp();
   const { getBalance } = useBalance();
+  const { addTransaction } = useTransactions();
+
+  const setTokenAmount = quoteData?.setTokenAmount;
   const spendingTokenBalance =
-    getBalance(inputToken.symbol) || BigNumber.from(0);
+    getBalance(isIssuance ? usdcToken.symbol : setToken.symbol) ||
+    BigNumber.from(0);
 
   const [isTransactingPerpEI, setIsTransacting] = useState(false);
 
   const executePerpEITrade = useCallback(async () => {
-    if (!account || tokenAmount.isZero()) return;
+    if (!account || !quoteData || !setTokenAmount) return;
 
-    const outputTokenAddress = outputToken.optimismAddress;
-
-    const inputTokenAddress = inputToken.optimismAddress;
-
-    if (!outputTokenAddress || !inputTokenAddress) return;
-
-    let requiredBalance = fromWei(
-      minInputOutputAmount,
-      isIssuance ? inputToken.decimals : outputToken.decimals
-    );
-
-    if (spendingTokenBalance.lt(requiredBalance)) return;
-
-    const contract = await getPerpIssuanceZeroExContract(library?.getSigner());
+    const usdcTokenAddress = getAddressForToken(usdcToken, chainId);
+    const setTokenAddress = getAddressForToken(setToken, chainId);
+    if (!usdcTokenAddress || !setTokenAddress) return;
 
     try {
       setIsTransacting(true);
-      if (isIssuance) {
-        const amountOfSetToken = tokenAmount;
-        const isNativeUsdcToken = inputToken.symbol === USDC.symbol;
 
-        if (isNativeUsdcToken) {
-          await issueExactSetFromUsdc(
-            contract,
-            outputTokenAddress,
-            amountOfSetToken,
-            componentQuotes,
-            minInputOutputAmount
-          );
+      const contract = await getExchangeIssuancePerpContract(
+        provider?.getSigner(),
+        chainId ?? OPTIMISM.chainId
+      );
+
+      if (isIssuance) {
+        let requiredBalance = fromWei(quoteData.estimate, usdcToken.decimals);
+
+        if (spendingTokenBalance.lt(requiredBalance)) return;
+
+        const maxAmountInputToken = quoteData.estimate;
+        const issueTx = await issueFixedSetFromUsdc(
+          contract,
+          setTokenAddress,
+          setTokenAmount,
+          maxAmountInputToken,
+          quoteData.gas
+        );
+        if (issueTx) {
+          const storedTx = getStoredTransaction(issueTx, chainId);
+          addTransaction(storedTx);
         }
       } else {
-        await redeemExactSetForUsdc(
-          contract,
-          inputTokenAddress,
-          tokenAmount,
+        let requiredBalance = fromWei(setTokenAmount, setToken.decimals);
 
-          componentQuotes,
-          minInputOutputAmount
+        if (spendingTokenBalance.lt(requiredBalance)) return;
+
+        const minOutputReceive = quoteData.estimate;
+
+        const redeemTx = await redeemFixedSetForUsdc(
+          contract,
+          setTokenAddress,
+          setTokenAmount,
+          minOutputReceive,
+          quoteData.gas
         );
+        if (redeemTx) {
+          const storedTx = getStoredTransaction(redeemTx, chainId);
+          addTransaction(storedTx);
+        }
       }
+
       setIsTransacting(false);
     } catch (error) {
       setIsTransacting(false);
       console.log("Error sending transaction", error);
     }
-  }, [account, minInputOutputAmount]);
+  }, [account, quoteData]);
 
   return { executePerpEITrade, isTransactingPerpEI };
 };

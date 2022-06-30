@@ -24,6 +24,7 @@ import ProductComponentsTable from "./ProductComponentsTable";
 import ProductHeader from "./ProductHeader";
 import ProductPageSectionHeader from "./ProductPageSectionHeader";
 import ProductStats, { ProductStat } from "./ProductStats";
+import QuickPerpTrade from "components/dashboard/QuickPerpTrade";
 
 function getStatsForToken(
   tokenData: Token,
@@ -75,6 +76,7 @@ const ProductPage = (props: {
   marketData: TokenMarketDataValues;
   components: SetComponent[];
   isLeveragedToken?: boolean;
+  perpIssuance?: boolean;
   apy?: string;
   hasDashboard?: boolean;
   children?: any;
@@ -88,6 +90,8 @@ const ProductPage = (props: {
   const [currentTokenSupply, setCurrentTokenSupply] = useState(0);
 
   useEffect(() => {
+    console.log("components", props.components);
+
     const tokenAddress = tokenData.address;
 
     if (
@@ -160,9 +164,18 @@ const ProductPage = (props: {
             <div className="col-span-1 bg-theme-oldlace border-2 border-theme-navy rounded-2xl shadow-md shadow-theme-black  divide-y divide-theme-navy">
               <div className="w-full flex items-center justify-between p-6 space-x-6">
                 <Flex direction="column" grow={1} flexBasis="0">
-                  <QuickTrade isNarrowVersion={false} singleToken={tokenData}>
-                    {props.children}
-                  </QuickTrade>
+                  {props.perpIssuance ? (
+                    <QuickPerpTrade
+                      isNarrowVersion={false}
+                      singleToken={tokenData}
+                    >
+                      {props.children}
+                    </QuickPerpTrade>
+                  ) : (
+                    <QuickTrade isNarrowVersion={false} singleToken={tokenData}>
+                      {props.children}
+                    </QuickTrade>
+                  )}
                 </Flex>
               </div>
             </div>

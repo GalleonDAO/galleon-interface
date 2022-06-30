@@ -126,34 +126,41 @@ const SetComponentsProvider = (props: { children: any }) => {
       library &&
       tokenList &&
       bye &&
-      BasisYieldEthIndex.address
+      BasisYieldEthIndex.optimismAddress
     ) {
-      getSetDetails(library, [EthMaxYieldIndex.address], chainId).then(
-        async (result) => {
-          const [byeSet] = result;
+      getSetDetails(
+        library,
+        [BasisYieldEthIndex.optimismAddress],
+        chainId
+      ).then(async (result) => {
+        const [byeSet] = result;
 
-          const byeComponentPrices = await getPositionPrices(byeSet);
-          if (byeComponentPrices != null) {
-            const byePositions = byeSet.positions.map(async (position) => {
-              return await convertPositionToSetComponent(
-                position,
-                tokenList,
-                byeComponentPrices[position.component.toLowerCase()]?.[
-                  VS_CURRENCY
-                ],
-                byeComponentPrices[position.component.toLowerCase()]?.[
-                  `${VS_CURRENCY}_24h_change`
-                ],
+        const byeComponentPrices = await getPositionPrices(
+          byeSet,
+          "optimistic-ethereum"
+        );
 
-                selectLatestMarketData(bye.hourlyPrices)
-              );
-            });
-            Promise.all(byePositions)
-              .then(sortPositionsByPercentOfSet)
-              .then(setByeComponents);
-          }
+        if (byeComponentPrices != null) {
+          const byePositions = byeSet.positions.map(async (position) => {
+            return await convertPositionToSetComponent(
+              position,
+              tokenList,
+              byeComponentPrices[position.component.toLowerCase()]?.[
+                VS_CURRENCY
+              ],
+              byeComponentPrices[position.component.toLowerCase()]?.[
+                `${VS_CURRENCY}_24h_change`
+              ],
+
+              selectLatestMarketData(bye.hourlyPrices)
+            );
+          });
+
+          Promise.all(byePositions)
+            .then(sortPositionsByPercentOfSet)
+            .then(setByeComponents);
         }
-      );
+      });
     }
   }, [library, tokenList, bye, selectLatestMarketData()]);
 
@@ -263,6 +270,7 @@ async function getPositionPrices(
   assetPlatform: string = ASSET_PLATFORM
 ): Promise<CoinGeckoCoinPrices> {
   const componentAddresses = setDetails.positions.map((p) => p.component);
+
   return fetch(
     `https://pro-api.coingecko.com/api/v3/simple/token_price/${assetPlatform}?vs_currencies=${VS_CURRENCY}&contract_addresses=${componentAddresses}&include_24hr_change=true${key}`
   )

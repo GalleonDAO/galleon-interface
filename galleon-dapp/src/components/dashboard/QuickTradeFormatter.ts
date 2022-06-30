@@ -63,7 +63,7 @@ export function formattedBalance(
     : zero;
 }
 
-export function getFormattedOuputTokenAmount(
+export function getFormattedOutputTokenAmount(
   bestOptionIsTypeEI: boolean,
   ouputTokenDecimals: number,
   zeroExTradeDataOutputAmount: BigNumber | undefined,
@@ -147,6 +147,7 @@ export function getTradeInfoDataFromEI(
   data:
     | ExchangeIssuanceQuote
     | LeveragedExchangeIssuanceQuote
+    | any
     | null
     | undefined,
   chainId: ChainId = ChainId.Mainnet,

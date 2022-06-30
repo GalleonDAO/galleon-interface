@@ -2,25 +2,33 @@ import { useState } from "react";
 
 import { BigNumber } from "@ethersproject/bignumber";
 
-import { MAINNET } from "constants/chains";
+import { MAINNET, OPTIMISM } from "constants/chains";
 import {
   eligibleLeveragedExchangeIssuanceTokens,
   ETH,
   EthMaxYieldIndex,
   DoubloonToken,
+  // JPGIndex,
   STETH,
   Token,
+  eligiblePerpIssuanceTokens,
+  USDC,
+  BasisYieldEthIndex,
 } from "constants/tokens";
 import { useAccount } from "hooks/useAccount";
 import { useBalance } from "hooks/useBalance";
 import { useNetwork } from "hooks/useNetwork";
-import { useLogging } from "hooks/useLogging";
 import { toWei } from "utils";
+
+import { useLogging } from "hooks/useLogging";
+
 import {
   ExchangeIssuanceQuote,
+  getExchangeIssuancePerpQuotes,
   getExchangeIssuanceQuotes,
   getLeveragedExchangeIssuanceQuotes,
   LeveragedExchangeIssuanceQuote,
+  PerpExchangeIssuanceQuote,
 } from "utils/exchangeIssuanceQuotes";
 import { getZeroExTradeData, ZeroExData } from "utils/zeroExUtils";
 import { getNetAssetValue } from "utils/nav";
@@ -48,6 +56,10 @@ export const maxPriceImpact = 5;
 const isEligibleLeveragedToken = (token: Token) =>
   eligibleLeveragedExchangeIssuanceTokens.includes(token);
 
+/* Determines if the token is eligible for Perp Exchange Issuance */
+export const isEligiblePerpToken = (token: Token) =>
+  eligiblePerpIssuanceTokens.includes(token);
+
 export function isEligibleTradePairZeroEx(
   inputToken: Token,
   outputToken: Token
@@ -63,6 +75,13 @@ export function isEligibleTradePairZeroEx(
     outputToken.symbol === DoubloonToken.symbol
   )
     return false;
+
+  // if (
+  //   inputToken.symbol === JPGIndex.symbol ||
+  //   outputToken.symbol === JPGIndex.symbol
+  // )
+  // temporarily - disabled JPG for EI0x
+  // return false
 
   return true;
 }
@@ -82,14 +101,14 @@ export const isEligibleTradePair = (
     outputToken.symbol === EthMaxYieldIndex.symbol;
 
   if (tokenEligible && isEthmaxy && isIssuance) {
-    // Only ETH or stETH is allowed as input for ethmaxy issuance at the moment
+    // Only ETH or stETH is allowed as input for ETHMAXY issuance at the moment
     return (
       inputToken.symbol === ETH.symbol || inputToken.symbol === STETH.symbol
     );
   }
 
   if (tokenEligible && isEthmaxy && !isIssuance) {
-    // Only ETH is allowed as output for ethmaxy redeeming at the moment
+    // Only ETH is allowed as output for ETHMAXY redeeming at the moment
     return outputToken.symbol === ETH.symbol;
   }
 
@@ -134,6 +153,55 @@ export const useBestTradeOption = () => {
 
   const [isFetching, setIsFetching] = useState<boolean>(false);
   const [result, setResult] = useState<Result<ZeroExData, Error> | null>(null);
+  const [perpData, setPerpData] = useState<any>(null);
+
+  const fetchPerpOption = async (
+    setToken: Token,
+    setTokenAmount: string,
+    isIssuance: boolean,
+    slippagePercentage: number
+  ) => {
+    const { duration } = await captureDurationAsync(async () => {
+      setIsFetching(true);
+
+      // Perp only flow
+      let perpExchangeIssuanceOption: PerpExchangeIssuanceQuote | null = null;
+
+      const spendingTokenBalance: BigNumber =
+        (isIssuance ? getBalance(USDC.symbol) : getBalance(setToken.symbol)) ||
+        BigNumber.from(0);
+      try {
+        perpExchangeIssuanceOption = await getExchangeIssuancePerpQuotes(
+          setToken,
+          toWei(setTokenAmount, setToken.decimals),
+          USDC,
+          isIssuance,
+          spendingTokenBalance,
+          slippagePercentage,
+          chainId,
+          provider
+        );
+
+        console.log("PERP", perpExchangeIssuanceOption);
+      } catch (e) {
+        console.warn("error when generating perp ei option", e);
+        setPerpData({
+          success: false,
+          data: null,
+        });
+        setIsFetching(false);
+      }
+
+      const result = {
+        success: true,
+        data: perpExchangeIssuanceOption,
+      };
+      setPerpData(result);
+      setIsFetching(false);
+    });
+
+    logTimer(KNOWN_LABELS.QUOTE_TIMER, duration);
+  };
 
   const fetchAndCompareOptions = async (
     sellToken: Token,
@@ -142,7 +210,8 @@ export const useBestTradeOption = () => {
     buyToken: Token,
     // buyTokenAmount: string,
     buyTokenPrice: number,
-    isIssuance: boolean
+    isIssuance: boolean,
+    slippagePercentage: number
   ) => {
     const { duration } = await captureDurationAsync(async () => {
       setIsFetching(true);
@@ -193,6 +262,7 @@ export const useBestTradeOption = () => {
               sellToken,
               buyToken,
               isIssuance,
+              slippagePercentage,
               chainId,
               provider
             );
@@ -200,12 +270,11 @@ export const useBestTradeOption = () => {
           console.warn("error when generating leveraged ei option", e);
         }
       } else {
-        // For now only allow trade on mainnet, some tokens are disabled
         const isEligibleTradePair = isEligibleTradePairZeroEx(
           sellToken,
           buyToken
         );
-        if (chainId === MAINNET.chainId && isEligibleTradePair)
+        if (isEligibleTradePair)
           try {
             const spendingTokenBalance: BigNumber =
               getBalance(sellToken.symbol) || BigNumber.from(0);
@@ -215,6 +284,7 @@ export const useBestTradeOption = () => {
               sellToken,
               isIssuance,
               spendingTokenBalance,
+              slippagePercentage,
               chainId,
               provider
             );
@@ -253,8 +323,10 @@ export const useBestTradeOption = () => {
   };
 
   return {
+    perpIssuanceResult: perpData,
     bestOptionResult: result,
     isFetchingTradeData: isFetching,
     fetchAndCompareOptions,
+    fetchPerpOption,
   };
 };

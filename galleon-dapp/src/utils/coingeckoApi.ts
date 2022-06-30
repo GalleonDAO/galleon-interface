@@ -1,4 +1,4 @@
-import { POLYGON } from "constants/chains";
+import { ARBITRUM, OPTIMISM, POLYGON } from "constants/chains";
 import { ETH } from "constants/tokens";
 
 const baseURL = "https://pro-api.coingecko.com/api/v3";
@@ -38,6 +38,8 @@ export const fetchHistoricalTokenMarketData = async (
 
 const getAssetPlatform = (chainId: number) => {
   if (chainId === POLYGON.chainId) return "polygon-pos";
+  if (chainId === OPTIMISM.chainId) return "optimistic-ethereum";
+  if (chainId === ARBITRUM.chainId) return "arbitrum-one";
   return "ethereum";
 };
 

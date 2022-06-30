@@ -12,6 +12,7 @@ const BYE = () => {
   const { byeComponents } = useSetComponents();
   // const formattedApy = displayFromWei(apy, 2) ?? undefined
 
+  const [perpIssuance, setPerpIssuance] = useState(false);
   const [visited, setVisited] = useState(false);
   useEffect(() => {
     if (!visited) {
@@ -33,7 +34,8 @@ const BYE = () => {
       tokenData={BasisYieldEthIndex}
       marketData={bye || {}}
       components={byeComponents || []}
-      isLeveragedToken={false}
+      isLeveragedToken={true}
+      perpIssuance={perpIssuance}
       hasDashboard={false}
     >
       <div className=" px-2 pb-4 border-b border-theme-navy sm:px-4">
@@ -45,6 +47,21 @@ const BYE = () => {
           Perpetual Protocol V2.
         </p>
       </div>
+      <p className="mt-0.5 text-sm block text-theme-navy  float-right  ">
+        {" "}
+        {!perpIssuance ? "Large Buyer?" : ""}{" "}
+        <button
+          onClick={() => {
+            setPerpIssuance(!perpIssuance);
+          }}
+          type="button"
+          className={
+            "bg-theme-pan-champagne relative  items-center  py-0.5 px-2 ml-1 mt-2  rounded-2xl border border-theme-navy  text-sm  text-theme-navy hover:bg-white focus:z-10 "
+          }
+        >
+          {perpIssuance ? "Toggle DEX Swap" : "Toggle Flash Issuance"}
+        </button>
+      </p>
     </ProductPage>
   );
 };

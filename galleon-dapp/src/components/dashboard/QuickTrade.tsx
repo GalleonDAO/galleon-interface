@@ -62,7 +62,7 @@ import {
   getTradeInfoData0x,
   getTradeInfoDataFromEI,
   formattedFiat,
-  getFormattedOuputTokenAmount,
+  getFormattedOutputTokenAmount,
   getFormattedPriceImpact,
 } from "./QuickTradeFormatter";
 import QuickTradeSelector from "./QuickTradeSelector";
@@ -87,6 +87,8 @@ enum QuickTradeBestOption {
   exchangeIssuance,
   leveragedExchangeIssuance,
 }
+
+const slippagePercentage = 1;
 
 const QuickTrade = (props: {
   isNarrowVersion?: boolean;
@@ -305,7 +307,7 @@ const QuickTrade = (props: {
           isBuying
         );
 
-    const buyTokenAmountFormatted = getFormattedOuputTokenAmount(
+    const buyTokenAmountFormatted = getFormattedOutputTokenAmount(
       bestOption !== QuickTradeBestOption.zeroEx,
       buyToken.decimals,
       bestOptionResult?.success
@@ -354,7 +356,8 @@ const QuickTrade = (props: {
       buyToken,
       // buyTokenAmount,
       buyTokenPrice,
-      isBuying
+      isBuying,
+      slippagePercentage
     );
   };
 
