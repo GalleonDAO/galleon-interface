@@ -12,7 +12,7 @@ const BYE = () => {
   const { byeComponents } = useSetComponents();
   // const formattedApy = displayFromWei(apy, 2) ?? undefined
 
-  const [perpIssuance, setPerpIssuance] = useState(true);
+  const [perpIssuance, setPerpIssuance] = useState(false);
   const [visited, setVisited] = useState(false);
   useEffect(() => {
     if (!visited) {
