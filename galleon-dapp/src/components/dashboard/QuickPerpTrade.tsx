@@ -92,6 +92,7 @@ import { debounce } from "lodash";
 import { useTradePerpExchangeIssuance } from "hooks/useTradePerpExchangeIssuance";
 import { useMarketData } from "providers/MarketData/MarketDataProvider";
 import { fetchCoingeckoTokenPrice } from "utils/coingeckoApi";
+import { constants } from "ethers";
 
 // Slippage hard coded to .5%
 export const slippagePercentage = 1;
@@ -162,7 +163,9 @@ const QuickPerpTrade = (props: {
   } = useApproval(
     isIssuance ? USDC : props.singleToken,
     spenderAddressPerpEI,
-    isIssuance ? perpIssuanceResult?.data.estimate : sellTokenAmountInWei
+    isIssuance
+      ? perpIssuanceResult?.data.estimate.mul(BigNumber.from(2))
+      : sellTokenAmountInWei.mul(BigNumber.from(2))
   );
 
   const { executePerpEITrade, isTransactingPerpEI } =
@@ -173,10 +176,9 @@ const QuickPerpTrade = (props: {
       perpIssuanceResult?.data
     );
 
-  const setTokenBalance =
-    getBalance(props.singleToken.symbol) ?? BigNumber.from(0);
+  const setTokenBalance = getBalance(props.singleToken.symbol);
 
-  const usdcTokenBalance = getBalance(USDC.symbol) ?? BigNumber.from(0);
+  const usdcTokenBalance = getBalance(USDC.symbol);
 
   const hasInsufficientFunds = getHasInsufficientFunds(
     false,
@@ -188,7 +190,7 @@ const QuickPerpTrade = (props: {
   //
   useEffect(() => {
     fetchOptions();
-  }, [props.singleToken, setTokenAmount, isIssuance]);
+  }, [props.singleToken, setTokenAmount, isIssuance, isApprovedForEIPerp]);
 
   const fetchOptions = () => {
     // Right now we only allow setting the sell amount, so no need to check
@@ -403,7 +405,7 @@ const QuickPerpTrade = (props: {
         <div className="ml-4">
           <Box pr="0px" mb={"8px"}>
             <span className="inline-flex text-sm">
-              USDC Balance: {displayFromWei(usdcTokenBalance, 6)}
+              USDC Balance: {displayFromWei(usdcTokenBalance, 6, 6)}
             </span>
           </Box>
           <QuickTradeSelector

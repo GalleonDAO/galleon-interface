@@ -205,8 +205,8 @@ export const getExchangeIssuancePerpQuotes = async (
   console.log("componentsEstimate", displayFromWei(estimate, 6, 6));
 
   const totalWithSlippageEstimate = !isIssuance
-    ? estimate.mul(toWei(100, 6)).div(toWei(100 + 1, 6))
-    : estimate.mul(toWei(100, 6)).div(toWei(100 - 1, 6));
+    ? estimate.mul(toWei(100, 6)).div(toWei(100 + slippagePercentage, 6))
+    : estimate.mul(toWei(100, 6)).div(toWei(100 - slippagePercentage, 6));
 
   console.log(
     "totalWithSlippageEstimate",

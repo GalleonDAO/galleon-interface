@@ -16,7 +16,12 @@ const App = () => {
     notifications.forEach((notification) => {
       if ("transaction" in notification) {
         toast({
-          title: notification.type,
+          title:
+            notification.type === "transactionStarted"
+              ? "Transaction Pending"
+              : notification.type === "transactionSucceed"
+              ? "Transaction Success"
+              : "Transaction Failed",
           description: (
             <a
               className="hover:text-theme-sky text-theme-navy"
