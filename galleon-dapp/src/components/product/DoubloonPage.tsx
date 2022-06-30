@@ -199,7 +199,7 @@ const DoubloonPage = (props: {
                         onClick={() =>
                           changeNetwork(ARBITRUM.chainId.toString())
                         }
-                        className="m-auto justify-center text-center block mt-4 bg-theme-sky shadow-sm shadow-theme-black text-white  py-1.5 px-4 border-2 border-theme-sky rounded-2xl text-base font-medium  hover:bg-opacity-75"
+                        className="m-auto justify-center text-center block mt-4 bg-theme-sky shadow-sm shadow-theme-black text-white  py-1.5 px-4 border-2 border-theme-navy rounded-2xl text-base font-medium  hover:bg-opacity-75"
                       >
                         Switch to Arbitrum
                       </button>

@@ -9,5 +9,8 @@ export const colors = {
   themeChampagne: "#FEF3E2",
   themeBackground: "#FDE6C4",
   themeBlue: "#025BEE",
+  themePanBlue: "#0072B5",
+  themePanChampagne: "#F4EEE8",
+  themePanNavy: "#27272A",
   themeCopper: "#DC7F5A",
 };

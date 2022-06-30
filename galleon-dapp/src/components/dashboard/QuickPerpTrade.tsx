@@ -1,32 +1,18 @@
 import { useEffect, useState } from "react";
-import useDebouncedEffect from "use-debounced-effect";
 import { colors } from "styles/colors";
 
-import { InfoOutlineIcon, UpDownIcon } from "@chakra-ui/icons";
 import {
   Box,
   Button,
   Flex,
-  IconButton,
   Image,
-  Spacer,
   Text,
-  Tooltip,
   useDisclosure,
 } from "@chakra-ui/react";
 import { BigNumber } from "@ethersproject/bignumber";
-import { ChainId, useEthers } from "@usedapp/core";
 
 import ConnectModal from "components/header/ConnectModal";
 import {
-  ExchangeIssuanceLeveragedMainnetAddress,
-  ExchangeIssuanceLeveragedPolygonAddress,
-  ExchangeIssuanceZeroExAddress,
-  zeroExRouterAddress,
-} from "constants/ethContractAddresses";
-import {
-  ETH,
-  EthMaxYieldIndex,
   indexNamesArbitrum,
   Token,
   USDC,
@@ -34,10 +20,7 @@ import {
 import { useApproval } from "hooks/useApproval";
 import { useBalance } from "hooks/useBalance";
 import { useBestTradeOption } from "hooks/useBestTradeOption";
-import { useTrade } from "hooks/useTrade";
-import { useTradeExchangeIssuance } from "hooks/useTradeExchangeIssuance";
-import { useTradeLeveragedExchangeIssuance } from "hooks/useTradeLeveragedExchangeIssuance";
-import { useTradeTokenLists } from "hooks/useTradeTokenLists";
+
 import {
   displayFromWei,
   isSupportedNetwork,
@@ -53,46 +36,24 @@ import {
   POLYGON,
 } from "constants/chains";
 import {
-  ExchangeIssuanceZeroExMainnetAddress,
-  ExchangeIssuanceZeroExPolygonAddress,
-} from "constants/ethContractAddresses";
-import {
   indexNamesMainnet,
   indexNamesOptimism,
   indexNamesPolygon,
 } from "constants/tokens";
 
-import { maxPriceImpact } from "hooks/useBestTradeOption";
 
 import {
   getHasInsufficientFunds,
-  getTradeInfoData0x,
-  getTradeInfoDataFromEI,
-  formattedFiat,
-  getFormattedOutputTokenAmount,
-  getFormattedPriceImpact,
 } from "./QuickTradeFormatter";
 import QuickTradeSelector from "./QuickTradeSelector";
-import TradeInfo, { TradeInfoItem } from "./TradeInfo";
-import { getSelectTokenListItems, SelectTokenModal } from "./SelectTokenModal";
 import { SetComponent } from "providers/SetComponents/SetComponentsProvider";
 import { useAccount } from "hooks/useAccount";
 import { useNetwork } from "hooks/useNetwork";
 import {
-  get0xExchangeIssuanceContract,
-  get0xRouterContract,
-  getLeveragedExchangeIssuanceContract,
   getPerpExchanceIssuanceContract,
 } from "utils/contracts";
-import {
-  getFullCostsInUsd,
-  getLeveragedExchangeIssuanceQuotes,
-} from "utils/exchangeIssuanceQuotes";
 import { debounce } from "lodash";
 import { useTradePerpExchangeIssuance } from "hooks/useTradePerpExchangeIssuance";
-import { useMarketData } from "providers/MarketData/MarketDataProvider";
-import { fetchCoingeckoTokenPrice } from "utils/coingeckoApi";
-import { constants } from "ethers";
 
 // Slippage hard coded to .5%
 export const slippagePercentage = 1;
@@ -113,22 +74,10 @@ const QuickPerpTrade = (props: {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [isIssuance, setIsIssuance] = useState(true);
 
-  const {
-    isOpen: isSelectInputTokenOpen,
-    onOpen: onOpenSelectInputToken,
-    onClose: onCloseSelectInputToken,
-  } = useDisclosure();
-  const {
-    isOpen: isSelectOutputTokenOpen,
-    onOpen: onOpenSelectOutputToken,
-    onClose: onCloseSelectOutputToken,
-  } = useDisclosure();
-
   const supportedNetwork = isSupportedNetwork(chainId ?? -1);
 
   const { getBalance } = useBalance();
 
-  const [usdcAmountFormatted, setUsdcAmountFormatted] = useState("0.0");
   const [setTokenAmount, setSetTokenAmount] = useState("0");
 
   const { isFetchingTradeData, fetchPerpOption, perpIssuanceResult } =
@@ -143,18 +92,6 @@ const QuickPerpTrade = (props: {
     setTokenAmount,
     props.singleToken.decimals
   );
-
-  // const usdcFiat = formattedFiat(parseFloat(usdcAmountFormatted), buyTokenPrice)
-
-  // const priceImpact = isFetchingTradeData
-  //   ? null
-  //   : getFormattedPriceImpact(
-  //       parseFloat(setTokenAmount),
-  //       sellTokenPrice,
-  //       parseFloat(usdcAmountFormatted),
-  //       buyTokenPrice,
-  //       false,
-  //     )
 
   const {
     isApproved: isApprovedForEIPerp,
@@ -193,8 +130,7 @@ const QuickPerpTrade = (props: {
   }, [props.singleToken, setTokenAmount, isIssuance, isApprovedForEIPerp]);
 
   const fetchOptions = () => {
-    // Right now we only allow setting the sell amount, so no need to check
-    // buy token amount here
+
     const setTokenInWei = toWei(setTokenAmount, props.singleToken.decimals);
     if (setTokenInWei.isZero() || setTokenInWei.isNegative()) return;
 

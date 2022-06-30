@@ -58,13 +58,13 @@ const TickerCell = ({ product }: TickerCellProps) => {
         </GridItem>
         {isWeb && (
           <GridItem colStart={2}>
-            <Text fontSize="sm" variant="secondary" align="left">
+            <Text className="text-theme-navy" fontSize="sm" variant="secondary" align="left">
               {product.symbol}
             </Text>
           </GridItem>
         )}
         <GridItem colStart={2}>
-          <Text fontWeight={"semibold"} fontSize={["sm", "sm", "xl"]}>
+          <Text className="text-theme-navy"  fontWeight={"semibold"} fontSize={["sm", "sm", "xl"]}>
             {product.name}
           </Text>
         </GridItem>

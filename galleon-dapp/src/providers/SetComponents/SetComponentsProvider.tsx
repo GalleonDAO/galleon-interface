@@ -1,42 +1,40 @@
-import { createContext, useContext, useEffect, useState } from "react";
+import { createContext, useContext, useEffect, useState } from 'react'
 
-import { ethers } from "ethers";
+import { ethers } from 'ethers'
 import {
   CoinGeckoCoinPrices,
   Position,
   SetDetails,
-} from "set.js/dist/types/src/types";
+} from 'set.js/dist/types/src/types'
 
-import { BigNumber } from "@ethersproject/bignumber";
-import { useEthers } from "@usedapp/core";
+import { BigNumber } from '@ethersproject/bignumber'
+import { useEthers } from '@usedapp/core'
 
-import { MAINNET, OPTIMISM, POLYGON } from "constants/chains";
-import { EthMaxYieldIndex, BasisYieldEthIndex } from "constants/tokens";
-import { useMarketData } from "providers/MarketData/MarketDataProvider";
-import { displayFromWei, safeDiv } from "utils";
-import { getSetDetails } from "utils/setjsApi";
-import { getTokenList, TokenData as Token } from "utils/tokenlists";
+import { MAINNET, OPTIMISM, POLYGON } from 'constants/chains'
+import { EthMaxYieldIndex, BasisYieldEthIndex } from 'constants/tokens'
+import { useMarketData } from 'providers/MarketData/MarketDataProvider'
+import { displayFromWei, safeDiv } from 'utils'
+import { getSetDetails } from 'utils/setjsApi'
+import { getTokenList, TokenData as Token } from 'utils/tokenlists'
 
-const ASSET_PLATFORM = "ethereum";
-const VS_CURRENCY = "usd";
+const ASSET_PLATFORM = 'ethereum'
+const VS_CURRENCY = 'usd'
 const key = `&x_cg_pro_api_key=${
-  process.env.REACT_APP_COINGECKO_PRO_API_KEY ?? ""
-}`;
+  process.env.REACT_APP_COINGECKO_PRO_API_KEY ?? ''
+}`
 
 export function useSetComponents() {
-  return { ...useContext(SetComponentsContext) };
+  return { ...useContext(SetComponentsContext) }
 }
 
 const SetComponentsProvider = (props: { children: any }) => {
-  const { selectLatestMarketData, ethmaxy, bye } = useMarketData();
-  const [ethmaxyComponents, setEthmaxyComponents] = useState<SetComponent[]>(
-    []
-  );
-  const [byeComponents, setByeComponents] = useState<SetComponent[]>([]);
+  const { selectLatestMarketData, ethmaxy, bye } = useMarketData()
+  const [ethmaxyComponents, setEthmaxyComponents] = useState<SetComponent[]>([])
+  const [byeComponents, setByeComponents] = useState<SetComponent[]>([])
   // const [dummyComponents, setDummyComponents] = useState<SetComponent[]>([])
 
-  const { account, chainId, library } = useEthers();
-  const tokenList = getTokenList(chainId);
+  const { account, chainId, library } = useEthers()
+  const tokenList = getTokenList(chainId)
 
   useEffect(() => {
     if (
@@ -52,9 +50,9 @@ const SetComponentsProvider = (props: { children: any }) => {
     ) {
       getSetDetails(library, [EthMaxYieldIndex.address], chainId).then(
         async (result) => {
-          const [ethmaxySet] = result;
+          const [ethmaxySet] = result
 
-          const ethmaxyComponentPrices = await getPositionPrices(ethmaxySet);
+          const ethmaxyComponentPrices = await getPositionPrices(ethmaxySet)
           if (ethmaxyComponentPrices != null) {
             const ethmaxyPositions = ethmaxySet.positions.map(
               async (position) => {
@@ -68,16 +66,16 @@ const SetComponentsProvider = (props: { children: any }) => {
                     `${VS_CURRENCY}_24h_change`
                   ],
 
-                  selectLatestMarketData(ethmaxy.hourlyPrices)
-                );
-              }
-            );
+                  selectLatestMarketData(ethmaxy.hourlyPrices),
+                )
+              },
+            )
             Promise.all(ethmaxyPositions)
               .then(sortPositionsByPercentOfSet)
-              .then(setEthmaxyComponents);
+              .then(setEthmaxyComponents)
           }
-        }
-      );
+        },
+      )
 
       // getSetDetails(library, [DummyExchangeIssuanceSet.address], chainId).then(
       //   async (result) => {
@@ -106,17 +104,17 @@ const SetComponentsProvider = (props: { children: any }) => {
       //   }
       // );
     }
-  }, [library, tokenList, ethmaxy, selectLatestMarketData()]);
+  }, [library, tokenList, ethmaxy, selectLatestMarketData()])
 
   useEffect(() => {
     if (chainId && chainId === POLYGON.chainId && library && tokenList) {
       getSetDetails(library, [], chainId)
         .then(async (result) => {
-          const [] = result;
+          const [] = result
         })
-        .catch((err) => console.log("err", err));
+        .catch((err) => console.log('err', err))
     }
-  }, [chainId, library, tokenList, selectLatestMarketData()]);
+  }, [chainId, library, tokenList, selectLatestMarketData()])
 
   useEffect(() => {
     if (
@@ -126,36 +124,43 @@ const SetComponentsProvider = (props: { children: any }) => {
       library &&
       tokenList &&
       bye &&
-      BasisYieldEthIndex.address
+      BasisYieldEthIndex.optimismAddress
     ) {
-      getSetDetails(library, [EthMaxYieldIndex.address], chainId).then(
-        async (result) => {
-          const [byeSet] = result;
+      getSetDetails(
+        library,
+        [BasisYieldEthIndex.optimismAddress],
+        chainId,
+      ).then(async (result) => {
+        const [byeSet] = result
 
-          const byeComponentPrices = await getPositionPrices(byeSet);
-          if (byeComponentPrices != null) {
-            const byePositions = byeSet.positions.map(async (position) => {
-              return await convertPositionToSetComponent(
-                position,
-                tokenList,
-                byeComponentPrices[position.component.toLowerCase()]?.[
-                  VS_CURRENCY
-                ],
-                byeComponentPrices[position.component.toLowerCase()]?.[
-                  `${VS_CURRENCY}_24h_change`
-                ],
+        const byeComponentPrices = await getPositionPrices(
+          byeSet,
+          'optimistic-ethereum',
+        )
 
-                selectLatestMarketData(bye.hourlyPrices)
-              );
-            });
-            Promise.all(byePositions)
-              .then(sortPositionsByPercentOfSet)
-              .then(setByeComponents);
-          }
+        if (byeComponentPrices != null) {
+          const byePositions = byeSet.positions.map(async (position) => {
+            return await convertPositionToSetComponent(
+              position,
+              tokenList,
+              byeComponentPrices[position.component.toLowerCase()]?.[
+                VS_CURRENCY
+              ],
+              byeComponentPrices[position.component.toLowerCase()]?.[
+                `${VS_CURRENCY}_24h_change`
+              ],
+
+              selectLatestMarketData(bye.hourlyPrices),
+            )
+          })
+    
+          Promise.all(byePositions)
+            .then(sortPositionsByPercentOfSet)
+            .then(setByeComponents)
         }
-      );
+      })
     }
-  }, [library, tokenList, bye, selectLatestMarketData()]);
+  }, [library, tokenList, bye, selectLatestMarketData()])
 
   return (
     <SetComponentsContext.Provider
@@ -167,178 +172,179 @@ const SetComponentsProvider = (props: { children: any }) => {
     >
       {props.children}
     </SetComponentsContext.Provider>
-  );
-};
+  )
+}
 
 export async function convertPositionToSetComponent(
   position: Position,
   tokenList: Token[],
   componentPriceUsd: number,
   componentPriceChangeUsd: number,
-  setPriceUsd: number
+  setPriceUsd: number,
 ): Promise<SetComponent> {
-  const token = getTokenForPosition(tokenList, position);
+  const token = getTokenForPosition(tokenList, position)
   if (token === undefined) {
     return {
       address: position.component,
       id: position.component,
-      quantity: "",
-      symbol: "SYM",
+      quantity: '',
+      symbol: 'SYM',
       name: position.component,
-      image: "",
-      totalPriceUsd: "0",
-      dailyPercentChange: "0",
-      percentOfSet: "0",
+      image: '',
+      totalPriceUsd: '0',
+      dailyPercentChange: '0',
+      percentOfSet: '0',
       percentOfSetNumber: 0,
-    };
+    }
   }
 
-  const commonDecimals = 18;
-  const decimalsDiff = commonDecimals - token.decimals;
+  const commonDecimals = 18
+  const decimalsDiff = commonDecimals - token.decimals
 
   const tokenPriceUsdDecimal = ethers.utils.parseUnits(
-    componentPriceUsd.toString()
-  );
-  const setPriceUsdDecimal = ethers.utils.parseUnits(setPriceUsd.toString());
+    componentPriceUsd.toString(),
+  )
+  const setPriceUsdDecimal = ethers.utils.parseUnits(setPriceUsd.toString())
 
   const tokenValueUsd = ethers.utils
     .parseUnits(position.unit.toString(), decimalsDiff)
-    .mul(tokenPriceUsdDecimal);
+    .mul(tokenPriceUsdDecimal)
 
-  const percentOfSet = safeDiv(tokenValueUsd, setPriceUsdDecimal);
+  const percentOfSet = safeDiv(tokenValueUsd, setPriceUsdDecimal)
   const displayPercentOfSet = displayFromWei(
     percentOfSet.mul(BigNumber.from(100)),
-    2
-  );
+    2,
+  )
 
   return {
     address: position.component,
     id: token.name.toLowerCase(),
     quantity: ethers.utils.formatUnits(
-      ethers.utils.parseUnits(position.unit.toString(), decimalsDiff)
+      ethers.utils.parseUnits(position.unit.toString(), decimalsDiff),
     ),
     symbol: token.symbol,
     name: token.name,
     image: token.logoURI,
     totalPriceUsd: ethers.utils.formatUnits(
       tokenValueUsd,
-      commonDecimals + decimalsDiff + token.decimals
+      commonDecimals + decimalsDiff + token.decimals,
     ),
     dailyPercentChange: componentPriceChangeUsd
       ? componentPriceChangeUsd.toString()
-      : "0",
-    percentOfSet: displayPercentOfSet ?? "0",
-    percentOfSetNumber: Number(displayPercentOfSet ?? "0"),
-  };
+      : '0',
+    percentOfSet: displayPercentOfSet ?? '0',
+    percentOfSetNumber: Number(displayPercentOfSet ?? '0'),
+  }
 }
 
 function getTokenForPosition(tokenList: Token[], position: Position): Token {
   const matchingTokens = tokenList.filter(
-    (t) => t.address.toLowerCase() === position.component.toLowerCase()
-  );
+    (t) => t.address.toLowerCase() === position.component.toLowerCase(),
+  )
   if (matchingTokens.length === 0) {
     console.warn(
-      `No token for position ${position.component} exists in token lists`
-    );
+      `No token for position ${position.component} exists in token lists`,
+    )
   } else if (matchingTokens.length > 1) {
     console.warn(
-      `Multiple tokens for position ${position.component} exist in token lists`
-    );
+      `Multiple tokens for position ${position.component} exist in token lists`,
+    )
   }
-  return matchingTokens[0];
+  return matchingTokens[0]
 }
 
 function sortPositionsByPercentOfSet(
-  components: SetComponent[]
+  components: SetComponent[],
 ): SetComponent[] {
   return components.sort((a, b) => {
-    if (b.percentOfSetNumber > a.percentOfSetNumber) return 1;
-    if (b.percentOfSetNumber < a.percentOfSetNumber) return -1;
-    return 0;
-  });
+    if (b.percentOfSetNumber > a.percentOfSetNumber) return 1
+    if (b.percentOfSetNumber < a.percentOfSetNumber) return -1
+    return 0
+  })
 }
 
 async function getPositionPrices(
   setDetails: SetDetails,
-  assetPlatform: string = ASSET_PLATFORM
+  assetPlatform: string = ASSET_PLATFORM,
 ): Promise<CoinGeckoCoinPrices> {
-  const componentAddresses = setDetails.positions.map((p) => p.component);
+  const componentAddresses = setDetails.positions.map((p) => p.component)
+
   return fetch(
-    `https://pro-api.coingecko.com/api/v3/simple/token_price/${assetPlatform}?vs_currencies=${VS_CURRENCY}&contract_addresses=${componentAddresses}&include_24hr_change=true${key}`
+    `https://pro-api.coingecko.com/api/v3/simple/token_price/${assetPlatform}?vs_currencies=${VS_CURRENCY}&contract_addresses=${componentAddresses}&include_24hr_change=true${key}`,
   )
     .then((response) => response.json())
     .catch((e) => {
-      console.error(e);
-      return null;
-    });
+      console.error(e)
+      return null
+    })
 }
 
-export default SetComponentsProvider;
+export default SetComponentsProvider
 
 interface SetComponentsProps {
-  ethmaxyComponents?: SetComponent[];
-  byeComponents?: SetComponent[];
+  ethmaxyComponents?: SetComponent[]
+  byeComponents?: SetComponent[]
   // dummyComponents?: SetComponent[]
 }
 
-export const SetComponentsContext = createContext<SetComponentsProps>({});
+export const SetComponentsContext = createContext<SetComponentsProps>({})
 
 export interface SetComponent {
   /**
    * Token address
    * @example "0x1f9840a85d5af5bf1d1762f925bdaddc4201f984"
    */
-  address: string;
+  address: string
 
   /**
    * Token id
    * @example "uniswap"
    */
-  id: string;
+  id: string
 
   /**
    * Token image URL
    * @example "https://assets.coingecko.com/coins/images/12504/thumb/uniswap-uni.png"
    */
-  image: string;
+  image: string
 
   /**
    * Token name
    * @example "Uniswap"
    */
-  name: string;
+  name: string
 
   /**
    * The percent of USD this component makes up in the Set.
    * Equivalant to totalPriceUsd / total price of set in USD
    */
-  percentOfSet: string;
+  percentOfSet: string
 
   /**
    * The percent of USD this component makes up in the Set.
    * Equivalant to totalPriceUsd / total price of set in USD
    */
-  percentOfSetNumber: number;
+  percentOfSetNumber: number
 
   /**
    * Quantity of component in the Set
    */
-  quantity: string;
+  quantity: string
 
   /**
    * Token symbol
    * @example "UNI"
    */
-  symbol: string;
+  symbol: string
 
   /**
    * Total price of this component. This is equivalant to quantity of
    * component * price of component.
    */
-  totalPriceUsd: string;
+  totalPriceUsd: string
 
   /**
    * Daily percent price change of this component
    */
-  dailyPercentChange: string;
+  dailyPercentChange: string
 }

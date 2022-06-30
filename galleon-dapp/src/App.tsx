@@ -24,7 +24,7 @@ const App = () => {
               : "Transaction Failed",
           description: (
             <a
-              className="hover:text-theme-sky text-theme-navy"
+              className="hover:text-theme-sky text-theme-pan-sky"
               target={"_blank"}
               href={
                 explorer.blockExplorerUrl +

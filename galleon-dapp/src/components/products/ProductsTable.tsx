@@ -32,18 +32,18 @@ const ProductsTable = ({ products }: ProductsTableProps) => {
   );
 
   return (
-    <Table colorScheme={colorScheme}>
+    <Table colorScheme={colorScheme} >
       <Thead>
         <Tr>
-          <Th color={colors.themeBlack} p={["8px 8px", "12px 24px"]}>
+          <Th color={colors.themeNavy} p={["8px 8px", "12px 24px"]}>
             Ticker
           </Th>
-          <Th color={colors.themeBlack} p={["8px 8px", "12px 24px"]}>
+          <Th color={colors.themeNavy} p={["8px 8px", "12px 24px"]}>
             Theme
           </Th>
           {priceChangeIntervals.map((interval) => (
             <Th
-              color={colors.themeBlack}
+              color={colors.themeNavy}
               key={interval[0]}
               p={["8px 8px", "12px 24px"]}
             >
@@ -59,7 +59,7 @@ const ProductsTable = ({ products }: ProductsTableProps) => {
               <TickerCell product={product} />
             </Td>
             <Td p={["16px 8px", "16px 24px"]}>
-              <Text fontWeight={"semibold"}>{product.theme}</Text>
+              <Text className="text-theme-navy" fontWeight={"semibold"}>{product.theme}</Text>
             </Td>
             {priceChangeIntervals.map((interval) => (
               <Td key={interval[0]} p={["16px 8px", "16px 24px"]}>
