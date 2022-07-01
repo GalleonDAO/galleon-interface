@@ -80,11 +80,17 @@ const fetchSimplePrice = async (
   });
 };
 
-export const getHistoricalTokenMarketData = async (
+export interface HistoricalTokenMarketData {
+  hourlyPrices: number[];
+  marketcaps: number[];
+  volumes: number[];
+}
+
+const getHistoricalTokenMarketData = async (
   id: string,
   baseCurrency = "usd",
   correlationId?: string
-) => {
+): Promise<HistoricalTokenMarketData> => {
   //TODO: Enforce typing
   return Promise.all([
     fetchMaxTokenData(id, baseCurrency, correlationId),
@@ -100,8 +106,7 @@ export const getHistoricalTokenMarketData = async (
     };
   });
 };
-
-export const getCoingeckoTokenPrice = async (
+const getCoingeckoTokenPrice = async (
   address: string,
   chainId: number,
   baseCurrency = "usd",
@@ -120,4 +125,9 @@ export const getCoingeckoTokenPrice = async (
       return 0;
     }
   );
+};
+
+export const coingeckoAPI = {
+  getHistoricalTokenMarketData,
+  getCoingeckoTokenPrice,
 };
