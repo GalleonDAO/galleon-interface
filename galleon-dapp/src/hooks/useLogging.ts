@@ -7,10 +7,10 @@ import Logger from "@galleondao/logging-lib";
 
 const logger = new Logger(process.env.REACT_APP_APIM_SUBSCRIPTION_KEY);
 
-export const useLogging = () => {
-  const captureDurationAsync = async (
-    func: (...args: any) => Promise<any>
-  ): Promise<{ result: any; duration: number }> => {
+const loggingFunctions = () => {
+  const captureDurationAsync = async <TType>(
+    func: (...args: any) => Promise<TType>
+  ): Promise<{ result: TType; duration: number }> => {
     var start = Date.now();
     var result = await func();
     var delta = Date.now() - start;
@@ -61,3 +61,8 @@ export const useLogging = () => {
     LOG_SEVERITY,
   };
 };
+
+//This prevents linter from being angry about using hooks when this is more of a singleton
+//Probably can be removed
+export const useLogging = () => loggingFunctions();
+export const loggingInstance = () => loggingFunctions();
