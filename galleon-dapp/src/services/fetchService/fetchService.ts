@@ -1,3 +1,4 @@
+import { TransactionTypes } from "ethers/lib/utils";
 import { loggingInstance } from "hooks/useLogging";
 const { captureDurationAsync, logTimer, logMessage, LOG_SEVERITY } =
   loggingInstance();
@@ -8,23 +9,40 @@ const { captureDurationAsync, logTimer, logMessage, LOG_SEVERITY } =
  * @param correlationId optional but use where possible
  * @returns success if reponse ok, !success if response not ok
  */
-export const fetchDataAsync = async <TType>(
+export const fetchDataAsync = async <TType = any>(
   label: string,
   input: RequestInfo | URL,
   init?: RequestInit,
   correlationId?: string
 ): Promise<{ success: boolean; response: FetchResponse<TType> }> => {
   try {
-    const timedResponse = await captureDurationAsync(async () =>
-      fetch(input, init)
+    const typedResponse: FetchResponse<TType> = {
+      status: 0,
+    };
+
+    const timedResponse = await captureDurationAsync(
+      async (): Promise<Response> => {
+        return fetch(input, init);
+      }
     );
     logTimer(label, timedResponse.duration);
 
-    const { data, errors }: FetchResponse<TType> =
-      await timedResponse.result.json();
+    typedResponse.status = timedResponse.result.status;
+    const json = await timedResponse.result.json();
 
     if (!timedResponse.result.ok) {
-      const errorString = `{${errors.map((e) => e.message).join("\n")}}`;
+      //This handling isn't ideal but allows for errors to be returned in a non restful fashion
+      typedResponse.errors = [];
+      if (timedResponse.result.statusText.length > 0) {
+        typedResponse.errors.push({ message: timedResponse.result.statusText });
+      }
+      if (json) {
+        typedResponse.errors.push({ message: JSON.stringify(json) });
+      }
+
+      const errorString = `{${typedResponse.errors
+        .map((e) => e.message)
+        .join("\n")}}`;
       logMessage(
         LOG_SEVERITY.WARN,
         errorString,
@@ -34,9 +52,11 @@ export const fetchDataAsync = async <TType>(
           correlationId ?? ""
         })`
       );
+    } else {
+      typedResponse.data = json as TType;
     }
 
-    return { success: timedResponse.result.ok, response: { data, errors } }; // we return data here so callers can action specific errors
+    return { success: timedResponse.result.ok, response: typedResponse }; // we return data here so callers can action specific errors
   } catch (err) {
     logMessage(
       LOG_SEVERITY.ERROR,
@@ -52,6 +72,7 @@ export const fetchDataAsync = async <TType>(
 };
 
 export type FetchResponse<TType> = {
-  data?: Omit<TType, "fetchedAt">;
+  status: number;
+  data?: TType;
   errors?: Array<{ message: string }>;
 };
