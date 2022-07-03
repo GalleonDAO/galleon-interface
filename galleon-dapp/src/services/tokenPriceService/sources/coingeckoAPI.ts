@@ -2,14 +2,18 @@ import { ARBITRUM, OPTIMISM, POLYGON } from "constants/chains";
 import { ETH } from "constants/tokens";
 import { fetchDataAsync } from "../../fetchService/fetchService";
 
-const HOST = "https://pro-api.coingecko.com/api/v3";
+const HOST =
+  process.env.NODE_ENV === "production"
+    ? "https://pro-api.coingecko.com/api/v3"
+    : "https://api.coingecko.com/api/v3";
 const COINS_CONTROLLER = `${HOST}/coins`;
 const SIMPLE_PRICE_CONTROLLER = `${HOST}/simple/price`;
 const SIMPLE_TOKENPRICE_CONTROLLER = `${HOST}/simple/token_price`;
 
-const KEY = `&x_cg_pro_api_KEY=${
-  process.env.REACT_APP_COINGECKO_PRO_API_KEY ?? ""
-}`;
+const KEY =
+  process.env.NODE_ENV === "production"
+    ? `&x_cg_pro_api_KEY=${process.env.REACT_APP_COINGECKO_PRO_API_KEY ?? ""}`
+    : "";
 
 const getAssetPlatform = (chainId: number) => {
   switch (chainId) {
@@ -30,7 +34,7 @@ const fetchMaxTokenDataAsync = async (
   correlationId?: string
 ) => {
   const coingeckoMaxTokenDataUrl = `${COINS_CONTROLLER}/${id}/market_chart?vs_currency=${baseCurrency}&days=max&interval=daily${KEY}`;
-  return fetchDataAsync<any>(
+  return await fetchDataAsync<any>(
     "FETCH_COINGECKO_MAX_TOKEN_DATA",
     coingeckoMaxTokenDataUrl,
     null,
@@ -45,8 +49,8 @@ const fetchHourlyTokenDataAsync = async (
   baseCurrency = "usd",
   correlationId?: string
 ) => {
-  const coingeckoMaxTokenDataUrl = `${COINS_CONTROLLER}/${id}/market_chart?vs_currency=${baseCurrency}&days=max&interval=daily${KEY}`;
-  return fetchDataAsync<any>(
+  const coingeckoMaxTokenDataUrl = `${COINS_CONTROLLER}/${id}/market_chart?vs_currency=${baseCurrency}&days=90${KEY}`;
+  return await fetchDataAsync<any>(
     "FETCH_COINGECKO_MAX_TOKEN_DATA",
     coingeckoMaxTokenDataUrl,
     null,
@@ -70,7 +74,7 @@ const fetchSimplePriceAsync = async (
         `/${getAssetPlatform(
           chainId
         )}/?contract_addresses=${address}&vs_currencies=${baseCurrency}${KEY}`;
-  return fetchDataAsync<any>(
+  return await fetchDataAsync<any>(
     "FETCH_COINGECKO_SIMPLE_PRICE",
     reqUrl,
     null,
