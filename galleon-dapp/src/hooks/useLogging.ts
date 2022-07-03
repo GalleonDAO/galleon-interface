@@ -1,11 +1,18 @@
+import { v4 as guid } from "uuid";
 import {
   KNOWN_LABELS,
   KNOWN_SERVICES,
   LOG_SEVERITY,
 } from "@galleondao/logging-lib";
-import Logger from "@galleondao/logging-lib";
+import { LoggingV2 } from "@galleondao/logging-lib";
 
-const logger = new Logger(process.env.REACT_APP_APIM_SUBSCRIPTION_KEY);
+//const logger = new LoggerV2(process.env.REACT_APP_APIM_SUBSCRIPTION_KEY, true);
+const logger = new LoggingV2();
+process.env.NODE_ENV === "production"
+  ? logger.addAzureLogging({
+      apiKey: process.env.REACT_APP_APIM_SUBSCRIPTION_KEY,
+    })
+  : logger.addConsoleLogging();
 
 const loggingFunctions = () => {
   const captureDurationAsync = async <TType>(
@@ -53,6 +60,7 @@ const loggingFunctions = () => {
   };
 
   return {
+    getCorrelationId,
     captureDurationAsync,
     logTimer,
     logCounter,
@@ -66,3 +74,6 @@ const loggingFunctions = () => {
 //Probably can be removed
 export const useLogging = () => loggingFunctions();
 export const loggingInstance = () => loggingFunctions();
+export const getCorrelationId = (): string => {
+  return guid();
+};
