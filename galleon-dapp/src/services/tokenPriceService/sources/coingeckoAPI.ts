@@ -28,6 +28,23 @@ const getAssetPlatform = (chainId: number) => {
   }
 };
 
+const fetchLatestTokenDataAsync = async (
+  id: string,
+  correlationId?: string
+) => {
+  const coingeckoLatestTokenDataUrl =
+    COINS_CONTROLLER +
+    `/${id}?localization=false&tickers=true&market_data=true&community_data=false&developer_data=false&sparkline=false`;
+  return fetchDataAsync(
+    "FETCH_COINGECKO_LATEST_TOKEN_DATA",
+    coingeckoLatestTokenDataUrl,
+    null,
+    correlationId
+  ).then((result) => {
+    return result.success ? result.response.data : null;
+  });
+};
+
 const fetchMaxTokenDataAsync = async (
   id: string,
   baseCurrency = "usd",
@@ -84,11 +101,30 @@ const fetchSimplePriceAsync = async (
   });
 };
 
-export interface HistoricalTokenMarketData {
-  hourlyPrices: number[];
-  marketcaps: number[];
-  volumes: number[];
+export interface LatestTokenMarketData {
+  price: number;
+  marketCap: number;
+  volume: number;
 }
+export interface HistoricalTokenMarketData {
+  hourlyPrices: number[][];
+  marketcaps: number[][];
+  volumes: number[][];
+}
+
+const getLatestTokenMarketDataAsync = async (
+  tokenId: string,
+  currencyCode: string = "usd", //TODO make enum or const
+  correlationId?: string
+): Promise<LatestTokenMarketData> => {
+  return fetchLatestTokenDataAsync(tokenId, correlationId).then((tokenData) => {
+    return {
+      price: tokenData?.market_data?.current_price?.[currencyCode] ?? 0,
+      marketCap: tokenData?.market_data?.market_cap?.[currencyCode] ?? 0,
+      volume: tokenData?.market_data?.total_volume?.[currencyCode] ?? 0,
+    };
+  });
+};
 
 const getHistoricalTokenMarketDataAsync = async (
   id: string,
@@ -110,6 +146,7 @@ const getHistoricalTokenMarketDataAsync = async (
     };
   });
 };
+
 const getCoingeckoTokenPriceAsync = async (
   address: string,
   chainId: number,
@@ -135,6 +172,7 @@ const getCoingeckoTokenPriceAsync = async (
 };
 
 export const coingeckoAPI = {
+  getLatestTokenMarketDataAsync,
   getHistoricalTokenMarketDataAsync,
   getCoingeckoTokenPriceAsync,
 };

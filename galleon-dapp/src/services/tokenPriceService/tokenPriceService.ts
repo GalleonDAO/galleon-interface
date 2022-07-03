@@ -2,6 +2,7 @@ import { Token } from "constants/tokens";
 import {
   coingeckoAPI,
   HistoricalTokenMarketData,
+  LatestTokenMarketData,
 } from "./sources/coingeckoAPI";
 import { tokensetsAPI } from "./sources/tokensetsAPI";
 import { loggingInstance } from "hooks/useLogging";
@@ -74,4 +75,23 @@ export const getValidatedMarketCapAsync = async (
     ? (marketCaps[marketCaps.length - 1] = latestMC)
     : (marketCaps[0] = latestMC);
   return marketCaps;
+};
+
+export const getLatestMarketDataAsync = async (
+  token: Token,
+  correlationId?: string
+) => {
+  return coingeckoAPI
+    .getLatestTokenMarketDataAsync(token.coingeckoId, "usd", correlationId)
+    .then(async (tokenData): Promise<LatestTokenMarketData> => {
+      if (tokenData.marketCap !== 0) {
+        return tokenData;
+      }
+      return tokensetsAPI
+        .getTokenPricesAsync(token.tokensetsId, correlationId)
+        .then((tokensetsData) => {
+          tokenData.marketCap = tokensetsData.marketCap;
+          return tokenData;
+        });
+    });
 };
