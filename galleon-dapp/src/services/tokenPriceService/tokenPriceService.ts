@@ -10,16 +10,22 @@ import { loggingInstance } from "hooks/useLogging";
 const { captureDurationAsync, logTimer, logMessage, LOG_SEVERITY } =
   loggingInstance();
 
+const DEFAULT_CURRENCY = "usd";
+
 export const getTokenMarketDataAsync = async (token: Token) => {
   const correlationId = guid();
   const timedResponse = await captureDurationAsync<HistoricalTokenMarketData>(
     async (): Promise<HistoricalTokenMarketData> => {
       coingeckoAPI
-        .getHistoricalTokenMarketData(token.coingeckoId, "usd", correlationId)
+        .getHistoricalTokenMarketDataAsync(
+          token.coingeckoId,
+          DEFAULT_CURRENCY,
+          correlationId
+        )
         .then((result) => {
           if (!result.marketcaps) {
             tokensetsAPI
-              .getTokenPrices(token.tokensetsId, correlationId)
+              .getTokenPricesAsync(token.tokensetsId, correlationId)
               .then((data) => {
                 result.marketcaps[0] = data.marketCap;
               });
@@ -27,7 +33,13 @@ export const getTokenMarketDataAsync = async (token: Token) => {
           return result;
         })
         .catch((err) => {
-          //TODO: Log Error
+          logMessage(
+            LOG_SEVERITY.ERROR,
+            err.stack,
+            `Error Fetching Token Market Data, inner error: ${err.message}`,
+            correlationId,
+            getTokenMarketDataAsync.name
+          );
         });
       logTimer("GET_TOKEN_MARKET_DATA", timedResponse.duration);
       return timedResponse.result;

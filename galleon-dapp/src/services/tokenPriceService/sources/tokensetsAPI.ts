@@ -1,5 +1,5 @@
 import { GetFundsData } from "./data/getFunds";
-import { fetchData } from "../../fetchService/fetchService";
+import { fetchDataAsync } from "../../fetchService/fetchService";
 import { GetFundHistoricalsData } from "./data/getFundHistoricals";
 
 const HOST = "https://api.tokensets.com/v2";
@@ -8,11 +8,11 @@ const FUND_HISTORICALS_CONTROLLER = `${HOST}/fund_historicals`;
 const INTERVAL = "day";
 
 //Not exported in favour of returning formatted objects
-const fetchFunds = async (
+const fetchFundsAsync = async (
   tokenId: string,
   correlationId?: string
 ): Promise<GetFundsData> => {
-  return fetchData<GetFundsData>(
+  return fetchDataAsync<GetFundsData>(
     "FETCH_TOKENSETS_FUNDS",
     `${FUNDS_CONTROLLER}/${tokenId}`,
     null,
@@ -23,11 +23,11 @@ const fetchFunds = async (
 };
 
 //Currently unused but added for future
-const fetchFundHistoricals = async (
+const fetchFundHistoricalsAsync = async (
   tokenId: string,
   correlationId: string
 ): Promise<GetFundHistoricalsData> => {
-  return fetchData<GetFundHistoricalsData>(
+  return fetchDataAsync<GetFundHistoricalsData>(
     "FETCH_TOKENSETS_FUND_HISTORICALS",
     `${FUND_HISTORICALS_CONTROLLER}/${tokenId}?interval=${INTERVAL}&currency=usd`,
     null,
@@ -38,7 +38,7 @@ const fetchFundHistoricals = async (
 };
 
 //TODO: if no corrID generate one here
-const getTokenPrices = async (
+const getTokenPricesAsync = async (
   tokenId: string,
   correlationId?: string
 ): Promise<{
@@ -46,7 +46,7 @@ const getTokenPrices = async (
   symbol: string;
   marketCap: number;
 }> => {
-  return fetchFunds(tokenId, correlationId).then((fundsData) => {
+  return fetchFundsAsync(tokenId, correlationId).then((fundsData) => {
     if (!fundsData) {
       //TODO Add Error handling
       return {
@@ -69,6 +69,6 @@ const currencyToNumber = (currency?: string): number => {
 };
 
 export const tokensetsAPI = {
-  getTokenPrices,
-  fetchFundHistoricals,
+  getTokenPricesAsync,
+  fetchFundHistoricalsAsync,
 };

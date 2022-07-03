@@ -8,7 +8,7 @@ const { captureDurationAsync, logTimer, logMessage, LOG_SEVERITY } =
  * @param correlationId optional but use where possible
  * @returns success if reponse ok, !success if response not ok
  */
-export const fetchData = async <TType>(
+export const fetchDataAsync = async <TType>(
   label: string,
   input: RequestInfo | URL,
   init?: RequestInit,
@@ -30,7 +30,7 @@ export const fetchData = async <TType>(
         errorString,
         "Server returned errors while fetching data",
         correlationId,
-        `${fetchData.name}(${label}, ${input}, ${init ?? ""}, ${
+        `${fetchDataAsync.name}(${label}, ${input}, ${init ?? ""}, ${
           correlationId ?? ""
         })`
       );
@@ -43,7 +43,7 @@ export const fetchData = async <TType>(
       err.stack,
       `Error fetching data, inner error: ${err.message}`,
       correlationId,
-      `${fetchData.name}(${label}, ${input}, ${init ?? ""}, ${
+      `${fetchDataAsync.name}(${label}, ${input}, ${init ?? ""}, ${
         correlationId ?? ""
       })`
     );

@@ -1,6 +1,6 @@
 import { ARBITRUM, OPTIMISM, POLYGON } from "constants/chains";
 import { ETH } from "constants/tokens";
-import { fetchData } from "../../fetchService/fetchService";
+import { fetchDataAsync } from "../../fetchService/fetchService";
 
 const HOST = "https://pro-api.coingecko.com/api/v3";
 const COINS_CONTROLLER = `${HOST}/coins`;
@@ -24,13 +24,13 @@ const getAssetPlatform = (chainId: number) => {
   }
 };
 
-const fetchMaxTokenData = async (
+const fetchMaxTokenDataAsync = async (
   id: string,
   baseCurrency = "usd",
   correlationId?: string
 ) => {
   const coingeckoMaxTokenDataUrl = `${COINS_CONTROLLER}/${id}/market_chart?vs_currency=${baseCurrency}&days=max&interval=daily${KEY}`;
-  return fetchData<any>(
+  return fetchDataAsync<any>(
     "FETCH_COINGECKO_MAX_TOKEN_DATA",
     coingeckoMaxTokenDataUrl,
     null,
@@ -40,13 +40,13 @@ const fetchMaxTokenData = async (
   });
 };
 
-const fetchHourlyTokenData = async (
+const fetchHourlyTokenDataAsync = async (
   id: string,
   baseCurrency = "usd",
   correlationId?: string
 ) => {
   const coingeckoMaxTokenDataUrl = `${COINS_CONTROLLER}/${id}/market_chart?vs_currency=${baseCurrency}&days=max&interval=daily${KEY}`;
-  return fetchData<any>(
+  return fetchDataAsync<any>(
     "FETCH_COINGECKO_MAX_TOKEN_DATA",
     coingeckoMaxTokenDataUrl,
     null,
@@ -56,7 +56,7 @@ const fetchHourlyTokenData = async (
   });
 };
 
-const fetchSimplePrice = async (
+const fetchSimplePriceAsync = async (
   address: string,
   chainId: number,
   baseCurrency = "usd",
@@ -70,7 +70,7 @@ const fetchSimplePrice = async (
         `/${getAssetPlatform(
           chainId
         )}/?contract_addresses=${address}&vs_currencies=${baseCurrency}${KEY}`;
-  return fetchData<any>(
+  return fetchDataAsync<any>(
     "FETCH_COINGECKO_SIMPLE_PRICE",
     reqUrl,
     null,
@@ -86,15 +86,15 @@ export interface HistoricalTokenMarketData {
   volumes: number[];
 }
 
-const getHistoricalTokenMarketData = async (
+const getHistoricalTokenMarketDataAsync = async (
   id: string,
   baseCurrency = "usd",
   correlationId?: string
 ): Promise<HistoricalTokenMarketData> => {
   //TODO: Enforce typing
   return Promise.all([
-    fetchMaxTokenData(id, baseCurrency, correlationId),
-    fetchHourlyTokenData(id, baseCurrency, correlationId),
+    fetchMaxTokenDataAsync(id, baseCurrency, correlationId),
+    fetchHourlyTokenDataAsync(id, baseCurrency, correlationId),
   ]).then((data) => {
     if (!data[0] || ![data[1]]) {
       return { hourlyPrices: [], marketcaps: [], volumes: [] };
@@ -106,28 +106,31 @@ const getHistoricalTokenMarketData = async (
     };
   });
 };
-const getCoingeckoTokenPrice = async (
+const getCoingeckoTokenPriceAsync = async (
   address: string,
   chainId: number,
   baseCurrency = "usd",
   correlationId?: string
 ): Promise<number> => {
-  return fetchSimplePrice(address, chainId, baseCurrency, correlationId).then(
-    (data) => {
-      if (data) {
-        if (address === ETH.address && !data["ethereum"]) {
-          return data["ethereum"][baseCurrency];
-        }
-        if (data[address.toLowerCase()]) {
-          return data[address.toLowerCase()][baseCurrency];
-        }
+  return fetchSimplePriceAsync(
+    address,
+    chainId,
+    baseCurrency,
+    correlationId
+  ).then((data) => {
+    if (data) {
+      if (address === ETH.address && !data["ethereum"]) {
+        return data["ethereum"][baseCurrency];
       }
-      return 0;
+      if (data[address.toLowerCase()]) {
+        return data[address.toLowerCase()][baseCurrency];
+      }
     }
-  );
+    return 0;
+  });
 };
 
 export const coingeckoAPI = {
-  getHistoricalTokenMarketData,
-  getCoingeckoTokenPrice,
+  getHistoricalTokenMarketDataAsync,
+  getCoingeckoTokenPriceAsync,
 };
