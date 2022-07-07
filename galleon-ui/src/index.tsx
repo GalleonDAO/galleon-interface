@@ -15,7 +15,6 @@ import Dashboard from "components/views/Homepage";
 import { ARBITRUM, MAINNET, OPTIMISM, POLYGON } from "constants/chains";
 
 import "./index.css";
-import { MarketDataProvider } from "providers/MarketData/MarketDataProvider";
 import { initLogger } from "utils/logger";
 import {
   KNOWN_LABELS,
@@ -70,9 +69,7 @@ const Providers = (props: { children: any }) => {
 
   return (
     <ChakraProvider theme={theme}>
-      <MarketDataProvider>
-        <GTMProvider state={gtmParams}>{props.children}</GTMProvider>
-      </MarketDataProvider>
+      <GTMProvider state={gtmParams}>{props.children}</GTMProvider>
     </ChakraProvider>
   );
 };

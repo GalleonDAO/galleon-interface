@@ -36,6 +36,7 @@ import Feature from "./Feature";
 import Doubloon from "./Doubloon";
 import Products from "./Products";
 import Contribute from "./Contribute";
+import Blog from "./Blog";
 
 const Landing = () => {
   return (
@@ -46,6 +47,7 @@ const Landing = () => {
         <Doubloon></Doubloon>
         <Products></Products>
         <Contribute></Contribute>
+        <Blog></Blog>
       </main>
     </div>
   );
