@@ -7,7 +7,7 @@ export const workstreams = [
         the success of new products, this includes making strategic decisions
         based on market and competitor analyses.<br></br>
         <br></br>
-        <span className="font-semibold text-theme-sky">
+        <span className="font-semibold text-theme-pan-sky">
           What you can expect:
         </span>
         <ul className="list-disc pl-5" role="list">
@@ -41,7 +41,7 @@ export const workstreams = [
         improve current processes and take Galleon and its products to the next
         level, while not being afraid of failure.<br></br>
         <br></br>
-        <span className="font-semibold text-theme-sky">
+        <span className="font-semibold text-theme-pan-sky">
           What you can expect:
         </span>
         <ul className="list-disc pl-5" role="list">
@@ -79,7 +79,9 @@ export const workstreams = [
         collaborative products as well as utilizing market fit to help build
         Galleon's reputation both internally and externally.<br></br>
         <br></br>
-        <span className="text-theme-sky font-semibold">It will include:</span>
+        <span className="text-theme-pan-sky font-semibold">
+          It will include:
+        </span>
         <ul className="list-disc pl-5" role="list">
           <li>
             Beneficially utilizing Galleon Investor networks and resources to
@@ -136,7 +138,7 @@ export const workstreams = [
         market conditions. As well as investing back into the DeFi ecosystem via
         its voyage: Flying Dutchman Capital.<br></br>
         <br></br>
-        <span className="font-semibold text-theme-sky">
+        <span className="font-semibold text-theme-pan-sky">
           Other tasks include:
         </span>
         <ul className="list-disc pl-5" role="list">
@@ -158,7 +160,7 @@ export const workstreams = [
         both Galleon’s in-house as well as product strategy/methodology KPIs.
         <br></br>
         <br></br>
-        <span className="font-semibold text-theme-sky">
+        <span className="font-semibold text-theme-pan-sky">
           Other tasks include:
         </span>
         <ul className="list-disc pl-5" role="list">

@@ -5,7 +5,7 @@ export const faqs = [
       <span>
         The core mission that Galleon and its contributors align themselves
         around is{" "}
-        <span className="text-theme-sky">
+        <span className="text-theme-pan-sky">
           building, growing and maintaining best-in-class decentralised,
           on-chain structured products.
         </span>{" "}
@@ -25,7 +25,7 @@ export const faqs = [
         organisation. They are independent workstreams outside of our core
         mission of creating decentralised structured products but instead
         benefit the DAO through revenue and treasury diversification,{" "}
-        <span className="text-theme-sky">
+        <span className="text-theme-pan-sky">
           direct benefits to $DBL tokenomics
         </span>{" "}
         and exploration of the space to create a thriving, long-term aligned
@@ -49,7 +49,7 @@ export const faqs = [
         <br></br>Crypto projects turn things upside down. They issue their
         tokens in the earliest stages. Individuals can choose to invest any
         large or small sum they want.{" "}
-        <span className="text-theme-sky">
+        <span className="text-theme-pan-sky">
           We at Galleon are building innovative on-chain products that anyone in
           the World can access, regardless of wealth, race, religion, gender, or
           any other attribute. All one needs to do to optimize your long-term
@@ -68,7 +68,7 @@ export const faqs = [
         <a
           href="https://www.notion.so/galleon/Governance-a9b7524b224844839f232f97e815043e"
           target={"_blank"}
-          className="text-theme-sky"
+          className="text-theme-pan-sky"
           rel="noreferrer"
         >
           {" "}

@@ -2,7 +2,7 @@ import { products } from "constants/products";
 
 const Products = () => {
   return (
-    <div className=" border-t-2 bg-theme-white  border-theme-navy lg:relative">
+    <div className=" bg-theme-white  border-t-2 border-theme-navy lg:relative">
       <div className="lg:mx-auto lg:max-w-7xl  py-24">
         <h3 className="mt-2 text-3xl  font-bold font-morion text-theme-navy text-center  sm:text-5xl">
           Structured Products
@@ -49,7 +49,7 @@ const Products = () => {
                 <a
                   href={product.link}
                   target={"_blank"}
-                  className="inline-flex min-w-[40%] justify-center text-center py-2 px-4 ml-2 rounded-2xl border-2 shadow border-theme-navy hover:border-black hover:text-theme-navy   hover:bg-theme-oldlace text-black focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-theme-navy text-sm md:text-xl focus:ring-offset-theme-black "
+                  className="inline-flex min-w-[40%] justify-center text-center py-2 px-4 ml-2 rounded-2xl border-2 shadow border-theme-navy hover:border-black hover:text-theme-navy   hover:bg-theme-champagne bg-theme-oldlace text-black focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-theme-navy text-sm md:text-xl focus:ring-offset-theme-black "
                   rel="noreferrer"
                 >
                   Buy
@@ -58,7 +58,7 @@ const Products = () => {
                   <a
                     href={product.dashboard}
                     target={"_blank"}
-                    className="inline-flex min-w-[40%] justify-center text-center py-2 px-4 ml-2 rounded-2xl border-2 shadow border-theme-navy hover:border-black hover:text-theme-navy   hover:bg-theme-oldlace text-black focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-theme-navy text-sm md:text-xl focus:ring-offset-theme-black "
+                    className="inline-flex min-w-[40%] justify-center text-center py-2 px-4 ml-2 rounded-2xl border-2 shadow border-theme-navy hover:border-black hover:text-theme-navy   hover:bg-theme-champagne bg-theme-oldlace text-black focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-theme-navy text-sm md:text-xl focus:ring-offset-theme-black "
                     rel="noreferrer"
                   >
                     Analytics

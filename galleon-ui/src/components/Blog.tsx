@@ -2,7 +2,7 @@ import { posts } from "constants/blogs";
 
 export default function Blog() {
   return (
-    <div className="relative bg-white pt-16 pb-20 px-4 sm:px-6 lg:pt-24 lg:pb-28 lg:px-8">
+    <div className="relative bg-white border-t-2 border-theme-navy pt-16 pb-20 px-4 sm:px-6 lg:pt-24 lg:pb-28 lg:px-8">
       <div className="absolute inset-0">
         <div className="bg-white h-1/3 sm:h-2/3" />
       </div>
@@ -34,12 +34,18 @@ export default function Blog() {
                     <a
                       target="_blank"
                       href={post.category.href}
-                      className="hover:underline" rel="noreferrer"
+                      className="hover:underline"
+                      rel="noreferrer"
                     >
                       {post.category.name}
                     </a>
                   </p>
-                  <a target="_blank" href={post.href} className="block mt-2" rel="noreferrer">
+                  <a
+                    target="_blank"
+                    href={post.href}
+                    className="block mt-2"
+                    rel="noreferrer"
+                  >
                     <p className="text-xl  font-morion font-semibold text-theme-navy">
                       {post.title}
                     </p>
@@ -64,7 +70,8 @@ export default function Blog() {
                       <a
                         target="_blank"
                         href={post.author.href}
-                        className="hover:underline" rel="noreferrer"
+                        className="hover:underline"
+                        rel="noreferrer"
                       >
                         {post.author.name}
                       </a>

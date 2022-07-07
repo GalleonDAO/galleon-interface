@@ -3,7 +3,7 @@ import links from "constants/externalLinks";
 
 const Doubloon = () => {
   return (
-    <div className=" bg-theme-navy  border-t-2 border-theme-champagne lg:z-10 py-24 lg:relative">
+    <div className=" bg-theme-navy border-t-2 border-theme-navy lg:z-10 py-24 lg:relative">
       <div className="lg:mx-auto lg:max-w-7xl lg:px-8 lg:grid lg:grid-cols-3 lg:gap-8">
         <div className="relative">
           <div className="mx-auto max-w-md px-4 sm:max-w-3xl sm:px-6 lg:p-4">
