@@ -21,7 +21,8 @@ const dblContract =
   "https://arbiscan.io/token/0xd3f1da62cafb7e7bc6531ff1cef6f414291f03d3";
 const blog = "https://blog.galleon.community";
 const github = "https://github.com/GalleonDAO";
-
+const instiResources =
+  "https://www.notion.so/galleon/Galleon-Institutional-f2d2d6e56d954f7c9021a409e4d495da";
 const links = {
   metaMaskLink,
   careersLink,
@@ -41,6 +42,7 @@ const links = {
   dblContract,
   blog,
   github,
+  instiResources,
 };
 
 export default links;

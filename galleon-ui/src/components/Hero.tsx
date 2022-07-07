@@ -59,7 +59,7 @@ const Hero = () => {
                         <a
                           href={links.dapp}
                           target={"_blank"}
-                          className="block w-1/2 md:w-full py-3 px-4 mb-10 rounded-2xl border-2 shadow border-theme-navy hover:border-theme-champagne hover:text-theme-oldlace  bg-theme-oldlace hover:bg-theme-navy text-theme-navy focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-theme-champagne text-sm md:text-xl focus:ring-offset-theme-black "
+                          className="block w-1/2 md:w-full py-3 px-4 mb-10 rounded-2xl border-2 shadow border-theme-navy hover:border-theme-champagne hover:text-theme-oldlace  bg-theme-oldlace hover:bg-theme-navy text-theme-navy focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-theme-champagne text-sm md:text-xl focus:ring-offset-theme-navy "
                           rel="noreferrer"
                         >
                           Enter App
@@ -69,12 +69,23 @@ const Hero = () => {
                         <a
                           href={links.discordLink}
                           target={"_blank"}
-                          className="block w-1/2 md:w-full py-3 px-4 mb-10 rounded-2xl shadow border-theme-navy border-2 hover:border-theme-champagne hover:text-theme-oldlace  bg-theme-oldlace  text-theme-navy hover:bg-theme-navy  focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-theme-champagne text-sm md:text-xl focus:ring-offset-theme-black "
+                          className="block w-1/2 md:w-full py-3 px-4 mb-10 rounded-2xl shadow border-theme-navy border-2 hover:border-theme-champagne hover:text-theme-oldlace  bg-theme-oldlace  text-theme-navy hover:bg-theme-navy  focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-theme-champagne text-sm md:text-xl focus:ring-offset-theme-navy "
                           rel="noreferrer"
                         >
                           Join the Crew
                         </a>
                       </div>
+                    </div>
+                    <div className="min-w-0">
+                      <a
+                        href={links.instiResources}
+                        target={"_blank"}
+                        className="block md:w-full px-4 pb-6     hover:text-theme-champagne   text-theme-oldlace   text-sm md:text-xl  "
+                        rel="noreferrer"
+                      >
+                        Institutional Resources
+                        <ChevronRightIcon className="2xl:w-6 2xl:h-6 w-4 h-4 -translate-y-0.5 2xl:-translate-y-1 inline-flex"></ChevronRightIcon>
+                      </a>
                     </div>
                     <div className="relative">
                       <div
@@ -102,7 +113,7 @@ const Hero = () => {
                       />
                       <span className="px-5 md:px-3 py-2 ml-3  border-theme-navy border-2 hover:border-theme-champagne 2xl:border-0 2xl:hover:border-2 text-sm 2xl:text-xl bg-theme-oldlace hover:bg-theme-navy 2xl:bg-transparent text-theme-navy 2xl:text-theme-champagne 2xl:hover:text-theme-champagne hover:text-theme-champagne  leading-5 tracking-wide rounded-2xl">
                         Cursed Pirates{" "}
-                        <ChevronRightIcon className="2xl:w-8 2xl:h-8 w-4 h-4 -translate-y-0.5 2xl:-translate-y-1 inline-flex"></ChevronRightIcon>
+                        <ChevronRightIcon className="2xl:w-6 2xl:h-6 w-4 h-4 -translate-y-0.5 2xl:-translate-y-1 inline-flex"></ChevronRightIcon>
                       </span>
                     </a>
                     <a
@@ -118,7 +129,7 @@ const Hero = () => {
                       />
                       <span className="px-5 2xl:px-3 py-2 ml-3  border-theme-navy border-2 hover:border-theme-champagne 2xl:border-0 2xl:hover:border-2 text-sm 2xl:text-xl bg-theme-oldlace hover:bg-theme-navy 2xl:bg-transparent text-theme-navy 2xl:text-theme-champagne 2xl:hover:text-theme-champagne hover:text-theme-champagne  leading-5 tracking-wide rounded-2xl">
                         Flying Dutchman Capital{" "}
-                        <ChevronRightIcon className="2xl:w-8 2xl:h-8 w-4 h-4 -translate-y-0.5 2xl:-translate-y-1  inline-flex"></ChevronRightIcon>
+                        <ChevronRightIcon className="2xl:w-6 2xl:h-6 w-4 h-4 -translate-y-0.5 2xl:-translate-y-1  inline-flex"></ChevronRightIcon>
                       </span>
                     </a>
 
