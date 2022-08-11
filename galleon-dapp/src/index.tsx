@@ -35,7 +35,7 @@ import "./index.css";
 import { initLogger } from "utils/logger";
 import indexNames from "constants/tokens";
 import Indices, { DoubloonToken, Token } from "constants/tokens";
-import DUMMY from "components/views/productpages/DUMMY";
+import DUMMY from "components/views/productpages/MERGE";
 import Lab from "components/views/Portfolios";
 import Portfolios from "components/views/Portfolios";
 import BYE from "components/views/productpages/BYE";

@@ -3,7 +3,7 @@ import { Box } from "@chakra-ui/react";
 import Page from "components/Page";
 import PageTitle from "components/PageTitle";
 import ProductsTable from "components/products/ProductsTable";
-import Indices, { DoubloonToken, Token } from "constants/tokens";
+import { DoubloonToken, Token, flagship} from "constants/tokens";
 import {
   TokenContextKeys,
   useMarketData,
@@ -101,7 +101,7 @@ const Products = () => {
     }
   };
 
-  const productsWithMarketData = Indices.filter(
+  const productsWithMarketData = flagship.filter(
     (product) => product.symbol !== DoubloonToken.symbol
   ).map((product) => {
     return appendProductPerformance({

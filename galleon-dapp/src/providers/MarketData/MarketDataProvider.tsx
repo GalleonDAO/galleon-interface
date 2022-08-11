@@ -26,7 +26,10 @@ export interface TokenContext {
   doubloon?: TokenMarketDataValues;
   ethmaxy?: TokenMarketDataValues;
   bye?: TokenMarketDataValues;
-
+  spi?: TokenMarketDataValues;
+  merge?: TokenMarketDataValues;
+  vote?: TokenMarketDataValues;
+  fees?: TokenMarketDataValues;
   selectLatestMarketData: (...args: any) => number;
 }
 
