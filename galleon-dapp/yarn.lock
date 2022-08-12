@@ -3465,10 +3465,10 @@
   resolved "https://registry.yarnpkg.com/@fontsource/inter/-/inter-4.5.11.tgz#3c45014821e8c82b247a291f1944dd2764a2d1ed"
   integrity sha512-toizzQkfXL8YJcG/f8j3EYXYGQe4OxiDEItThSigvHU+cYNDw8HPp3wLYQX745hddsnHqOGCM4exitFSBOU8+w==
 
-"@galleondao/galleon-tokenlist@^0.0.9":
-  version "0.0.9"
-  resolved "https://registry.yarnpkg.com/@galleondao/galleon-tokenlist/-/galleon-tokenlist-0.0.9.tgz#07ea6a31ba7e4cd02f6e50ebc8364eb4b14972f2"
-  integrity sha512-qSpsMXHcEjRqP7lOYdShXBiBH4bia5FW6M5lh6RbJtOpqPonYMKWWKSB+j2WM+BqfjjF1ioghenvIhqG7r9H3w==
+"@galleondao/galleon-tokenlist@^0.0.11":
+  version "0.0.11"
+  resolved "https://registry.yarnpkg.com/@galleondao/galleon-tokenlist/-/galleon-tokenlist-0.0.11.tgz#5846acce88791d71db385a780963b6f6be4be0a7"
+  integrity sha512-lkQrgvqd/D31nQHPsMh3U3RV77LtX3zRG2iqDnv3G6tbrge6mt3Jv+MswsdAi5JFow5ZeKmj4LR0/gVhokHNGQ==
 
 "@galleondao/logging-lib@^1.0.0":
   version "1.0.0"

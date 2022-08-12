@@ -11,14 +11,13 @@ import { BigNumber } from '@ethersproject/bignumber'
 import { useEthers } from '@usedapp/core'
 
 import { MAINNET, OPTIMISM, POLYGON } from 'constants/chains'
+import { EthMaxYieldIndex, BasisYieldEthIndex } from 'constants/tokens'
 import {
-  EthMaxYieldIndex,
-  BasisYieldEthIndex,
   MergeIndex,
   CryptoFeesIndex,
   veTokenIndex,
   SpartanIndex,
-} from 'constants/tokens'
+} from 'constants/portfolios'
 import { useMarketData } from 'providers/MarketData/MarketDataProvider'
 import { displayFromWei, safeDiv } from 'utils'
 import { getSetDetails } from 'utils/setjsApi'
@@ -62,9 +61,6 @@ const SetComponentsProvider = (props: { children: any }) => {
       library &&
       tokenList &&
       ethmaxy &&
-      merge &&
-      fees &&
-      vote &&
       EthMaxYieldIndex.address &&
       MergeIndex.address &&
       CryptoFeesIndex.address &&
@@ -102,7 +98,6 @@ const SetComponentsProvider = (props: { children: any }) => {
       getSetDetails(library, [MergeIndex.address], chainId).then(
         async (result) => {
           const [mergeSet] = result
-
           const mergeComponentPrices = await getPositionPrices(mergeSet)
           if (mergeComponentPrices != null) {
             const mergePositions = mergeSet.positions.map(async (position) => {
@@ -116,7 +111,7 @@ const SetComponentsProvider = (props: { children: any }) => {
                   `${VS_CURRENCY}_24h_change`
                 ],
 
-                selectLatestMarketData(merge.hourlyPrices),
+                selectLatestMarketData([]),
               )
             })
             Promise.all(mergePositions)
@@ -143,7 +138,7 @@ const SetComponentsProvider = (props: { children: any }) => {
                   `${VS_CURRENCY}_24h_change`
                 ],
 
-                selectLatestMarketData(vote.hourlyPrices),
+                selectLatestMarketData([]),
               )
             })
             Promise.all(votePositions)
@@ -170,7 +165,7 @@ const SetComponentsProvider = (props: { children: any }) => {
                   `${VS_CURRENCY}_24h_change`
                 ],
 
-                selectLatestMarketData(fees.hourlyPrices),
+                selectLatestMarketData([]),
               )
             })
             Promise.all(feesPositions)

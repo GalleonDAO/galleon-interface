@@ -2,6 +2,7 @@ import ethmaxyLogo from 'assets/ethmaxy.png'
 import doubloonLogo from 'assets/brand/dbl.png'
 import byeLogo from 'assets/bye.png'
 import { TokenContextKeys } from 'providers/MarketData/MarketDataProvider'
+import { ReactNode } from 'react'
 
 export interface Token {
   name: string
@@ -26,7 +27,7 @@ export interface Token {
     | undefined
   theme: string | undefined
   dashboard: string | undefined
-  isDangerous: boolean
+  summary: ReactNode | undefined
 }
 
 export const STETH: Token = {
@@ -45,7 +46,7 @@ export const STETH: Token = {
   fees: undefined,
   theme: undefined,
   dashboard: undefined,
-  isDangerous: false,
+  summary: '',
 }
 
 export const DAI: Token = {
@@ -64,7 +65,7 @@ export const DAI: Token = {
   fees: undefined,
   theme: undefined,
   dashboard: undefined,
-  isDangerous: false,
+  summary: '',
 }
 
 export const USDC: Token = {
@@ -83,7 +84,7 @@ export const USDC: Token = {
   fees: undefined,
   theme: undefined,
   dashboard: undefined,
-  isDangerous: false,
+  summary: '',
 }
 
 export const ETH: Token = {
@@ -102,7 +103,7 @@ export const ETH: Token = {
   fees: undefined,
   theme: undefined,
   dashboard: undefined,
-  isDangerous: false,
+  summary: '',
 }
 
 export const WETH: Token = {
@@ -121,7 +122,7 @@ export const WETH: Token = {
   fees: undefined,
   theme: undefined,
   dashboard: undefined,
-  isDangerous: false,
+  summary: '',
 }
 
 export const MATIC: Token = {
@@ -140,7 +141,7 @@ export const MATIC: Token = {
   fees: undefined,
   theme: undefined,
   dashboard: undefined,
-  isDangerous: false,
+  summary: '',
 }
 
 export const DoubloonToken: Token = {
@@ -158,7 +159,7 @@ export const DoubloonToken: Token = {
   fees: undefined,
   theme: 'Governance',
   dashboard: undefined,
-  isDangerous: false,
+  summary: '',
 }
 
 export const EthMaxYieldIndex: Token = {
@@ -179,7 +180,7 @@ export const EthMaxYieldIndex: Token = {
   },
   theme: 'Yield',
   dashboard: 'https://dune.xyz/galleondao/ETHMAXY-KPIs',
-  isDangerous: false,
+  summary: '',
 }
 
 export const BasisYieldEthIndex: Token = {
@@ -201,105 +202,13 @@ export const BasisYieldEthIndex: Token = {
   },
   theme: 'Yield',
   dashboard: undefined,
-  isDangerous: false,
-}
-
-export const MergeIndex: Token = {
-  name: 'Merge Index',
-  symbol: 'MERGE',
-  address: '0xe8543EdAF9161665F222606e622CFe52FA42d446',
-  polygonAddress: undefined,
-  optimismAddress: undefined,
-  arbitrumAddress: undefined,
-  decimals: 18,
-  url: 'dummy',
-  image:
-    'https://raw.githubusercontent.com/SetProtocol/uniswap-tokenlist/main/assets/tokens/merge.png',
-  coingeckoId: 'merge-index',
-  tokensetsId: 'merge-index',
-  tokenContextKey: 'merge',
-  fees: {
-    streamingFee: '0.95%',
-  },
-  theme: 'Thematic',
-  dashboard: undefined,
-  isDangerous: false,
-}
-
-export const SpartanIndex: Token = {
-  name: 'Spartan Index',
-  symbol: 'SPI',
-  address: undefined,
-  polygonAddress: undefined,
-  optimismAddress: '0xb83E89129Bc8090eEfe3b3805ab2a9cb12D3fa7E',
-  arbitrumAddress: undefined,
-  decimals: 18,
-  url: 'dummy',
-  image:
-    'https://raw.githubusercontent.com/SetProtocol/uniswap-tokenlist/main/assets/tokens/spi.png',
-  coingeckoId: 'spartan-index',
-  tokensetsId: 'spartan-index',
-  tokenContextKey: 'spi',
-  fees: {
-    streamingFee: '0.95%',
-  },
-  theme: 'Thematic',
-  dashboard: undefined,
-  isDangerous: false,
-}
-
-export const CryptoFeesIndex: Token = {
-  name: 'Crypto Fees Index',
-  symbol: 'FEES',
-  address: '0xb9dfc3abb15916299eE4f51724063DcB0A1741d4',
-  polygonAddress: undefined,
-  optimismAddress: undefined,
-  arbitrumAddress: undefined,
-  decimals: 18,
-  url: 'dummy',
-  image:
-    'https://raw.githubusercontent.com/SetProtocol/uniswap-tokenlist/main/assets/tokens/fees.png',
-  coingeckoId: 'crypto-fees-index',
-  tokensetsId: 'crypto-fees-index',
-  tokenContextKey: 'fees',
-  fees: {
-    streamingFee: '0.95%',
-  },
-  theme: 'Thematic',
-  dashboard: undefined,
-  isDangerous: false,
-}
-
-export const veTokenIndex: Token = {
-  name: 'veToken Index',
-  symbol: 'VOTE',
-  address: '0x4f3e7f98aa70a3b879101b23b46db1c422f85f52',
-  polygonAddress: undefined,
-  optimismAddress: undefined,
-  arbitrumAddress: undefined,
-  decimals: 18,
-  url: 'dummy',
-  image:
-    'https://raw.githubusercontent.com/SetProtocol/uniswap-tokenlist/main/assets/tokens/vote.png',
-  coingeckoId: 'vetoken-index',
-  tokensetsId: 'vetoken-index',
-  tokenContextKey: 'vote',
-  fees: {
-    streamingFee: '0.95%',
-  },
-  theme: 'Thematic',
-  dashboard: undefined,
-  isDangerous: false,
+  summary: '',
 }
 
 export const productTokensBySymbol = {
   DBL: DoubloonToken,
   ETHMAXY: EthMaxYieldIndex,
   BYE: BasisYieldEthIndex,
-  SPI: SpartanIndex,
-  FEES: CryptoFeesIndex,
-  VOTE: veTokenIndex,
-  MERGE: MergeIndex,
 }
 
 export const mainnetCurrencyTokens = [ETH, DAI, USDC, STETH]
@@ -312,17 +221,9 @@ export const arbitrumCurrencyTokens = [ETH, DAI, USDC]
 
 export const eligibleLeveragedExchangeIssuanceTokens = [EthMaxYieldIndex]
 export const eligiblePerpIssuanceTokens = [BasisYieldEthIndex]
-const indexNames = [EthMaxYieldIndex, BasisYieldEthIndex, SpartanIndex, CryptoFeesIndex, veTokenIndex, MergeIndex]
+const indexNames = [EthMaxYieldIndex, BasisYieldEthIndex]
 
 export const flagship = [EthMaxYieldIndex, BasisYieldEthIndex]
-
-
-export const portfolios = [
-  // SpartanIndex,
-  // CryptoFeesIndex,
-  // veTokenIndex,
-  MergeIndex,
-]
 
 export const indexNamesMainnet = indexNames.filter(
   (index) => index.address !== undefined,

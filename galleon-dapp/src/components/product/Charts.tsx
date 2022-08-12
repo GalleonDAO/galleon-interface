@@ -19,6 +19,8 @@ const Chart = (props: { data: Position[]; isLeveragedToken?: boolean }) => {
 };
 
 const CompositeChart = (props: { data: Position[] }) => {
+  console.log("props", props);
+  
   return (
     <PieChart width={300} height={300}>
       <Pie

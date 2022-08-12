@@ -1,12 +1,15 @@
 import { KNOWN_LABELS, KNOWN_SERVICES } from '@galleondao/logging-lib'
+import PortfoliosPage from 'components/product/PortfoliosPage'
 import ProductPage from 'components/product/ProductPage'
-import { MergeIndex } from 'constants/tokens'
+import { MergeIndex } from 'constants/portfolios'
 import { logger } from 'index'
+import { useMarketData } from 'providers/MarketData/MarketDataProvider'
 import { useSetComponents } from 'providers/SetComponents/SetComponentsProvider'
 import { useEffect, useState } from 'react'
 
 
-const DUMMY = () => {
+const MERGE = () => {
+  // const { merge } = useMarketData();
   const { mergeComponents } = useSetComponents()
   const [visited, setVisited] = useState(false)
   useEffect(() => {
@@ -25,14 +28,15 @@ const DUMMY = () => {
   }, [])
 
   return (
-    <ProductPage
+    <PortfoliosPage
       tokenData={MergeIndex}
       marketData={{}}
       components={mergeComponents}
       isLeveragedToken={false}
       hasDashboard={false}
+      isPortfolio={true}
     />
   )
 }
 
-export default DUMMY
+export default MERGE
