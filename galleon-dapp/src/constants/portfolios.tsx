@@ -33,7 +33,7 @@ export interface Token {
 export const MergeIndex: Token = {
   name: 'Merge Index',
   symbol: 'MERGE',
-  address: '0xe8543EdAF9161665F222606e622CFe52FA42d446',
+  address: '0xCf99D5465D39695162CA65bC59190fD92fa8e218',
   polygonAddress: undefined,
   optimismAddress: undefined,
   arbitrumAddress: undefined,
