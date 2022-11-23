@@ -105,23 +105,6 @@ const Hero = () => {
                         <ChevronRightIcon className="2xl:w-8 2xl:h-8 w-4 h-4 -translate-y-0.5 2xl:-translate-y-1 inline-flex"></ChevronRightIcon>
                       </span>
                     </a>
-                    <a
-                      href={links.fdc}
-                      target={"_blank"}
-                      className="flex  mt-3 items-center font-wigrum text-theme-champagne bg-transparent p-1 pr-2 sm:text-base lg:text-sm xl:text-base hover:text-theme-navy"
-                      rel="noreferrer"
-                    >
-                      <img
-                        src="/fdc-flag-transp.png"
-                        className="ml-2 w-16 h-16 bg-theme-oldlace  rounded-full  text-theme-champagne"
-                        aria-hidden="true"
-                      />
-                      <span className="px-5 2xl:px-3 py-2 ml-3  border-theme-navy border-2 hover:border-theme-champagne 2xl:border-0 2xl:hover:border-2 text-sm 2xl:text-xl bg-theme-oldlace hover:bg-theme-navy 2xl:bg-transparent text-theme-navy 2xl:text-theme-champagne 2xl:hover:text-theme-champagne hover:text-theme-champagne  leading-5 tracking-wide rounded-2xl">
-                        Flying Dutchman Capital{" "}
-                        <ChevronRightIcon className="2xl:w-8 2xl:h-8 w-4 h-4 -translate-y-0.5 2xl:-translate-y-1  inline-flex"></ChevronRightIcon>
-                      </span>
-                    </a>
-
                     <p className="mt-3 text-sm text-theme-champagne sm:mt-4"></p>
                   </div>
                 </div>

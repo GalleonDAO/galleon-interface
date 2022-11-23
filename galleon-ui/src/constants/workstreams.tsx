@@ -135,8 +135,7 @@ export const workstreams = [
       <div className="">
         Our treasury workstream aims to diversify Galleon assets in two ways:
         preservation of capital so Galleon can thrive and sustain any future
-        market conditions. As well as investing back into the DeFi ecosystem via
-        its voyage: Flying Dutchman Capital.<br></br>
+        market conditions.<br></br>
         <br></br>
         <span className="font-semibold text-theme-pan-sky">
           Other tasks include:
