@@ -39,7 +39,7 @@ const Products = () => {
                 <a
                   href={product.documentation}
                   target={"_blank"}
-                  className="inline-flex min-w-[40%] justify-center text-center py-2 px-4 rounded-2xl border-2 shadow border-theme-navy hover:border-theme-navy hover:text-theme-navy  bg-theme-navy hover:bg-theme-oldlace text-theme-oldlace focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-theme-navy text-sm md:text-xl focus:ring-offset-theme-black "
+                  className="inline-flex min-w-[40%] justify-center text-center py-2 px-4 rounded-2xl border-2 shadow border-theme-navy hover:border-theme-navy hover:text-theme-navy  bg-theme-navy hover:bg-theme-oldlace text-theme-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-theme-navy text-sm md:text-xl focus:ring-offset-theme-black "
                   rel="noreferrer"
                 >
                   Documentation

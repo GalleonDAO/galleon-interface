@@ -29,7 +29,7 @@ const Feature = () => {
                     <>
                       <dt className="text-lg">
                         <Disclosure.Button className="text-left w-full flex justify-between items-start text-theme-navy">
-                          <span className="font-medium text-xl text-theme-navy">
+                          <span className="font-medium text-xl text-theme-navy " >
                             {faq.question}
                           </span>
                           <span className="ml-6 h-7 flex items-center">
@@ -56,7 +56,7 @@ const Feature = () => {
           </div>
 
           <div className="mt-20">
-            <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
+            <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-2 ">
               {features.map((feature) => (
                 <div key={feature.name} className="pt-6">
                   <div className="flow-root bg-theme-oldlace px-6 pb-8">

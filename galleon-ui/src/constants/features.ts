@@ -8,13 +8,13 @@ import TreasuryIcon from "assets/brand/Treasury-Icon.png";
 import links from "constants/externalLinks";
 
 export const features = [
-  {
-    name: "Documentation",
-    description:
-      "Read up on how Galleon operates, our optimistic governance model and contributor guidelines.",
-    link: links.handbookLink,
-    icon: ResourcesIcon,
-  },
+  // {
+  //   name: "Documentation",
+  //   description:
+  //     "Read up on how Galleon operates, our optimistic governance model and contributor guidelines.",
+  //   link: links.handbookLink,
+  //   icon: ResourcesIcon,
+  // },
   {
     name: "Community Crew",
     description:
