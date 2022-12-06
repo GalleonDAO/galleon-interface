@@ -1,9 +1,5 @@
 import { ARBITRUM, MAINNET, OPTIMISM, POLYGON } from "constants/chains";
-import {
-  BasisYieldEthIndex,
-  DoubloonToken,
-  EthMaxYieldIndex,
-} from "constants/tokens";
+import { BasisYieldEthIndex, DoubloonToken, EthMaxYieldIndex } from "constants/tokens";
 
 const apiSupport = [MAINNET.chainId, POLYGON.chainId];
 
@@ -14,30 +10,15 @@ const alchemyApiUrl = (chainId: number) => {
 
   switch (chainId) {
     case MAINNET.chainId:
-      return (
-        process.env.REACT_APP_MAINNET_ALCHEMY_API ??
-        "https://eth-mainnet.alchemyapi.io/v2/RUwft-_xhH_-Vg8CXWomBhXIqcevPS19"
-      );
+      return process.env.REACT_APP_MAINNET_ALCHEMY_API;
     case POLYGON.chainId:
-      return (
-        process.env.REACT_APP_POLYGON_ALCHEMY_API ??
-        "https://polygon-mainnet.g.alchemy.com/v2/toY-lsDEkfOqpWApuezyXm6SDvQY05Ba"
-      );
+      return process.env.REACT_APP_POLYGON_ALCHEMY_API;
     case OPTIMISM.chainId:
-      return (
-        process.env.REACT_APP_POLYGON_ALCHEMY_API ??
-        "https://opt-mainnet.g.alchemy.com/v2/apSdigw1kX2_Fi6QjUTvAUKugMWTCdOU"
-      );
+      return process.env.REACT_APP_POLYGON_ALCHEMY_API;
     case ARBITRUM.chainId:
-      return (
-        process.env.REACT_APP_POLYGON_ALCHEMY_API ??
-        "https://arb-mainnet.g.alchemy.com/v2/SgU4gbtBjFY9zc6aLNc21ZU6cWe-E01U"
-      );
+      return process.env.REACT_APP_ARBITRUM_ALCHEMY_API;
     default:
-      return (
-        process.env.REACT_APP_MAINNET_ALCHEMY_API ??
-        "https://eth-mainnet.alchemyapi.io/v2/RUwft-_xhH_-Vg8CXWomBhXIqcevPS19"
-      );
+      return process.env.REACT_APP_MAINNET_ALCHEMY_API;
   }
 };
 
@@ -143,23 +124,10 @@ const fetchTransactionHistory = async (
   return data["result"]["transfers"];
 };
 
-export const getTransactionHistory = async (
-  address: string,
-  chainId: number
-) => {
+export const getTransactionHistory = async (address: string, chainId: number) => {
   const url = alchemyApiUrl(chainId);
   if (!url) return { from: [], to: [] };
-  const fromTransactions = await fetchTransactionHistory(
-    url,
-    address,
-    null,
-    chainId
-  );
-  const toTransactions = await fetchTransactionHistory(
-    url,
-    null,
-    address,
-    chainId
-  );
+  const fromTransactions = await fetchTransactionHistory(url, address, null, chainId);
+  const toTransactions = await fetchTransactionHistory(url, null, address, chainId);
   return { from: fromTransactions, to: toTransactions };
 };
