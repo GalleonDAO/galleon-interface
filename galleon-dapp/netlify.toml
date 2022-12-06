@@ -34,6 +34,3 @@
 		  "bing",
 		  "yandex"
 	  ]
-
-[[plugins]]
-package = "@commandbar/netlify-plugin-commandbar"

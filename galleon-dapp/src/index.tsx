@@ -16,8 +16,6 @@ import { GTMProvider } from "@elgorditosalsero/react-gtm-hook";
 import { Config, DAppProvider } from "@usedapp/core";
 
 import Dashboard from "components/views/Homepage";
-import LiquidityMining from "components/views/LiquidityMining";
-
 import ETHMAXY from "components/views/productpages/ETHMAXY";
 import DBL from "components/views/productpages/DBL";
 import Products from "components/views/Products";
@@ -28,7 +26,6 @@ import {
   POLYGON,
   SUPPORTED_CHAINS,
 } from "constants/chains";
-import LiquidityMiningProvider from "providers/LiquidityMining/LiquidityMiningProvider";
 import { MarketDataProvider } from "providers/MarketData/MarketDataProvider";
 import SetComponentsProvider from "providers/SetComponents/SetComponentsProvider";
 import "./index.css";
@@ -46,9 +43,9 @@ document.addEventListener("click", (event) => {
   // @ts-ignore
   const eventName: string = event.target.innerText;
   // @ts-ignore
-  const isButton = event.target.nodeName === "BUTTON";
+  // const isButton = event.target.nodeName === "BUTTON";
   // @ts-ignore
-  const isAnchor = event.target.nodeName === "A";
+  // const isAnchor = event.target.nodeName === "A";
   // @ts-ignore
   const isSpan = event.target.nodeName === "SPAN";
   // @ts-ignore
@@ -103,16 +100,16 @@ const config: Config = {
   readOnlyUrls: {
     [MAINNET.chainId]:
       process.env.REACT_APP_MAINNET_ALCHEMY_API ??
-      "https://eth-mainnet.alchemyapi.io/v2/RUwft-_xhH_-Vg8CXWomBhXIqcevPS19",
+      "",
     [POLYGON.chainId]:
       process.env.REACT_APP_POLYGON_ALCHEMY_API ??
-      "https://polygon-mainnet.g.alchemy.com/v2/toY-lsDEkfOqpWApuezyXm6SDvQY05Ba",
+      "",
     [OPTIMISM.chainId]:
       process.env.REACT_APP_OPTIMISM_ALCHEMY_API ??
-      "https://opt-mainnet.g.alchemy.com/v2/apSdigw1kX2_Fi6QjUTvAUKugMWTCdOU",
+      "",
     [ARBITRUM.chainId]:
       process.env.REACT_APP_ARBITRUM_ALCHEMY_API ??
-      "https://arb-mainnet.g.alchemy.com/v2/SgU4gbtBjFY9zc6aLNc21ZU6cWe-E01U",
+      "",
   },
 };
 
@@ -125,11 +122,9 @@ const Providers = (props: { children: any }) => {
     <ChakraProvider theme={theme}>
       <DAppProvider config={config}>
         <MarketDataProvider>
-          {/* <LiquidityMiningProvider> */}
           <SetComponentsProvider>
             <GTMProvider state={gtmParams}>{props.children}</GTMProvider>
           </SetComponentsProvider>
-          {/* </LiquidityMiningProvider> */}
         </MarketDataProvider>
       </DAppProvider>
     </ChakraProvider>
@@ -144,9 +139,7 @@ ReactDOM.render(
         <Routes>
           <Route path="/" element={<App />}>
             <Route index element={<Dashboard />} />
-            {/* <Route path="liquidity-mining" element={<LiquidityMining />} /> */}
             <Route path="products" element={<Products />} />
-            <Route path="portfolios" element={<Portfolios />} />
             <Route path="ethmaxy" element={<ETHMAXY />} />
             <Route path="bye" element={<BYE />} />
             <Route path="dbl" element={<DBL />} />

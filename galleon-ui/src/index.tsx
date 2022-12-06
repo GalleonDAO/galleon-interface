@@ -30,9 +30,9 @@ document.addEventListener("click", (event) => {
   // @ts-ignore
   const isAnchor = event.target.nodeName === "A";
   // @ts-ignore
-  const isSpan = event.target.nodeName === "SPAN";
+  // const isSpan = event.target.nodeName === "SPAN";
   // @ts-ignore
-  const isParagraph = event.target.nodeName === "P";
+  // const isParagraph = event.target.nodeName === "P";
 
   if (isAnchor) {
     // @ts-ignore

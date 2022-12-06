@@ -19,7 +19,6 @@ import {
   getFormattedChartPriceChanges,
   getPricesChanges,
 } from "utils/priceChange";
-import { getTokenSupply } from "utils/setjsApi";
 import xtokenLogo from "assets/xtoken.png";
 import MarketChart, { PriceChartRangeOption } from "./MarketChart";
 import ProductComponentsTable from "./ProductComponentsTable";
@@ -30,10 +29,8 @@ import { SwapWidget, Theme } from "@uniswap/widgets/dist/index.js";
 import "@uniswap/widgets/dist/fonts.css";
 import { getTokenList } from "utils/tokenlists";
 import { colors } from "styles/colors";
-import theme from "theme";
 import { useNetwork } from "hooks/useNetwork";
 import { ARBITRUM } from "constants/chains";
-import logo from "assets/brand/Products-Icon.png";
 
 const jsonRpcEndpoint =
   "https://mainnet.infura.io/v3/" + process.env.REACT_APP_INFURA_KEY ?? "";
@@ -128,7 +125,9 @@ const DoubloonPage = (props: {
               tokenData={props.tokenData}
             />
           </Box>
-          <div className=" pb-2 sm:pb-5">
+
+          {/* Token Terminal Call to Action */}
+          {/* <div className=" pb-2 sm:pb-5">
             <div className="max-w-7xl mx-auto ">
               <div className="p-2 border-2 border-theme-navy rounded-2xl bg-theme-oldlace shadow-md shadow-theme-black sm:p-3">
                 <div className="flex items-center justify-between flex-wrap">
@@ -162,7 +161,7 @@ const DoubloonPage = (props: {
                 </div>
               </div>
             </div>
-          </div>
+          </div> */}
           <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-2">
             <div className="col-span-1 bg-theme-oldlace border-2 border-theme-navy rounded-2xl shadow-md shadow-theme-black  divide-y divide-theme-navy">
               <div className="w-full items-center justify-between p-6 space-x-6">

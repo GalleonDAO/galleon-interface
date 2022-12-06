@@ -17,7 +17,13 @@ const Doubloon = () => {
                 Doubloon ($DBL)
               </h3>
               <p className="mt-6 text-xl font-medium text-theme-oldlace">
-                Galleon is a decentralized organisation with operational decisions transparently executed by the will of $DBL governance outcomes. Holders of $DBL can take part in this governance process via proposal voting, following the optimistic governance model. $DBL is either earned through contribution to the DAO via professional services or through Uniswap on the Arbitrum network.
+                Galleon is a decentralized organisation with operational
+                decisions transparently executed by the will of $DBL governance
+                outcomes. Holders of $DBL can take part in this governance
+                process via proposal voting, following the optimistic governance
+                model. $DBL is either earned through contribution to the DAO via
+                professional services or through Uniswap on the Arbitrum
+                network.
               </p>
 
               <a

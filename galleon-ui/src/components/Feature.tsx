@@ -29,7 +29,7 @@ const Feature = () => {
                     <>
                       <dt className="text-lg">
                         <Disclosure.Button className="text-left w-full flex justify-between items-start text-theme-navy">
-                          <span className="font-medium text-xl text-theme-navy " >
+                          <span className="font-medium text-xl text-theme-navy ">
                             {faq.question}
                           </span>
                           <span className="ml-6 h-7 flex items-center">

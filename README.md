@@ -32,7 +32,8 @@ This project was created with [create-react-app](https://create-react-app.dev/).
    ```bash
    yarn start
    ```
-    ```bash
+
+   ```bash
    yarn build:css
    ```
 

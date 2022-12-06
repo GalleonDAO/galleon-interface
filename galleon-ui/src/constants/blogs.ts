@@ -1,5 +1,5 @@
 export const posts = [
-    {
+  {
     title: "Naval Advisors — Ryan Sean Adams & David Hoffman Join The Fleet",
     href: "https://blog.galleon.community/naval-advisors-ryan-sean-adams-david-hoffman-join-the-fleet-3aab977c9fdc",
     category: {
@@ -19,7 +19,7 @@ export const posts = [
         "https://miro.medium.com/fit/c/176/176/1*FmOvNmeaHZwrkEAIrwbnfw.png",
     },
   },
-    {
+  {
     title: "Captain’s Log #2 — Outlook & Strategic Shift",
     href: "https://blog.galleon.community/captains-log-2-outlook-strategic-shift-26e2d092c0d7",
     category: {
@@ -58,5 +58,5 @@ export const posts = [
       imageUrl:
         "https://miro.medium.com/fit/c/176/176/1*FmOvNmeaHZwrkEAIrwbnfw.png",
     },
-  }
+  },
 ];
