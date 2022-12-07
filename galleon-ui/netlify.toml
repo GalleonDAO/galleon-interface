@@ -8,6 +8,11 @@
 [build]
   publish = "build"
 
+[build.environment]
+  YARN_CACHE_FOLDER = "/opt/buildhome/.yarn_cache"
+  YARN_VERSION = "3.3.0"
+
+
 [context.branch-deploy]
   command = "cp static/_branchdeploy_headers public/_headers && yarn build"
 
