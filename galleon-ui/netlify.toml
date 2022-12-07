@@ -8,9 +8,6 @@
 [build]
   publish = "build"
 
-[build.environment]
-   YARN_VERSION = "1.22.19"
-
 
 [context.branch-deploy]
   command = "cp static/_branchdeploy_headers public/_headers && yarn build"
