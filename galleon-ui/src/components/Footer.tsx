@@ -3,7 +3,10 @@ import links from "constants/externalLinks";
 
 const footerNavigation = {
   information: [
-    { name: "Documentation", href: "https://docs.galleon.community" },
+    // {
+    //   name: "Documentation",
+    //   href: "https://www.notion.so/galleon/Ahoy-81428ec6bb5748e7abe357859e62db76",
+    // },
     { name: "Analytics", href: "https://dune.xyz/galleondao" },
     {
       name: "Treasury",
@@ -21,10 +24,10 @@ const footerNavigation = {
       name: "ETHMAXY",
       href: links.dapp + "/ethmaxy",
     },
-    // {
-    //   name: "BYE",
-    //   href: links.dapp + "/bye",
-    // },
+    {
+      name: "BYE",
+      href: links.dapp + "/bye",
+    },
   ],
   community: [
     { name: "Discord", href: links.discordLink },

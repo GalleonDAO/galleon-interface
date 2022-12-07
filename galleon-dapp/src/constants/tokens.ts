@@ -112,7 +112,7 @@ export const WETH: Token = {
     "https://assets.coingecko.com/coins/images/2518/small/weth.png?1628852295",
   address: "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2",
   polygonAddress: "0x7ceb23fd6bc0add59e62ac25578270cff1b9f619",
-  optimismAddress: "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE",
+  optimismAddress: "0x4200000000000000000000000000000000000006",
   arbitrumAddress: undefined,
   decimals: 18,
   url: "",
@@ -146,7 +146,7 @@ export const MATIC: Token = {
 export const DoubloonToken: Token = {
   name: "Doubloon",
   symbol: "DBL",
-  address: undefined,
+  address: "0x75c7A5Ee75B63792F074c698E1E2004676E8589e",
   polygonAddress: undefined,
   optimismAddress: undefined,
   arbitrumAddress: "0xd3f1Da62CAFB7E7BC6531FF1ceF6F414291F03D3",

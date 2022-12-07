@@ -1,5 +1,4 @@
 import React from "react";
-import "dotenv/config";
 import ReactDOM from "react-dom";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 
@@ -8,14 +7,10 @@ import theme from "theme";
 
 import "@fontsource/ibm-plex-sans";
 import { ChakraProvider, ColorModeScript } from "@chakra-ui/react";
-import { GTMProvider } from "@elgorditosalsero/react-gtm-hook";
 
 import Dashboard from "components/views/Homepage";
 
-import { ARBITRUM, MAINNET, OPTIMISM, POLYGON } from "constants/chains";
-
 import "./index.css";
-import { MarketDataProvider } from "providers/MarketData/MarketDataProvider";
 import { initLogger } from "utils/logger";
 import {
   KNOWN_LABELS,
@@ -31,9 +26,9 @@ document.addEventListener("click", (event) => {
   // @ts-ignore
   const isAnchor = event.target.nodeName === "A";
   // @ts-ignore
-  const isSpan = event.target.nodeName === "SPAN";
+  // const isSpan = event.target.nodeName === "SPAN";
   // @ts-ignore
-  const isParagraph = event.target.nodeName === "P";
+  // const isParagraph = event.target.nodeName === "P";
 
   if (isAnchor) {
     // @ts-ignore
@@ -70,9 +65,7 @@ const Providers = (props: { children: any }) => {
 
   return (
     <ChakraProvider theme={theme}>
-      <MarketDataProvider>
-        <GTMProvider state={gtmParams}>{props.children}</GTMProvider>
-      </MarketDataProvider>
+      {props.children}
     </ChakraProvider>
   );
 };

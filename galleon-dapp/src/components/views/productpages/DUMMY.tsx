@@ -9,7 +9,7 @@ import { useEffect, useState } from "react";
 import { displayFromWei } from "utils";
 
 /*
-  Reference from EI Spike 
+  Reference for new EI only spot Sets
 */
 const DUMMY = () => {
   // const { dummyComponents } = useSetComponents();

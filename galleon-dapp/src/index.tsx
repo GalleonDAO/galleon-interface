@@ -14,8 +14,6 @@ import { ChakraProvider, ColorModeScript, Link } from "@chakra-ui/react";
 import { Config, DAppProvider } from "@usedapp/core";
 
 import Dashboard from "components/views/Homepage";
-import LiquidityMining from "components/views/LiquidityMining";
-
 import ETHMAXY from "components/views/productpages/ETHMAXY";
 // import DBL from "components/views/productpages/DBL";
 import Products from "components/views/Products";
@@ -26,7 +24,6 @@ import {
   POLYGON,
   SUPPORTED_CHAINS,
 } from "constants/chains";
-import LiquidityMiningProvider from "providers/LiquidityMining/LiquidityMiningProvider";
 import { MarketDataProvider } from "providers/MarketData/MarketDataProvider";
 import SetComponentsProvider from "providers/SetComponents/SetComponentsProvider";
 import "./index.css";
@@ -42,9 +39,9 @@ document.addEventListener("click", (event) => {
   // @ts-ignore
   const eventName: string = event.target.innerText;
   // @ts-ignore
-  const isButton = event.target.nodeName === "BUTTON";
+  // const isButton = event.target.nodeName === "BUTTON";
   // @ts-ignore
-  const isAnchor = event.target.nodeName === "A";
+  // const isAnchor = event.target.nodeName === "A";
   // @ts-ignore
   const isSpan = event.target.nodeName === "SPAN";
   // @ts-ignore
@@ -98,10 +95,18 @@ window.onerror = function (msg, url, line) {
 const config: Config = {
   readOnlyChainId: MAINNET.chainId,
   readOnlyUrls: {
-    [MAINNET.chainId]: process.env.REACT_APP_MAINNET_ALCHEMY_API ?? "",
-    [POLYGON.chainId]: process.env.REACT_APP_POLYGON_ALCHEMY_API ?? "",
-    [OPTIMISM.chainId]: process.env.REACT_APP_OPTIMISM_ALCHEMY_API ?? "",
-    [ARBITRUM.chainId]: process.env.REACT_APP_ARBITRUM_ALCHEMY_API ?? "",
+    [MAINNET.chainId]:
+      process.env.REACT_APP_MAINNET_ALCHEMY_API ??
+      "",
+    [POLYGON.chainId]:
+      process.env.REACT_APP_POLYGON_ALCHEMY_API ??
+      "",
+    [OPTIMISM.chainId]:
+      process.env.REACT_APP_OPTIMISM_ALCHEMY_API ??
+      "",
+    [ARBITRUM.chainId]:
+      process.env.REACT_APP_ARBITRUM_ALCHEMY_API ??
+      "",
   },
 };
 

@@ -3,10 +3,10 @@ import {
   Grid,
   GridItem,
   Image,
-  Link,
   Text,
   useBreakpointValue,
 } from "@chakra-ui/react";
+import { Link } from "react-router-dom";
 import {
   KNOWN_LABELS,
   KNOWN_SERVICES,
@@ -40,8 +40,7 @@ const TickerCell = ({ product }: TickerCellProps) => {
 
   return (
     <Link
-      href={"/" + product.url}
-      _focus={{ boxShadow: "none" }}
+      to={"/" + product.url}
       onClick={() => onProductSelected(product.symbol)}
     >
       <Grid
