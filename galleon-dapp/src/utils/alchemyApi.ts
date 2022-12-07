@@ -1,5 +1,9 @@
 import { ARBITRUM, MAINNET, OPTIMISM, POLYGON } from "constants/chains";
-import { BasisYieldEthIndex, DoubloonToken, EthMaxYieldIndex } from "constants/tokens";
+import {
+  BasisYieldEthIndex,
+  DoubloonToken,
+  EthMaxYieldIndex,
+} from "constants/tokens";
 
 const apiSupport = [MAINNET.chainId, POLYGON.chainId];
 
@@ -124,10 +128,23 @@ const fetchTransactionHistory = async (
   return data["result"]["transfers"];
 };
 
-export const getTransactionHistory = async (address: string, chainId: number) => {
+export const getTransactionHistory = async (
+  address: string,
+  chainId: number
+) => {
   const url = alchemyApiUrl(chainId);
   if (!url) return { from: [], to: [] };
-  const fromTransactions = await fetchTransactionHistory(url, address, null, chainId);
-  const toTransactions = await fetchTransactionHistory(url, null, address, chainId);
+  const fromTransactions = await fetchTransactionHistory(
+    url,
+    address,
+    null,
+    chainId
+  );
+  const toTransactions = await fetchTransactionHistory(
+    url,
+    null,
+    address,
+    chainId
+  );
   return { from: fromTransactions, to: toTransactions };
 };

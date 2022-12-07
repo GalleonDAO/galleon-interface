@@ -1,5 +1,5 @@
 import { BigNumber } from "@ethersproject/bignumber";
-import { JsonRpcProvider, Web3Provider } from "@ethersproject/providers";
+import { JsonRpcProvider } from "@ethersproject/providers";
 
 export class GasStation {
   provider: JsonRpcProvider;

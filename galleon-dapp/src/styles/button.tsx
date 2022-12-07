@@ -1,5 +1,3 @@
-import { colors } from "styles/colors";
-
 export const Button = {
   baseStyle: {
     border: "2px solid",

@@ -2,7 +2,7 @@
 
 import { ETH, EthMaxYieldIndex, STETH } from "./tokens";
 
-const ADDRESS_ZERO = "0x0000000000000000000000000000000000000000";
+// const ADDRESS_ZERO = "0x0000000000000000000000000000000000000000";
 
 enum Exchange {
   None,

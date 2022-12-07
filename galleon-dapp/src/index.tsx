@@ -10,7 +10,7 @@ import App from "App";
 import theme from "theme";
 
 import "@fontsource/ibm-plex-sans";
-import { ChakraProvider, ColorModeScript, Link } from "@chakra-ui/react";
+import { ChakraProvider, ColorModeScript } from "@chakra-ui/react";
 import { Config, DAppProvider } from "@usedapp/core";
 
 import Dashboard from "components/views/Homepage";
@@ -28,9 +28,6 @@ import { MarketDataProvider } from "providers/MarketData/MarketDataProvider";
 import SetComponentsProvider from "providers/SetComponents/SetComponentsProvider";
 import "./index.css";
 import { initLogger } from "utils/logger";
-import indexNames from "constants/tokens";
-import Indices, { DoubloonToken, Token } from "constants/tokens";
-import DUMMY from "components/views/productpages/DUMMY";
 import BYE from "components/views/productpages/BYE";
 
 export const logger = initLogger(process.env.REACT_APP_APIM_SUBSCRIPTION_KEY);
@@ -95,18 +92,10 @@ window.onerror = function (msg, url, line) {
 const config: Config = {
   readOnlyChainId: MAINNET.chainId,
   readOnlyUrls: {
-    [MAINNET.chainId]:
-      process.env.REACT_APP_MAINNET_ALCHEMY_API ??
-      "",
-    [POLYGON.chainId]:
-      process.env.REACT_APP_POLYGON_ALCHEMY_API ??
-      "",
-    [OPTIMISM.chainId]:
-      process.env.REACT_APP_OPTIMISM_ALCHEMY_API ??
-      "",
-    [ARBITRUM.chainId]:
-      process.env.REACT_APP_ARBITRUM_ALCHEMY_API ??
-      "",
+    [MAINNET.chainId]: process.env.REACT_APP_MAINNET_ALCHEMY_API ?? "",
+    [POLYGON.chainId]: process.env.REACT_APP_POLYGON_ALCHEMY_API ?? "",
+    [OPTIMISM.chainId]: process.env.REACT_APP_OPTIMISM_ALCHEMY_API ?? "",
+    [ARBITRUM.chainId]: process.env.REACT_APP_ARBITRUM_ALCHEMY_API ?? "",
   },
 };
 

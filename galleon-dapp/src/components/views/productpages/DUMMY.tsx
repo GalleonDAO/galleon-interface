@@ -1,12 +1,8 @@
 import { KNOWN_LABELS, KNOWN_SERVICES } from "@galleondao/logging-lib";
 import ProductPage from "components/product/ProductPage";
 import { DummyExchangeIssuanceSet, EthMaxYieldIndex } from "constants/tokens";
-import { useEthmaxyApy } from "hooks/useEthmaxyApy";
 import { logger } from "index";
-import { useMarketData } from "providers/MarketData/MarketDataProvider";
-import { useSetComponents } from "providers/SetComponents/SetComponentsProvider";
 import { useEffect, useState } from "react";
-import { displayFromWei } from "utils";
 
 /*
   Reference for new EI only spot Sets

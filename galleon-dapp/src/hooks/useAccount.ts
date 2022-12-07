@@ -1,4 +1,4 @@
-import { JsonRpcProvider, Web3Provider } from "@ethersproject/providers";
+import { JsonRpcProvider } from "@ethersproject/providers";
 import { useEthers } from "@usedapp/core";
 
 type Account = {

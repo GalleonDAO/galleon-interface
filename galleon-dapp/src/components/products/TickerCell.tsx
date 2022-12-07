@@ -1,5 +1,4 @@
 import {
-  Button,
   Grid,
   GridItem,
   Image,

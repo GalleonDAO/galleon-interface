@@ -2,18 +2,15 @@ import { useState } from "react";
 
 import { BigNumber } from "@ethersproject/bignumber";
 
-import { MAINNET, OPTIMISM } from "constants/chains";
 import {
   eligibleLeveragedExchangeIssuanceTokens,
   ETH,
   EthMaxYieldIndex,
   DoubloonToken,
-  // JPGIndex,
   STETH,
   Token,
   eligiblePerpIssuanceTokens,
   USDC,
-  BasisYieldEthIndex,
 } from "constants/tokens";
 import { useAccount } from "hooks/useAccount";
 import { useBalance } from "hooks/useBalance";
@@ -31,14 +28,6 @@ import {
   PerpExchangeIssuanceQuote,
 } from "utils/exchangeIssuanceQuotes";
 import { getZeroExTradeData, ZeroExData } from "utils/zeroExUtils";
-import { getNetAssetValue } from "utils/nav";
-import { SetComponent } from "providers/SetComponents/SetComponentsProvider";
-import {
-  KNOWN_SERVICES,
-  KNOWN_LABELS,
-  LOG_SEVERITY,
-} from "@galleondao/logging-lib";
-import { logger } from "index";
 
 type Result<_, E = Error> =
   | {

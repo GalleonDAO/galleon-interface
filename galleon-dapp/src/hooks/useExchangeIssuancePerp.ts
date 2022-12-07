@@ -4,12 +4,12 @@ import { Provider, TransactionResponse } from "@ethersproject/providers";
 
 import { PERP_EI_ABI } from "utils/abi/PerpEI";
 import { getPerpExchanceIssuanceContract } from "utils/contracts";
-import { displayFromGwei, displayFromWei, toWei } from "utils";
+import { displayFromWei, toWei } from "utils";
 
-interface RequiredComponentsResponse {
-  components: string[];
-  positions: BigNumber[];
-}
+// interface RequiredComponentsResponse {
+//   components: string[];
+//   positions: BigNumber[];
+// }
 
 interface RequiredPerpComponentsResponse {
   estimate: BigNumber;

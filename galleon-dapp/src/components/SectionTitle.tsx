@@ -1,7 +1,3 @@
-import { Box, Flex, Spacer, StackDivider, VStack } from "@chakra-ui/layout";
-import { Heading } from "@chakra-ui/react";
-import { colors } from "styles/colors";
-
 interface SectionTitleProps {
   title: string;
 }

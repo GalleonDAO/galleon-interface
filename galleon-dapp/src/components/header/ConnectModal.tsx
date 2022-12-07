@@ -2,7 +2,6 @@ import {
   Box,
   Flex,
   Image,
-  Link,
   Modal,
   ModalBody,
   ModalCloseButton,
@@ -46,13 +45,12 @@ export default function ConnectModal(props: {
   const handleWalletConnect = () => {
     const wc = new WalletConnectConnector({
       rpc: {
-        1:
-          process.env.REACT_APP_MAINNET_ALCHEMY_API,
+        1: process.env.REACT_APP_MAINNET_ALCHEMY_API,
       },
       chainId: 1,
     });
     activate(wc)
-      .then(() => { })
+      .then(() => {})
       .then((err) => {
         props.onClose();
         console.error(err);
@@ -61,8 +59,7 @@ export default function ConnectModal(props: {
 
   const handleCoinbaseWallet = () => {
     const coinbase = new WalletLinkConnector({
-      url:
-        process.env.REACT_APP_MAINNET_ALCHEMY_API,
+      url: process.env.REACT_APP_MAINNET_ALCHEMY_API,
       appName: "Galleon",
       supportedChainIds: [
         MAINNET.chainId,
@@ -72,7 +69,7 @@ export default function ConnectModal(props: {
       ],
     });
     activate(coinbase)
-      .then(() => { })
+      .then(() => {})
       .then((err) => {
         props.onClose();
         console.error(err);

@@ -3,8 +3,8 @@ import { useCallback, useState } from "react";
 import { BigNumber } from "@ethersproject/bignumber";
 import { useTransactions } from "@usedapp/core";
 
-import { MAINNET, OPTIMISM } from "constants/chains";
-import { ETH, MATIC, Token } from "constants/tokens";
+import { OPTIMISM } from "constants/chains";
+import { Token } from "constants/tokens";
 import { useAccount } from "hooks/useAccount";
 import { useNetwork } from "hooks/useNetwork";
 import { fromWei } from "utils";

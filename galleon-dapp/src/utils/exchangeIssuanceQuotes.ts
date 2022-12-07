@@ -15,7 +15,6 @@ import {
   MATIC,
   STETH,
   Token,
-  USDC,
   WETH,
 } from "constants/tokens";
 import {

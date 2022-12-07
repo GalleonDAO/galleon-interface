@@ -1,34 +1,20 @@
 import { useEffect, useState } from "react";
-import useDebouncedEffect from "use-debounced-effect";
 import { colors } from "styles/colors";
 
-import { InfoOutlineIcon, UpDownIcon } from "@chakra-ui/icons";
+import { UpDownIcon } from "@chakra-ui/icons";
 import {
   Box,
   Button,
   Flex,
   IconButton,
-  Spacer,
   Text,
-  Tooltip,
   useDisclosure,
 } from "@chakra-ui/react";
 import { BigNumber } from "@ethersproject/bignumber";
-import { ChainId, useEthers } from "@usedapp/core";
 
 import ConnectModal from "components/header/ConnectModal";
-import {
-  ExchangeIssuanceLeveragedMainnetAddress,
-  ExchangeIssuanceLeveragedPolygonAddress,
-  ExchangeIssuanceZeroExAddress,
-  zeroExRouterAddress,
-} from "constants/ethContractAddresses";
-import {
-  ETH,
-  EthMaxYieldIndex,
-  indexNamesArbitrum,
-  Token,
-} from "constants/tokens";
+
+import { indexNamesArbitrum, Token } from "constants/tokens";
 import { useApproval } from "hooks/useApproval";
 import { useBalance } from "hooks/useBalance";
 import { useBestTradeOption } from "hooks/useBestTradeOption";
@@ -45,10 +31,7 @@ import {
   OPTIMISM,
   POLYGON,
 } from "constants/chains";
-import {
-  ExchangeIssuanceZeroExMainnetAddress,
-  ExchangeIssuanceZeroExPolygonAddress,
-} from "constants/ethContractAddresses";
+
 import {
   indexNamesMainnet,
   indexNamesOptimism,
@@ -76,10 +59,7 @@ import {
   get0xRouterContract,
   getLeveragedExchangeIssuanceContract,
 } from "utils/contracts";
-import {
-  getFullCostsInUsd,
-  getLeveragedExchangeIssuanceQuotes,
-} from "utils/exchangeIssuanceQuotes";
+import { getFullCostsInUsd } from "utils/exchangeIssuanceQuotes";
 import { debounce } from "lodash";
 
 enum QuickTradeBestOption {

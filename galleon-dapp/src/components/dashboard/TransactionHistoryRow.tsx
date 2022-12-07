@@ -3,16 +3,12 @@ import { colors } from "styles/colors";
 import {
   Box,
   Flex,
-  Image,
   Link,
   Td,
   Text,
   Tr,
   useBreakpointValue,
 } from "@chakra-ui/react";
-
-import historyLinkIcon from "assets/history-link-icon.svg";
-import arrowAsset from "assets/ic_arrow_right_24.svg";
 
 import { TransactionHistoryItem } from "./TransactionHistoryTable";
 import { ArrowRightIcon } from "@heroicons/react/outline";

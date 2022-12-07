@@ -13,7 +13,7 @@ const NetworkSelector = () => {
   const { changeNetwork } = useNetwork();
 
   const [selected, setSelected] = useState(
-    SUPPORTED_CHAINS.find((x) => x.chainId == chainId) ?? MAINNET
+    SUPPORTED_CHAINS.find((x) => x.chainId === chainId) ?? MAINNET
   );
 
   const setNetwork = (network) => {

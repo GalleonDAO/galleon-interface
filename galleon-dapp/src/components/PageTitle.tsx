@@ -1,7 +1,3 @@
-import { StackDivider, VStack } from "@chakra-ui/layout";
-import { Heading, Text } from "@chakra-ui/react";
-import { colors } from "styles/colors";
-
 interface PageTitleProps {
   title: string;
   subtitle: string;

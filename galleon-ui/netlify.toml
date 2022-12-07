@@ -8,7 +8,6 @@
 [build]
   publish = "build"
 
-
 [context.branch-deploy]
   command = "cp static/_branchdeploy_headers public/_headers && yarn build"
 

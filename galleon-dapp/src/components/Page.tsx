@@ -1,5 +1,3 @@
-import { Flex } from "@chakra-ui/react";
-
 const Page = (props: { children?: JSX.Element }) => {
   return (
     <div className="bg-[url('./assets/ship-bg-02.png')] bg-cover bg-no-repeat bg-center pt-10 pb-10 bg-opacity-100  min-h-screen">

@@ -1,8 +1,3 @@
-import { colors } from "styles/colors";
-
-import { CheckCircleIcon, WarningIcon } from "@chakra-ui/icons";
-import { Button, Flex, Spinner, Text } from "@chakra-ui/react";
-
 export enum TransactionStateHeaderState {
   none,
   failed,

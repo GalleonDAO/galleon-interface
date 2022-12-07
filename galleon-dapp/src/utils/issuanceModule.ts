@@ -4,9 +4,6 @@ import {
   basicIssuanceModuleAddress,
   basicIssuanceModulePolygonAddress,
   basicIssuanceModuleOptimismAddress,
-  debtIssuanceModuleAddress,
-  debtIssuanceModuleV2Address,
-  debtIssuanceModuleV2PolygonAddress,
 } from "constants/ethContractAddresses";
 
 interface IssuanceModule {
