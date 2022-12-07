@@ -1,3 +1,4 @@
+import { Link as LinkChak } from "@chakra-ui/react";
 import logo from "assets/brand/Vector-Logo-1.png";
 import { Link } from "react-router-dom";
 import CoinbaseButton from "./CoinbaseButton";
@@ -28,7 +29,12 @@ const Header = () => {
                 <Link to="/portfolios">Portfolios</Link>
               </span> */}
               <span className="text-lg  text-theme-oldlace hover:text-theme-champagne">
-                <Link to="/dbl">$DBL</Link>
+                <LinkChak
+                  href="https://app.uniswap.org/#/swap?chain=arbitrum&inputCurrency=0xd3f1da62cafb7e7bc6531ff1cef6f414291f03d3&outputCurrency=0x82af49447d8a07e3bd95bd0d56f35241523fbab1"
+                  target={"_blank"}
+                >
+                  Doubloon
+                </LinkChak>
               </span>
               <span className="text-lg text-theme-oldlace hover:text-theme-champagne">
                 <CoinbaseButton></CoinbaseButton>
@@ -60,9 +66,11 @@ const Header = () => {
           </a> */}
           <a
             className="text-base  text-theme-oldlace hover:text-theme-champagne"
-            href="/dbl"
+            href="https://app.uniswap.org/#/swap?chain=arbitrum&inputCurrency=0xd3f1da62cafb7e7bc6531ff1cef6f414291f03d3&outputCurrency=0x82af49447d8a07e3bd95bd0d56f35241523fbab1"
+            target={"_blank"}
+            rel="noreferrer"
           >
-            $DBL
+            Doubloon
           </a>
           <CoinbaseButton></CoinbaseButton>
         </div>

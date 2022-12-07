@@ -1,5 +1,3 @@
-input:focus,
-textarea:focus,
-select:focus {
-  outline: none;
-}
+@tailwind base;
+@tailwind components;
+@tailwind utilities;

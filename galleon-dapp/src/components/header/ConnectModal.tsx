@@ -29,6 +29,7 @@ export default function ConnectModal(props: {
   onClose: () => void;
 }) {
   const { activateBrowserWallet, activate } = useEthers();
+  // @ts-ignore
   const isMetaMaskInstalled = window.ethereum?.isMetaMask;
   const backgroundColor = colors.themeChampagne;
   const borderColor = colors.themeNavy;
@@ -45,9 +46,7 @@ export default function ConnectModal(props: {
   const handleWalletConnect = () => {
     const wc = new WalletConnectConnector({
       rpc: {
-        1:
-          process.env.REACT_APP_MAINNET_ALCHEMY_API ||
-          "https://eth-mainnet.alchemyapi.io/v2/RUwft-_xhH_-Vg8CXWomBhXIqcevPS19",
+        1: process.env.REACT_APP_MAINNET_ALCHEMY_API,
       },
       chainId: 1,
     });
@@ -61,9 +60,7 @@ export default function ConnectModal(props: {
 
   const handleCoinbaseWallet = () => {
     const coinbase = new WalletLinkConnector({
-      url:
-        process.env.REACT_APP_MAINNET_ALCHEMY_API ||
-        "https://eth-mainnet.alchemyapi.io/v2/RUwft-_xhH_-Vg8CXWomBhXIqcevPS19",
+      url: process.env.REACT_APP_MAINNET_ALCHEMY_API,
       appName: "Galleon",
       supportedChainIds: [
         MAINNET.chainId,

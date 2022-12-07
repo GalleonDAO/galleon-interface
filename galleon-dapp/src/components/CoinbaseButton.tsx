@@ -11,48 +11,50 @@ const CoinbaseButton = () => {
   const { account } = useEthers();
   useEffect(() => {
     setCb(
-      initOnRamp({
-        widgetParameters: {
-          destinationWallets: [
-            {
-              address: account,
-              blockchains: ["ethereum"],
-              assets: ["ETH", "USDC"],
-            },
-          ],
+      initOnRamp(
+        {
+          widgetParameters: {
+            destinationWallets: [
+              {
+                address: account,
+                blockchains: ["ethereum"],
+                assets: ["ETH", "USDC"],
+              },
+            ],
+          },
+          // host: 'https://*.galleon.community',
+          appId: process.env.REACT_APP_COINBASE_APP_ID,
+          onSuccess: () => {
+            toast({
+              title: "Success!",
+              description: "Your purchased assets will arrive shortly.",
+              variant: "info",
+              duration: 5000,
+              isClosable: true,
+              containerStyle: {
+                borderRadius: "1rem",
+                border: "2px solid #040728",
+                backgroundColor: " #FEF3E2",
+                color: "#040728",
+              },
+            });
+          },
+          onExit: () => {
+            window.location.reload();
+            console.log("exit");
+          },
+          onEvent: (event) => {
+            console.log("ON RAMP EVENT: ", event);
+          },
+          experienceLoggedIn: "embedded",
+          experienceLoggedOut: "popup",
+          closeOnExit: true,
+          closeOnSuccess: true,
         },
-        // host: 'https://*.galleon.community',
-        appId: process.env.REACT_APP_COINBASE_APP_ID,
-        onReady: () => {
+        () => {
           setIsReady(true);
-        },
-        onSuccess: () => {
-          toast({
-            title: "Success!",
-            description: "Your purchased assets will arrive shortly.",
-            variant: "info",
-            duration: 5000,
-            isClosable: true,
-            containerStyle: {
-              borderRadius: "1rem",
-              border: "2px solid #040728",
-              backgroundColor: " #FEF3E2",
-              color: "#040728",
-            },
-          });
-        },
-        onExit: () => {
-          window.location.reload();
-          console.log("exit");
-        },
-        onEvent: (event) => {
-          console.log("ON RAMP EVENT: ", event);
-        },
-        experienceLoggedIn: "embedded",
-        experienceLoggedOut: "popup",
-        closeOnExit: true,
-        closeOnSuccess: true,
-      })
+        }
+      )
     );
   }, [account]);
 
