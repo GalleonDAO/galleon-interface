@@ -25,9 +25,6 @@ yarn-error.log*
 # Local Netlify folder
 .netlify
 galleon-dapp/.vscode/launch.json
-galleon-ui/.yarn/cache/*
-galleon-ui/.yarn/patches/*
-galleon-ui/.yarn/plugins/*
-galleon-ui/.yarn/sdks/*
-galleon-ui/.yarn/versions/*
 
+
+galleon-ui/.yarn/cache/*
