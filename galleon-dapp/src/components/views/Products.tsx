@@ -27,12 +27,12 @@ export const PriceChangeIntervals: [
   keyof ProductsTableProduct["performance"],
   number
 ][] = [
-    ["1D", 1],
-    ["1W", 7],
-    ["1M", 30],
-    ["3M", 90],
-    // ['1Y', 365],
-  ];
+  ["1D", 1],
+  ["1W", 7],
+  ["1M", 30],
+  ["3M", 90],
+  // ['1Y', 365],
+];
 
 type PriceChangesProps = {
   daysOfComparison: number;
@@ -118,7 +118,7 @@ const Products = () => {
           subtitle="An innovative way to get on-chain exposure to thematic, yield & leverage investment products"
         />
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-1 lg:grid-cols-1">
-          <div className="col-span-1 bg-theme-pan-champagne border-2 border-theme-navy shadow-md shadow-theme-black  rounded-xl divide-y divide-theme-black">
+          <div className="col-span-1 bg-theme-pan-champagne bg-[url('./assets/Frame.png')]  bg-no-repeat bg-cover bg-center border-2 border-theme-navy shadow-md shadow-theme-black  rounded-xl divide-y divide-theme-black">
             <div className="w-full items-center justify-between p-6 space-x-6">
               <ProductsTable products={productsWithMarketData} />
             </div>

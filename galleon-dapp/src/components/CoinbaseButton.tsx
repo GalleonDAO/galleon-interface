@@ -54,10 +54,10 @@ const CoinbaseButton = () => {
         setCb(instance);
         setIsReady(true);
         if (error) {
-          setIsReady(false)
+          setIsReady(false);
         }
       }
-    )
+    );
   }, [account]);
 
   const handleClick = () => {

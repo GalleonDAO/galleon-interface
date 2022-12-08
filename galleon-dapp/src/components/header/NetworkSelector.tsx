@@ -70,7 +70,11 @@ const NetworkSelector = () => {
                           >
                             <img
                               className="h-5 inline-flex w-auto pr-2"
-                              src={network.name === 'Ethereum' ? "https://ethereum.org/static/6b935ac0e6194247347855dc3d328e83/81d9f/eth-diamond-black.webp" : network.icon}
+                              src={
+                                network.name === "Ethereum"
+                                  ? "https://ethereum.org/static/6b935ac0e6194247347855dc3d328e83/81d9f/eth-diamond-black.webp"
+                                  : network.icon
+                              }
                               alt="network logo"
                             />
                             {network.name}

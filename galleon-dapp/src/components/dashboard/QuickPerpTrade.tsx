@@ -192,10 +192,11 @@ const QuickPerpTrade = (props: {
         case 0:
           return "Currently Unavailable";
         case 1:
-          return `Only available on ${supportedNetworks[0].alias
+          return `Only available on ${
+            supportedNetworks[0].alias
               ? supportedNetworks[0].alias
               : supportedNetworks[0].name
-            }`;
+          }`;
 
         //More than one supported network
         default:
