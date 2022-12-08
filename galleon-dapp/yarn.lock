@@ -4693,10 +4693,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@galleondao/logging-lib@npm:^1.1.1":
-  version: 1.1.1
-  resolution: "@galleondao/logging-lib@npm:1.1.1"
-  checksum: c878ffae8478a7e14c4807a94ead547b89b30910ce39491d90955e4295ff8e8a458525d784c7afba63508ac4ee1426e7279db0d3205150df3fb1003ff80d8300
+"@galleondao/logging-lib@npm:0.0.10":
+  version: 0.0.10
+  resolution: "@galleondao/logging-lib@npm:0.0.10"
+  checksum: a827be47294cfb47911487463882be1608c44d4dc84cae534b418d9b0f2c1521fe42582fa9cefd4830864d55b792784b66ab7c15f0419f47845619f6a47e1cb7
   languageName: node
   linkType: hard
 
@@ -14106,7 +14106,7 @@ __metadata:
     "@ethersproject/providers": ^5.7.2
     "@fontsource/ibm-plex-sans": ^4.5.13
     "@galleondao/galleon-tokenlist": ^0.0.12
-    "@galleondao/logging-lib": ^1.1.1
+    "@galleondao/logging-lib": 0.0.10
     "@headlessui/react": ^1.7.4
     "@heroicons/react": ^1.0.6
     "@lifi/widget": ^1.26.5

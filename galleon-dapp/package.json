@@ -18,7 +18,7 @@
     "@ethersproject/providers": "^5.7.2",
     "@fontsource/ibm-plex-sans": "^4.5.13",
     "@galleondao/galleon-tokenlist": "^0.0.12",
-    "@galleondao/logging-lib": "^1.1.1",
+    "@galleondao/logging-lib": "0.0.10",
     "@headlessui/react": "^1.7.4",
     "@heroicons/react": "^1.0.6",
     "@lifi/widget": "^1.26.5",
