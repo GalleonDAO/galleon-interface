@@ -1302,26 +1302,26 @@ select {
   border-radius: 9999px;
 }
 
-.rounded-2xl {
+.rounded-xl {
   border-radius: 1rem;
 }
 
-.rounded-t-2xl {
+.rounded-t-xl {
   border-top-left-radius: 1rem;
   border-top-right-radius: 1rem;
 }
 
-.rounded-r-2xl {
+.rounded-r-xl {
   border-top-right-radius: 1rem;
   border-bottom-right-radius: 1rem;
 }
 
-.rounded-l-2xl {
+.rounded-l-xl {
   border-top-left-radius: 1rem;
   border-bottom-left-radius: 1rem;
 }
 
-.rounded-tl-2xl {
+.rounded-tl-xl {
   border-top-left-radius: 1rem;
 }
 
@@ -1616,7 +1616,7 @@ select {
   line-height: 1.75rem;
 }
 
-.text-2xl {
+.text-xl {
   font-size: 1.5rem;
   line-height: 2rem;
 }

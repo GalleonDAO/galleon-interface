@@ -18,7 +18,7 @@ const Products = () => {
           {products.map((product) => (
             <li
               key={product.title}
-              className="relative flex flex-col rounded-2xl shadow-lg overflow-hidden p-8 border-theme-navy"
+              className="relative flex flex-col rounded-xl shadow-lg overflow-hidden p-8 border-theme-navy"
             >
               <a href={product.link} target={"_blank"} rel="noreferrer">
                 <div className="group block w-50 h-50 justify-center">
@@ -39,7 +39,7 @@ const Products = () => {
                 <a
                   href={product.documentation}
                   target={"_blank"}
-                  className="inline-flex min-w-[40%] justify-center text-center py-2 px-4 rounded-2xl border-2 shadow border-theme-navy hover:border-theme-navy hover:text-theme-navy  bg-theme-navy hover:bg-theme-oldlace text-theme-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-theme-navy text-sm md:text-xl focus:ring-offset-theme-black "
+                  className="inline-flex min-w-[40%] justify-center text-center py-2 px-4 rounded-xl border-2 shadow border-theme-navy hover:border-theme-navy hover:text-theme-navy  bg-theme-navy hover:bg-theme-oldlace text-theme-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-theme-navy text-sm md:text-xl focus:ring-offset-theme-black "
                   rel="noreferrer"
                 >
                   Documentation
@@ -49,7 +49,7 @@ const Products = () => {
                 <a
                   href={product.link}
                   target={"_blank"}
-                  className="inline-flex min-w-[40%] justify-center text-center py-2 px-4 ml-2 rounded-2xl border-2 shadow border-theme-navy hover:border-black hover:text-theme-navy   hover:bg-theme-champagne bg-theme-oldlace text-black focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-theme-navy text-sm md:text-xl focus:ring-offset-theme-black "
+                  className="inline-flex min-w-[40%] justify-center text-center py-2 px-4 ml-2 rounded-xl border-2 shadow border-theme-navy hover:border-black hover:text-theme-navy   hover:bg-theme-champagne bg-theme-oldlace text-black focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-theme-navy text-sm md:text-xl focus:ring-offset-theme-black "
                   rel="noreferrer"
                 >
                   Buy
@@ -58,7 +58,7 @@ const Products = () => {
                   <a
                     href={product.dashboard}
                     target={"_blank"}
-                    className="inline-flex min-w-[40%] justify-center text-center py-2 px-4 ml-2 rounded-2xl border-2 shadow border-theme-navy hover:border-black hover:text-theme-navy   hover:bg-theme-champagne bg-theme-oldlace text-black focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-theme-navy text-sm md:text-xl focus:ring-offset-theme-black "
+                    className="inline-flex min-w-[40%] justify-center text-center py-2 px-4 ml-2 rounded-xl border-2 shadow border-theme-navy hover:border-black hover:text-theme-navy   hover:bg-theme-champagne bg-theme-oldlace text-black focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-theme-navy text-sm md:text-xl focus:ring-offset-theme-black "
                     rel="noreferrer"
                   >
                     Analytics

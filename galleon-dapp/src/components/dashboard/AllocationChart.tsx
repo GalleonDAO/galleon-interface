@@ -70,7 +70,7 @@ const AllocationChart = (props: { positions: Position[] }) => {
   return (
     <Flex align="center" direction="column" pt="20px" px="40px">
       <div className="px-2 pb-4 border-b border-theme-navy sm:px-4">
-        <h3 className="text-2xl font-morion leading-6 font-semibold text-theme-navy">
+        <h3 className="text-xl font-morion leading-6 font-semibold text-theme-navy">
           Allocation of Galleon Products
         </h3>
         <p className="mt-1 text-md text-theme-navy">

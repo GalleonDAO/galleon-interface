@@ -77,7 +77,7 @@ const Feature = () => {
                           </a>
                         </span>
                       </div>
-                      <h3 className="mt-8 text-2xl font-bold font-morion text-theme-navy hover:text-theme-copper">
+                      <h3 className="mt-8 text-xl font-bold font-morion text-theme-navy hover:text-theme-copper">
                         <a
                           href={feature.link}
                           target={"_blank"}

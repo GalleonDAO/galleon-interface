@@ -94,7 +94,7 @@ const QuickTradeSelector = (props: {
           align="flex-start"
           direction="column"
           justify="center"
-          className="border-l-2 border-t-2 border-b-2 border-r-2 rounded-l-2xl bg-theme-pan-champagne  border-theme-navy"
+          className="border-l-2 border-t-2 border-b-2 border-r-2 rounded-l-xl bg-theme-pan-champagne  border-theme-navy"
           borderColor={borderColor}
           // borderLeftRadius={borderRadius}
           px={["16px", "30px"]}
@@ -132,7 +132,7 @@ const QuickTradeSelector = (props: {
         <Flex
           align="center"
           h={height}
-          className=" border-t-2 border-b-2 border-r-2 rounded-r-2xl border-theme-navy"
+          className=" border-t-2 border-b-2 border-r-2 rounded-r-xl border-theme-navy"
           borderColor={borderColor}
           // borderRightRadius={borderRadius}
           cursor="pointer"

@@ -18,7 +18,7 @@ const TransactionStateHeader = ({
 }: TransactionStateHeaderProps) => (
   <span
     onClick={onClick}
-    className="hidden md:inline-flex items-center px-3 py-0.5 rounded-2xl text-base font-medium bg-transparent "
+    className="hidden md:inline-flex items-center px-3 py-0.5 rounded-xl text-base font-medium bg-transparent "
   >
     <TransactionStateView isDarkMode={isDarkMode} state={state} />
   </span>

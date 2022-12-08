@@ -145,7 +145,7 @@ const ProductPage = (props: {
             />
           </Box>
           <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-2">
-            <div className="col-span-1 bg-theme-oldlace border-2 border-theme-navy rounded-2xl shadow-md shadow-theme-black  divide-y divide-theme-navy">
+            <div className="col-span-1 bg-theme-oldlace border-2 border-theme-navy rounded-xl shadow-md shadow-theme-black  divide-y divide-theme-navy">
               <div className="w-full items-center justify-between p-6 space-x-6">
                 <MarketChart
                   marketData={priceChartData}
@@ -161,7 +161,7 @@ const ProductPage = (props: {
                 />
               </div>
             </div>
-            <div className="col-span-1 bg-theme-oldlace border-2 border-theme-navy rounded-2xl shadow-md shadow-theme-black  divide-y divide-theme-navy">
+            <div className="col-span-1 bg-theme-oldlace border-2 border-theme-navy rounded-xl shadow-md shadow-theme-black  divide-y divide-theme-navy">
               <div className="w-full flex items-center justify-between p-6 space-x-6">
                 <Flex direction="column" grow={1} flexBasis="0">
                   {props.perpIssuance ? (
@@ -183,10 +183,10 @@ const ProductPage = (props: {
           {props.hasDashboard && (
             <div className="mt-10">
               <div className="max-w-7xl mx-auto ">
-                <div className="p-2 border-2 border-theme-navy rounded-2xl bg-theme-oldlace shadow-md shadow-theme-black sm:p-3">
+                <div className="p-2 border-2 border-theme-navy rounded-xl bg-theme-oldlace shadow-md shadow-theme-black sm:p-3">
                   <div className="flex items-center justify-between flex-wrap">
                     <div className="w-0 flex-1 flex items-center">
-                      <span className="flex p-2 rounded-2xl bg-theme-champagne">
+                      <span className="flex p-2 rounded-xl bg-theme-champagne">
                         <Image
                           src={duneLogo}
                           alt={"dune logo"}
@@ -208,7 +208,7 @@ const ProductPage = (props: {
                       <a
                         target={"_blank"}
                         href={props.tokenData.dashboard}
-                        className="flex items-center justify-center px-4 py-2  rounded-2xl shadow-sm font-medium text-lg text-theme-navy bg-theme-champagne border-2 border-theme-navy hover:opacity-70"
+                        className="flex items-center justify-center px-4 py-2  rounded-xl shadow-sm font-medium text-lg text-theme-navy bg-theme-champagne border-2 border-theme-navy hover:opacity-70"
                         rel="noreferrer"
                       >
                         Dashboard
@@ -221,7 +221,7 @@ const ProductPage = (props: {
           )}
 
           <div className="grid grid-cols-1 mt-10 gap-6 sm:grid-cols-1 lg:grid-cols-1">
-            <div className="col-span-1 bg-theme-oldlace border-2 border-theme-navy rounded-2xl shadow-md shadow-theme-black  divide-y divide-theme-navy">
+            <div className="col-span-1 bg-theme-oldlace border-2 border-theme-navy rounded-xl shadow-md shadow-theme-black  divide-y divide-theme-navy">
               <div className="w-full items-center justify-between p-6 space-x-1">
                 <ProductPageSectionHeader title="Stats" topMargin="20px" />
                 <ProductStats stats={stats} />

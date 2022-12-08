@@ -11,7 +11,7 @@ export default function Blog() {
           <h2 className=" text-3xl font-bold font-morion text-theme-navy  sm:text-5xl">
             Project Updates
           </h2>
-          <p className="mt-3 max-w-2xl mx-auto text-xl text-theme-navy sm:mt-4">
+          <p className="mt-3 max-w-xl mx-auto text-xl text-theme-navy sm:mt-4">
             Stay up to date with the latest announcements from Galleon.
           </p>
         </div>
@@ -19,7 +19,7 @@ export default function Blog() {
           {posts.map((post) => (
             <div
               key={post.title}
-              className="flex flex-col rounded-2xl shadow-lg overflow-hidden"
+              className="flex flex-col rounded-xl shadow-lg overflow-hidden"
             >
               <div className="flex-shrink-0">
                 <img

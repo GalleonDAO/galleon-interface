@@ -13,7 +13,7 @@ export default function Investors() {
         </p>
         <div className="grid grid-cols-1  gap-0.5 md:grid-cols-1">
           <div className="col-span-1  flex justify-center py-8 px-8 ">
-            <img className="px-24  rounded-2xl" src={insto} alt="investors" />
+            <img className="px-24  rounded-xl" src={insto} alt="investors" />
           </div>
         </div>
         <h3 className="mt-2 text-3xl  font-bold font-morion text-theme-navy text-center  sm:text-5xl">
@@ -24,7 +24,7 @@ export default function Investors() {
         </p>
         <div className="grid grid-cols-1 gap-0.5 md:grid-cols-1">
           <div className="col-span-1 flex justify-center py-8 px-8 ">
-            <img className="px-24  rounded-2xl" src={media} alt="media" />
+            <img className="px-24  rounded-xl" src={media} alt="media" />
           </div>
         </div>
       </div>
