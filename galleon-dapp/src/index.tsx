@@ -29,6 +29,7 @@ import SetComponentsProvider from "providers/SetComponents/SetComponentsProvider
 import "./index.css";
 import { initLogger } from "utils/logger";
 import BYE from "components/views/productpages/BYE";
+import Bridge from "components/views/Bridge";
 
 export const logger = initLogger(process.env.REACT_APP_APIM_SUBSCRIPTION_KEY);
 
@@ -122,6 +123,8 @@ ReactDOM.render(
             <Route path="products" element={<Products />} />
             <Route path="ethmaxy" element={<ETHMAXY />} />
             <Route path="bye" element={<BYE />} />
+            <Route path="swap/*" element={<Bridge />} />
+            <Route path="*" element={<Dashboard />} />
           </Route>
         </Routes>
       </Providers>

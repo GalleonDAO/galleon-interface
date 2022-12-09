@@ -23,7 +23,10 @@ const Header = () => {
                 <Link to="/">Dashboard</Link>
               </span>
               <span className="text-lg  text-theme-oldlace hover:text-theme-champagne">
-                <Link to="/products">Flagship Products</Link>
+                <Link to="/products">Products</Link>
+              </span>
+              <span className="text-lg  text-theme-oldlace hover:text-theme-champagne">
+                <Link to="/swap">Bridge</Link>
               </span>
               {/* <span className="text-lg  text-theme-oldlace hover:text-theme-champagne">
                 <Link to="/portfolios">Portfolios</Link>
@@ -56,7 +59,13 @@ const Header = () => {
             className="text-base  text-theme-oldlace hover:text-theme-champagne"
             href="/products"
           >
-            Flagship Products
+            Products
+          </a>
+          <a
+            className="text-base  text-theme-oldlace hover:text-theme-champagne"
+            href="/bridge"
+          >
+            Bridge
           </a>
           {/* <a
             className="text-base  text-theme-oldlace hover:text-theme-champagne"
