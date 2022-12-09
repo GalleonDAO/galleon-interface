@@ -111,7 +111,7 @@ const ConnectButton = () => {
       <div>
         <button
           onClick={handleConnectWallet}
-          className="ml-4 inline-block bg-theme-oldlace shadow-sm shadow-theme-black text-theme-navy  py-1.5 px-4 border-2 border-theme-champagne rounded-2xl text-base font-medium  hover:bg-theme-champagne"
+          className="ml-4 inline-block bg-theme-oldlace shadow-sm shadow-theme-black text-theme-navy  py-1.5 px-4 border-2 border-theme-champagne rounded-xl text-base font-medium  hover:bg-theme-champagne"
         >
           Connect
         </button>
@@ -125,7 +125,7 @@ const ConnectButton = () => {
     return (
       <span>
         {pendingTxState === PendingTransactionState.none ? (
-          <span className="hidden md:inline-flex items-center px-3 py-0.5 rounded-2xl text-base font-medium bg-transparent ">
+          <span className="hidden md:inline-flex items-center px-3 py-0.5 rounded-xl text-base font-medium bg-transparent ">
             <svg
               className="-ml-1 mr-1.5 h-2 w-2 text-theme-oldlace animate animate-pulse"
               fill="currentColor"
@@ -145,7 +145,7 @@ const ConnectButton = () => {
 
         <button
           onClick={handleDisconnect}
-          className="ml-4 inline-block bg-theme-navy shadow-sm shadow-theme-black text-theme-oldlace py-1.5 px-4  rounded-2xl text-base  border-theme-oldlace border-2 hover:bg-opacity-75"
+          className="ml-4 inline-block bg-theme-navy shadow-sm shadow-theme-black text-theme-oldlace py-1.5 px-4  rounded-xl text-base  border-theme-oldlace border-2 hover:bg-opacity-75"
         >
           Disconnect
         </button>
@@ -159,7 +159,7 @@ const ConnectButton = () => {
       <div>
         <button
           onClick={onWrongNetworkButtonClicked}
-          className="ml-4 inline-block bg-theme-oldlace shadow-sm shadow-theme-black text-theme-navy  py-1.5 px-4 border-2 border-theme-champagne rounded-2xl text-base font-medium  hover:bg-theme-champagne"
+          className="ml-4 inline-block bg-theme-oldlace shadow-sm shadow-theme-black text-theme-navy  py-1.5 px-4 border-2 border-theme-champagne rounded-xl text-base font-medium  hover:bg-theme-champagne"
         >
           Wrong Network
         </button>

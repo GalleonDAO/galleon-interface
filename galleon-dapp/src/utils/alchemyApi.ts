@@ -26,13 +26,11 @@ const alchemyApiUrl = (chainId: number) => {
   }
 };
 
-const mainnetTokens: string[] = [EthMaxYieldIndex.address!];
-
-const polygonTokens: string[] = [];
-
-const optimismTokens: string[] = [BasisYieldEthIndex.optimismAddress!];
-
-const arbitrumTokens: string[] = [DoubloonToken.arbitrumAddress!];
+const contractAddresses: string[] = [
+  EthMaxYieldIndex.address!,
+  DoubloonToken.arbitrumAddress!,
+  BasisYieldEthIndex.optimismAddress!,
+];
 
 interface AlchemyApiParams {
   fromBlock: string;
@@ -63,31 +61,14 @@ export interface AlchemyApiTransaction {
   value: number;
 }
 
-const getNetworkTokens = (chainId: number) => {
-  switch (chainId) {
-    case MAINNET.chainId:
-      return mainnetTokens;
-    case POLYGON.chainId:
-      return polygonTokens;
-    case OPTIMISM.chainId:
-      return optimismTokens;
-    case ARBITRUM.chainId:
-      return arbitrumTokens;
-    default:
-      return mainnetTokens;
-  }
-};
-
 const fetchTransactionHistory = async (
   alchemyApiUrl: string,
   fromAddress: string | null = null,
-  toAddress: string | null = null,
-  chainId: number
+  toAddress: string | null = null
 ): Promise<AlchemyApiTransaction[]> => {
   if (alchemyApiUrl === undefined) return [];
 
-  const contractAddresses: string[] = getNetworkTokens(chainId);
-
+  console.log("fetchTransactionHistory", alchemyApiUrl, fromAddress, toAddress);
   const params: AlchemyApiParams[] = [
     {
       fromBlock: "0xB82D69",
@@ -121,10 +102,7 @@ const fetchTransactionHistory = async (
   };
 
   const resp = await fetch(alchemyApiUrl, requestOptions);
-
   const data = await resp.json();
-
-  console.log(data);
   return data["result"]["transfers"];
 };
 
@@ -134,17 +112,7 @@ export const getTransactionHistory = async (
 ) => {
   const url = alchemyApiUrl(chainId);
   if (!url) return { from: [], to: [] };
-  const fromTransactions = await fetchTransactionHistory(
-    url,
-    address,
-    null,
-    chainId
-  );
-  const toTransactions = await fetchTransactionHistory(
-    url,
-    null,
-    address,
-    chainId
-  );
+  const fromTransactions = await fetchTransactionHistory(url, address, null);
+  const toTransactions = await fetchTransactionHistory(url, null, address);
   return { from: fromTransactions, to: toTransactions };
 };

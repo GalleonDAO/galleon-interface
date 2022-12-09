@@ -11,7 +11,7 @@ const Doubloon = () => {
           </div>
         </div>
         <div className="mt-12 lg:m-0 lg:col-span-2 lg:pl-8">
-          <div className="mx-auto max-w-md px-4 sm:max-w-2xl sm:px-6 lg:px-0 lg:pb-10 lg:pt-14 lg:max-w-none">
+          <div className="mx-auto max-w-md px-4 sm:max-w-xl sm:px-6 lg:px-0 lg:pb-10 lg:pt-14 lg:max-w-none">
             <div>
               <h3 className="mt-2 text-4xl md:text-5xl font-bold font-morion text-theme-oldlace  sm:text-5xl">
                 Doubloon ($DBL)
@@ -29,7 +29,7 @@ const Doubloon = () => {
               <a
                 href={links.dblContract}
                 target={"_blank"}
-                className="block text-center m-auto mt-10 py-4 md:w-1/2 w-full text-xl px-4 mb-10 rounded-2xl border-2 shadow border-theme-navy hover:border-theme-oldlace hover:text-theme-oldlace  bg-theme-oldlace hover:bg-theme-navy text-theme-navy focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-theme-sky focus:ring-offset-theme-black"
+                className="block text-center m-auto mt-10 py-4 md:w-1/2 w-full text-xl px-4 mb-10 rounded-xl border-2 shadow border-theme-navy hover:border-theme-oldlace hover:text-theme-oldlace  bg-theme-oldlace hover:bg-theme-navy text-theme-navy focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-theme-sky focus:ring-offset-theme-black"
                 rel="noreferrer"
               >
                 Doubloon ($DBL) Contract

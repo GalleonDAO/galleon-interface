@@ -56,7 +56,7 @@ const BYE = () => {
           }}
           type="button"
           className={
-            "bg-theme-pan-champagne relative  items-center  py-0.5 px-2 ml-1 mt-2  rounded-2xl border border-theme-navy  text-sm  text-theme-navy hover:bg-white focus:z-10 "
+            "bg-theme-pan-champagne relative  items-center  py-0.5 px-2 ml-1 mt-2  rounded-xl border border-theme-navy  text-sm  text-theme-navy hover:bg-white focus:z-10 "
           }
         >
           {perpIssuance ? "Toggle DEX Swap" : "Toggle Flash Issuance"}

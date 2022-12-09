@@ -25,7 +25,7 @@ const Navigation = (props: { children?: JSX.Element }) => {
                 <img className="h-6 w-auto sm:h-6" src={galleon} alt="" />
 
                 {/* <div className="-mr-2 flex items-center md:hidden">
-                  <Popover.Button className="bg-theme-oldlace rounded-2xl p-2 inline-flex items-center justify-center text-gray-400 hover:bg-gray-800 focus:outline-none focus:ring-2 focus-ring-inset focus:ring-white">
+                  <Popover.Button className="bg-theme-oldlace rounded-xl p-2 inline-flex items-center justify-center text-gray-400 hover:bg-gray-800 focus:outline-none focus:ring-2 focus-ring-inset focus:ring-white">
                     <span className="sr-only">Open main menu</span>
                     <MenuIcon className="h-6 w-6" aria-hidden="true" />
                   </Popover.Button>
@@ -46,13 +46,13 @@ const Navigation = (props: { children?: JSX.Element }) => {
             {/* <div className="hidden md:flex md:items-center md:space-x-6">
               <a
                 href="#"
-                className="text-base font-semibold text-white border-theme-sky border-2 py-2 px-4 rounded-2xl hover:text-gray-300"
+                className="text-base font-semibold text-white border-theme-sky border-2 py-2 px-4 rounded-xl hover:text-gray-300"
               >
                 Join the Crew
               </a>
               <a
                 href="#"
-                className="inline-flex items-center px-4 py-2 border border-transparent text-base font-semibold rounded-2xl text-white bg-theme-sky hover:bg-gray-700"
+                className="inline-flex items-center px-4 py-2 border border-transparent text-base font-semibold rounded-xl text-white bg-theme-sky hover:bg-gray-700"
               >
                 App
               </a>
@@ -83,7 +83,7 @@ const Navigation = (props: { children?: JSX.Element }) => {
                   />
                 </div>
                 <div className="-mr-2">
-                  <Popover.Button className="bg-theme-oldlace rounded-2xl p-2 inline-flex items-center justify-center text-gray-400 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-cyan-600">
+                  <Popover.Button className="bg-theme-oldlace rounded-xl p-2 inline-flex items-center justify-center text-gray-400 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-cyan-600">
                     <span className="sr-only">Close menu</span>
                     <XIcon className="h-6 w-6" aria-hidden="true" />
                   </Popover.Button>
@@ -95,7 +95,7 @@ const Navigation = (props: { children?: JSX.Element }) => {
                     <a
                       key={item.name}
                       href={item.href}
-                      className="block px-3 py-2 rounded-2xl text-base font-medium text-gray-900 hover:bg-gray-50"
+                      className="block px-3 py-2 rounded-xl text-base font-medium text-gray-900 hover:bg-gray-50"
                     >
                       {item.name}
                     </a>
@@ -104,7 +104,7 @@ const Navigation = (props: { children?: JSX.Element }) => {
                 <div className="mt-6 px-5">
                   <a
                     href="#"
-                    className="block text-center w-full py-3 px-4 rounded-2xl shadow bg-gradient-to-r from-teal-500 to-cyan-600 text-white font-medium hover:from-teal-600 hover:to-cyan-700"
+                    className="block text-center w-full py-3 px-4 rounded-xl shadow bg-gradient-to-r from-teal-500 to-cyan-600 text-white font-medium hover:from-teal-600 hover:to-cyan-700"
                   >
                   Join the Crew
                   </a>

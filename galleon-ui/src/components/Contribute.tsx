@@ -36,7 +36,7 @@ const Contribute = () => {
 
           <figure>
             <img
-              className="w-full border-2 border-theme-navy rounded-2xl "
+              className="w-full border-2 border-theme-navy rounded-xl "
               src={crewBackground}
               alt="background"
               width={1310}
@@ -77,7 +77,7 @@ const Contribute = () => {
             <a
               href={links.contribute}
               target={"_blank"}
-              className="block w-1/2 py-3 m-auto px-4 mb-10 rounded-2xl shadow border-2 border-theme-navy hover:border-theme-navy hover:text-theme-champagne  bg-theme-champagne  text-theme-navy hover:bg-theme-navy text-sm md:text-xl  no-underline "
+              className="block w-1/2 py-3 m-auto px-4 mb-10 rounded-xl shadow border-2 border-theme-navy hover:border-theme-navy hover:text-theme-champagne  bg-theme-champagne  text-theme-navy hover:bg-theme-navy text-sm md:text-xl  no-underline "
               rel="noreferrer"
             >
               Join the Crew

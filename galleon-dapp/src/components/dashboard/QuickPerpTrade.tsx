@@ -293,7 +293,7 @@ const QuickPerpTrade = (props: {
       <>{props.children}</>
       <Flex
         direction="column"
-        className="border-l rounded-t-2xl border-theme-navy "
+        className="border-l rounded-t-xl border-theme-navy "
         mt="20px"
         pb="20px"
       >
@@ -307,7 +307,7 @@ const QuickPerpTrade = (props: {
               (isIssuance
                 ? "bg-theme-champagne font-semibold "
                 : "bg-theme-pan-champagne ") +
-              " relative inline-flex items-center px-4 py-2 rounded-tl-2xl border-r border-t border-b  border-theme-navy  text-sm  text-theme-navy hover:bg-white focus:z-10 "
+              " relative inline-flex items-center px-4 py-2 rounded-tl-xl border-r border-t border-b  border-theme-navy  text-sm  text-theme-navy hover:bg-white focus:z-10 "
             }
           >
             Flash Issue
@@ -322,7 +322,7 @@ const QuickPerpTrade = (props: {
               (!isIssuance
                 ? "bg-theme-champagne font-semibold "
                 : "bg-theme-pan-champagne ") +
-              " -ml-px relative inline-flex items-center px-4 py-2 border-t border-r rounded-r-2xl border-b border-l border-theme-navy text-sm  text-theme-navy hover:bg-white focus:z-10 focus:outline-none focus:ring-1 "
+              " -ml-px relative inline-flex items-center px-4 py-2 border-t border-r rounded-r-xl border-b border-l border-theme-navy text-sm  text-theme-navy hover:bg-white focus:z-10 focus:outline-none focus:ring-1 "
             }
           >
             Flash Redeem
