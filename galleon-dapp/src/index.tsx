@@ -113,7 +113,7 @@ const Providers = (props: { children: any }) => {
 };
 
 ReactDOM.render(
-  <React.StrictMode>
+  <>
     <BrowserRouter>
       <Providers>
         <ColorModeScript initialColorMode={theme.config.initialColorMode} />
@@ -129,6 +129,6 @@ ReactDOM.render(
         </Routes>
       </Providers>
     </BrowserRouter>
-  </React.StrictMode>,
+  </>,
   document.getElementById("root")
 );
