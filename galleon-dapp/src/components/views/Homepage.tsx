@@ -190,7 +190,7 @@ const Dashboard = () => {
 
                           <span className="mr-6 h-7 text-theme-navy flex items-center">
                             <span className="mr-5">
-                              <span className="inline-flex items-center px-3 py-1 rounded-xl text-sm font-semibold text-theme-navy border-2 border-theme-navy">
+                              <span className="inline-flex items-center px-3 py-1 rounded-xl text-sm font-semibold text-theme-navy ">
                                 {renderCsvDownloadButton}
                               </span>
                             </span>
