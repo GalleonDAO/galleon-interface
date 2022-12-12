@@ -106,15 +106,10 @@ const Bridge = () => {
           },
         ],
       },
-      // set source chain to Polygon
       fromChain: 1,
-      // set destination chain to Optimism
       toChain: 10,
-      // set source token to USDC (Ethereum)
       fromToken: "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48",
-      // set source token to USDC (Optimism)
       toToken: "0x7f5c764cbc14f9669b88837ca1490cca17c31607",
-      // set source token amount to 10 USDC (Polygon)
       fromAmount: 1000,
       variant: "expandable",
       appearance: "light",
@@ -126,7 +121,7 @@ const Bridge = () => {
     <Page>
       <>
         <PageTitle
-          title="Galleon Bridge Utility"
+          title="Bridge Utility"
           subtitle="Our products are available on multiple chains. We partnered with LI.FI to give you the easiest bridging experience in moving your assets to access them."
         />
         <div className="mt-6">
