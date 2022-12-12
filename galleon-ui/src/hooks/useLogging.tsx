@@ -45,7 +45,7 @@ export const useLogging = () => {
       environment: process.env.NODE_ENV,
       timestamp: new Date().toISOString(),
       severity: severity,
-      functionName: functionName ? functionName : '',
+      functionName: functionName ? functionName : 'unavailable',
       exception: exception,
       message: message,
       correlationId: correlationId, //TODO: generate new GUID on null
