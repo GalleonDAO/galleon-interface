@@ -63,11 +63,7 @@ const Providers = (props: { children: any }) => {
     id: process.env.REACT_APP_GOOGLE_TAG_MANAGER_CONTAINER_ID ?? "",
   };
 
-  return (
-    <ChakraProvider theme={theme}>
-      {props.children}
-    </ChakraProvider>
-  );
+  return <ChakraProvider theme={theme}>{props.children}</ChakraProvider>;
 };
 
 ReactDOM.render(

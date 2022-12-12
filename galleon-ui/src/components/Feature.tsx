@@ -10,7 +10,7 @@ const Feature = () => {
   return (
     <div>
       {/* Feature section with grid */}
-      <div className="relative bg-theme-oldlace border-t-2 border-theme-navy py-16 sm:py-24 lg:py-32">
+      <div className="relative bg-[url('./assets/Frame.png')]  bg-auto bg-center bg-theme-oldlace border-t-2 border-theme-navy py-16 sm:py-24 lg:py-32">
         <div className="mx-auto max-w-md px-4 text-center sm:max-w-3xl sm:px-6 lg:px-8 lg:max-w-7xl">
           <h3 className="mt-2 text-3xl font-bold font-morion text-theme-navy  sm:text-5xl">
             About our decentralised organisation
@@ -24,7 +24,7 @@ const Feature = () => {
           <div className="max-w-3xl mx-auto divide-y-2 pb-4 border-theme-navy border-l-2 pl-5  divide-theme-navy">
             <dl className="mt-6 space-y-6 divide-y divide-theme-navy">
               {faqs.map((faq) => (
-                <Disclosure as="div" key={faq.question} className="pt-6">
+                <Disclosure as="div" key={faq.question} className="pt-6 ">
                   {({ open }) => (
                     <>
                       <dt className="text-lg">
@@ -58,9 +58,12 @@ const Feature = () => {
           <div className="mt-20">
             <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-2 ">
               {features.map((feature) => (
-                <div key={feature.name} className="pt-6">
-                  <div className="flow-root bg-theme-oldlace px-6 pb-8">
-                    <div className="-mt-6">
+                <div
+                  key={feature.name}
+                  className=" border border-theme-navy shadow-lg bg-theme-oldlace rounded-xl"
+                >
+                  <div className="flow-root pt-6  px-6 pb-8">
+                    <div className="">
                       <div>
                         <span className="inline-flex items-center justify-center">
                           <a

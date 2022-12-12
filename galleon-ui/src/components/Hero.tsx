@@ -59,7 +59,7 @@ const Hero = () => {
                         <a
                           href={links.dapp}
                           target={"_blank"}
-                          className="block w-1/2 md:w-full py-3 px-4 mb-10 rounded-xl border-2 shadow border-theme-navy hover:border-theme-champagne hover:text-theme-oldlace  bg-theme-oldlace hover:bg-theme-navy text-theme-navy focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-theme-champagne text-sm md:text-xl focus:ring-offset-theme-black "
+                          className="block w-1/2 md:w-full py-3 px-4 mb-10 rounded-xl border shadow border-theme-navy hover:border-theme-champagne hover:text-theme-oldlace  bg-theme-oldlace hover:bg-theme-navy text-theme-navy focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-theme-champagne text-sm md:text-xl focus:ring-offset-theme-black "
                           rel="noreferrer"
                         >
                           Enter App
@@ -69,7 +69,7 @@ const Hero = () => {
                         <a
                           href={links.discordLink}
                           target={"_blank"}
-                          className="block w-1/2 md:w-full py-3 px-4 mb-10 rounded-xl shadow border-theme-navy border-2 hover:border-theme-champagne hover:text-theme-oldlace  bg-theme-oldlace  text-theme-navy hover:bg-theme-navy  focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-theme-champagne text-sm md:text-xl focus:ring-offset-theme-black "
+                          className="block w-1/2 md:w-full py-3 px-4 mb-10 rounded-xl shadow border-theme-navy border hover:border-theme-champagne hover:text-theme-oldlace  bg-theme-oldlace  text-theme-navy hover:bg-theme-navy  focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-theme-champagne text-sm md:text-xl focus:ring-offset-theme-black "
                           rel="noreferrer"
                         >
                           Join the Crew
@@ -92,15 +92,15 @@ const Hero = () => {
                     <a
                       href={links.cursedPirates}
                       target={"_blank"}
-                      className="flex  items-center  text-theme-champagne bg-transparent p-1 pr-2 sm:text-base lg:text-sm xl:text-base hover:text-theme-navy"
+                      className="flex  items-center    text-theme-champagne bg-transparent p-1 pr-2 sm:text-base lg:text-sm xl:text-base hover:text-theme-navy"
                       rel="noreferrer"
                     >
                       <img
                         src="/jollyroger-transp.png"
-                        className="ml-2 w-16 h-16 bg-theme-oldlace rounded-full text-theme-champagne"
+                        className="ml-2 w-16 h-16 bg-theme-oldlace rounded-xl  border-theme-navy text-theme-champagne"
                         aria-hidden="true"
                       />
-                      <span className="px-5 md:px-3 py-2 ml-3  border-theme-navy border-2 hover:border-theme-champagne 2xl:border-0 2xl:hover:border-2 text-sm 2xl:text-xl bg-theme-oldlace hover:bg-theme-navy 2xl:bg-transparent text-theme-navy 2xl:text-theme-champagne 2xl:hover:text-theme-champagne hover:text-theme-champagne  leading-5 tracking-wide rounded-xl">
+                      <span className="px-5 md:px-3 py-2 ml-3  border-theme-navy border hover:border-theme-champagne 2xl:border-0 2xl:hover:border text-sm 2xl:text-xl bg-theme-oldlace hover:bg-theme-navy 2xl:bg-transparent text-theme-navy 2xl:text-theme-champagne 2xl:hover:text-theme-champagne hover:text-theme-champagne  leading-5 tracking-wide rounded-xl">
                         Cursed Pirates{" "}
                         <ChevronRightIcon className="2xl:w-8 2xl:h-8 w-4 h-4 -translate-y-0.5 2xl:-translate-y-1 inline-flex"></ChevronRightIcon>
                       </span>

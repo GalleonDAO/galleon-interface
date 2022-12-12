@@ -9,7 +9,7 @@ import { workstreams } from "constants/workstreams";
 
 const Contribute = () => {
   return (
-    <div className="relative bg-theme-oldlace border-t-2 border-theme-navy py-16 sm:py-24 lg:py-32">
+    <div className="relative bg-theme-oldlace bg-[url('./assets/Frame.png')]  bg-auto bg-center border-t-2 border-theme-navy py-16 sm:py-24 lg:py-32">
       <div className="mx-auto max-w-md px-4 text-center  sm:max-w-3xl sm:px-6 lg:px-8 lg:max-w-7xl">
         <span className="inline-flex items-center text-center justify-center">
           <img
@@ -26,7 +26,7 @@ const Contribute = () => {
         </p>
 
         <div className="mt-6 text-left prose prose-indigo prose-xl text-theme-navy mx-auto">
-          <p className="mt-3 text-lg text-theme-navy">
+          <p className="mt-3  text-lg text-theme-navy">
             As a contributor, you help to build, grow and improve Galleon.
             You’ll take part in the DAOs governance, raising Galleon Improvement
             Proposals (GIPs) or providing feedback via the Brethren Court on
@@ -34,9 +34,9 @@ const Contribute = () => {
             fellow pirate crewmates and steer Galleon into prosperous waters.
           </p>
 
-          <figure>
+          <figure className="border border-theme-navy rounded-xl">
             <img
-              className="w-full border-2 border-theme-navy rounded-xl "
+              className="w-full  rounded-xl "
               src={crewBackground}
               alt="background"
               width={1310}
@@ -77,7 +77,7 @@ const Contribute = () => {
             <a
               href={links.contribute}
               target={"_blank"}
-              className="block w-1/2 py-3 m-auto px-4 mb-10 rounded-xl shadow border-2 border-theme-navy hover:border-theme-navy hover:text-theme-champagne  bg-theme-champagne  text-theme-navy hover:bg-theme-navy text-sm md:text-xl  no-underline "
+              className="block w-1/2 py-3 m-auto px-4 mb-10 rounded-xl shadow border border-theme-navy hover:border-theme-navy hover:text-theme-champagne  bg-theme-champagne  text-theme-navy hover:bg-theme-navy text-sm md:text-xl  no-underline "
               rel="noreferrer"
             >
               Join the Crew

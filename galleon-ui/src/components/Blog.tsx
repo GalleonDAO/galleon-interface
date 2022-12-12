@@ -19,7 +19,7 @@ export default function Blog() {
           {posts.map((post) => (
             <div
               key={post.title}
-              className="flex flex-col rounded-xl shadow-lg overflow-hidden"
+              className="flex flex-col rounded-xl shadow-lg border border-theme-navy overflow-hidden"
             >
               <div className="flex-shrink-0">
                 <img
