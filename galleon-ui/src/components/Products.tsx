@@ -2,7 +2,7 @@ import { products } from "constants/products";
 
 const Products = () => {
   return (
-    <div className=" bg-theme-white  border-t-2 border-theme-navy lg:relative">
+    <div id="products" className=" bg-theme-white  border-t-2 border-theme-navy lg:relative">
       <div className="lg:mx-auto lg:max-w-7xl  py-24">
         <h3 className="mt-2 text-3xl  font-bold font-morion text-theme-navy text-center  sm:text-5xl">
           Structured Products

@@ -65,6 +65,15 @@ const Hero = () => {
                           Enter App
                         </a>
                       </div>
+                      <div className="min-w-0 ml-3">
+                        <a
+                          href={'#products'}
+                          className="block w-1/2 md:w-full py-3 px-4 mb-10 rounded-xl border shadow border-theme-navy hover:border-theme-champagne hover:text-theme-oldlace  bg-theme-oldlace hover:bg-theme-navy text-theme-navy focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-theme-champagne text-sm md:text-xl focus:ring-offset-theme-black "
+                          rel="noreferrer"
+                        >
+                          Products
+                        </a>
+                      </div>
                       <div className="mt-3 sm:mt-0 sm:ml-3">
                         <a
                           href={links.discordLink}
@@ -86,7 +95,7 @@ const Hero = () => {
                     </div>
                     <div className="relative flex pb-5 pt-5 justify-start">
                       <p className="pr-2 text-3xl font-bold font-morion text-theme-champagne">
-                        Voyages
+                        Voyages & Community Projects
                       </p>
                     </div>
                     <a
@@ -97,11 +106,27 @@ const Hero = () => {
                     >
                       <img
                         src="/jollyroger-transp.png"
-                        className="ml-2 w-16 h-16 bg-theme-oldlace rounded-xl  border-theme-navy text-theme-champagne"
+                        className="ml-2 w-16 h-16 p-1 bg-theme-oldlace rounded-xl  border-theme-navy text-theme-champagne"
                         aria-hidden="true"
                       />
                       <span className="px-5 md:px-3 py-2 ml-3  border-theme-navy border hover:border-theme-champagne 2xl:border-0 2xl:hover:border text-sm 2xl:text-xl bg-theme-oldlace hover:bg-theme-navy 2xl:bg-transparent text-theme-navy 2xl:text-theme-champagne 2xl:hover:text-theme-champagne hover:text-theme-champagne  leading-5 tracking-wide rounded-xl">
                         Cursed Pirates{" "}
+                        <ChevronRightIcon className="2xl:w-8 2xl:h-8 w-4 h-4 -translate-y-0.5 2xl:-translate-y-1 inline-flex"></ChevronRightIcon>
+                      </span>
+                    </a>
+                    <a
+                      href={links.cursedFund}
+                      target={"_blank"}
+                      className="flex  items-center    text-theme-champagne bg-transparent p-1 pr-2 sm:text-base lg:text-sm xl:text-base hover:text-theme-navy"
+                      rel="noreferrer"
+                    >
+                      <img
+                        src="/skull.png"
+                        className="ml-2 p-2 w-16 h-16 bg-theme-oldlace rounded-xl  border-theme-navy text-theme-champagne"
+                        aria-hidden="true"
+                      />
+                      <span className="px-5 md:px-3 py-2 ml-3  border-theme-navy border hover:border-theme-champagne 2xl:border-0 2xl:hover:border text-sm 2xl:text-xl bg-theme-oldlace hover:bg-theme-navy 2xl:bg-transparent text-theme-navy 2xl:text-theme-champagne 2xl:hover:text-theme-champagne hover:text-theme-champagne  leading-5 tracking-wide rounded-xl">
+                        Cursed Fund{" "}
                         <ChevronRightIcon className="2xl:w-8 2xl:h-8 w-4 h-4 -translate-y-0.5 2xl:-translate-y-1 inline-flex"></ChevronRightIcon>
                       </span>
                     </a>

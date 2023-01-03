@@ -1,7 +1,7 @@
 const metaMaskLink = "https://metamask.io/download/";
 const careersLink = "https://dao.galleon.community";
 const discordLink = "https://discord.gg/galleondao";
-const forumLink = "https://court.galleon.community";
+const forumLink = "https://discord.gg/galleondao";
 const handbookLink =
   "https://www.notion.so/galleon/Ahoy-81428ec6bb5748e7abe357859e62db76";
 const pressKitLink = "";
@@ -21,6 +21,7 @@ const dblContract =
   "https://arbiscan.io/token/0xd3f1da62cafb7e7bc6531ff1cef6f414291f03d3";
 const blog = "https://blog.galleon.community";
 const github = "https://github.com/GalleonDAO";
+const cursedFund = "https://cursed.fund";
 
 const links = {
   metaMaskLink,
@@ -41,6 +42,7 @@ const links = {
   dblContract,
   blog,
   github,
+  cursedFund,
 };
 
 export default links;
