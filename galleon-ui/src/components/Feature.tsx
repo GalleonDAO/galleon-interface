@@ -15,13 +15,49 @@ const Feature = () => {
           <h3 className="mt-2 text-3xl font-bold font-morion text-theme-navy  sm:text-5xl">
             About our decentralised organisation
           </h3>
-          <p className="mt-5 max-w-prose mx-auto text-xl text-theme-navy">
-            Galleon is a guild of experienced methodologists aiming to research,
-            design, and create best-in-class thematic, leverage and yield based
-            structured products on-chain across all EVM-based networks.
-          </p>
+          <div className="mt-12 mb-12 max-w-lg mx-auto grid gap-5 lg:grid-cols-1 md:w-1/3 w-full lg:max-w-none">
+            <div
 
-          <div className="max-w-3xl mx-auto divide-y-2 pb-4 border-theme-navy border-l-2 pl-5  divide-theme-navy">
+              className="flex flex-col rounded-xl shadow-lg border border-theme-navy overflow-hidden"
+            >
+
+              <div className="flex-1 bg-white p-6 flex flex-col justify-between">
+                <div className="flex-1">
+                  <p className="text-sm font-medium text-theme-sky">
+                    <a
+                      target="_blank"
+                      href={'https://medium.com/galleondao/galleon-structured-products-depreciation-looking-forward-8ba9e5fa1fa6'}
+                      className="hover:underline"
+                      rel="noreferrer"
+                    >
+                      {'Announcement'}
+                    </a>
+                  </p>
+                  <a
+                    target="_blank"
+                    href={'https://medium.com/galleondao/galleon-structured-products-depreciation-looking-forward-8ba9e5fa1fa6'}
+                    className="block mt-2"
+                    rel="noreferrer"
+                  >
+                    <p className="text-xl  font-morion font-semibold text-theme-navy">
+                      Galleon Structured Products Depreciation & Looking Forward
+                    </p>
+                    <p className="mt-3 text-base text-theme-navy">
+                      {'Today the core contributing team announce the depreciation of our current Set Protocol based structured products as we look to reinvent Galleon'}
+                    </p>
+                  </a>
+                </div>
+
+              </div>
+            </div>
+          </div>
+          <p className="mt-5 max-w-prose mx-auto text-xl text-theme-navy">
+            Galleon has recently announced the depreciation of its core product suite, built on top of Set Protocol infrastructure due to ongoing contraints, which you can read the full announcement for details.
+          </p>
+          <p className="mt-5 max-w-prose mx-auto text-xl text-theme-navy">The DAO now seeks to reinvent its core proposition whilst maintaining its core values of decentralisation, transparency and community. You can follow our progress on this journey, and contribute to the discussion on our Discord.</p>
+          <p className="mt-5 max-w-prose mx-auto text-xl text-theme-navy">The development of our voyages, such as Cursed Pirates are unaffected and we are excited to deliver on them soon.</p>
+
+          {/* <div className="max-w-3xl mx-auto divide-y-2 pb-4 border-theme-navy border-l-2 pl-5  divide-theme-navy">
             <dl className="mt-6 space-y-6 divide-y divide-theme-navy">
               {faqs.map((faq) => (
                 <Disclosure as="div" key={faq.question} className="pt-6 ">
@@ -53,9 +89,9 @@ const Feature = () => {
                 </Disclosure>
               ))}
             </dl>
-          </div>
+          </div> */}
 
-          <div className="mt-20">
+          <div className="mt-10">
             <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-2 ">
               {features.map((feature) => (
                 <div

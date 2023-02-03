@@ -7,7 +7,7 @@ const footerNavigation = {
     //   name: "Documentation",
     //   href: "https://www.notion.so/galleon/Ahoy-81428ec6bb5748e7abe357859e62db76",
     // },
-    { name: "Analytics", href: "https://dune.xyz/galleondao" },
+
     {
       name: "Treasury",
       href: links.treasury,
@@ -18,16 +18,8 @@ const footerNavigation = {
     },
   ],
   products: [
-    { name: "Products", href: links.dapp },
-    { name: "Set Protocol", href: links.tokensets },
-    {
-      name: "ETHMAXY",
-      href: links.dapp + "/ethmaxy",
-    },
-    {
-      name: "BYE",
-      href: links.dapp + "/bye",
-    },
+   
+
   ],
   community: [
     { name: "Discord", href: links.discordLink },
@@ -90,7 +82,7 @@ const Footer = (props: { children?: JSX.Element }) => {
                 ))}
               </div>
             </div>
-            <div className="mt-12 grid grid-cols-2 gap-8 xl:mt-0 xl:col-span-2">
+            <div className="mt-12 grid grid-cols-3 gap-8 xl:mt-0 xl:col-span-2">
               <div className="md:grid md:grid-cols-2 md:gap-8">
                 <div>
                   <h3 className="text-sm font-semibold text-theme-white tracking-wider uppercase">
@@ -109,7 +101,7 @@ const Footer = (props: { children?: JSX.Element }) => {
                     ))}
                   </ul>
                 </div>
-                <div className="mt-12 md:mt-0">
+                {/* <div className="mt-12 md:mt-0">
                   <h3 className="text-sm font-semibold text-theme-white tracking-wider uppercase">
                     Products
                   </h3>
@@ -125,7 +117,7 @@ const Footer = (props: { children?: JSX.Element }) => {
                       </li>
                     ))}
                   </ul>
-                </div>
+                </div> */}
               </div>
               <div className="md:grid md:grid-cols-2 md:gap-8">
                 <div>

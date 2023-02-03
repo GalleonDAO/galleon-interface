@@ -23,31 +23,17 @@ export const features = [
     icon: CommunityIcon,
   },
   {
-    name: "Technology",
-    description:
-      "We use our technology partner Set Protocol to create the most secure, battle-tested products in DeFi.",
-    link: links.tokensets,
-    icon: ApplicationIcon,
-  },
-  {
-    name: "Decentralised",
+    name: "Governance",
     description:
       "Participate in Galleon proposals through on-chain voting mechanisms on Snapshot using held $DBL.",
-    link: links.forumLink,
-    icon: GovernanceIcon,
-  },
-  {
-    name: "Products",
-    description:
-      "Explore our growing suite on on-chain products across Ethereum, Optimism, Avalanche & Polygon",
-    link: links.dapp,
-    icon: ProductsIcon,
-  },
-  {
-    name: "Treasury",
-    description:
-      "Take a look into the treasury and organisation health as all financial activity is executed transparently.",
-    link: links.treasury,
+    link: links.voteLink,
     icon: TreasuryIcon,
   },
+  // {
+  //   name: "Treasury",
+  //   description:
+  //     "Take a look into the treasury and organisation health as all financial activity is executed transparently.",
+  //   link: links.treasury,
+  //   icon: TreasuryIcon,
+  // },
 ];
