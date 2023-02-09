@@ -63,7 +63,7 @@ const QuickPerpTrade = (props: {
   const { account } = useAccount();
   const { chainId } = useNetwork();
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const [isIssuance, setIsIssuance] = useState(true);
+  const [isIssuance, setIsIssuance] = useState(false);
 
   const supportedNetwork = isSupportedNetwork(chainId ?? -1);
 
@@ -298,7 +298,7 @@ const QuickPerpTrade = (props: {
         pb="20px"
       >
         <span className="relative z-0 mb-2 inline-flex shadow-sm rounded-md">
-          <button
+          {/* <button
             onClick={() => {
               setIsIssuance(true);
             }}
@@ -311,7 +311,7 @@ const QuickPerpTrade = (props: {
             }
           >
             Flash Issue
-          </button>
+          </button> */}
 
           <button
             onClick={() => {
@@ -319,10 +319,10 @@ const QuickPerpTrade = (props: {
             }}
             type="button"
             className={
-              (!isIssuance
+              (isIssuance
                 ? "bg-theme-champagne font-semibold "
                 : "bg-theme-pan-champagne ") +
-              " -ml-px relative inline-flex items-center px-4 py-2 border-t border-r rounded-r-xl border-b border-l border-theme-navy text-sm  text-theme-navy hover:bg-white focus:z-10 focus:outline-none focus:ring-1 "
+              " relative inline-flex items-center px-4 py-2 rounded-tl-xl rounded-r-xl border-r border-t border-b  border-theme-navy  text-sm  text-theme-navy hover:bg-white focus:z-10 "
             }
           >
             Flash Redeem

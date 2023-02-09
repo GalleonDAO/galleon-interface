@@ -35,19 +35,29 @@ const BYE = () => {
       marketData={bye || {}}
       components={byeComponents || []}
       isLeveragedToken={true}
-      perpIssuance={perpIssuance}
+      perpIssuance={true}
       hasDashboard={false}
     >
-      <div className=" px-2 pb-4 border-b border-theme-navy sm:px-4">
+      <div className=" px-2 pb-4 border-b bg-red-400 py-4 mb-2 rounded-2xl sm:px-4">
         <h3 className="text-xl leading-6 font-morion font-semibold text-theme-navy">
-          Trade the Basis Yield ETH Index
+          DEPRECIATION NOTICE
         </h3>
         <p className="mt-1 text-md text-theme-navy">
-          The highest source of delta-neutral yield available in DeFi using
-          Perpetual Protocol V2.
+          Galleon is depreciation the BYE product, please only redeem your BYE
+          tokens below using Flash Redemption. You can read more about this
+          decision from the DAO{" "}
+          <a
+            href="https://medium.com/galleondao/galleon-structured-products-depreciation-looking-forward-8ba9e5fa1fa6"
+            target="_blank"
+            rel="noreferrer"
+            className="text-theme-blue"
+          >
+            here
+          </a>
+          .
         </p>
       </div>
-      <p className="mt-0.5 text-sm block text-theme-navy  float-right  ">
+      {/* <p className="mt-0.5 text-sm block text-theme-navy  float-right  ">
         {" "}
         {!perpIssuance ? "Large Buyer?" : ""}{" "}
         <button
@@ -61,7 +71,7 @@ const BYE = () => {
         >
           {perpIssuance ? "Toggle DEX Swap" : "Toggle Flash Issuance"}
         </button>
-      </p>
+      </p> */}
     </ProductPage>
   );
 };

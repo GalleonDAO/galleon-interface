@@ -114,8 +114,8 @@ const Products = () => {
     <Page>
       <Box w="100%">
         <PageTitle
-          title="Explore Flagship Products"
-          subtitle="An innovative way to get on-chain exposure to thematic, yield & leverage investment products"
+          title="Redeem Depreciated Products"
+          subtitle="Galleon has since depreciated its structured products DAO offering and is now faciliating redemptions only."
         />
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-1 lg:grid-cols-1">
           <div className="col-span-1 bg-theme-pan-champagne bg-[url('./assets/Frame.png')]  bg-no-repeat bg-cover bg-center border-2 border-theme-navy shadow-md shadow-theme-black  rounded-xl divide-y divide-theme-black">

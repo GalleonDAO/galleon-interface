@@ -144,8 +144,8 @@ const ProductPage = (props: {
               tokenData={props.tokenData}
             />
           </Box>
-          <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-2">
-            <div className="col-span-1 bg-theme-oldlace border-2 bg-[url('./assets/Frame.png')]  bg-no-repeat bg-cover bg-center border-theme-navy rounded-xl shadow-md shadow-theme-black  divide-y divide-theme-navy">
+          <div className="grid grid-cols-1 gap-6 sm:grid-cols-1 lg:grid-cols-1 w-1/2 mx-auto">
+            {/* <div className="col-span-1 bg-theme-oldlace border-2 bg-[url('./assets/Frame.png')]  bg-no-repeat bg-cover bg-center border-theme-navy rounded-xl shadow-md shadow-theme-black  divide-y divide-theme-navy">
               <div className="w-full items-center justify-between p-6 space-x-6">
                 <MarketChart
                   marketData={priceChartData}
@@ -160,7 +160,7 @@ const ProductPage = (props: {
                   isDoubloon={false}
                 />
               </div>
-            </div>
+            </div> */}
             <div className="col-span-1 bg-theme-oldlace border-2 bg-[url('./assets/Frame.png')]  bg-no-repeat bg-cover bg-center border-theme-navy rounded-xl shadow-md shadow-theme-black  divide-y divide-theme-navy">
               <div className="w-full flex items-center justify-between p-6 space-x-6">
                 <Flex direction="column" grow={1} flexBasis="0">
@@ -180,7 +180,7 @@ const ProductPage = (props: {
               </div>
             </div>
           </div>
-          {props.hasDashboard && (
+          {/* {props.hasDashboard && (
             <div className="mt-10">
               <div className="max-w-7xl mx-auto ">
                 <div className="p-2 border-2 border-theme-navy rounded-xl bg-theme-oldlace bg-[url('./assets/Frame.png')]  bg-no-repeat bg-cover bg-center shadow-md shadow-theme-black sm:p-3">
@@ -237,7 +237,7 @@ const ProductPage = (props: {
                 )}
               </div>
             </div>
-          </div>
+          </div> */}
         </Flex>
       </Flex>
     </Page>

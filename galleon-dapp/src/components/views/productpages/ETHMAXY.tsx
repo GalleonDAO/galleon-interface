@@ -39,13 +39,23 @@ const ETHMAXY = () => {
       apy={formattedApy}
       hasDashboard={true}
     >
-      <div className=" px-2 pb-4 border-b border-theme-navy sm:px-4">
+      <div className=" px-2 pb-4 border-b bg-red-400 py-4 rounded-2xl sm:px-4">
         <h3 className="text-xl leading-6 font-morion font-semibold text-theme-navy">
-          Trade the ETH Max Yield Index
+          DEPRECIATION NOTICE
         </h3>
         <p className="mt-1 text-md text-theme-navy">
-          Gain exposure to one of the highest, decentralised and fully
-          composable leveraged ETH Yield in DeFi with ETHMAXY.
+          Galleon is depreciation the ETHMAXY product, please only redeem your
+          ETHMAXY tokens below using available liquidity or Flash Redemption.
+          You can read more about this decision from the DAO{" "}
+          <a
+            href="https://medium.com/galleondao/galleon-structured-products-depreciation-looking-forward-8ba9e5fa1fa6"
+            target="_blank"
+            rel="noreferrer"
+            className="text-theme-blue"
+          >
+            here
+          </a>
+          .
         </p>
       </div>
     </ProductPage>

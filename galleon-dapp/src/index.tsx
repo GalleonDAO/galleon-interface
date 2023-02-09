@@ -119,8 +119,8 @@ ReactDOM.render(
         <ColorModeScript initialColorMode={theme.config.initialColorMode} />
         <Routes>
           <Route path="/" element={<App />}>
-            <Route index element={<Dashboard />} />
-            <Route path="products" element={<Products />} />
+            <Route index element={<Products />} />
+            {/* <Route path="products" element={<Products />} /> */}
             <Route path="ethmaxy" element={<ETHMAXY />} />
             <Route path="bye" element={<BYE />} />
             <Route path="swap/*" element={<Bridge />} />

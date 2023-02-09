@@ -20,11 +20,11 @@ const Header = () => {
             </Link>
             <div className="hidden ml-10 space-x-8 lg:block">
               <span className="text-lg  text-theme-oldlace hover:text-theme-champagne">
-                <Link to="/">Dashboard</Link>
+                <Link to="/">Products</Link>
               </span>
-              <span className="text-lg  text-theme-oldlace hover:text-theme-champagne">
+              {/* <span className="text-lg  text-theme-oldlace hover:text-theme-champagne">
                 <Link to="/products">Products</Link>
-              </span>
+              </span> */}
               <span className="text-lg  text-theme-oldlace hover:text-theme-champagne">
                 <Link to="/swap">Bridge</Link>
               </span>
@@ -39,14 +39,12 @@ const Header = () => {
                   Doubloon
                 </LinkChak>
               </span>
-              <span className="text-lg text-theme-oldlace hover:text-theme-champagne">
+              {/* <span className="text-lg text-theme-oldlace hover:text-theme-champagne">
                 <CoinbaseButton></CoinbaseButton>
-              </span>
+              </span> */}
             </div>
           </div>
-          <div className="md:ml-10 space-x-4">
-            <ConnectButton />
-          </div>
+          <div className="md:ml-10 space-x-4">{/* <ConnectButton /> */}</div>
         </div>
         <div className="py-4 flex flex-wrap justify-center space-x-6 lg:hidden">
           <a
@@ -55,12 +53,12 @@ const Header = () => {
           >
             Dashboard
           </a>
-          <a
+          {/* <a
             className="text-base  text-theme-oldlace hover:text-theme-champagne"
             href="/products"
           >
             Products
-          </a>
+          </a> */}
           <a
             className="text-base  text-theme-oldlace hover:text-theme-champagne"
             href="/bridge"
@@ -81,7 +79,7 @@ const Header = () => {
           >
             Doubloon
           </a>
-          <CoinbaseButton></CoinbaseButton>
+          {/* <CoinbaseButton></CoinbaseButton> */}
         </div>
       </nav>
     </header>
