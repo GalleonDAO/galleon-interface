@@ -1,5 +1,8 @@
 # Galleon interface
 
+### [GALLEON-DAPP DEPRECIATION]
+galleon-dapp within this repository is now not being developed but can still be forked, maintained & self-hosted
+
 [![License](https://img.shields.io/:license-mit-blue.svg)](https://opensource.org/licenses/MIT)
 
 ## Local development
