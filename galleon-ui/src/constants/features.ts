@@ -18,7 +18,7 @@ export const features = [
   {
     name: "Community Crew",
     description:
-      "Join our thriving community and get involved in our many initiatives to earn governance power through $DBL.",
+      "Join our thriving community and get involved in our initiatives to earn governance power through $DBL.",
     link: links.discordLink,
     icon: CommunityIcon,
   },

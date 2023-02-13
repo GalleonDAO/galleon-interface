@@ -1,4 +1,4 @@
-import GalleonLogo from "assets/brand/Union-Logo-Light.png";
+import GalleonLogo from "assets/brand/Vector-Logo-1.png";
 import links from "constants/externalLinks";
 
 const footerNavigation = {
@@ -58,7 +58,7 @@ const Footer = (props: { children?: JSX.Element }) => {
   return (
     <>
       {props.children}
-      <footer className="bg-theme-navy" aria-labelledby="footer-heading">
+      <footer className="relative bg-[url('./assets/Frame.png')]  bg-contain bg-right bg-theme-pan-navy border-t-2 border-theme-navy " aria-labelledby="footer-heading">
         <h2 id="footer-heading" className="sr-only">
           Footer
         </h2>
@@ -66,15 +66,15 @@ const Footer = (props: { children?: JSX.Element }) => {
           <div className="xl:grid xl:grid-cols-3 xl:gap-8">
             <div className="space-y-8 xl:col-span-1">
               <img className="h-10" src={GalleonLogo} alt="Company name" />
-              <p className="text-theme-oldlace text-base">
-                We create on-chain investment themes.
+              <p className="text-theme-pan-champagne text-base">
+                A grand decentralised voyage
               </p>
               <div className="flex space-x-6">
                 {footerNavigation.social.map((item) => (
                   <a
                     key={item.name}
                     href={item.href}
-                    className="text-theme-white hover:text-theme-oldlace"
+                    className="text-theme-pan-champagne hover:opacity:80"
                   >
                     <span className="sr-only">{item.name}</span>
                     <item.icon className="h-6 w-6" aria-hidden="true" />
@@ -85,7 +85,7 @@ const Footer = (props: { children?: JSX.Element }) => {
             <div className="mt-12 grid grid-cols-3 gap-8 xl:mt-0 xl:col-span-2">
               <div className="md:grid md:grid-cols-2 md:gap-8">
                 <div>
-                  <h3 className="text-sm font-semibold text-theme-white tracking-wider uppercase">
+                  <h3 className="text-sm font-semibold text-theme-pan-champagne tracking-wider uppercase">
                     Information
                   </h3>
                   <ul role="list" className="mt-4 space-y-4">
@@ -93,7 +93,7 @@ const Footer = (props: { children?: JSX.Element }) => {
                       <li key={item.name}>
                         <a
                           href={item.href}
-                          className="text-base text-theme-oldlace hover:text-theme-champagne"
+                          className="text-base text-theme-pan-champagne hover:opacity-70"
                         >
                           {item.name}
                         </a>
@@ -102,7 +102,7 @@ const Footer = (props: { children?: JSX.Element }) => {
                   </ul>
                 </div>
                 {/* <div className="mt-12 md:mt-0">
-                  <h3 className="text-sm font-semibold text-theme-white tracking-wider uppercase">
+                  <h3 className="text-sm font-semibold text-theme-pan-champagne tracking-wider uppercase">
                     Products
                   </h3>
                   <ul role="list" className="mt-4 space-y-4">
@@ -110,7 +110,7 @@ const Footer = (props: { children?: JSX.Element }) => {
                       <li key={item.name}>
                         <a
                           href={item.href}
-                          className="text-base text-theme-oldlace hover:text-theme-champagne"
+                          className="text-base text-theme-pan-champagne hover:opacity-70"
                         >
                           {item.name}
                         </a>
@@ -121,7 +121,7 @@ const Footer = (props: { children?: JSX.Element }) => {
               </div>
               <div className="md:grid md:grid-cols-2 md:gap-8">
                 <div>
-                  <h3 className="text-sm font-semibold text-theme-white tracking-wider uppercase">
+                  <h3 className="text-sm font-semibold text-theme-pan-champagne tracking-wider uppercase">
                     Community
                   </h3>
                   <ul role="list" className="mt-4 space-y-4">
@@ -129,7 +129,7 @@ const Footer = (props: { children?: JSX.Element }) => {
                       <li key={item.name}>
                         <a
                           href={item.href}
-                          className="text-base text-theme-oldlace hover:text-theme-champagne"
+                          className="text-base text-theme-pan-champagne hover:opacity-70"
                         >
                           {item.name}
                         </a>
@@ -138,7 +138,7 @@ const Footer = (props: { children?: JSX.Element }) => {
                   </ul>
                 </div>
                 {/* <div className="mt-12 md:mt-0">
-                  <h3 className="text-sm font-semibold text-theme-white tracking-wider uppercase">
+                  <h3 className="text-sm font-semibold text-theme-pan-champagne tracking-wider uppercase">
                     Legal
                   </h3>
                   <ul role="list" className="mt-4 space-y-4">
@@ -146,7 +146,7 @@ const Footer = (props: { children?: JSX.Element }) => {
                       <li key={item.name}>
                         <a
                           href={item.href}
-                          className="text-base text-theme-oldlace hover:text-theme-champagne"
+                          className="text-base text-theme-pan-champagne hover:opacity-70"
                         >
                           {item.name}
                         </a>
@@ -157,8 +157,8 @@ const Footer = (props: { children?: JSX.Element }) => {
               </div>
             </div>
           </div>
-          <div className="mt-12 border-t border-gray-200 py-8">
-            <p className="text-base text-theme-oldlace xl:text-center">
+          <div className="mt-12 border-t border-theme-pan-navy py-8">
+            <p className="text-base text-theme-pan-champagne xl:text-center">
               Information is for educational and illustrative purposes only.
               Galleon is not engaged in the business of the offer, sale or
               trading of securities and does not provide legal, tax, or

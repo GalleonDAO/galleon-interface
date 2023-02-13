@@ -36,41 +36,41 @@ import links from "constants/externalLinks";
 const Hero = () => {
   return (
     <div>
-      <div className="pt-10  bg-theme-black sm:pt-16 lg:pt-8 lg:pb-14 lg:overflow-hidden bg-[url('./assets/ship-bg-01.png')] bg-cover bg-no-repeat bg-center  pb-10 bg-opacity-100  min-h-screen">
+      <div className="pt-10  bg-theme-black sm:pt-16 lg:pt-8 lg:pb-14 lg:overflow-hidden bg-[url('./assets/ship-bg-04.png')] bg-cover bg-no-repeat bg-center  pb-10 bg-opacity-100  min-h-screen">
         <div className="mx-auto max-w-7xl lg:px-8">
           <div className="lg:grid lg:grid-cols-2 lg:gap-8">
             <div className="mx-auto max-w-md px-4 sm:max-w-xl sm:px-6 sm:text-center lg:px-0 lg:text-left lg:flex lg:items-center">
               <div className="py-24">
-                <h1 className="mt-4 text-4xl font-morion tracking-tight font-extrabold text-theme-white sm:mt-5 sm:text-6xl lg:mt-6 xl:text-6xl">
-                  <span className="pb-3  bg-clip-text text-transparent bg-gradient-to-r from-theme-champagne to-theme-oldlace sm:pb-5">
-                    The Asset
+                <h1 className="mt-4 pb-3 text-4xl font-morion tracking-tight font-extrabold text-theme-pan-navy sm:mt-5 sm:text-6xl lg:mt-6 xl:text-6xl">
+                  <span className="pb-3  bg-clip-text text-transparent bg-gradient-to-r from-theme-pan-navy to-theme-pan-navy sm:pb-5">
+                   Galleon
                   </span>
-                  <span className="pb-3 block bg-clip-text text-transparent bg-gradient-to-r from-theme-champagne to-theme-oldlace sm:pb-5">
-                    Management Guild
-                  </span>
+                  {/* <span className="pb-3 block bg-clip-text text-transparent bg-gradient-to-r from-theme-pan-champagne to-theme-oldlace sm:pb-5">
+                    Through DeFi & NFTs
+                  </span> */}
                 </h1>
-                <p className="text-3xl text-theme-white sm:text-3xl lg:text-lg xl:text-3xl">
-                  We create on-chain investment themes.
+                <p className="text-3xl text-theme-pan-navy sm:text-3xl lg:text-lg xl:text-3xl">
+                  A grand decentralised voyage.
                 </p>
                 <div className="mt-8 sm:mt-8">
                   <div className="sm:max-w-xl sm:mx-auto lg:mx-0">
                     <div className="sm:flex">
-                      <div className="min-w-0">
+                      {/* <div className="min-w-0">
                         <a
                           href={links.dapp}
                           target={"_blank"}
-                          className="block w-1/2 md:w-full py-3 px-4 mb-10 rounded-xl border shadow border-theme-navy hover:border-theme-champagne hover:text-theme-oldlace  bg-theme-oldlace hover:bg-theme-navy text-theme-navy focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-theme-champagne text-sm md:text-xl focus:ring-offset-theme-black "
+                          className="block w-1/2 md:w-full py-3 px-4 mb-10 rounded-xl border shadow border-theme-pan-navy hover:border-theme-pan-navy hover:text-theme-oldlace  hover:bg-theme-pan-champagne text-theme-pan-navy focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-theme-pan-champagne text-sm md:text-xl focus:ring-offset-theme-black "
                           rel="noreferrer"
                         >
                           Redeem Products
                         </a>
-                      </div>
+                      </div> */}
 
                       <div className="mt-3 sm:mt-0 sm:ml-3">
                         <a
                           href={links.discordLink}
                           target={"_blank"}
-                          className="block w-1/2 md:w-full py-3 px-4 mb-10 rounded-xl shadow border-theme-navy border hover:border-theme-champagne hover:text-theme-oldlace  bg-theme-oldlace  text-theme-navy hover:bg-theme-navy  focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-theme-champagne text-sm md:text-xl focus:ring-offset-theme-black "
+                          className="block w-1/2 md:w-full border-2 py-3 px-4 mb-10 rounded-xl shadow border-theme-pan-navy hover:border-theme-pan-navy hover:text-theme-pan-navy   text-theme-pan-navy hover:bg-theme-pan-champagne  focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-theme-pan-champagne text-sm md:text-xl focus:ring-offset-theme-black "
                           rel="noreferrer"
                         >
                           Join the Crew
@@ -82,26 +82,26 @@ const Hero = () => {
                         className="absolute inset-0 flex items-center"
                         aria-hidden="true"
                       >
-                        <div className="w-full border-t border-theme-oldlace" />
+                        <div className="w-full border-t-2 border-theme-pan-navy" />
                       </div>
                     </div>
                     <div className="relative flex pb-5 pt-5 justify-start">
-                      <p className="pr-2 text-3xl font-bold font-morion text-theme-champagne">
-                        Voyages & Community Projects
+                      <p className="pr-2 text-3xl font-bold font-morion text-theme-pan-navy">
+                        Voyages 
                       </p>
                     </div>
                     <a
                       href={links.cursedPirates}
                       target={"_blank"}
-                      className="flex  items-center    text-theme-champagne bg-transparent p-1 pr-2 sm:text-base lg:text-sm xl:text-base hover:text-theme-navy"
+                      className="flex  items-center    text-theme-pan-navy bg-transparent p-1 pr-2 sm:text-base lg:text-sm xl:text-base hover:text-theme-pan-navy"
                       rel="noreferrer"
                     >
                       <img
                         src="/jollyroger-transp.png"
-                        className="ml-2 w-16 h-16 p-1 bg-theme-oldlace rounded-xl  border-theme-navy text-theme-champagne"
+                        className="ml-2 w-16 h-16 p-1 rounded-xl  border-theme-pan-navy text-theme-pan-navy"
                         aria-hidden="true"
                       />
-                      <span className="px-5 md:px-3 py-2 ml-3  border-theme-navy border hover:border-theme-champagne 2xl:border-0 2xl:hover:border text-sm 2xl:text-xl bg-theme-oldlace hover:bg-theme-navy 2xl:bg-transparent text-theme-navy 2xl:text-theme-champagne 2xl:hover:text-theme-champagne hover:text-theme-champagne  leading-5 tracking-wide rounded-xl">
+                      <span className="px-5 md:px-3 py-2 ml-3  border-theme-pan-navy border-2 hover:border-theme-pan-navy 2xl:border-0 2xl:hover:border-2 text-sm 2xl:text-xl hover:bg-theme-pan-champagne 2xl:bg-transparent text-theme-pan-navy 2xl:text-theme-pan-navy 2xl:hover:text-theme-pan-navy hover:text-theme-pan-navy  leading-5 tracking-wide rounded-xl">
                         Cursed Pirates{" "}
                         <ChevronRightIcon className="2xl:w-8 2xl:h-8 w-4 h-4 -translate-y-0.5 2xl:-translate-y-1 inline-flex"></ChevronRightIcon>
                       </span>
@@ -109,20 +109,20 @@ const Hero = () => {
                     <a
                       href={links.cursedFund}
                       target={"_blank"}
-                      className="flex  items-center    text-theme-champagne bg-transparent p-1 pr-2 sm:text-base lg:text-sm xl:text-base hover:text-theme-navy"
+                      className="flex  items-center    text-theme-pan-navy bg-transparent p-1 pr-2 sm:text-base lg:text-sm xl:text-base hover:text-theme-pan-navy"
                       rel="noreferrer"
                     >
                       <img
                         src="/skull.png"
-                        className="ml-2 p-2 w-16 h-16 bg-theme-oldlace rounded-xl  border-theme-navy text-theme-champagne"
+                        className="ml-2 p-2 w-16 h-16 rounded-xl  border-theme-pan-navy text-theme-pan-navy"
                         aria-hidden="true"
                       />
-                      <span className="px-5 md:px-3 py-2 ml-3  border-theme-navy border hover:border-theme-champagne 2xl:border-0 2xl:hover:border text-sm 2xl:text-xl bg-theme-oldlace hover:bg-theme-navy 2xl:bg-transparent text-theme-navy 2xl:text-theme-champagne 2xl:hover:text-theme-champagne hover:text-theme-champagne  leading-5 tracking-wide rounded-xl">
+                      <span className="px-5 md:px-3 py-2 ml-3  border-theme-pan-navy border-2 hover:border-theme-pan-navy 2xl:border-0 2xl:hover:border-2 text-sm 2xl:text-xl hover:bg-theme-pan-champagne 2xl:bg-transparent text-theme-pan-navy 2xl:text-theme-pan-navy 2xl:hover:text-theme-pan-navy hover:text-theme-pan-navy  leading-5 tracking-wide rounded-xl">
                         Cursed Fund{" "}
                         <ChevronRightIcon className="2xl:w-8 2xl:h-8 w-4 h-4 -translate-y-0.5 2xl:-translate-y-1 inline-flex"></ChevronRightIcon>
                       </span>
                     </a>
-                    <p className="mt-3 text-sm text-theme-champagne sm:mt-4"></p>
+                    <p className="mt-3 text-sm text-theme-pan-navy sm:mt-4"></p>
                   </div>
                 </div>
               </div>

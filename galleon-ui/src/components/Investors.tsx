@@ -3,7 +3,7 @@ import media from "assets/media.png";
 
 export default function Investors() {
   return (
-    <div className=" bg-theme-pan-champagne border-t-2 border-theme-navy">
+    <div className="relative bg-[url('./assets/Frame.png')]   bg-contain bg-center bg-theme-pan-champagne border-t-2 border-theme-navy py-16">
       <div className="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:py-12 lg:px-8">
         <h3 className="mt-2 text-3xl   font-bold font-morion text-theme-navy text-center  sm:text-5xl">
           Investors

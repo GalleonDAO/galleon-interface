@@ -11,12 +11,13 @@ const Landing = () => {
     <div>
       <main>
         <Hero></Hero>
-        <Feature></Feature>
+
         <Doubloon></Doubloon>
         {/* <Products></Products> */}
         {/* <Contribute></Contribute> */}
         {/* <Blog></Blog> */}
         <Investors></Investors>
+        <Feature></Feature>
       </main>
     </div>
   );
