@@ -44,7 +44,7 @@ const Header = () => {
               </span> */}
             </div>
           </div>
-          <div className="md:ml-10 space-x-4">{/* <ConnectButton /> */}</div>
+          <div className="md:ml-10 space-x-4"> <ConnectButton /> </div>
         </div>
         <div className="py-4 flex flex-wrap justify-center space-x-6 lg:hidden">
           <a
