@@ -106,7 +106,7 @@ const Hero = () => {
                         <ChevronRightIcon className="2xl:w-8 2xl:h-8 w-4 h-4 -translate-y-0.5 2xl:-translate-y-1 inline-flex"></ChevronRightIcon>
                       </span>
                     </a>
-                    <a
+                    {/* <a
                       href={links.cursedFund}
                       target={"_blank"}
                       className="flex  items-center    text-theme-pan-navy bg-transparent p-1 pr-2 sm:text-base lg:text-sm xl:text-base hover:text-theme-pan-navy"
@@ -121,7 +121,7 @@ const Hero = () => {
                         Cursed Fund{" "}
                         <ChevronRightIcon className="2xl:w-8 2xl:h-8 w-4 h-4 -translate-y-0.5 2xl:-translate-y-1 inline-flex"></ChevronRightIcon>
                       </span>
-                    </a>
+                    </a> */}
                     <p className="mt-3 text-sm text-theme-pan-navy sm:mt-4"></p>
                   </div>
                 </div>
