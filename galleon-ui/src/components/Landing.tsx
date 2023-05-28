@@ -16,8 +16,8 @@ const Landing = () => {
         {/* <Products></Products> */}
         {/* <Contribute></Contribute> */}
         {/* <Blog></Blog> */}
-        <Investors></Investors>
-        <Feature></Feature>
+        {/* <Investors></Investors> */}
+        {/* <Feature></Feature> */}
       </main>
     </div>
   );

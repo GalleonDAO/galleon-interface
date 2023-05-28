@@ -23,7 +23,7 @@ const footerNavigation = {
   ],
   community: [
     { name: "Discord", href: links.discordLink },
-    { name: "Blog", href: links.blog },
+    // { name: "Blog", href: links.blog },
     { name: "Brethren Court", href: links.forumLink },
     { name: "Voting", href: links.voteLink },
   ],
